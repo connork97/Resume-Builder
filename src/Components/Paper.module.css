@@ -19,3 +19,9 @@
   padding: 2rem;
   box-sizing: border-box;
 }
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

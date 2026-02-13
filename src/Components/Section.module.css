@@ -1,0 +1,15 @@
+.section {
+  min-height: 1.2rem;
+  padding: 0.25rem;
+  outline: none;
+  border-radius: 6px;
+  transition: border 0.15s ease;
+}
+
+.section:hover {
+  border: 1px solid black;
+}
+
+.section:focus {
+  border: 1px solid black;
+}

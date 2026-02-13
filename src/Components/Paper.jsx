@@ -11,7 +11,9 @@ function Paper({ children, scale = 1 }) {
         className={styles.paper}
         style={{ height: `${scaledHeight}vh` }}
       >
-        {children}
+        <div className={styles.contentWrapper}>
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -7,8 +7,9 @@ import Toolbar from "./Components/Toolbar/Toolbar.jsx";
 import Zoom from "./Components/Toolbar/Zoom.jsx";
 import AddSection from "./Components/Toolbar/AddSection.jsx";
 import Section from "./Components/Section.jsx";
+import TextFormatting from "./Components/Toolbar/TextFormatting.jsx";
 import FontSize from "./Components/Toolbar/FontSize.jsx";
-import FontColor from "./Components/Toolbar/FontColor";
+import FontColor from "./Components/Toolbar/FontColor.jsx";
 
 function App() {
 
@@ -47,25 +48,26 @@ function App() {
       <Toolbar>
         <AddSection handleAddSection={handleAddSection} />
         <Zoom zoom={zoom} setZoom={setZoom} />
+        <TextFormatting />
         <FontSize fontSize={fontSize} setFontSize={setFontSize} />
         <FontColor fontColor={fontColor} setFontColor={setFontColor} />
       </Toolbar>
 
-<Paper scale={zoom} fontSize={fontSize} fontColor={fontColor}>
-  <div className="contentWrapper">
-    {sections.map((section, index) => (
-      <Section
-        key={section.id}
-        id={section.id}
-        index={index}
-        content={section.content}
-        updateSection={updateSection}
-        autoFocus={section.autoFocus}
-        handleReorder={handleReorder}
-      />
-    ))}
-  </div>
-</Paper>
+      <Paper scale={zoom} fontSize={fontSize} fontColor={fontColor}>
+        <div className="contentWrapper">
+          {sections.map((section, index) => (
+            <Section
+              key={section.id}
+              id={section.id}
+              index={index}
+              content={section.content}
+              updateSection={updateSection}
+              autoFocus={section.autoFocus}
+              handleReorder={handleReorder}
+            />
+          ))}
+        </div>
+      </Paper>
 
     </>
   );

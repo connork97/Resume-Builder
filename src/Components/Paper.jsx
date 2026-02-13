@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Paper.module.css";
 
-function Paper({ children, scale = 1 }) {
+function Paper({ children, scale = 1, fontSize, fontColor }) {
   // 100% zoom = 90vh
   const scaledHeight = 90 * scale; // vh units
 
@@ -11,7 +11,13 @@ function Paper({ children, scale = 1 }) {
         className={styles.paper}
         style={{ height: `${scaledHeight}vh` }}
       >
-        <div className={styles.contentWrapper}>
+     <div 
+          className={styles.contentWrapper}
+          style={{
+               fontSize: `${fontSize}px`,
+               color: fontColor
+          }}
+     >
           {children}
         </div>
       </div>

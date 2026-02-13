@@ -80,6 +80,27 @@ const restoreSelection = (range) => {
       >
         S
       </button> */}
+
+<button
+  onMouseDown={(e) => e.preventDefault()}
+  onClick={() => document.execCommand("insertUnorderedList")}
+  className={styles.listButton}
+>
+  <span className={styles.listIcon}>
+    <span className={styles.dot}></span>
+    <span className={styles.dot}></span>
+    <span className={styles.dot}></span>
+
+    <span className={styles.line}></span>
+    <span className={styles.line}></span>
+    <span className={styles.line}></span>
+  </span>
+</button>
+
+
+
+
+
     </div>
   );
 }

@@ -23,3 +23,70 @@
 .button:hover {
   background: #333333;
 }
+
+.listButton {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.listButton:hover {
+  background: #333;
+}
+
+/* Bullet Point Icon CSS */
+
+.listIcon {
+  position: relative;
+  width: 17px;
+  height: 18px;
+  left: -2px;
+  
+}
+
+.listIcon .dot {
+  position: absolute;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+}
+
+.listIcon .dot:nth-child(1) {
+  top: 1px;
+}
+
+.listIcon .dot:nth-child(2) {
+  top: 7px;
+}
+
+.listIcon .dot:nth-child(3) {
+  bottom: 1px;
+}
+
+.listIcon .line {
+  position: absolute;
+  left: 8px;
+  width: 12px;
+  height: 2px;
+  background: white;
+  border-radius: 1px;
+}
+
+.listIcon .line:nth-child(4) {
+  top: 2px;
+}
+
+.listIcon .line:nth-child(5) {
+  top: 8px;
+}
+
+.listIcon .line:nth-child(6) {
+  bottom: 2px;
+}

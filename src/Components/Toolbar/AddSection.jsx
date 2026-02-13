@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./AddSection.module.css";
 
-function AddSection({ addSection }) {
+function AddSection({ handleAddSection }) {
   return (
-    <button className={styles.addButton} onClick={addSection}>
+    <button className={styles.addButton} onClick={handleAddSection}>
       + Add Section
     </button>
   );

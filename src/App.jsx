@@ -18,10 +18,10 @@ function App() {
   const [fontSize, setFontSize] = useState(12);
   const [fontColor, setFontColor] = useState("#000000");
 
-  const addSection = () => {
+  const handleAddSection = () => {
     setSections((prev) => [
       ...prev,
-      { id: Date.now(), content: "" }
+      { id: Date.now(), content: "", autoFocus: true }
     ]);
   };
 
@@ -33,31 +33,40 @@ function App() {
     );
   };
   
-
+  const handleReorder = (fromIndex, toIndex) => {
+    setSections((prev) => {
+      const updated = [...prev];
+      const [moved] = updated.splice(fromIndex, 1);
+      updated.splice(toIndex, 0, moved);
+      return updated;
+    });
+  };
 
   return (
     <>
       <Toolbar>
-        <AddSection addSection={addSection} />
+        <AddSection handleAddSection={handleAddSection} />
         <Zoom zoom={zoom} setZoom={setZoom} />
         <FontSize fontSize={fontSize} setFontSize={setFontSize} />
         <FontColor fontColor={fontColor} setFontColor={setFontColor} />
       </Toolbar>
 
-      <Paper scale={zoom} fontSize={fontSize} fontColor={fontColor}>
-        <h1 className={styles.title}>Resume Title</h1>
-        <div className="contentWrapper">
-          {sections.map((section) => (
-            <Section
-              key={section.id}
-              id={section.id}
-              content={section.content}
-              updateSection={updateSection}
-            />
-          ))}
-        </div>
+<Paper scale={zoom} fontSize={fontSize} fontColor={fontColor}>
+  <div className="contentWrapper">
+    {sections.map((section, index) => (
+      <Section
+        key={section.id}
+        id={section.id}
+        index={index}
+        content={section.content}
+        updateSection={updateSection}
+        autoFocus={section.autoFocus}
+        handleReorder={handleReorder}
+      />
+    ))}
+  </div>
+</Paper>
 
-      </Paper>
     </>
   );
 }

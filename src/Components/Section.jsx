@@ -7,7 +7,8 @@ function Section({
   content,
   updateSection,
   autoFocus,
-  handleReorder
+  handleReorder,
+  handleDelete
 }) {
   const [text, setText] = useState(content || "");
   const [isDragOver, setIsDragOver] = useState(false);
@@ -39,7 +40,6 @@ function Section({
   const onDragOver = (e) => {
     e.preventDefault();
     setIsDragOver(true);
-    console.log(id)
   };
 
   const onDragLeave = () => setIsDragOver(false);
@@ -51,21 +51,34 @@ function Section({
     setIsDragOver(false);
   };
 
-return (
-  <div
-    ref={divRef}
-    className={`${styles.section} ${isDragOver ? styles.dragOver : ""}`}
-    contentEditable
-    suppressContentEditableWarning
-    onInput={handleInput}
-    draggable
-    onDragStart={onDragStart}
-    onDragOver={onDragOver}
-    onDragLeave={onDragLeave}
-    onDrop={onDrop}
-  />
-);
+  return (
+    <div className={styles.sectionWrapper}>
+      {/* DELETE BUTTON */}
+      <button
+        className={styles.deleteButton}
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => handleDelete(id)}
+      >
+        ×
+      </button>
 
+      {/* CONTENTEDITABLE DIV */}
+      <div
+        ref={divRef}
+        className={`${styles.section} ${isDragOver ? styles.dragOver : ""}`}
+        contentEditable
+        suppressContentEditableWarning
+        onInput={handleInput}
+        draggable
+        onDragStart={onDragStart}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+      >
+        {""}
+      </div>
+    </div>
+  );
 }
 
 export default Section;

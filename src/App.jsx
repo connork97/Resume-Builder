@@ -43,6 +43,11 @@ function App() {
     });
   };
 
+  const handleDeleteSection = (id) => {
+    setSections((prev) => prev.filter((section) => section.id !== id));
+  };
+
+
   return (
     <>
       <Toolbar>
@@ -64,6 +69,7 @@ function App() {
               updateSection={updateSection}
               autoFocus={section.autoFocus}
               handleReorder={handleReorder}
+              handleDelete={handleDeleteSection}
             />
           ))}
         </div>

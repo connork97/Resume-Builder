@@ -4,18 +4,16 @@
   margin-top: calc(10vh + 1.5rem); /* toolbar height + gap */
   width: 100%;
   align-items: center;
-  overflow-x: auto;
+  overflow: visible;
 }
 
 .paper {
+  height: 85vh;
+  /* width: 640px;        real letter width */
   aspect-ratio: 8.5 / 11;
-  width: auto;
-  max-width: 100%;
-
   background: white;
   border: 1px solid #d3d3d3;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
   padding: 2rem;
   box-sizing: border-box;
 }

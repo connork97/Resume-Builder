@@ -1,82 +1,45 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useSections } from "./hooks/useSections";
 
-import styles from "./App.module.css";
+import Paper from "./components/Paper/Paper";
+import Toolbar from "./components/Toolbar/Toolbar";
+import Section from "./components/Section/Section";
 
-import Paper from "./Components/Paper.jsx";
-import Toolbar from "./Components/Toolbar/Toolbar.jsx";
-import Zoom from "./Components/Toolbar/Zoom.jsx";
-import AddSection from "./Components/Toolbar/AddSection.jsx";
-import Section from "./Components/Section.jsx";
-import TextFormatting from "./Components/Toolbar/TextFormatting.jsx";
-import FontSize from "./Components/Toolbar/FontSize.jsx";
-import FontColor from "./Components/Toolbar/FontColor.jsx";
+export default function App() {
+  const {
+    sections,
+    addSection,
+    updateSection,
+    deleteSection,
+    reorderSections
+  } = useSections();
 
-function App() {
-
-  const [sections, setSections] = useState([]);
-
-  const [zoom, setZoom] = useState(1);
-  const [fontSize, setFontSize] = useState(12);
-  const [fontColor, setFontColor] = useState("#000000");
-
-  const handleAddSection = () => {
-    setSections((prev) => [
-      ...prev,
-      { id: Date.now(), content: "", autoFocus: true }
-    ]);
-  };
-
-  const updateSection = (id, newContent) => {
-    setSections((prev) =>
-      prev.map((s) =>
-        s.id === id ? { ...s, content: newContent } : s
-      )
-    );
-  };
-  
-  const handleReorder = (fromIndex, toIndex) => {
-    setSections((prev) => {
-      const updated = [...prev];
-      const [moved] = updated.splice(fromIndex, 1);
-      updated.splice(toIndex, 0, moved);
-      return updated;
-    });
-  };
-
-  const handleDeleteSection = (id) => {
-    setSections((prev) => prev.filter((section) => section.id !== id));
-  };
-
+  const [zoom, setZoom] = useState (1);
 
   return (
-    <>
-      <Toolbar>
-        <AddSection handleAddSection={handleAddSection} />
-        <Zoom zoom={zoom} setZoom={setZoom} />
-        <TextFormatting />
-        <FontSize fontSize={fontSize} setFontSize={setFontSize} />
-        <FontColor fontColor={fontColor} setFontColor={setFontColor} />
-      </Toolbar>
+    <div>
+      <Toolbar 
+        addSection={addSection}
+        updateSection={updateSection}
+        zoom={zoom}
+        setZoom={setZoom}
+      />
+      <Paper zoom={zoom}>
 
-      <Paper scale={zoom} fontSize={fontSize} fontColor={fontColor}>
-        <div className="contentWrapper">
-          {sections.map((section, index) => (
-            <Section
-              key={section.id}
-              id={section.id}
-              index={index}
-              content={section.content}
-              updateSection={updateSection}
-              autoFocus={section.autoFocus}
-              handleReorder={handleReorder}
-              handleDelete={handleDeleteSection}
-            />
-          ))}
-        </div>
+      {sections.map((section, index) => (
+        <Section
+          key={section.id}
+          id={section.id}
+          index={index}
+          content={section.content}
+          fontSize={section.fontSize}
+          autoFocus={section.autoFocus}
+          updateSection={updateSection}
+          handleReorder={reorderSections}
+          handleDelete={deleteSection}
+        />
+      ))}
       </Paper>
-
-    </>
+    </div>
   );
 }
-
-export default App;

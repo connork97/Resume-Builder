@@ -17,18 +17,26 @@ const COLORS = [
   { name: "White", value: "#ffffff" }
 ];
 
-function FontColor({ fontColor, setFontColor }) {
+export default function FontColor({ formatting }) {
   const [open, setOpen] = useState(false);
+  const { activeFormats, saveSelection, restoreSelection } = formatting;
+
+  const applyColor = (color) => {
+    restoreSelection();
+    document.execCommand("foreColor", false, color);
+    setOpen(false);
+  };
 
   return (
     <div className={styles.container}>
       <button
         className={styles.display}
+        onMouseDown={saveSelection}
         onClick={() => setOpen((o) => !o)}
       >
         <span
           className={styles.currentSwatch}
-          style={{ backgroundColor: fontColor }}
+          style={{ backgroundColor: activeFormats.fontColor }}
         />
         <span className={styles.arrow}>▾</span>
       </button>
@@ -39,10 +47,8 @@ function FontColor({ fontColor, setFontColor }) {
             <div
               key={c.value}
               className={styles.option}
-              onClick={() => {
-                setFontColor(c.value);
-                setOpen(false);
-              }}
+              onMouseDown={saveSelection}
+              onClick={() => applyColor(c.value)}
             >
               <span
                 className={styles.swatch}
@@ -56,5 +62,3 @@ function FontColor({ fontColor, setFontColor }) {
     </div>
   );
 }
-
-export default FontColor;

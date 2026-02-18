@@ -1,37 +1,40 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Section.module.css";
 
 function Section({
   id,
   index,
   content,
+  fontSize,
   updateSection,
   autoFocus,
   handleReorder,
   handleDelete
 }) {
-  const [text, setText] = useState(content || "");
-  const [isDragOver, setIsDragOver] = useState(false);
   const divRef = useRef(null);
+  const [isDragOver, setIsDragOver] = useState(false);
 
+  // Autofocus when section is created
   useEffect(() => {
     if (autoFocus && divRef.current) {
       divRef.current.focus();
     }
   }, [autoFocus]);
 
+  // Keep DOM in sync with content from state
   useEffect(() => {
-    if (divRef.current && divRef.current.innerText !== content) {
-      divRef.current.innerText = content;
+    if (divRef.current && divRef.current.innerHTML !== content) {
+      divRef.current.innerHTML = content || "";
     }
   }, [content]);
 
+  // Update parent state when user types
   const handleInput = (e) => {
-    const newValue = e.target.innerText;
-    setText(newValue);
-    updateSection(id, newValue);
+    const html = e.target.innerHTML;
+    updateSection(id, html, undefined);
   };
 
+  // Drag and drop handlers
   const onDragStart = (e) => {
     e.dataTransfer.setData("text/plain", index);
     e.dataTransfer.effectAllowed = "move";
@@ -53,7 +56,7 @@ function Section({
 
   return (
     <div className={styles.sectionWrapper}>
-      {/* DELETE BUTTON */}
+      {/* Delete button */}
       <button
         className={styles.deleteButton}
         onMouseDown={(e) => e.preventDefault()}
@@ -62,10 +65,12 @@ function Section({
         ×
       </button>
 
-      {/* CONTENTEDITABLE DIV */}
+      {/* Editable content */}
       <div
+        data-id={id}
         ref={divRef}
-        className={`${styles.section} ${isDragOver ? styles.dragOver : ""}`}
+        className={`section ${styles.section} ${isDragOver ? styles.dragOver : ""}`}
+        style={{ fontSize: `${fontSize}px` }}
         contentEditable
         suppressContentEditableWarning
         onInput={handleInput}
@@ -74,9 +79,7 @@ function Section({
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-      >
-        {""}
-      </div>
+      />
     </div>
   );
 }

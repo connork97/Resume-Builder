@@ -19,6 +19,12 @@ body {
   min-height: 100vh;
 }
 
+html, body {
+  /* overflow: hidden; */
+  /* height: 110%; */
+  
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

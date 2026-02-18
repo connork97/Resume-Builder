@@ -33,6 +33,7 @@ export default function App() {
           index={index}
           content={section.content}
           fontSize={section.fontSize}
+          textAlign={section.textAlign}
           autoFocus={section.autoFocus}
           updateSection={updateSection}
           handleReorder={reorderSections}

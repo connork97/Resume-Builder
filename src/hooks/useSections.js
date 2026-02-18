@@ -9,20 +9,22 @@ export function useSections() {
       {
         id: crypto.randomUUID(),
         content: "",
-        fontSize: 16,      // ⭐ default font size
+        fontSize: 12,
+        textAlign: "left",
         autoFocus: true
       }
     ]);
   };
 
-  const updateSection = (id, content, fontSize) => {
+  const updateSection = (id, content, fontSize, textAlign) => {
     setSections(prev =>
       prev.map(section =>
         section.id === id
           ? {
               ...section,
               content: content !== undefined ? content : section.content,
-              fontSize: fontSize !== undefined ? fontSize : section.fontSize
+              fontSize: fontSize !== undefined ? fontSize : section.fontSize,
+              textAlign: textAlign !== undefined ? textAlign : section.textAlign
             }
           : section
       )

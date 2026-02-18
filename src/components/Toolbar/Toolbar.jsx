@@ -3,6 +3,7 @@ import AddSection from "./AddSection/AddSection";
 import Zoom from "./Zoom/Zoom";
 import FontSize from "./Font/FontSize";
 import FontColor from "./Font/FontColor";
+import TextAlign from "./TextAlign/TextAlign";
 
 import styles from "./Toolbar.module.css";
 import { useFormatting } from "../../hooks/useFormatting";
@@ -15,6 +16,7 @@ export default function Toolbar({ addSection, updateSection, zoom, setZoom }) {
       <TextFormatting formatting={formatting} />
       <FontSize formatting={formatting} />
       <FontColor formatting={formatting} />
+      <TextAlign formatting={formatting} />
       <Zoom zoom={zoom} setZoom={setZoom} />
       <AddSection addSection={addSection} />
     </div>

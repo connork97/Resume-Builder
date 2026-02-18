@@ -6,12 +6,12 @@ export function useFormatting(updateSection) {
     italic: false,
     underline: false,
     fontColor: "#000000",
-    fontSize: 16
+    fontSize: 16,
+    textAlign: "left"
   });
 
   const savedSelection = useRef(null);
 
-  // Selection Save/Restore
   const saveSelection = () => {
     const sel = window.getSelection();
     if (sel.rangeCount > 0) {
@@ -27,41 +27,49 @@ export function useFormatting(updateSection) {
     }
   };
 
-  // Find the current section
   const findSection = (node) => {
     while (node && node !== document.body) {
-      if (node.classList?.contains("section")) {
-        return node;
-      }
+      if (node.dataset?.id) return node;
       node = node.parentNode;
     }
     return null;
   };
 
-  // Inline formatting (bold/italic/underline)
   const toggle = (command) => {
     restoreSelection();
     document.execCommand(command);
     updateActiveFormats();
   };
 
-  // Block-level font size
   const applyFontSize = (px) => {
     restoreSelection();
     const sel = window.getSelection();
     if (!sel.rangeCount) return;
 
-    const range = sel.getRangeAt(0);
-    const section = findSection(range.startContainer);
+    const section = findSection(sel.focusNode);
     if (!section) return;
 
-    const sectionId = section.getAttribute("data-id");
-    updateSection(sectionId, undefined, px);
+    const id = section.dataset.id;
+    updateSection(id, undefined, px, undefined);
 
     updateActiveFormats();
   };
 
-  // Detect current font size
+  const applyTextAlign = (alignment) => {
+    saveSelection();
+    restoreSelection();
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+
+    const section = findSection(sel.focusNode);
+    if (!section) return;
+
+    const id = section.dataset.id;
+    updateSection(id, undefined, undefined, alignment);
+
+    updateActiveFormats();
+  };
+
   const getCurrentFontSizeFromSelection = () => {
     const sel = window.getSelection();
     if (!sel.rangeCount) return 16;
@@ -82,8 +90,13 @@ export function useFormatting(updateSection) {
     return size && size.endsWith("px") ? parseFloat(size) : 16;
   };
 
-  // Update active formatting state
   const updateActiveFormats = () => {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+
+    const section = findSection(sel.focusNode);
+    const computed = section ? window.getComputedStyle(section) : null;
+
     const fontSize = getCurrentFontSizeFromSelection();
 
     setActiveFormats({
@@ -91,11 +104,11 @@ export function useFormatting(updateSection) {
       italic: document.queryCommandState("italic"),
       underline: document.queryCommandState("underline"),
       fontColor: document.queryCommandValue("foreColor"),
-      fontSize
+      fontSize,
+      textAlign: computed ? computed.textAlign : "left"
     });
   };
 
-  // Listen for selection changes
   useEffect(() => {
     const handler = () => {
       const active = document.activeElement;
@@ -114,6 +127,7 @@ export function useFormatting(updateSection) {
     toggle,
     saveSelection,
     restoreSelection,
-    applyFontSize
+    applyFontSize,
+    applyTextAlign
   };
 }

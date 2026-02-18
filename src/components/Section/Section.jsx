@@ -6,6 +6,7 @@ function Section({
   index,
   content,
   fontSize,
+  textAlign,
   updateSection,
   autoFocus,
   handleReorder,
@@ -31,7 +32,7 @@ function Section({
   // Update parent state when user types
   const handleInput = (e) => {
     const html = e.target.innerHTML;
-    updateSection(id, html, undefined);
+    updateSection(id, html, undefined, undefined);
   };
 
   // Drag and drop handlers
@@ -70,7 +71,7 @@ function Section({
         data-id={id}
         ref={divRef}
         className={`section ${styles.section} ${isDragOver ? styles.dragOver : ""}`}
-        style={{ fontSize: `${fontSize}px` }}
+        style={{ fontSize: `${fontSize}px`, textAlign: textAlign }}
         contentEditable
         suppressContentEditableWarning
         onInput={handleInput}

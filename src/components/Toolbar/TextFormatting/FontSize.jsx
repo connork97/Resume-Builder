@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./FontSize.module.css";
 import { useFormatting } from "../../../hooks/useFormatting";
+import FormattingButton from "./FormattingButton";
 
 export default function FontSize({ formatting }) {
   const { activeFormats, saveSelection, applyFontSize } = formatting;
@@ -46,13 +47,15 @@ export default function FontSize({ formatting }) {
 
   return (
     <div className={styles.container}>
-      <button
+      {/* <button */}
+      <FormattingButton
         className={styles.button}
         onMouseDown={saveSelection}
         onClick={decrease}
       >
         −
-      </button>
+      </FormattingButton>
+      {/* </button> */}
 
       <input
         className={styles.input}
@@ -65,13 +68,15 @@ export default function FontSize({ formatting }) {
         onBlur={handleBlur}
       />
 
-      <button
-        className={styles.button}
+      {/* <button */}
+      <FormattingButton
+        // className={styles.button}
         onMouseDown={saveSelection}
         onClick={increase}
       >
         +
-      </button>
+      </FormattingButton>
+      {/* </button> */}
     </div>
   );
 }

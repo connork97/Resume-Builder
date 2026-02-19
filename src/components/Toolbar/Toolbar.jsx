@@ -1,9 +1,9 @@
 import TextFormatting from "./TextFormatting/TextFormatting";
 import AddSection from "./AddSection/AddSection";
 import Zoom from "./Zoom/Zoom";
-import FontSize from "./Font/FontSize";
-import FontColor from "./Font/FontColor";
-import TextAlign from "./TextAlign/TextAlign";
+import FontSize from "./TextFormatting/FontSize";
+import FontColor from "./TextFormatting/FontColor";
+import TextAlign from "./TextFormatting/TextAlign";
 
 import styles from "./Toolbar.module.css";
 import { useFormatting } from "../../hooks/useFormatting";

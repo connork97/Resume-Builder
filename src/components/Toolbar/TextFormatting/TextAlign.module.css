@@ -4,7 +4,9 @@
   gap: 0.4rem;
 }
 
-.button {
+/* Removed Duplicative styling after converting to FormattingButton component */
+
+/* .button {
   background: #2a2a2a;
   color: white;
   border: 1px solid #3a3a3a;
@@ -28,4 +30,4 @@
 .active {
   background: #444;
   border-color: #666;
-}
+} */

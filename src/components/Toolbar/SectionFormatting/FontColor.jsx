@@ -35,9 +35,11 @@ export default function FontColor({ formatting }) {
         onClick={() => setOpen((o) => !o)}
       >
         <span
-          className={styles.currentSwatch}
-          style={{ backgroundColor: activeFormats.fontColor }}
-        />
+          className={styles.currentFontColor}
+          style={{color: activeFormats.fontColor}}
+          // className={styles.currentSwatch}
+          // style={{ backgroundColor: activeFormats.fontColor }}
+        >A</span>
         <span className={styles.arrow}>▾</span>
       </button>
 

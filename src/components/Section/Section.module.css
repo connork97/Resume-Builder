@@ -1,9 +1,12 @@
 .section {
   /* min-height: 1.2rem; */
   /* padding: 0.25rem; */
+  /* padding: 2rem; */
+  /* background-color: black; */
   outline: none;
   border-radius: 6px;
   transition: border 0.15s ease;
+  background-color: #ffffff;
 }
 
 .section ul {
@@ -27,6 +30,12 @@
 
 .sectionWrapper {
   position: relative;
+  width: 100%;
+  margin-left: -2rem;
+  margin-right: -2rem;
+  padding: 0.5rem 2rem;
+  background-color: #ffffff;
+  /* background-color: red; */
 }
 
 .deleteButton {
@@ -35,7 +44,7 @@
   right: -28px;
   top: 4px;
   background: #2a2a2a;
-  color: white;
+  color: #ffffff;
   border: 1px solid #444;
   padding: 2px 6px;
   border-radius: 4px;

@@ -11,12 +11,13 @@ export function useSections() {
         content: "",
         fontSize: 12,
         textAlign: "left",
+        backgroundColor: "#ffffff",
         autoFocus: true
       }
     ]);
   };
 
-  const updateSection = (id, content, fontSize, textAlign) => {
+  const updateSection = (id, content, fontSize, textAlign, backgroundColor) => {
     setSections(prev =>
       prev.map(section =>
         section.id === id
@@ -24,7 +25,8 @@ export function useSections() {
               ...section,
               content: content !== undefined ? content : section.content,
               fontSize: fontSize !== undefined ? fontSize : section.fontSize,
-              textAlign: textAlign !== undefined ? textAlign : section.textAlign
+              textAlign: textAlign !== undefined ? textAlign : section.textAlign,
+              backgroundColor: backgroundColor ?? section.backgroundColor
             }
           : section
       )

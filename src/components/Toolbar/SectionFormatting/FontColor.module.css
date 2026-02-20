@@ -19,12 +19,20 @@
   background: #333333;
 }
 
-.currentSwatch {
+.currentFontColor {
+  /* width: 14px; */
+  /* height: 14px; */
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* .currentSwatch {
   width: 14px;
   height: 14px;
   border-radius: 4px;
   border: 1px solid #555;
-}
+} */
 
 .arrow {
   margin-left: 0.2rem;

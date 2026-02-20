@@ -4,9 +4,11 @@ import styles from "./Section.module.css";
 function Section({
   id,
   index,
+  totalSections,
   content,
   fontSize,
   textAlign,
+  backgroundColor,
   updateSection,
   autoFocus,
   handleReorder,
@@ -55,8 +57,25 @@ function Section({
     setIsDragOver(false);
   };
 
+const getSpacing = () => {
+  if (index === 0) {
+    return {
+      marginTop: "-2rem",
+      paddingTop: "2rem"
+    };
+  } else if (index === (totalSections - 1)) {
+    return {
+      paddingBottom: "fit-content"
+    };
+  }
+  return {};
+};
+
+
   return (
-    <div className={styles.sectionWrapper}>
+    <div
+      className={styles.sectionWrapper}
+      style={{ backgroundColor: backgroundColor, ...getSpacing() }}>
       {/* Delete button */}
       <button
         className={styles.deleteButton}
@@ -71,7 +90,7 @@ function Section({
         data-id={id}
         ref={divRef}
         className={`section ${styles.section} ${isDragOver ? styles.dragOver : ""}`}
-        style={{ fontSize: `${fontSize}px`, textAlign: textAlign }}
+        style={{ fontSize: `${fontSize}px`, textAlign: textAlign, backgroundColor: backgroundColor }}
         contentEditable
         suppressContentEditableWarning
         onInput={handleInput}

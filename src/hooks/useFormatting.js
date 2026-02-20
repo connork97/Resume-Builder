@@ -7,7 +7,8 @@ export function useFormatting(updateSection) {
     underline: false,
     fontColor: "#000000",
     fontSize: 16,
-    textAlign: "left"
+    textAlign: "left",
+    backgroundColor: "#ffffff"
   });
 
   const savedSelection = useRef(null);
@@ -42,6 +43,7 @@ export function useFormatting(updateSection) {
   };
 
   const applyFontSize = (px) => {
+    // saveSelection();
     restoreSelection();
     const sel = window.getSelection();
     if (!sel.rangeCount) return;
@@ -69,6 +71,33 @@ export function useFormatting(updateSection) {
 
     updateActiveFormats();
   };
+
+  const applyBackgroundColor = (color) => {
+    restoreSelection();
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+
+    const section = findSection(sel.focusNode);
+    if (!section) return;
+
+    const id = section.dataset.id;
+    updateSection(id, undefined, undefined, undefined, color);
+
+    updateActiveFormats();
+  };
+
+  const rgbToHex = (rgb) => {
+    const match = rgb.match(/\d+/g);
+    if (!match) return rgb;
+    const [r, g, b] = match.map(Number);
+    return (
+      "#" +
+      [r, g, b]
+        .map((x) => x.toString(16).padStart(2, "0"))
+        .join("")
+    );
+  };
+
 
   const getCurrentFontSizeFromSelection = () => {
     const sel = window.getSelection();
@@ -105,7 +134,8 @@ export function useFormatting(updateSection) {
       underline: document.queryCommandState("underline"),
       fontColor: document.queryCommandValue("foreColor"),
       fontSize,
-      textAlign: computed ? computed.textAlign : "left"
+      textAlign: computed ? computed.textAlign : "left",
+      backgroundColor: computed ? computed.backgroundColor : "#ffffff"
     });
   };
 
@@ -128,6 +158,7 @@ export function useFormatting(updateSection) {
     saveSelection,
     restoreSelection,
     applyFontSize,
-    applyTextAlign
+    applyTextAlign,
+    applyBackgroundColor
   };
 }

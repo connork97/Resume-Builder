@@ -31,9 +31,11 @@ export default function App() {
           key={section.id}
           id={section.id}
           index={index}
+          totalSections={sections.length}
           content={section.content}
           fontSize={section.fontSize}
           textAlign={section.textAlign}
+          backgroundColor={section.backgroundColor}
           autoFocus={section.autoFocus}
           updateSection={updateSection}
           handleReorder={reorderSections}

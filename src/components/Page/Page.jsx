@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import styles from "./Paper.module.css";
+import styles from "./Page.module.css";
 
-export default function Paper({ children, zoom }) {
+export default function Page({ children, zoom }) {
 
   
   const findMarginBottom = () => {
@@ -11,16 +11,16 @@ export default function Paper({ children, zoom }) {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.pageWrapper}>
       <div
-        className={styles.paper}
+        className={styles.page}
         style={{
           transform: `scale(${zoom})`,
           transformOrigin: "top center",
           marginBottom: findMarginBottom()
         }}
       >
-        <div className={styles.contentWrapper}>
+        <div className={styles.pageContentWrapper}>
           {children}
         </div>
       </div>

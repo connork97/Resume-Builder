@@ -1,4 +1,4 @@
-.wrapper {
+.pageWrapper {
   display: flex;
   justify-content: center;
   margin-top: calc(10vh + 1.5rem); /* toolbar height + gap */
@@ -7,7 +7,7 @@
   overflow: visible;
 }
 
-.paper {
+.page {
   height: 85vh;
   /* width: 640px;        real letter width */
   /* width: auto; */
@@ -19,7 +19,7 @@
   box-sizing: border-box;
 }
 
-.contentWrapper {
+.pageContentWrapper {
   display: flex;
   flex-direction: column;
   padding: 2rem; /* Originally in .paper class (above).  For keeping page content away from edge of page*/

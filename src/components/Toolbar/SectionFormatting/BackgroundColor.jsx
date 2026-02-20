@@ -61,10 +61,29 @@ export default function BackgroundColor({ formatting }) {
               }}
               onClick={() => {
                 applyBackgroundColor(c);
-                setOpen(false);
+                // setOpen(false);
               }}
             />
           ))}
+<div className={styles.customRow}>
+  <label className={styles.customLabel}>Custom</label>
+
+  <div
+    className={styles.customSwatch}
+    style={{ backgroundColor: activeFormats.backgroundColor }}
+  >
+    <input
+      type="color"
+      className={styles.colorInput}
+      value={activeFormats.backgroundColor}
+      onChange={(e) => {
+        applyBackgroundColor(e.target.value);
+        // setOpen (false);
+      }}
+      onClick={(e) => e.stopPropagation()}
+    />
+  </div>
+</div>
         </div>
       )}
     </div>

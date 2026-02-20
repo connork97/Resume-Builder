@@ -65,7 +65,7 @@ const getSpacing = () => {
     };
   } else if (index === (totalSections - 1)) {
     return {
-      paddingBottom: "fit-content"
+      // paddingBottom: "fit-content"
     };
   }
   return {};

@@ -9,7 +9,7 @@ import BackgroundColor from "./SectionFormatting/BackgroundColor";
 import styles from "./Toolbar.module.css";
 import { useFormatting } from "../../hooks/useFormatting";
 
-export default function Toolbar({ addSection, updateSection, zoom, setZoom }) {
+export default function Toolbar({ addSection, updateSection, zoom, setZoom, onDownloadPDF }) {
   const formatting = useFormatting(updateSection);
 
   return (
@@ -21,6 +21,10 @@ export default function Toolbar({ addSection, updateSection, zoom, setZoom }) {
       <Zoom zoom={zoom} setZoom={setZoom} />
       <AddSection addSection={addSection} />
       <BackgroundColor formatting={formatting} />
+      <button onClick={() => onDownloadPDF()}>
+        Download PDF
+      </button>
+
     </div>
   );
 }

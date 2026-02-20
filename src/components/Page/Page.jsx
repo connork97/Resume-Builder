@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import styles from "./Page.module.css";
 
-export default function Page({ children, zoom }) {
+const Page = React.forwardRef(({ children, zoom }, ref) => {
 
-  
   const findMarginBottom = () => {
     const defaultMarginBottom = 85;
     const extraMarginBottom = defaultMarginBottom * (zoom - 1);
-    return `${4 + extraMarginBottom}vh`
+    return `${4 + extraMarginBottom}vh`;
   };
 
   return (
@@ -20,10 +19,12 @@ export default function Page({ children, zoom }) {
           marginBottom: findMarginBottom()
         }}
       >
-        <div className={styles.pageContentWrapper}>
+        <div className={styles.pageContentWrapper} ref={ref}>
           {children}
         </div>
       </div>
     </div>
   );
-}
+});
+
+export default Page;

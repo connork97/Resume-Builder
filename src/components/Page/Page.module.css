@@ -1,27 +1,24 @@
 .pageWrapper {
   display: flex;
   justify-content: center;
-  margin-top: calc(10vh + 1.5rem); /* toolbar height + gap */
-  width: 100%;
+  margin-top: calc(10vh + 1.5rem);
   align-items: center;
   overflow: visible;
 }
 
 .page {
-  height: 85vh;
-  /* width: 640px;        real letter width */
-  /* width: auto; */
-  aspect-ratio: 8.5 / 11;
+  width: 8.5in;
+  height: 11in;
   background: white;
-  /* border: 1px solid #d3d3d3; */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  /* padding: 2rem; */ /* For keeping page content away from edge of page*/
   box-sizing: border-box;
+  position: relative;
 }
 
 .pageContentWrapper {
+  /* height: 100%; */
   display: flex;
   flex-direction: column;
-  padding: 2rem; /* Originally in .paper class (above).  For keeping page content away from edge of page*/
-  /* gap: 0.5rem; Gap/spacing between sections */
+  padding: 2rem 2rem 0rem 2rem;
 }
+

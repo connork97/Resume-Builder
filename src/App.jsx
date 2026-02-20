@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 import { useSections } from "./hooks/useSections";
 
 import Page from "./components/Page/Page";
@@ -14,6 +15,15 @@ export default function App() {
     reorderSections
   } = useSections();
 
+  const pageRef = useRef();
+
+    const handleDownloadPDF = useReactToPrint({
+    contentRef: pageRef,
+    documentTitle: "document",
+    removeAfterPrint: true
+  });
+
+
   const [zoom, setZoom] = useState (1);
 
   return (
@@ -23,10 +33,11 @@ export default function App() {
         updateSection={updateSection}
         zoom={zoom}
         setZoom={setZoom}
+        onDownloadPDF={handleDownloadPDF}
       />
-      <Page zoom={zoom}>
-        {sections.map((section, index) => (
-          <Section
+        <Page ref={pageRef} zoom={zoom}>
+          {sections.map((section, index) => (
+            <Section
             key={section.id}
             id={section.id}
             index={index}
@@ -39,9 +50,9 @@ export default function App() {
             updateSection={updateSection}
             handleReorder={reorderSections}
             handleDelete={deleteSection}
-          />
-        ))}
-      </Page>
+            />
+          ))}
+        </Page>
     </div>
   );
 }

@@ -13,7 +13,11 @@ function Section({
   updateSection,
   autoFocus,
   handleReorder,
-  handleDelete
+  handleDelete,
+  moveLeft,
+  moveRight,
+  columnIndex,
+  numColumns
 }) {
   const divRef = useRef(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -89,6 +93,12 @@ function Section({
       >
         ×
       </button>
+      {/* <div className={styles.columnControls}> */}
+        <button className={styles.columnButton} onClick={moveLeft} disabled={columnIndex === 0}>←</button>
+        <button className={styles.columnButton} onClick={moveRight} disabled={columnIndex === numColumns - 1}>→</button>
+      {/* </div> */}
+
+
 
       {/* Editable content */}
       <div

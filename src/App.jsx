@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useSections } from "./hooks/useSections";
 import { useFormatting } from "./hooks/useFormatting";
@@ -19,7 +19,6 @@ export default function App() {
 
   const formatting = useFormatting(updateSection);
 
-
   const pageRef = useRef();
 
     const handleDownloadPDF = useReactToPrint({
@@ -29,7 +28,30 @@ export default function App() {
   });
 
 
-  const [zoom, setZoom] = useState (1);
+  const [zoom, setZoom] = useState (0.75);
+
+  const [numColumns, setNumColumns] = useState(1);
+
+  const moveSectionLeft = (id, currentIndex) => {
+    if (currentIndex > 0) {
+      updateSection(id, undefined, undefined, undefined, undefined, currentIndex - 1);
+    }
+  };
+
+  const moveSectionRight = (id, currentIndex) => {
+    if (currentIndex < numColumns - 1) {
+      updateSection(id, undefined, undefined, undefined, undefined, currentIndex + 1);
+    }
+  };
+
+
+  useEffect(() => {
+    sections.forEach(section => {
+      if (section.columnIndex >= numColumns) {
+        updateSection(section.id, { columnIndex: numColumns - 1 });
+      }
+    });
+  }, [numColumns]);
 
   return (
     <div>
@@ -40,12 +62,51 @@ export default function App() {
         zoom={zoom}
         setZoom={setZoom}
         onDownloadPDF={handleDownloadPDF}
+        numColumns={numColumns}
+        setNumColumns={setNumColumns}
       />
         <Page 
           ref={pageRef}
           zoom={zoom}
         >
-          {sections.map((section, index) => (
+          <div className="columnsContainer" style={{ "--num-columns": numColumns }}>
+            {Array.from({ length: numColumns }).map((_, colIndex) => (
+              <div className="column" key={colIndex}>
+                {sections
+                  .filter(section => section.columnIndex === colIndex)
+                  .map((section, index) => (
+                    <Section
+                      key={section.id}
+                      index={index}
+                      totalSections={sections.length}
+                      formatting={formatting}
+                      updateSection={updateSection}
+                      handleReorder={reorderSections}
+                      handleDelete={deleteSection}
+                      moveLeft={() => moveSectionLeft(section.id, section.columnIndex)}
+                      moveRight={() => moveSectionRight(section.id, section.columnIndex)}
+                      numColumns={numColumns}
+                      {...section}
+                      // key={section.id}
+                      // id={section.id}
+                      // index={index}
+                      // totalSections={sections.length}
+                      // content={section.content}
+                      // fontSize={section.fontSize}
+                      // textAlign={section.textAlign}
+                      // backgroundColor={section.backgroundColor}
+                      // autoFocus={section.autoFocus}
+                      // formatting={formatting}
+                      // updateSection={updateSection}
+                      // handleReorder={reorderSections}
+                      // handleDelete={deleteSection}
+                      // {...section}
+                    />
+                  ))}
+              </div>
+            ))}
+          </div>
+          {/* {sections.map((section, index) => (
             <Section
             key={section.id}
             id={section.id}
@@ -61,7 +122,7 @@ export default function App() {
             handleReorder={reorderSections}
             handleDelete={deleteSection}
             />
-          ))}
+          ))} */}
         </Page>
     </div>
   );

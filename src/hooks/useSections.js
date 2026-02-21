@@ -12,12 +12,13 @@ export function useSections() {
         fontSize: 12,
         textAlign: "left",
         backgroundColor: "#ffffff",
+        columnIndex: 0,
         autoFocus: true
       }
     ]);
   };
 
-  const updateSection = (id, content, fontSize, textAlign, backgroundColor) => {
+  const updateSection = (id, content, fontSize, textAlign, backgroundColor, columnIndex) => {
     setSections(prev =>
       prev.map(section =>
         section.id === id
@@ -26,7 +27,8 @@ export function useSections() {
               content: content !== undefined ? content : section.content,
               fontSize: fontSize !== undefined ? fontSize : section.fontSize,
               textAlign: textAlign !== undefined ? textAlign : section.textAlign,
-              backgroundColor: backgroundColor ?? section.backgroundColor
+              backgroundColor: backgroundColor ?? section.backgroundColor,
+              columnIndex: columnIndex !== undefined ? columnIndex : section.columnIndex
             }
           : section
       )

@@ -41,7 +41,10 @@ export default function App() {
         setZoom={setZoom}
         onDownloadPDF={handleDownloadPDF}
       />
-        <Page ref={pageRef} zoom={zoom}>
+        <Page 
+          ref={pageRef}
+          zoom={zoom}
+        >
           {sections.map((section, index) => (
             <Section
             key={section.id}

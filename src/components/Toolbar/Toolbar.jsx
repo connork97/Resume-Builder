@@ -7,10 +7,10 @@ import TextAlign from "./SectionFormatting/TextAlign";
 import BackgroundColor from "./SectionFormatting/BackgroundColor";
 
 import styles from "./Toolbar.module.css";
-import { useFormatting } from "../../hooks/useFormatting";
+// import { useFormatting } from "../../hooks/useFormatting";
 
-export default function Toolbar({ addSection, updateSection, zoom, setZoom, onDownloadPDF }) {
-  const formatting = useFormatting(updateSection);
+export default function Toolbar({ addSection, updateSection, formatting, zoom, setZoom, onDownloadPDF }) {
+  // const formatting = useFormatting(updateSection);
 
   return (
     <div className={styles.toolbar}>

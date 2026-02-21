@@ -6,7 +6,7 @@ export function useFormatting(updateSection) {
     italic: false,
     underline: false,
     fontColor: "#000000",
-    fontSize: 16,
+    fontSize: 12,
     textAlign: "left",
     backgroundColor: "#ffffff"
   });
@@ -101,22 +101,22 @@ export function useFormatting(updateSection) {
 
   const getCurrentFontSizeFromSelection = () => {
     const sel = window.getSelection();
-    if (!sel.rangeCount) return 16;
+    if (!sel.rangeCount) return 12;
 
     let node = sel.focusNode;
-    if (!node) return 16;
+    if (!node) return 12;
 
     if (node.nodeType === Node.TEXT_NODE) {
       node = node.parentNode;
     }
 
     const section = findSection(node);
-    if (!section) return 16;
+    if (!section) return 12;
 
     const computed = window.getComputedStyle(section);
     const size = computed.fontSize;
 
-    return size && size.endsWith("px") ? parseFloat(size) : 16;
+    return size && size.endsWith("px") ? parseFloat(size) : 12;
   };
 
   const updateActiveFormats = () => {

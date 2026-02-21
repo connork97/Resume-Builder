@@ -12,14 +12,16 @@ const Page = React.forwardRef(({ children, zoom }, ref) => {
   return (
     <div className={styles.pageWrapper}>
       <div
+      ref={ref}
         className={styles.page}
         style={{
           transform: `scale(${zoom})`,
           transformOrigin: "top center",
-          marginBottom: findMarginBottom()
+          marginBottom: findMarginBottom(),
+          // backgroundColor: "gray"
         }}
       >
-        <div className={styles.pageContentWrapper} ref={ref}>
+        <div className={styles.pageContentWrapper} >
           {children}
         </div>
       </div>

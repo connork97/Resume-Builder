@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useSections } from "./hooks/useSections";
+import { useFormatting } from "./hooks/useFormatting";
+
 
 import Page from "./components/Page/Page";
 import Toolbar from "./components/Toolbar/Toolbar";
@@ -14,6 +16,9 @@ export default function App() {
     deleteSection,
     reorderSections
   } = useSections();
+
+  const formatting = useFormatting(updateSection);
+
 
   const pageRef = useRef();
 
@@ -29,6 +34,7 @@ export default function App() {
   return (
     <div>
       <Toolbar 
+        formatting={formatting}
         addSection={addSection}
         updateSection={updateSection}
         zoom={zoom}
@@ -47,6 +53,7 @@ export default function App() {
             textAlign={section.textAlign}
             backgroundColor={section.backgroundColor}
             autoFocus={section.autoFocus}
+            formatting={formatting}
             updateSection={updateSection}
             handleReorder={reorderSections}
             handleDelete={deleteSection}

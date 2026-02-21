@@ -5,6 +5,7 @@ function Section({
   id,
   index,
   totalSections,
+  formatting,
   content,
   fontSize,
   textAlign,
@@ -17,12 +18,18 @@ function Section({
   const divRef = useRef(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
-  // Autofocus when section is created
+  // Autofocus when section is created (run only once)
   useEffect(() => {
     if (autoFocus && divRef.current) {
       divRef.current.focus();
+
+      // Save selection after focus so toolbar targets this section
+      setTimeout(() => {
+        formatting.saveSelection();
+      }, 0);
     }
-  }, [autoFocus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // ← run once on mount
 
   // Keep DOM in sync with content from state
   useEffect(() => {
@@ -57,25 +64,23 @@ function Section({
     setIsDragOver(false);
   };
 
-const getSpacing = () => {
-  if (index === 0) {
-    return {
-      marginTop: "-2rem",
-      paddingTop: "2rem"
-    };
-  } else if (index === (totalSections - 1)) {
-    return {
-      // paddingBottom: "fit-content"
-    };
-  }
-  return {};
-};
-
+  const getSpacing = () => {
+    if (index === 0) {
+      return {
+        marginTop: "-2rem",
+        paddingTop: "2rem"
+      };
+    } else if (index === totalSections - 1) {
+      return {};
+    }
+    return {};
+  };
 
   return (
     <div
       className={styles.sectionWrapper}
-      style={{ backgroundColor: backgroundColor, ...getSpacing() }}>
+      style={{ backgroundColor: backgroundColor, ...getSpacing() }}
+    >
       {/* Delete button */}
       <button
         className={styles.deleteButton}
@@ -90,7 +95,11 @@ const getSpacing = () => {
         data-id={id}
         ref={divRef}
         className={`section ${styles.section} ${isDragOver ? styles.dragOver : ""}`}
-        style={{ fontSize: `${fontSize}px`, textAlign: textAlign, backgroundColor: backgroundColor }}
+        style={{
+          fontSize: `${fontSize}px`,
+          textAlign: textAlign,
+          backgroundColor: backgroundColor
+        }}
         contentEditable
         suppressContentEditableWarning
         onInput={handleInput}
@@ -99,6 +108,10 @@ const getSpacing = () => {
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
+        onMouseDown={formatting.saveSelection}
+        onKeyUp={formatting.saveSelection}
+        onClick={formatting.saveSelection}
+        onKeyDown={formatting.saveSelection}
       />
     </div>
   );

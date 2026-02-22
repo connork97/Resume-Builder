@@ -26,3 +26,17 @@
 .toolbar input {
   user-select: text;
 }
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.select, select {
+  background: #2d2d2d;
+  color: white;
+  border: 1px solid #3a3a3a;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}

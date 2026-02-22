@@ -1,5 +1,5 @@
 import { useFormatting } from "../../../hooks/useFormatting";
-import FormattingButton from "./FormattingButton";
+import FormattingButton from "./ToolbarButton";
 import styles from "./TextFormatting.module.css";
 
 export default function TextFormatting() {
@@ -13,7 +13,7 @@ export default function TextFormatting() {
         active={activeFormats.bold}
         onClick={toggle}
       />
-
+      
       <FormattingButton
         command="italic"
         label="I"

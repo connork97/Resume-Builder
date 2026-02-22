@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./FontSize.module.css";
-import FormattingButton from "./FormattingButton";
+import FormattingButton from "./ToolbarButton";
 
 export default function FontSize({ formatting }) {
   const { activeFormats, saveSelection, applyFontSize } = formatting;

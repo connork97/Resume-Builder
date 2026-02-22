@@ -1,5 +1,5 @@
 import styles from "./TextAlign.module.css";
-import FormattingButton from "./FormattingButton";
+import FormattingButton from "./ToolbarButton";
 
 export default function TextAlign({ formatting }) {
   const { activeFormats, applyTextAlign } = formatting;

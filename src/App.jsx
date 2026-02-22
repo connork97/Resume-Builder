@@ -21,7 +21,7 @@ export default function App() {
 
   const pageRef = useRef();
 
-    const handleDownloadPDF = useReactToPrint({
+  const handleDownloadPDF = useReactToPrint({
     contentRef: pageRef,
     documentTitle: "document",
     removeAfterPrint: true
@@ -45,13 +45,22 @@ export default function App() {
   };
 
 
+  /*  Checks each section to see if it is in a column that still exists when updating column number
+  If in a column that was just deleted, the section gets moved to the last available column */
   useEffect(() => {
     sections.forEach(section => {
       if (section.columnIndex >= numColumns) {
-        updateSection(section.id, { columnIndex: numColumns - 1 });
+        updateSection(
+          section.id,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          numColumns - 1
+        );
       }
     });
-  }, [numColumns]);
+  }, [numColumns, sections]);
 
   return (
     <div>
@@ -65,65 +74,35 @@ export default function App() {
         numColumns={numColumns}
         setNumColumns={setNumColumns}
       />
-        <Page 
-          ref={pageRef}
-          zoom={zoom}
-        >
-          <div className="columnsContainer" style={{ "--num-columns": numColumns }}>
-            {Array.from({ length: numColumns }).map((_, colIndex) => (
-              <div className="column" key={colIndex}>
-                {sections
-                  .filter(section => section.columnIndex === colIndex)
-                  .map((section, index) => (
-                    <Section
-                      key={section.id}
-                      index={index}
-                      totalSections={sections.length}
-                      formatting={formatting}
-                      updateSection={updateSection}
-                      handleReorder={reorderSections}
-                      handleDelete={deleteSection}
-                      moveLeft={() => moveSectionLeft(section.id, section.columnIndex)}
-                      moveRight={() => moveSectionRight(section.id, section.columnIndex)}
-                      numColumns={numColumns}
-                      {...section}
-                      // key={section.id}
-                      // id={section.id}
-                      // index={index}
-                      // totalSections={sections.length}
-                      // content={section.content}
-                      // fontSize={section.fontSize}
-                      // textAlign={section.textAlign}
-                      // backgroundColor={section.backgroundColor}
-                      // autoFocus={section.autoFocus}
-                      // formatting={formatting}
-                      // updateSection={updateSection}
-                      // handleReorder={reorderSections}
-                      // handleDelete={deleteSection}
-                      // {...section}
-                    />
-                  ))}
-              </div>
-            ))}
-          </div>
-          {/* {sections.map((section, index) => (
-            <Section
-            key={section.id}
-            id={section.id}
-            index={index}
-            totalSections={sections.length}
-            content={section.content}
-            fontSize={section.fontSize}
-            textAlign={section.textAlign}
-            backgroundColor={section.backgroundColor}
-            autoFocus={section.autoFocus}
-            formatting={formatting}
-            updateSection={updateSection}
-            handleReorder={reorderSections}
-            handleDelete={deleteSection}
-            />
-          ))} */}
-        </Page>
+      <Page 
+        ref={pageRef}
+        zoom={zoom}
+      >
+        <div className="columnsContainer" style={{ "--num-columns": numColumns }}>
+          {Array.from({ length: numColumns }).map((_, colIndex) => (
+            <div className="column" key={colIndex}>
+              {sections
+                .filter(section => section.columnIndex === colIndex)
+                .map((section, index) => (
+                  <Section
+                    key={section.id}
+                    index={index}
+                    totalSections={sections.length}
+                    formatting={formatting}
+                    updateSection={updateSection}
+                    handleReorder={reorderSections}
+                    handleDelete={deleteSection}
+                    moveLeft={() => moveSectionLeft(section.id, section.columnIndex)}
+                    moveRight={() => moveSectionRight(section.id, section.columnIndex)}
+                    numColumns={numColumns}
+                    setNumColumns={setNumColumns}
+                    {...section}
+                  />
+                ))}
+            </div>
+          ))}
+        </div>
+      </Page>
     </div>
   );
 }

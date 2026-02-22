@@ -17,7 +17,8 @@ function Section({
   moveLeft,
   moveRight,
   columnIndex,
-  numColumns
+  numColumns,
+  setNumColumns
 }) {
   const divRef = useRef(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -80,23 +81,33 @@ function Section({
     return {};
   };
 
+  // useEffect(()=> {
+  //   console.log(columnIndex, numColumns)
+  //   if (columnIndex >= numColumns - 1) {
+  //     console.log("moving left");
+  //     return moveLeft;
+  //   }
+  // }, [setNumColumns])
+
   return (
     <div
       className={styles.sectionWrapper}
       style={{ backgroundColor: backgroundColor, ...getSpacing() }}
     >
-      {/* Delete button */}
-      <button
-        className={styles.deleteButton}
-        onMouseDown={(e) => e.preventDefault()}
-        onClick={() => handleDelete(id)}
-      >
-        ×
-      </button>
-      {/* <div className={styles.columnControls}> */}
-        <button className={styles.columnButton} onClick={moveLeft} disabled={columnIndex === 0}>←</button>
-        <button className={styles.columnButton} onClick={moveRight} disabled={columnIndex === numColumns - 1}>→</button>
-      {/* </div> */}
+      <div className={styles.editSectionButtonsWrapper}>
+        {/* Delete button */}
+        <button
+          className={styles.deleteButton}
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => handleDelete(id)}
+        >
+          ×
+        </button>
+        <div className={styles.columnControlsWrapper}>
+          <button className={styles.columnButton} onClick={moveLeft} disabled={columnIndex === 0}>←</button>
+          <button className={styles.columnButton} onClick={moveRight} disabled={columnIndex === numColumns - 1}>→</button>
+      </div>
+      </div>
 
 
 

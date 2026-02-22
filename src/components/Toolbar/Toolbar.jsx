@@ -23,7 +23,7 @@ export default function Toolbar({ addSection, updateSection, formatting, zoom, s
       <Zoom zoom={zoom} setZoom={setZoom} />
       <AddSection addSection={addSection} />
       <BackgroundColor formatting={formatting} />
-      <ColumnsDropdown numColumns={numColumns} setNumColumns={setNumColumns}  className={styles.container} />
+      <ColumnsDropdown numColumns={numColumns} setNumColumns={setNumColumns} className={styles.container} />
       <ToolbarButton onClick={() => onDownloadPDF()}>
         Download PDF
       </ToolbarButton>

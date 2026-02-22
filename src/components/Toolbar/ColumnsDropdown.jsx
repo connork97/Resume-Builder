@@ -9,5 +9,5 @@ export default function ColumnsDropdown({ numColumns, setNumColumns }) {
                <option value={4}>4 Columns</option>
                <option value={5}>5 Columns</option>
           </select>
-     )
+     );
 }

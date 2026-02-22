@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./FontSize.module.css";
-import FormattingButton from "./ToolbarButton";
+import ToolbarButton from "../ToolbarButton";
 
 export default function FontSize({ formatting }) {
-  const { activeFormats, saveSelection, applyFontSize } = formatting;
+  const { activeFormats, saveSelection, applySectionFormatting } = formatting;
 
   // Local input state
   const [inputValue, setInputValue] = useState(activeFormats.fontSize);
@@ -16,7 +16,7 @@ export default function FontSize({ formatting }) {
   const commitValue = () => {
     const px = parseFloat(inputValue);
     if (!isNaN(px)) {
-      applyFontSize(px);
+      applySectionFormatting("fontSize", px);
     }
   };
 
@@ -35,44 +35,43 @@ export default function FontSize({ formatting }) {
   const increase = () => {
     const newSize = activeFormats.fontSize + 1;
     setInputValue(newSize);
-    applyFontSize(newSize);
+    applySectionFormatting("fontSize", newSize)
   };
 
   const decrease = () => {
     const newSize = Math.max(1, activeFormats.fontSize - 1);
     setInputValue(newSize);
-    applyFontSize(newSize);
+    applySectionFormatting("fontSize", newSize)
   };
 
   return (
     <div className={styles.container}>
-      <FormattingButton
+      <ToolbarButton
         className={styles.button}
         onMouseDown={saveSelection}
         onClick={decrease}
       >
         −
-      </FormattingButton>
+      </ToolbarButton>
 
       <input
         className={styles.input}
         type="number"
         step="0.5"
         value={inputValue}
-        // CRITICAL FIX: capture selection BEFORE input steals focus
         onFocusCapture={saveSelection}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
       />
 
-      <FormattingButton
+      <ToolbarButton
         className={styles.button}
         onMouseDown={saveSelection}
         onClick={increase}
       >
         +
-      </FormattingButton>
+      </ToolbarButton>
     </div>
   );
 }

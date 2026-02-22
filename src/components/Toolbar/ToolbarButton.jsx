@@ -1,8 +1,8 @@
 import React from "react";
 
-import styles from "./TextFormatting.module.css";
+import styles from "./SectionFormatting/TextFormatting.module.css";
 
-export default function FormattingButton({
+export default function ToolbarButton({
   command,
   active,
   label,

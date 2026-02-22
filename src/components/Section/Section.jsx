@@ -20,7 +20,9 @@ function Section({
   numColumns,
   setNumColumns
 }) {
+
   const divRef = useRef(null);
+
   const [isDragOver, setIsDragOver] = useState(false);
 
   // Autofocus when section is created (run only once)
@@ -34,7 +36,7 @@ function Section({
       }, 0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // ← run once on mount
+  }, []);
 
   // Keep DOM in sync with content from state
   useEffect(() => {
@@ -69,6 +71,7 @@ function Section({
     setIsDragOver(false);
   };
 
+  // Checks spacing for top elements, allowing styline such as background color to extend to the top of the page for the FIRST section
   const getSpacing = () => {
     if (index === 0) {
       return {
@@ -80,14 +83,6 @@ function Section({
     }
     return {};
   };
-
-  // useEffect(()=> {
-  //   console.log(columnIndex, numColumns)
-  //   if (columnIndex >= numColumns - 1) {
-  //     console.log("moving left");
-  //     return moveLeft;
-  //   }
-  // }, [setNumColumns])
 
   return (
     <div

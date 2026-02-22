@@ -14,7 +14,6 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   position: relative;
-  /* border-bottom: dashed red; */
 }
 
 .pageContentWrapper {
@@ -29,7 +28,6 @@
   right: 0;
   height: 4px;
   border-bottom: 4px dashed rgba(0, 0, 0, 0.35);
-  /* background: rgba(0, 0, 0, 0.2); */
   pointer-events: none;
 }
 
@@ -38,4 +36,3 @@
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
-

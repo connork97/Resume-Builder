@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./Zoom.module.css";
+import styles from "./Toolbar.module.css";
 
 export default function Zoom({ zoom, setZoom }) {
+  
   const options = [0.25, 0.5, 0.75, 0.9, 1, 1.25, 1.5];
 
   return (

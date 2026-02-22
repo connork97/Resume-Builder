@@ -4,7 +4,6 @@
   align-items: center;
 }
 
-/* Swatch button */
 .swatchButton {
   display: flex;
   align-items: center;
@@ -33,7 +32,6 @@
   opacity: 0.8;
 }
 
-/* Dropdown */
 .dropdown {
   position: absolute;
   top: 2.4rem;
@@ -48,7 +46,6 @@
   z-index: 20;
 }
 
-/* Color options */
 .colorOption {
   width: 1.6rem;
   height: 1.6rem;
@@ -68,7 +65,6 @@
   box-shadow: 0 0 0 2px #ffffff55;
 }
 
-/* Custom color row */
 .customRow {
   grid-column: span 4;
   display: flex;

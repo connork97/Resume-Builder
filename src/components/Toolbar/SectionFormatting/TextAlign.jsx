@@ -1,54 +1,42 @@
-import styles from "./TextAlign.module.css";
-import FormattingButton from "./ToolbarButton";
+import styles from "../Toolbar.module.css";
+import ToolBarButton from "../ToolbarButton";
 
 export default function TextAlign({ formatting }) {
-  const { activeFormats, applyTextAlign } = formatting;
+  const { activeFormats, applySectionFormatting } = formatting;
 
   return (
     <div className={styles.container}>
-      <FormattingButton
-        // className={`${styles.button} ${
-        //   activeFormats.textAlign === "left" ? styles.active : ""
-        // }`}
+      <ToolBarButton
         active={activeFormats.textAlign === "left"}
         onMouseDown={(e) => e.preventDefault()}
-        onClick={() => applyTextAlign("left")}
+        onClick={() => applySectionFormatting("textAlign", "left")}
       >
         L
-      </FormattingButton>
+      </ToolBarButton>
 
-      <FormattingButton
-        // className={`${styles.button} ${
-        //   activeFormats.textAlign === "center" ? styles.active : ""
-        // }`}
+      <ToolBarButton
         active={activeFormats.textAlign === "center"}
         onMouseDown={(e) => e.preventDefault()}
-        onClick={() => applyTextAlign("center")}
+        onClick={() => applySectionFormatting("textAlign", "center")}
       >
         C
-      </FormattingButton>
+      </ToolBarButton>
 
-      <FormattingButton
-        // className={`${styles.button} ${
-        //   activeFormats.textAlign === "right" ? styles.active : ""
-        // }`}
+      <ToolBarButton
         active={activeFormats.textAlign === "right"}
         onMouseDown={(e) => e.preventDefault()}
-        onClick={() => applyTextAlign("right")}
+        onClick={() => applySectionFormatting("textAlign", "right")}
       >
         R
-      </FormattingButton>
+      </ToolBarButton>
 
-      <FormattingButton
-        // className={`${styles.button} ${
-        //   activeFormats.textAlign === "justify" ? styles.active : ""
-        // }`}
+      <ToolBarButton
         active={activeFormats.textAlign === "justify"}
         onMouseDown={(e) => e.preventDefault()}
-        onClick={() => applyTextAlign("justify")}
+        onClick={() => applySectionFormatting("textAlign", "justify")}
       >
         J
-      </FormattingButton>
+      </ToolBarButton>
     </div>
   );
 }

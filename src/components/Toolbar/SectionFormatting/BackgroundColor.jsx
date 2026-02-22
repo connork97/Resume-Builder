@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import styles from "./BackgroundColor.module.css";
 
 export default function BackgroundColor({ formatting }) {
-  const { activeFormats, applyBackgroundColor, saveSelection } = formatting;
+  const { activeFormats, applySectionFormatting, saveSelection } = formatting;
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -30,7 +30,6 @@ export default function BackgroundColor({ formatting }) {
 
   return (
     <div className={styles.wrapper} ref={dropdownRef}>
-      {/* Swatch button */}
       <button
         className={styles.swatchButton}
         onMouseDown={(e) => {
@@ -60,8 +59,7 @@ export default function BackgroundColor({ formatting }) {
                 saveSelection();
               }}
               onClick={() => {
-                applyBackgroundColor(c);
-                // setOpen(false);
+                applySectionFormatting("backgroundColor", c)
               }}
             />
           ))}
@@ -77,8 +75,7 @@ export default function BackgroundColor({ formatting }) {
                 className={styles.colorInput}
                 value={activeFormats.backgroundColor}
                 onChange={(e) => {
-                  applyBackgroundColor(e.target.value);
-                  // setOpen (false);
+                  applySectionFormatting("backgroundColor", e.target.value);
                 }}
                 onClick={(e) => e.stopPropagation()}
               />

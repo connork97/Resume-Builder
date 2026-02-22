@@ -1,5 +1,5 @@
 import { useFormatting } from "../../../hooks/useFormatting";
-import FormattingButton from "./ToolbarButton";
+import ToolbarButton from "../ToolbarButton";
 import styles from "./TextFormatting.module.css";
 
 export default function TextFormatting() {
@@ -7,28 +7,28 @@ export default function TextFormatting() {
 
   return (
     <div className={styles.container} onMouseDown={saveSelection}>
-      <FormattingButton
+      <ToolbarButton
         command="bold"
         label="B"
         active={activeFormats.bold}
         onClick={toggle}
       />
       
-      <FormattingButton
+      <ToolbarButton
         command="italic"
         label="I"
         active={activeFormats.italic}
         onClick={toggle}
       />
 
-      <FormattingButton
+      <ToolbarButton
         command="underline"
         label="U"
         active={activeFormats.underline}
         onClick={toggle}
       />
 
-      <FormattingButton
+      <ToolbarButton
         command="insertUnorderedList"
         active={activeFormats.unorderedList}
         onClick={toggle}
@@ -43,7 +43,7 @@ export default function TextFormatting() {
           <span className={styles.line}></span>
           <span className={styles.line}></span>
         </span>
-      </FormattingButton>
+      </ToolbarButton>
     </div>
   );
 }

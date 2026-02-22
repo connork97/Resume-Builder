@@ -37,8 +37,6 @@ export default function FontColor({ formatting }) {
         <span
           className={styles.currentFontColor}
           style={{color: activeFormats.fontColor}}
-          // className={styles.currentSwatch}
-          // style={{ backgroundColor: activeFormats.fontColor }}
         >A</span>
         <span className={styles.arrow}>▾</span>
       </button>

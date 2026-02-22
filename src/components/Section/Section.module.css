@@ -1,8 +1,4 @@
 .section {
-  /* min-height: 1.2rem; */
-  /* padding: 0.25rem; */
-  /* padding: 2rem; */
-  /* background-color: black; */
   outline: none;
   border-radius: 6px;
   transition: border 0.15s ease;
@@ -35,8 +31,6 @@
   /* margin-right: -1rem; */
   padding: 0rem 2rem;
   background-color: #ffffff;
-  
-  /* background-color: red; */
 }
 
 .editSectionButtonsWrapper {

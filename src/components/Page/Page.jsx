@@ -13,6 +13,7 @@ const Page = React.forwardRef(({ children, zoom }, ref) => {
   const PAGE_HEIGHT = 1062;
   const [contentHeight, setContentHeight] = useState(0);
 
+  // Checks height of content on page to see when page break indicators are required
   useEffect(() => {
     if (!ref?.current) return;
 
@@ -23,8 +24,6 @@ const Page = React.forwardRef(({ children, zoom }, ref) => {
     observer.observe(ref.current);
     return () => observer.disconnect();
   }, [ref]);
-
-
 
   return (
     <div className={styles.pageWrapper}>

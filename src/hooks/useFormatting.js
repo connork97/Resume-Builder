@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 
 export function useFormatting(updateSection) {
+
+  //  Tracks current format for selected section, keeping the toolbar in sync with each individual section
   const [activeFormats, setActiveFormats] = useState({
     bold: false,
     italic: false,
@@ -13,6 +15,7 @@ export function useFormatting(updateSection) {
 
   const savedSelection = useRef(null);
 
+  //  Saves the cursor position while editing/formatting a section's content in the toolbar
   const saveSelection = () => {
     const sel = window.getSelection();
     if (sel.rangeCount > 0) {
@@ -20,6 +23,7 @@ export function useFormatting(updateSection) {
     }
   };
 
+  //  Restores the cursor to its prior position after editing/formatting via the toolbar
   const restoreSelection = () => {
     const sel = window.getSelection();
     sel.removeAllRanges();
@@ -28,6 +32,7 @@ export function useFormatting(updateSection) {
     }
   };
 
+  //  Finds/determines which section formatting should be applied to
   const findSection = (node) => {
     while (node && node !== document.body) {
       if (node.dataset?.id) return node;
@@ -36,14 +41,15 @@ export function useFormatting(updateSection) {
     return null;
   };
 
+  //  Restores selection and applies inline formatting (bold/italicize/underline)
   const toggle = (command) => {
     restoreSelection();
     document.execCommand(command);
     updateActiveFormats();
   };
 
-  const applyFontSize = (px) => {
-    // saveSelection();
+  //  Applies section specific, block level formatting
+  const applySectionFormatting = (formatType, value) => {
     restoreSelection();
     const sel = window.getSelection();
     if (!sel.rangeCount) return;
@@ -52,40 +58,24 @@ export function useFormatting(updateSection) {
     if (!section) return;
 
     const id = section.dataset.id;
-    updateSection(id, undefined, px, undefined);
 
+    switch (formatType) {
+      case "fontSize":
+        updateSection(id, undefined, value);
+        break;
+      case "textAlign":
+        updateSection(id, undefined, undefined, value);
+        break;
+      case "backgroundColor":
+        updateSection(id, undefined, undefined, undefined, value);
+        break;
+      default:
+        console.error(`Invalid format type (${formatType}) and/or value (${value}) passed to applySectionFormatting() in useFormatting.js`);
+    }
     updateActiveFormats();
   };
 
-  const applyTextAlign = (alignment) => {
-    saveSelection();
-    restoreSelection();
-    const sel = window.getSelection();
-    if (!sel.rangeCount) return;
-
-    const section = findSection(sel.focusNode);
-    if (!section) return;
-
-    const id = section.dataset.id;
-    updateSection(id, undefined, undefined, alignment);
-
-    updateActiveFormats();
-  };
-
-  const applyBackgroundColor = (color) => {
-    restoreSelection();
-    const sel = window.getSelection();
-    if (!sel.rangeCount) return;
-
-    const section = findSection(sel.focusNode);
-    if (!section) return;
-
-    const id = section.dataset.id;
-    updateSection(id, undefined, undefined, undefined, color);
-
-    updateActiveFormats();
-  };
-
+  //  Used to convert RGB colors to Hex when necessary
   const rgbToHex = (rgb) => {
     const match = rgb.match(/\d+/g);
     if (!match) return rgb;
@@ -98,7 +88,7 @@ export function useFormatting(updateSection) {
     );
   };
 
-
+  // Reads the computed font size from the section currently selected by the cursor, keeping the toolbar's font size input in sync
   const getCurrentFontSizeFromSelection = () => {
     const sel = window.getSelection();
     if (!sel.rangeCount) return 12;
@@ -119,6 +109,7 @@ export function useFormatting(updateSection) {
     return size && size.endsWith("px") ? parseFloat(size) : 12;
   };
 
+  //  Final application/update of formatting changes
   const updateActiveFormats = () => {
     const sel = window.getSelection();
     if (!sel.rangeCount) return;
@@ -139,6 +130,7 @@ export function useFormatting(updateSection) {
     });
   };
 
+  //  Global selection listener:  Updates the toolbar to section specific styling when the user selects a new section with the cursor
   useEffect(() => {
     const handler = () => {
       const active = document.activeElement;
@@ -157,8 +149,6 @@ export function useFormatting(updateSection) {
     toggle,
     saveSelection,
     restoreSelection,
-    applyFontSize,
-    applyTextAlign,
-    applyBackgroundColor
+    applySectionFormatting
   };
 }

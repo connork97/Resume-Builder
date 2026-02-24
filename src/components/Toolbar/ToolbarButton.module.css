@@ -1,0 +1,16 @@
+.toolbarButton {
+   background: #2a2a2a;
+   color: white;
+   border: 1px solid #3a3a3a;
+   font-size: 1.5vh;
+   padding: 0.5vh 1vh;
+   border-radius: 0.5vh;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.toolbarButton:hover {
+   background: #333333;
+}

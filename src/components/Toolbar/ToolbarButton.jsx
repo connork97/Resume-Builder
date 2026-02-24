@@ -2,10 +2,15 @@ import React from "react";
 
 import styles from "./ToolbarButton.module.css";
 
-const ToolbarButton = () => {
+const ToolbarButton = (props) => {
 
    return (
-      <button className={styles.toolbarButton}>Press Me</button>
+      <button
+         className={styles.toolbarButton}
+         onClick={props.command}
+      >
+         {props.text}
+      </button>
    );
 }
 

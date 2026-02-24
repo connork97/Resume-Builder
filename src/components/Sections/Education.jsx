@@ -96,6 +96,7 @@ const Education = ({ id, data }) => {
 
           <textarea
             className="sectionTextArea"
+            style={{display: "flex", flexWrap:"wrap", flex:1}}
             placeholder="Description / Achievements"
             value={sub.description}
             onChange={(e) =>

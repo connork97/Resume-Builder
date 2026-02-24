@@ -1,0 +1,99 @@
+.outlineContainer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  margin-top: 6vh;
+  /* width: 260px; */
+  width: 40vh;
+  height: 100vh;
+  background: #1e1e1e;
+  color: #ffffff;
+  /* border-right: 1px solid #ddd; */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+
+  padding: 2.5vh;
+  overflow-y: auto;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 4vh;
+  font-weight: 600;
+  margin-bottom: 3vh;
+}
+
+.sectionBlock {
+  margin-bottom: 5vh;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 1vh;
+  font-size: 2.5vh;
+}
+
+.outlineButton {
+   background: #2a2a2a;
+   color: white;
+   border: 1px solid #3a3a3a;
+   font-size: 1.25vh;
+   padding: 0.5vh 1vh;
+   border-radius: 0.5vh;
+   cursor: pointer;
+   /* display: flex; */
+   align-items: center;
+   justify-content: center;
+   margin-left: 0.5vh;
+
+}
+
+.outlineButton:hover {
+   background: #333333;
+}
+
+/* .sectionControls button {
+  margin-left: 0.5vh;
+} */
+
+.subsectionList {
+  margin-left: 0.75vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25vh;
+  font-size: 2vh;
+}
+
+.subsectionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* .subsectionControls button {
+  margin-left: 0.25vh;
+} */
+
+.addButton {
+  margin-top: 0.5vh;
+  background: none;
+  border: none;
+  color: #0077ff;
+  cursor: pointer;
+  padding: 0;
+  font-size: 2vh;
+}
+
+.fieldToggleList {
+  margin-left: 0.75vh;
+  margin-top: 0.5vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25vh;
+}
+
+.fieldToggle {
+  font-size: 2vh;
+}

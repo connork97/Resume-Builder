@@ -3,6 +3,7 @@ import React from "react";
 import styles from "./App.module.css";
 
 import Toolbar from "./components/Toolbar/Toolbar";
+import Outline from "./components/Outline/Outline";
 import Page from "./components/Page/Page";
 import SectionWrapper from "./components/Sections/SectionWrapper";
 
@@ -15,6 +16,7 @@ const App = () => {
   return (
     <div className={styles.appContainerDiv}>
       <Toolbar />
+      <Outline />
       <Page>
         {sections.map((section) => (
           <SectionWrapper key={section.id} {...section} />

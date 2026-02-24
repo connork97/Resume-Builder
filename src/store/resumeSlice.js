@@ -137,12 +137,52 @@ const resumeSlice = createSlice({
         id: nanoid(),
         ...subsectionData
       });
+    },
+
+    removeSubsection(state, action) {
+      const { sectionId, subsectionId } = action.payload;
+      const section = state.sections.find(s => s.id === sectionId);
+      if (!section) return;
+
+      section.data.subsections = section.data.subsections.filter(
+        sub => sub.id !== subsectionId
+      );
+    },
+
+    reorderSubsections(state, action) {
+      const { sectionId, fromIndex, toIndex } = action.payload;
+      const section = state.sections.find(s => s.id === sectionId);
+      if (!section) return;
+
+      const arr = section.data.subsections;
+      const [moved] = arr.splice(fromIndex, 1);
+      arr.splice(toIndex, 0, moved);
+    },
+
+    toggleField(state, action) {
+      const { sectionId, field } = action.payload;
+      const section = state.sections.find(s => s.id === sectionId);
+      if (!section) return;
+
+      if (!section.data.hiddenFields) {
+        section.data.hiddenFields = {};
+      }
+
+      section.data.hiddenFields[field] = !section.data.hiddenFields[field];
     }
 
-  }
-});
+      }
+    });
 
-export const { addSection, updateSection, deleteSection, reorderSections, addSubsection } =
-  resumeSlice.actions;
+export const {
+  addSection,
+  updateSection,
+  deleteSection,
+  reorderSections,
+  addSubsection,
+  removeSubsection,
+  reorderSubsections,
+  toggleField
+} = resumeSlice.actions;
 
 export default resumeSlice.reducer;

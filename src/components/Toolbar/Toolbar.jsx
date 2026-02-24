@@ -4,8 +4,8 @@ import styles from "./Toolbar.module.css";
 
 import ToolbarButton from "./ToolbarButton";
 
-import { useDispatch } from "react-redux";
-import { addSection } from "../../store/resumeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addSection, addSubsection } from "../../store/resumeSlice";
 
 
 const Toolbar = () => {
@@ -15,6 +15,30 @@ const Toolbar = () => {
    const handleAddHeader = () => {
       dispatch(addSection("header"));
       console.log("dispatching header")
+   }
+
+   
+   const sections = useSelector((state) => state.resume.sections);
+
+   const handleAddWorkHistory = (sectionToAdd) => {
+
+      const existing = sections.find(s => s.type === sectionToAdd);
+
+      if (!existing) {
+         dispatch(addSection(sectionToAdd));
+      } else {
+         dispatch(addSubsection({
+            sectionId: existing.id,
+            subsectionData: {
+            jobTitle: "",
+            company: "",
+            location: "",
+            startDate: "",
+            endDate: "",
+            description: ""
+            }
+         }));
+      }
    }
 
    return (
@@ -32,12 +56,14 @@ const Toolbar = () => {
          <ToolbarButton
             type="workHistory"
             text="Add Work History Section"
-            command={() => dispatch(addSection("workHistory"))}
+            // command={() => dispatch(addSection("workHistory"))}
+            command={() => handleAddWorkHistory("workHistory")}
          />
          <ToolbarButton
             type="education"
             text="Add Education Section"
-            command={() => dispatch(addSection("education"))}
+            // command={() => dispatch(addSection("education"))}
+            command={() => handleAddWorkHistory("education")}
          />
          <ToolbarButton
             type="skills"

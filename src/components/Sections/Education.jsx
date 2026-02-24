@@ -1,18 +1,24 @@
 import { useDispatch } from "react-redux";
 import { updateSection } from "../../store/resumeSlice";
 import styles from "./Education.module.css";
+import "./Sections.css";
 
 const Education = ({ id, data }) => {
   const dispatch = useDispatch();
 
-  const handleChange = (field, value) => {
+  // Update a specific education subsection (school entry)
+  const handleSubsectionChange = (subId, field, value) => {
+    const updated = data.subsections.map((sub) =>
+      sub.id === subId ? { ...sub, [field]: value } : sub
+    );
+
     dispatch(
       updateSection({
         id,
         changes: {
           data: {
             ...data,
-            [field]: value
+            subsections: updated
           }
         }
       })
@@ -20,55 +26,84 @@ const Education = ({ id, data }) => {
   };
 
   return (
-    <div className={styles.educationSection}>
-      <input
-        className={styles.input}
-        type="text"
-        placeholder="School Name"
-        value={data.school}
-        onChange={(e) => handleChange("school", e.target.value)}
-      />
+    <div className="sectionContainerDiv">
+      {/* SECTION TITLE */}
+      <div className="sectionTitle">{data.sectionTitle}</div>
 
-      <input
-        className={styles.input}
-        type="text"
-        placeholder="Degree"
-        value={data.degree}
-        onChange={(e) => handleChange("degree", e.target.value)}
-      />
+      {/* RENDER ALL EDUCATION SUBSECTIONS */}
+      {data.subsections.map((sub) => (
+        <div key={sub.id}>
+          <input
+            className="sectionInput"
+            type="text"
+            placeholder="School Name"
+            value={sub.school}
+            onChange={(e) =>
+              handleSubsectionChange(sub.id, "school", e.target.value)
+            }
+          />
 
-      <input
-        className={styles.input}
-        type="text"
-        placeholder="Field of Study"
-        value={data.field}
-        onChange={(e) => handleChange("field", e.target.value)}
-      />
+          <input
+            className="sectionInput"
+            type="text"
+            placeholder="Degree"
+            value={sub.degree}
+            onChange={(e) =>
+              handleSubsectionChange(sub.id, "degree", e.target.value)
+            }
+          />
 
-      <div className={styles.dateRow}>
-        <input
-          className={styles.input}
-          type="text"
-          placeholder="Start Year"
-          value={data.startYear}
-          onChange={(e) => handleChange("startYear", e.target.value)}
-        />
+          <input
+            className="sectionInput"
+            type="text"
+            placeholder="Field of Study"
+            value={sub.field}
+            onChange={(e) =>
+              handleSubsectionChange(sub.id, "field", e.target.value)
+            }
+          />
+          <input
+            className="sectionInput"
+            type="text"
+            placeholder="Location"
+            value={sub.field}
+            onChange={(e) =>
+              handleSubsectionChange(sub.id, "location", e.target.value)
+            }
+          />
 
-        <input
-          className={styles.input}
-          type="text"
-          placeholder="End Year"
-          value={data.endYear}
-          onChange={(e) => handleChange("endYear", e.target.value)}
-        />
-      </div>
+          <div className="sectionDateRow">
+            <input
+              className="sectionInput"
+              type="text"
+              placeholder="Start Year"
+              value={sub.startYear}
+              onChange={(e) =>
+                handleSubsectionChange(sub.id, "startYear", e.target.value)
+              }
+            />
 
-      <textarea
-        className={styles.textarea}
-        placeholder="Description / Achievements"
-        value={data.description}
-        onChange={(e) => handleChange("description", e.target.value)}
-      />
+            <input
+              className="sectionInput"
+              type="text"
+              placeholder="End Year"
+              value={sub.endYear}
+              onChange={(e) =>
+                handleSubsectionChange(sub.id, "endYear", e.target.value)
+              }
+            />
+          </div>
+
+          <textarea
+            className="sectionTextArea"
+            placeholder="Description / Achievements"
+            value={sub.description}
+            onChange={(e) =>
+              handleSubsectionChange(sub.id, "description", e.target.value)
+            }
+          />
+        </div>
+      ))}
     </div>
   );
 };

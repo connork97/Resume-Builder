@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { updateSection } from "../../store/resumeSlice";
 import styles from "./Header.module.css";
+import "./Sections.css";
 
 const Header = ({ id, data }) => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const Header = ({ id, data }) => {
   };
 
   return (
-    <div className={styles.headerSection}>
+    <div className="sectionContainerDiv">
       <input
         className={styles.nameInput}
         type="text"

@@ -8,7 +8,7 @@ import SectionWrapper from "./components/Sections/SectionWrapper";
 
 import { useSelector } from "react-redux";
 
-export default function App() {
+const App = () => {
 
   const sections = useSelector((state) => state.resume.sections);
 
@@ -24,3 +24,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;

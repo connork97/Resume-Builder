@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { updateSection } from "../../store/resumeSlice";
 import styles from "./Contact.module.css";
+import "./Sections.css";
 
 const Contact = ({ id, data }) => {
   const dispatch = useDispatch();
@@ -20,9 +21,9 @@ const Contact = ({ id, data }) => {
   };
 
   return (
-    <div className={styles.contactSection}>
+    <div className="sectionContainerDiv">
       <input
-        className={styles.input}
+        className="sectionInput"
         type="text"
         placeholder="Email"
         value={data.email}
@@ -30,7 +31,7 @@ const Contact = ({ id, data }) => {
       />
 
       <input
-        className={styles.input}
+        className="sectionInput"
         type="text"
         placeholder="Phone"
         value={data.phone}
@@ -38,7 +39,7 @@ const Contact = ({ id, data }) => {
       />
 
       <input
-        className={styles.input}
+        className="sectionInput"
         type="text"
         placeholder="Location"
         value={data.location}
@@ -46,7 +47,7 @@ const Contact = ({ id, data }) => {
       />
 
       <input
-        className={styles.input}
+        className="sectionInput"
         type="text"
         placeholder="Website"
         value={data.website}
@@ -54,7 +55,7 @@ const Contact = ({ id, data }) => {
       />
 
       <input
-        className={styles.input}
+        className="sectionInput"
         type="text"
         placeholder="LinkedIn"
         value={data.linkedin}

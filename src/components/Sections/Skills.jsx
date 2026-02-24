@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { updateSection } from "../../store/resumeSlice";
 import styles from "./Skills.module.css";
+import "./Sections.css";
 
 const Skills = ({ id, data }) => {
   const dispatch = useDispatch();
@@ -20,9 +21,9 @@ const Skills = ({ id, data }) => {
   };
 
   return (
-    <div className={styles.skillsSection}>
+    <div className="sectionContainerDiv">
       <textarea
-        className={styles.textarea}
+        className="sectionTextArea"
         placeholder="List your skills (e.g., JavaScript, React, CSS, Redux)"
         value={data.skills}
         onChange={(e) => handleChange(e.target.value)}

@@ -15,7 +15,7 @@ const createDefaultData = (type) => {
         phone: "",
         location: "",
         website: "",
-        linkedin: ""
+        linkedIn: ""
       };
 
     case "summary":
@@ -53,6 +53,33 @@ const initialState = {
   sections: []
 };
 
+const createDefaultSubsection = (type) => {
+  switch (type) {
+    case "workHistory":
+      return {
+        jobTitle: "",
+        company: "",
+        location: "",
+        startDate: "",
+        endDate: "",
+        description: ""
+      };
+
+    case "education":
+      return {
+        school: "",
+        degree: "",
+        field: "",
+        startYear: "",
+        endYear: "",
+        description: ""
+      };
+
+    default:
+      return {};
+  }
+};
+
 const resumeSlice = createSlice({
   name: "resume",
   initialState,
@@ -62,17 +89,27 @@ const resumeSlice = createSlice({
         state.sections.push(action.payload);
       },
       prepare(type, columnIndex = 0) {
+        const baseData = createDefaultData(type);
         return {
           payload: {
             id: nanoid(),
             type,
             columnIndex,
-            data: createDefaultData(type)
+            data: {
+              ...baseData,
+              subsections: createDefaultData(type).subsections
+                ? [
+                    {
+                      id: nanoid(),
+                      ...createDefaultSubsection(type)
+                    }
+                  ]
+                : undefined
+            }
           }
         };
       }
     },
-
 
     updateSection(state, action) {
       const { id, changes } = action.payload;
@@ -88,11 +125,23 @@ const resumeSlice = createSlice({
       const { fromIndex, toIndex } = action.payload;
       const [moved] = state.sections.splice(fromIndex, 1);
       state.sections.splice(toIndex, 0, moved);
+    },
+
+    addSubsection(state, action) {
+      const { sectionId, subsectionData } = action.payload;
+      const section = state.sections.find(s => s.id === sectionId);
+      if (!section) return;
+
+      section.data.subsections.push({
+        id: nanoid(),
+        ...subsectionData
+      });
     }
+
   }
 });
 
-export const { addSection, updateSection, deleteSection, reorderSections } =
+export const { addSection, updateSection, deleteSection, reorderSections, addSubsection } =
   resumeSlice.actions;
 
 export default resumeSlice.reducer;

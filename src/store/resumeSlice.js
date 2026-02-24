@@ -1,5 +1,54 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 
+const createDefaultData = (type) => {
+  switch (type) {
+    case "header":
+      return {
+        name: "",
+        title: ""
+      };
+
+    case "contact":
+      return {
+        sectionTitle: "Contact",
+        email: "",
+        phone: "",
+        location: "",
+        website: "",
+        linkedin: ""
+      };
+
+    case "summary":
+      return {
+        sectionTitle: "Summary",
+        content: ""
+      };
+
+    case "skills":
+      return {
+        sectionTitle: "Skills",
+        skillsList: []   // array of strings
+      };
+
+    case "workHistory":
+      return {
+        sectionTitle: "Work History",
+        sectionAdditionalDetails: "",
+        subsections: []   // each subsection = job entry
+      };
+
+    case "education":
+      return {
+        sectionTitle: "Education",
+        sectionAdditionalDetails: "",
+        subsections: []   // each subsection = school entry
+      };
+
+    default:
+      return {};
+  }
+};
+
 const initialState = {
   sections: []
 };
@@ -18,11 +67,12 @@ const resumeSlice = createSlice({
             id: nanoid(),
             type,
             columnIndex,
-            data: {} // will be filled based on type
+            data: createDefaultData(type)
           }
         };
       }
     },
+
 
     updateSection(state, action) {
       const { id, changes } = action.payload;

@@ -1,12 +1,2 @@
-title {
-  color: black
+.appContainerDiv {
 }
-
-@media print {
-  .page {
-    transform: none !important;
-    margin: 0 !important;
-    box-shadow: none !important;
-  }
-}
-

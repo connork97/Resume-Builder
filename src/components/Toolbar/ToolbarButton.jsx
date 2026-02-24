@@ -1,24 +1,12 @@
 import React from "react";
 
-import styles from "./SectionFormatting/TextFormatting.module.css";
+import styles from "./ToolbarButton.module.css";
 
-export default function ToolbarButton({
-  command,
-  active,
-  label,
-  onClick,
-  children,
-}) {
+const ToolbarButton = () => {
 
-
-  return (
-    <button
-      onMouseDown={(e) => e.preventDefault()}
-      onClick={() => onClick(command)}
-      className={`${styles.button} ${active ? styles.active : ""}`}
-      style={{ fontStyle: command, textDecoration: command, fontWeight: `${command !== "bold" && "normal"}`}}
-    >
-      {children || label}
-    </button>
-  );
+   return (
+      <button className={styles.toolbarButton}>Press Me</button>
+   );
 }
+
+export default ToolbarButton;

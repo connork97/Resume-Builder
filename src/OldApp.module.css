@@ -1,0 +1,12 @@
+title {
+  color: black
+}
+
+@media print {
+  .page {
+    transform: none !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+}
+

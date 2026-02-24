@@ -1,32 +1,50 @@
+/* 1. Reset + box model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Root defaults */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: #222; /* neutral default text */
   background-color: #2e2d2d;
-  font-synthesis: none;
+
+
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* 3. Body layout */
 body {
-  margin: 0;
-  min-width: 320px;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-}
-
-.columnsContainer {
-  display: grid;
-  grid-template-columns: repeat(var(--num-columns), 1fr);
-  gap: 2rem;
-  width: 100%;
-}
-
-.column {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* 4. Remove default button/input styles without breaking usability */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* 5. Links (not required yet, but safe defaults) */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 6. Prevent contentEditable from inheriting weird outlines */
+[contenteditable]:focus {
+  outline: none;
 }

@@ -1,4 +1,4 @@
-import { useFormatting } from "../../../hooks/useFormatting";
+import { useFormatting } from "../../../oldHooks/useFormatting";
 import ToolbarButton from "../ToolbarButton";
 import styles from "./TextFormatting.module.css";
 

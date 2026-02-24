@@ -18,7 +18,9 @@ function Section({
   moveRight,
   columnIndex,
   numColumns,
-  setNumColumns
+  setNumColumns,
+
+  isRedux
 }) {
 
   const divRef = useRef(null);

@@ -66,7 +66,7 @@ const Education = ({ id, data }) => {
             className="sectionInput"
             type="text"
             placeholder="Location"
-            value={sub.field}
+            value={sub.location}
             onChange={(e) =>
               handleSubsectionChange(sub.id, "location", e.target.value)
             }

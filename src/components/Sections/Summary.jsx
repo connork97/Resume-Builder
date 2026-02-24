@@ -22,6 +22,7 @@ const Summary = ({ id, data }) => {
 
   return (
     <div className="sectionContainerDiv">
+      <div className="sectionTitle">{data.sectionTitle}</div>
       <textarea
         className="sectionTextArea"
         placeholder="Write a brief professional summary..."

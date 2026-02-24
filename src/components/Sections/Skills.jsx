@@ -22,6 +22,7 @@ const Skills = ({ id, data }) => {
 
   return (
     <div className="sectionContainerDiv">
+      <div className="sectionTitle">{data.sectionTitle}</div>
       <textarea
         className="sectionTextArea"
         placeholder="List your skills (e.g., JavaScript, React, CSS, Redux)"

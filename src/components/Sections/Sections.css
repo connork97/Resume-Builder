@@ -5,19 +5,23 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  font-size: 12px;
 }
 
 .sectionInput, .sectionTitle {
-  font-size: 1rem;
+  /* font-size: 12px; */
   border: none;
   border-bottom: 1px solid #ccc;
   padding: 0.25rem 0;
   outline: none;
   background: transparent;
+  margin: auto;
+  /* width: auto; */
+  flex: 1;
 }
 
 .sectionTitle {
-  font-size: 2rem;
+  font-size: 20px;
 }
 
 .sectionInput:focus, .sectionTitle:focus {
@@ -31,13 +35,13 @@
 
 .sectionTextArea {
    width: 100%;
-   font-size: 1rem;
+   /* font-size: 1rem; */
    border: 1px solid #ccc;
    border-radius: 4px;
-   padding: 0.75rem;
-   min-height: 6rem;
+   /* padding: 0.75rem; */
+   /* min-height: 6rem; */
    resize: vertical;
-   resize: auto;
+   /* resize: auto; */
    outline: none;
    background: transparent;
 }

@@ -70,6 +70,7 @@ const createDefaultSubsection = (type) => {
         school: "",
         degree: "",
         field: "",
+        location: "",
         startYear: "",
         endYear: "",
         description: ""

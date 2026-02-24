@@ -22,45 +22,48 @@ const Contact = ({ id, data }) => {
 
   return (
     <div className="sectionContainerDiv">
-      <input
-        className="sectionInput"
-        type="text"
-        placeholder="Email"
-        value={data.email}
-        onChange={(e) => handleChange("email", e.target.value)}
-      />
+      <div className="sectionTitle">{data.sectionTitle}</div>
+      <div className={styles.contactInputWrapperDiv}>
+        <input
+          className={`${styles.contactSectionInput} sectionInput`}
+          type="text"
+          placeholder="Email"
+          value={data.email}
+          onChange={(e) => handleChange("email", e.target.value)}
+          />
 
-      <input
-        className="sectionInput"
-        type="text"
-        placeholder="Phone"
-        value={data.phone}
-        onChange={(e) => handleChange("phone", e.target.value)}
-      />
+        <input
+          className={`${styles.contactSectionInput} sectionInput`}
+          type="text"
+          placeholder="Phone"
+          value={data.phone}
+          onChange={(e) => handleChange("phone", e.target.value)}
+          />
 
-      <input
-        className="sectionInput"
-        type="text"
-        placeholder="Location"
-        value={data.location}
-        onChange={(e) => handleChange("location", e.target.value)}
-      />
+        <input
+          className={`${styles.contactSectionInput} sectionInput`}
+          type="text"
+          placeholder="Location"
+          value={data.location}
+          onChange={(e) => handleChange("location", e.target.value)}
+        />
 
-      <input
-        className="sectionInput"
-        type="text"
-        placeholder="Website"
-        value={data.website}
-        onChange={(e) => handleChange("website", e.target.value)}
-      />
+        <input
+          className={`${styles.contactSectionInput} sectionInput`}
+          type="text"
+          placeholder="Website"
+          value={data.website}
+          onChange={(e) => handleChange("website", e.target.value)}
+          />
 
-      <input
-        className="sectionInput"
-        type="text"
-        placeholder="LinkedIn"
-        value={data.linkedin}
-        onChange={(e) => handleChange("linkedin", e.target.value)}
-      />
+        <input
+          className={`${styles.contactSectionInput} sectionInput`}
+          type="text"
+          placeholder="LinkedIn"
+          value={data.linkedin}
+          onChange={(e) => handleChange("linkedIn", e.target.value)}
+          />
+        </div>
     </div>
   );
 };

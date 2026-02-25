@@ -60,7 +60,7 @@ const Contact = ({ id, data }) => {
           className={`${styles.contactSectionInput} sectionInput`}
           type="text"
           placeholder="LinkedIn"
-          value={data.linkedin}
+          value={data.linkedIn}
           onChange={(e) => handleChange("linkedIn", e.target.value)}
           />
         </div>

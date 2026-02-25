@@ -13,7 +13,7 @@ const Summary = ({ id, data }) => {
         changes: {
           data: {
             ...data,
-            summary: value
+            content: value
           }
         }
       })
@@ -26,7 +26,7 @@ const Summary = ({ id, data }) => {
       <textarea
         className="sectionTextArea"
         placeholder="Write a brief professional summary..."
-        value={data.summary}
+        value={data.content}
         onChange={(e) => handleChange(e.target.value)}
       />
     </div>

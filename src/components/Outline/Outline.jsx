@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   reorderSections,
+  deleteSection,
   addSubsection,
-  removeSubsection,
+  deleteSubsection,
   reorderSubsections,
-  toggleField
+  updateSection
 } from "../../store/resumeSlice";
 import styles from "./Outline.module.css";
 
@@ -12,12 +14,54 @@ const Outline = () => {
   const dispatch = useDispatch();
   const sections = useSelector((state) => state.resume.sections);
 
-  const handleMoveSection = (from, to) => {
-    dispatch(reorderSections({ fromIndex: from, toIndex: to }));
+  const [openSections, setOpenSections] = useState({});
+  const [draggingSection, setDraggingSection] = useState(null);
+
+  const toggleOpen = (id) => {
+    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const handleMoveSubsection = (sectionId, from, to) => {
-    dispatch(reorderSubsections({ sectionId, fromIndex: from, toIndex: to }));
+  // SECTION DRAGGING
+  const handleDragStart = (e, index) => {
+    setDraggingSection(index);
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    if (draggingSection === index) return;
+
+    dispatch(
+      reorderSections({
+        fromIndex: draggingSection,
+        toIndex: index
+      })
+    );
+    setDraggingSection(index);
+  };
+
+  const handleDragEnd = () => {
+    setDraggingSection(null);
+  };
+
+  // SUBSECTION EDITING
+  const handleSubChange = (sectionId, subId, field, value) => {
+    const section = sections.find((s) => s.id === sectionId);
+    const updated = section.data.subsections.map((sub) =>
+      sub.id === subId ? { ...sub, [field]: value } : sub
+    );
+
+    dispatch(
+      updateSection({
+        id: sectionId,
+        changes: {
+          data: {
+            ...section.data,
+            subsections: updated
+          }
+        }
+      })
+    );
   };
 
   const handleAddSubsection = (section) => {
@@ -40,6 +84,9 @@ const Outline = () => {
         startYear: "",
         endYear: "",
         description: ""
+      },
+      skills: {
+        skill: ""
       }
     }[type];
 
@@ -53,99 +100,237 @@ const Outline = () => {
     );
   };
 
+  // RENDERERS FOR EACH SECTION TYPE
+  const renderSectionContent = (section) => {
+    const { type, data } = section;
+
+    // HEADER
+    if (type === "header") {
+      return (
+        <div className={styles.subsectionFields}>
+          <input
+            className={styles.subInput}
+            value={data.name}
+            placeholder="Name"
+            onChange={(e) =>
+              dispatch(
+                updateSection({
+                  id: section.id,
+                  changes: { data: { ...data, name: e.target.value } }
+                })
+              )
+            }
+          />
+          <input
+            className={styles.subInput}
+            value={data.title}
+            placeholder="Title"
+            onChange={(e) =>
+              dispatch(
+                updateSection({
+                  id: section.id,
+                  changes: { data: { ...data, title: e.target.value } }
+                })
+              )
+            }
+          />
+        </div>
+      );
+    }
+
+    // CONTACT
+    if (type === "contact") {
+      return (
+        <div className={styles.subsectionFields}>
+          {Object.keys(data)
+            .filter((field) => field !== "sectionTitle" && field !== "subsections")
+            .map((field) => (
+              <input
+                key={field}
+                className={styles.subInput}
+                value={data[field]}
+                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                onChange={(e) =>
+                  dispatch(
+                    updateSection({
+                      id: section.id,
+                      changes: {
+                        data: { ...data, [field]: e.target.value }
+                      }
+                    })
+                  )
+                }
+              />
+            ))}
+        </div>
+      );
+    }
+
+    // SUMMARY AND SKILLS (with skills still being one singular string, not an array of strings)
+   //  if (type === "summary" || type === "skills") {
+   if (type === "summary") {
+      return (
+        <textarea
+          className={styles.subInput}
+          value={data.content}
+          placeholder={type.charAt(0).toUpperCase() + type.slice(1)}
+          onChange={(e) =>
+            dispatch(
+              updateSection({
+                id: section.id,
+                changes: { data: { ...data, content: e.target.value } }
+              })
+            )
+          }
+        />
+      );
+    }
+
+    // SKILLS
+   //  if (type === "skills") {
+   //    return (
+   //      <div className={styles.subsectionFields}>
+   //        {data.skillsArr.map((skill, i) => (
+   //          <div key={i} className={styles.subsectionItem}>
+   //            <input
+   //              className={styles.subInput}
+   //              value={skill}
+   //              placeholder="Skill"
+   //              onChange={(e) => {
+   //                const updated = [...data.skillsArr];
+   //                updated[i] = e.target.value;
+   //                dispatch(
+   //                  updateSection({
+   //                    id: section.id,
+   //                    changes: { data: { ...data, skillsArr: updated } }
+   //                  })
+   //                );
+   //              }}
+   //            />
+   //            <button
+   //              className={styles.deleteButton}
+   //              onClick={() => {
+   //                const updated = data.skillsArr.filter((_, idx) => idx !== i);
+   //                dispatch(
+   //                  updateSection({
+   //                    id: section.id,
+   //                    changes: { data: { ...data, skillsArr: updated } }
+   //                  })
+   //                );
+   //              }}
+   //            >
+   //              ✕
+   //            </button>
+   //          </div>
+   //        ))}
+
+   //        <button
+   //          className={styles.addButton}
+   //          onClick={() =>
+   //            dispatch(
+   //              updateSection({
+   //                id: section.id,
+   //                changes: {
+   //                  data: {
+   //                    ...data,
+   //                    skillsArr: [...data.skillsArr, ""]
+   //                  }
+   //                }
+   //              })
+   //            )
+   //          }
+   //        >
+   //          + Add Skill
+   //        </button>
+   //      </div>
+   //    );
+   //  }
+
+    // WORK HISTORY / EDUCATION (subsections)
+    return (
+      <>
+        {data.subsections?.map((sub) => (
+          <div key={sub.id} className={styles.subsectionItem}>
+            <div className={styles.subsectionFields}>
+              {Object.keys(sub)
+                .filter((field) => field !== "id")
+                .map((field) => (
+                  <input
+                    key={field}
+                    className={styles.subInput}
+                    value={sub[field]}
+                    placeholder={field}
+                    onChange={(e) =>
+                      handleSubChange(section.id, sub.id, field, e.target.value)
+                    }
+                  />
+                ))}
+            </div>
+
+            <button
+              className={styles.deleteButton}
+              onClick={() =>
+                dispatch(
+                  deleteSubsection({
+                    sectionId: section.id,
+                    subsectionId: sub.id
+                  })
+                )
+              }
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+
+        <button
+          className={styles.addButton}
+          onClick={() => handleAddSubsection(section)}
+        >
+          + Add Entry
+        </button>
+      </>
+    );
+  };
+
   return (
     <div className={styles.outlineContainer}>
       <div className={styles.title}>Resume Outline</div>
 
-      {sections.map((section, i) => (
-        <div key={section.id} className={styles.sectionBlock}>
+      {sections.map((section, index) => (
+        <div
+          key={section.id}
+          className={styles.sectionBlock}
+          draggable
+          onDragStart={(e) => handleDragStart(e, index)}
+          onDragOver={(e) => handleDragOver(e, index)}
+          onDragEnd={handleDragEnd}
+        >
           <div className={styles.sectionHeader}>
-            <span>{section.data.sectionTitle}</span>
+            <div className={styles.dragHandle}>⋮⋮</div>
 
-            <div className={styles.sectionControls}>
-              {i > 0 && (
-                <button className={styles.outlineButton} onClick={() => handleMoveSection(i, i - 1)}>↑</button>
-              )}
-              {i < sections.length - 1 && (
-                <button className={styles.outlineButton} onClick={() => handleMoveSection(i, i + 1)}>↓</button>
-              )}
+            <div className={styles.sectionTitle}>
+              {section.data.sectionTitle}
             </div>
+
+            <button
+              className={styles.dropdownButton}
+              onClick={() => toggleOpen(section.id)}
+            >
+              ▾
+            </button>
           </div>
 
-          {/* Subsections */}
-          {section.data.subsections && (
-            <div className={styles.subsectionList}>
-              {section.data.subsections.map((sub, j) => (
-                <div key={sub.id} className={styles.subsectionItem}>
-                  <span>
-                    {section.type === "workHistory" && (sub.jobTitle || "Job")}
-                    {section.type === "education" && (sub.school || "School")}
-                  </span>
-
-                  <div className={styles.subsectionControls}>
-                    {j > 0 && (
-                      <button
-                        className={styles.outlineButton}
-                        onClick={() =>
-                          handleMoveSubsection(section.id, j, j - 1)
-                        }
-                      >
-                        ↑
-                      </button>
-                    )}
-                    {j < section.data.subsections.length - 1 && (
-                      <button
-                        className={styles.outlineButton}
-                        onClick={() =>
-                          handleMoveSubsection(section.id, j, j + 1)
-                        }
-                      >
-                        ↓
-                      </button>
-                    )}
-                    <button
-                      className={styles.outlineButton}
-                      onClick={() =>
-                        dispatch(
-                          removeSubsection({
-                            sectionId: section.id,
-                            subsectionId: sub.id
-                          })
-                        )
-                      }
-                    >
-                      ✕
-                    </button>
-                  </div>
-                </div>
-              ))}
+          {openSections[section.id] && (
+            <div className={styles.sectionContent}>
+              {renderSectionContent(section)}
 
               <button
-                className={`${styles.addButton} ${styles.outlineButton}`}
-                onClick={() => handleAddSubsection(section)}
+                className={styles.deleteSectionButton}
+                onClick={() => dispatch(deleteSection(section.id))}
               >
-                + Add Entry
+                Delete Section
               </button>
-            </div>
-          )}
-
-          {/* Field toggles (Contact, etc.) */}
-          {section.data.hiddenFields && (
-            <div className={styles.fieldToggleList}>
-              {Object.keys(section.data.hiddenFields).map((field) => (
-                <label key={field} className={styles.fieldToggle}>
-                  <input
-                    type="checkbox"
-                    checked={!section.data.hiddenFields[field]}
-                    onChange={() =>
-                      dispatch(
-                        toggleField({ sectionId: section.id, field })
-                      )
-                    }
-                  />
-                  {field}
-                </label>
-              ))}
             </div>
           )}
         </div>

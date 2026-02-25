@@ -76,20 +76,20 @@ const Education = ({ id, data }) => {
             <input
               className="sectionInput"
               type="text"
-              placeholder="Start Year"
-              value={sub.startYear}
+              placeholder="Start Date"
+              value={sub.startDate}
               onChange={(e) =>
-                handleSubsectionChange(sub.id, "startYear", e.target.value)
+                handleSubsectionChange(sub.id, "startDate", e.target.value)
               }
             />
 
             <input
               className="sectionInput"
               type="text"
-              placeholder="End Year"
-              value={sub.endYear}
+              placeholder="End Date"
+              value={sub.endDate}
               onChange={(e) =>
-                handleSubsectionChange(sub.id, "endYear", e.target.value)
+                handleSubsectionChange(sub.id, "endDate", e.target.value)
               }
             />
           </div>

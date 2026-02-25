@@ -4,6 +4,7 @@ const createDefaultData = (type) => {
   switch (type) {
     case "header":
       return {
+        sectionTitle: "Header",
         name: "",
         title: ""
       };
@@ -27,7 +28,7 @@ const createDefaultData = (type) => {
     case "skills":
       return {
         sectionTitle: "Skills",
-        skillsList: []   // array of strings
+        subsections: []   // Each subsection = one skill
       };
 
     case "workHistory":
@@ -71,11 +72,16 @@ const createDefaultSubsection = (type) => {
         degree: "",
         field: "",
         location: "",
-        startYear: "",
-        endYear: "",
+        startDate: "",
+        endDate: "",
         description: ""
       };
-
+    
+    case "skills":
+      return {
+        skill: ""
+      }
+    
     default:
       return {};
   }
@@ -139,7 +145,7 @@ const resumeSlice = createSlice({
       });
     },
 
-    removeSubsection(state, action) {
+    deleteSubsection(state, action) {
       const { sectionId, subsectionId } = action.payload;
       const section = state.sections.find(s => s.id === sectionId);
       if (!section) return;
@@ -180,7 +186,7 @@ export const {
   deleteSection,
   reorderSections,
   addSubsection,
-  removeSubsection,
+  deleteSubsection,
   reorderSubsections,
   toggleField
 } = resumeSlice.actions;

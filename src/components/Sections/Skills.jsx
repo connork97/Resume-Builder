@@ -13,7 +13,27 @@ const Skills = ({ id, data }) => {
         changes: {
           data: {
             ...data,
-            skills: value
+            content: value
+          }
+        }
+      })
+    );
+  };
+
+
+  // Update a specific subsection (skill)
+  const handleSubsectionChange = (subId, field, value) => {
+    const updated = data.subsections.map((sub) =>
+      sub.id === subId ? { ...sub, [field]: value} : sub
+    );
+
+    dispatch(
+      updateSection({
+        id,
+        changes: {
+          data: {
+            ...data,
+            subsections: updated
           }
         }
       })
@@ -23,12 +43,28 @@ const Skills = ({ id, data }) => {
   return (
     <div className="sectionContainerDiv">
       <div className="sectionTitle">{data.sectionTitle}</div>
-      <textarea
+      <div className={styles.skillsInputFlexWrapper}>
+      {data.subsections.map((sub) => (
+          <input
+            // key={sub.id}
+            className="sectionInput"
+            type="text"
+            placeholder="Skill"
+            value={sub.skill}
+            onChange={(e) =>
+              handleSubsectionChange(sub.id, "skill", e.target.value)
+            }
+          />
+        ))}
+        </div>
+          
+          
+      {/* <textarea
         className="sectionTextArea"
         placeholder="List your skills (e.g., JavaScript, React, CSS, Redux)"
-        value={data.skills}
+        value={data.content}
         onChange={(e) => handleChange(e.target.value)}
-      />
+      /> */}
     </div>
   );
 };

@@ -1,21 +1,18 @@
 import { useDispatch } from "react-redux";
-import { updateSection } from "../../store/resumeSlice";
+import { updateField } from "../../store/resumeSlice";
 import styles from "./Contact.module.css";
 import "./Sections.css";
 
 const Contact = ({ id, data }) => {
   const dispatch = useDispatch();
 
-  const handleChange = (field, value) => {
+  const handleFieldChange = (subId, fieldId, value) => {
     dispatch(
-      updateSection({
-        id,
-        changes: {
-          data: {
-            ...data,
-            [field]: value
-          }
-        }
+      updateField({
+        sectionId: id,
+        subsectionId: subId,
+        fieldId,
+        newValue: value
       })
     );
   };
@@ -23,47 +20,25 @@ const Contact = ({ id, data }) => {
   return (
     <div className="sectionContainerDiv">
       <div className="sectionTitle">{data.sectionTitle}</div>
+
       <div className={styles.contactInputWrapperDiv}>
-        <input
-          className={`${styles.contactSectionInput} sectionInput`}
-          type="text"
-          placeholder="Email"
-          value={data.email}
-          onChange={(e) => handleChange("email", e.target.value)}
-          />
-
-        <input
-          className={`${styles.contactSectionInput} sectionInput`}
-          type="text"
-          placeholder="Phone"
-          value={data.phone}
-          onChange={(e) => handleChange("phone", e.target.value)}
-          />
-
-        <input
-          className={`${styles.contactSectionInput} sectionInput`}
-          type="text"
-          placeholder="Location"
-          value={data.location}
-          onChange={(e) => handleChange("location", e.target.value)}
-        />
-
-        <input
-          className={`${styles.contactSectionInput} sectionInput`}
-          type="text"
-          placeholder="Website"
-          value={data.website}
-          onChange={(e) => handleChange("website", e.target.value)}
-          />
-
-        <input
-          className={`${styles.contactSectionInput} sectionInput`}
-          type="text"
-          placeholder="LinkedIn"
-          value={data.linkedIn}
-          onChange={(e) => handleChange("linkedIn", e.target.value)}
-          />
-        </div>
+        {data.subsections?.map((sub) => (
+          <div key={sub.id} className={styles.contactRow}>
+            {sub.fields?.map((field) => (
+              <input
+                key={field.id}
+                className="sectionInput"
+                type="text"
+                placeholder={field.label}
+                value={field.value}
+                onChange={(e) =>
+                  handleFieldChange(sub.id, field.id, e.target.value)
+                }
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

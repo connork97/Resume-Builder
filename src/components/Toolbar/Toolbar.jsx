@@ -1,5 +1,4 @@
 import React from "react";
-
 import styles from "./Toolbar.module.css";
 
 import ToolbarButton from "./ToolbarButton";
@@ -7,76 +6,70 @@ import ToolbarButton from "./ToolbarButton";
 import { useDispatch, useSelector } from "react-redux";
 import { addSection, addSubsection } from "../../store/resumeSlice";
 
-
 const Toolbar = () => {
+  const dispatch = useDispatch();
+  const sections = useSelector((state) => state.resume.sections);
 
-   const dispatch = useDispatch();
+   //   Add a section OR add a new subsection if it exists
+  const handleAddOrAppend = (type) => {
+    const existing = sections.find((s) => s.type === type);
 
-   const handleAddHeader = () => {
-      dispatch(addSection("header"));
-      console.log("dispatching header")
-   }
+    if (!existing) {
+      // Create a brand new section
+      dispatch(addSection(type));
+    } else {
+      // Add a new subsection (slice will auto-fill default fields)
+      dispatch(
+        addSubsection({
+          sectionId: existing.id,
+          subsectionData: {} // slice fills in default fields for this type
+        })
+      );
+    }
+  };
 
-   
-   const sections = useSelector((state) => state.resume.sections);
+  return (
+    <div className={styles.toolbarContainerDiv}>
+      <ToolbarButton
+        type="header"
+        text="Add Header"
+      //   command={() => dispatch(addSection("header"))}
+        command={() => handleAddOrAppend("header")}
+      />
 
-   const handleAddWorkHistory = (sectionToAdd) => {
+      <ToolbarButton
+        type="contact"
+        text="Add Contact Section"
+      //   command={() => dispatch(addSection("contact"))}
+        command={() => handleAddOrAppend("contact")}
+      />
 
-      const existing = sections.find(s => s.type === sectionToAdd);
+      <ToolbarButton
+        type="workHistory"
+        text="Add Work History Section"
+        command={() => handleAddOrAppend("workHistory")}
+      />
 
-      if (!existing) {
-         dispatch(addSection(sectionToAdd));
-      } else {
-         dispatch(addSubsection({
-            sectionId: existing.id,
-            subsectionData: {
-            jobTitle: "",
-            company: "",
-            location: "",
-            startDate: "",
-            endDate: "",
-            description: ""
-            }
-         }));
-      }
-   }
+      <ToolbarButton
+        type="education"
+        text="Add Education Section"
+        command={() => handleAddOrAppend("education")}
+      />
 
-   return (
-      <div className={styles.toolbarContainerDiv}>
-         <ToolbarButton
-            type="header"
-            text="Add Header"
-            command={() => dispatch(addSection("header"))}
-         />
-         <ToolbarButton
-            type="contact"
-            text="Add Contact Section"
-            command={() => dispatch(addSection("contact"))}
-         />
-         <ToolbarButton
-            type="workHistory"
-            text="Add Work History Section"
-            // command={() => dispatch(addSection("workHistory"))}
-            command={() => handleAddWorkHistory("workHistory")}
-         />
-         <ToolbarButton
-            type="education"
-            text="Add Education Section"
-            // command={() => dispatch(addSection("education"))}
-            command={() => handleAddWorkHistory("education")}
-         />
-         <ToolbarButton
-            type="skills"
-            text="Add Skills Section"
-            command={() => dispatch(addSection("skills"))}
-         />
-         <ToolbarButton
-            type="summary"
-            text="Add Summary Section"
-            command={() => dispatch(addSection("summary"))}
-         />
-      </div>
-   );
-}
+      <ToolbarButton
+        type="skills"
+        text="Add Skills Section"
+        command={() => handleAddOrAppend("skills")}
+      />
+
+      <ToolbarButton
+        type="summary"
+        text="Add Summary Section"
+      //   command={() => dispatch(addSection("summary"))}
+        command={() => handleAddOrAppend("summary")}
+      />
+    </div>
+  );
+};
 
 export default Toolbar;

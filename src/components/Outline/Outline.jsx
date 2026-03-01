@@ -6,7 +6,10 @@ import {
   addSubsection,
   deleteSubsection,
   reorderSubsections,
-  updateSection
+  addField,
+  updateField,
+  deleteField,
+  reorderFields
 } from "../../store/resumeSlice";
 import styles from "./Outline.module.css";
 
@@ -21,7 +24,7 @@ const Outline = () => {
     setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // SECTION DRAGGING
+  //  Section Reording by User Drag
   const handleDragStart = (e, index) => {
     setDraggingSection(index);
     e.dataTransfer.effectAllowed = "move";
@@ -44,229 +47,99 @@ const Outline = () => {
     setDraggingSection(null);
   };
 
-  // SUBSECTION EDITING
-  const handleSubChange = (sectionId, subId, field, value) => {
-    const section = sections.find((s) => s.id === sectionId);
-    const updated = section.data.subsections.map((sub) =>
-      sub.id === subId ? { ...sub, [field]: value } : sub
-    );
-
+  //  Subsection Field Editing
+  const handleFieldChange = (sectionId, subsectionId, fieldId, value) => {
     dispatch(
-      updateSection({
-        id: sectionId,
-        changes: {
-          data: {
-            ...section.data,
-            subsections: updated
-          }
+      updateField({
+        sectionId,
+        subsectionId,
+        fieldId,
+        newValue: value
+      })
+    );
+  };
+
+  //  Add Subsections
+  const handleAddSubsection = (section) => {
+    dispatch(
+      addSubsection({
+        sectionId: section.id,
+        subsectionData: {} // resumeSlice fills in default fields
+      })
+    );
+  };
+
+  //  Add Fields to Subsections
+  const handleAddField = (sectionId, subsectionId) => {
+    dispatch(
+      addField({
+        sectionId,
+        subsectionId,
+        fieldData: {
+          key: "customField",
+          label: "New Field",
+          value: ""
         }
       })
     );
   };
 
-  const handleAddSubsection = (section) => {
-    const type = section.type;
-
-    const defaultSubsection = {
-      workHistory: {
-        jobTitle: "",
-        company: "",
-        location: "",
-        startDate: "",
-        endDate: "",
-        description: ""
-      },
-      education: {
-        school: "",
-        degree: "",
-        field: "",
-        location: "",
-        startYear: "",
-        endYear: "",
-        description: ""
-      },
-      skills: {
-        skill: ""
-      }
-    }[type];
-
-    if (!defaultSubsection) return;
-
-    dispatch(
-      addSubsection({
-        sectionId: section.id,
-        subsectionData: defaultSubsection
-      })
-    );
-  };
-
-  // RENDERERS FOR EACH SECTION TYPE
+  //  Render Sections and their Content
   const renderSectionContent = (section) => {
     const { type, data } = section;
 
-    // HEADER
-    if (type === "header") {
+    //  HEADER & SUMMARY (No Subsections)
+    if (type === "header" || type === "summary") {
       return (
         <div className={styles.subsectionFields}>
-          <input
-            className={styles.subInput}
-            value={data.name}
-            placeholder="Name"
-            onChange={(e) =>
-              dispatch(
-                updateSection({
-                  id: section.id,
-                  changes: { data: { ...data, name: e.target.value } }
-                })
-              )
-            }
-          />
-          <input
-            className={styles.subInput}
-            value={data.title}
-            placeholder="Title"
-            onChange={(e) =>
-              dispatch(
-                updateSection({
-                  id: section.id,
-                  changes: { data: { ...data, title: e.target.value } }
-                })
-              )
-            }
-          />
+          {data.fields?.map((field) => (
+            <input
+              key={field.id}
+              className={styles.subInput}
+              value={field.value}
+              placeholder={field.label}
+              onChange={(e) =>
+                handleFieldChange(section.id, null, field.id, e.target.value)
+              }
+            />
+          ))}
         </div>
       );
     }
 
-    // CONTACT
-    if (type === "contact") {
-      return (
-        <div className={styles.subsectionFields}>
-          {Object.keys(data)
-            .filter((field) => field !== "sectionTitle" && field !== "subsections")
-            .map((field) => (
-              <input
-                key={field}
-                className={styles.subInput}
-                value={data[field]}
-                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                onChange={(e) =>
-                  dispatch(
-                    updateSection({
-                      id: section.id,
-                      changes: {
-                        data: { ...data, [field]: e.target.value }
-                      }
-                    })
-                  )
-                }
-              />
-            ))}
-        </div>
-      );
-    }
-
-    // SUMMARY AND SKILLS (with skills still being one singular string, not an array of strings)
-   //  if (type === "summary" || type === "skills") {
-   if (type === "summary") {
-      return (
-        <textarea
-          className={styles.subInput}
-          value={data.content}
-          placeholder={type.charAt(0).toUpperCase() + type.slice(1)}
-          onChange={(e) =>
-            dispatch(
-              updateSection({
-                id: section.id,
-                changes: { data: { ...data, content: e.target.value } }
-              })
-            )
-          }
-        />
-      );
-    }
-
-    // SKILLS
-   //  if (type === "skills") {
-   //    return (
-   //      <div className={styles.subsectionFields}>
-   //        {data.skillsArr.map((skill, i) => (
-   //          <div key={i} className={styles.subsectionItem}>
-   //            <input
-   //              className={styles.subInput}
-   //              value={skill}
-   //              placeholder="Skill"
-   //              onChange={(e) => {
-   //                const updated = [...data.skillsArr];
-   //                updated[i] = e.target.value;
-   //                dispatch(
-   //                  updateSection({
-   //                    id: section.id,
-   //                    changes: { data: { ...data, skillsArr: updated } }
-   //                  })
-   //                );
-   //              }}
-   //            />
-   //            <button
-   //              className={styles.deleteButton}
-   //              onClick={() => {
-   //                const updated = data.skillsArr.filter((_, idx) => idx !== i);
-   //                dispatch(
-   //                  updateSection({
-   //                    id: section.id,
-   //                    changes: { data: { ...data, skillsArr: updated } }
-   //                  })
-   //                );
-   //              }}
-   //            >
-   //              ✕
-   //            </button>
-   //          </div>
-   //        ))}
-
-   //        <button
-   //          className={styles.addButton}
-   //          onClick={() =>
-   //            dispatch(
-   //              updateSection({
-   //                id: section.id,
-   //                changes: {
-   //                  data: {
-   //                    ...data,
-   //                    skillsArr: [...data.skillsArr, ""]
-   //                  }
-   //                }
-   //              })
-   //            )
-   //          }
-   //        >
-   //          + Add Skill
-   //        </button>
-   //      </div>
-   //    );
-   //  }
-
-    // WORK HISTORY / EDUCATION (subsections)
+    //  Work History, Education, Skills, Contact (Sections including Subsections)
     return (
       <>
         {data.subsections?.map((sub) => (
           <div key={sub.id} className={styles.subsectionItem}>
             <div className={styles.subsectionFields}>
-              {Object.keys(sub)
-                .filter((field) => field !== "id")
-                .map((field) => (
-                  <input
-                    key={field}
-                    className={styles.subInput}
-                    value={sub[field]}
-                    placeholder={field}
-                    onChange={(e) =>
-                      handleSubChange(section.id, sub.id, field, e.target.value)
-                    }
-                  />
-                ))}
+              {sub.fields?.map((field) => (
+                <input
+                  key={field.id}
+                  className={styles.subInput}
+                  value={field.value}
+                  placeholder={field.label}
+                  onChange={(e) =>
+                    handleFieldChange(
+                      section.id,
+                      sub.id,
+                      field.id,
+                      e.target.value
+                    )
+                  }
+                />
+              ))}
+
+              {/* Add Field Button */}
+              <button
+                className={styles.addButton}
+                onClick={() => handleAddField(section.id, sub.id)}
+              >
+                + Add Field
+              </button>
             </div>
 
+            {/* Delete Subsection */}
             <button
               className={styles.deleteButton}
               onClick={() =>
@@ -283,16 +156,18 @@ const Outline = () => {
           </div>
         ))}
 
+        {/* Add Subsection */}
         <button
           className={styles.addButton}
           onClick={() => handleAddSubsection(section)}
         >
-          + Add Entry
+          + Add {section.data.sectionTitle} Subsection
         </button>
       </>
     );
   };
 
+  //  Main Render
   return (
     <div className={styles.outlineContainer}>
       <div className={styles.title}>Resume Outline</div>

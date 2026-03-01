@@ -1,108 +1,79 @@
 import { useDispatch } from "react-redux";
-import { updateSection } from "../../store/resumeSlice";
-import styles from "./Education.module.css";
+import { updateField } from "../../store/resumeSlice";
 import "./Sections.css";
 
 const Education = ({ id, data }) => {
   const dispatch = useDispatch();
 
-  // Update a specific education subsection (school entry)
-  const handleSubsectionChange = (subId, field, value) => {
-    const updated = data.subsections.map((sub) =>
-      sub.id === subId ? { ...sub, [field]: value } : sub
-    );
-
+  const handleFieldChange = (subId, fieldId, value) => {
     dispatch(
-      updateSection({
-        id,
-        changes: {
-          data: {
-            ...data,
-            subsections: updated
-          }
-        }
+      updateField({
+        sectionId: id,
+        subsectionId: subId,
+        fieldId,
+        newValue: value
       })
     );
   };
 
   return (
     <div className="sectionContainerDiv">
-      {/* SECTION TITLE */}
+      {/* Section Title */}
       <div className="sectionTitle">{data.sectionTitle}</div>
 
-      {/* RENDER ALL EDUCATION SUBSECTIONS */}
-      {data.subsections.map((sub) => (
-        <div key={sub.id}>
-          <input
-            className="sectionInput"
-            type="text"
-            placeholder="School Name"
-            value={sub.school}
-            onChange={(e) =>
-              handleSubsectionChange(sub.id, "school", e.target.value)
-            }
-          />
+      {/* Render All Subsections */}
+      {data.subsections?.map((sub) => (
+        <div key={sub.id} className="educationSubsection">
+          {sub.fields?.map((field) => {
+            const isDescription = field.key === "description";
+            const isStartOrEnd =
+              field.key === "startDate" || field.key === "endDate";
 
-          <input
-            className="sectionInput"
-            type="text"
-            placeholder="Degree"
-            value={sub.degree}
-            onChange={(e) =>
-              handleSubsectionChange(sub.id, "degree", e.target.value)
+            // DESCRIPTION → textarea
+            if (isDescription) {
+              return (
+                <textarea
+                  key={field.id}
+                  className="sectionTextArea"
+                  placeholder={field.label}
+                  value={field.value}
+                  onChange={(e) =>
+                    handleFieldChange(sub.id, field.id, e.target.value)
+                  }
+                />
+              );
             }
-          />
 
-          <input
-            className="sectionInput"
-            type="text"
-            placeholder="Field of Study"
-            value={sub.field}
-            onChange={(e) =>
-              handleSubsectionChange(sub.id, "field", e.target.value)
+            // START/END DATE → normal input (you can wrap in a row if desired)
+            if (isStartOrEnd) {
+              return (
+                <input
+                  key={field.id}
+                  className="sectionInput"
+                  type="text"
+                  placeholder={field.label}
+                  value={field.value}
+                  onChange={(e) =>
+                    handleFieldChange(sub.id, field.id, e.target.value)
+                  }
+                />
+              );
             }
-          />
-          <input
-            className="sectionInput"
-            type="text"
-            placeholder="Location"
-            value={sub.location}
-            onChange={(e) =>
-              handleSubsectionChange(sub.id, "location", e.target.value)
-            }
-          />
 
-          <div className="sectionDateRow">
-            <input
-              className="sectionInput"
-              type="text"
-              placeholder="Start Date"
-              value={sub.startDate}
-              onChange={(e) =>
-                handleSubsectionChange(sub.id, "startDate", e.target.value)
-              }
-            />
-
-            <input
-              className="sectionInput"
-              type="text"
-              placeholder="End Date"
-              value={sub.endDate}
-              onChange={(e) =>
-                handleSubsectionChange(sub.id, "endDate", e.target.value)
-              }
-            />
-          </div>
-
-          <textarea
-            className="sectionTextArea"
-            style={{display: "flex", flexWrap:"wrap", flex:1}}
-            placeholder="Description / Achievements"
-            value={sub.description}
-            onChange={(e) =>
-              handleSubsectionChange(sub.id, "description", e.target.value)
-            }
-          />
+            // DEFAULT FIELD → normal input
+            return (
+              <input
+                key={field.id}
+                className="sectionInput"
+                type="text"
+                placeholder={field.label}
+                value={field.value}
+                onChange={(e) =>
+                  handleFieldChange(sub.id, field.id, e.target.value)
+                }
+              />
+            );
+          })}
         </div>
       ))}
     </div>

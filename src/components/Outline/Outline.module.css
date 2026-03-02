@@ -67,8 +67,8 @@
 }
 
 .subsectionItem {
-  display: flex;
-  align-items: flex-start;
+  /* display: flex; */
+  /* align-items: flex-start; */
   gap: 1vh;
 }
 
@@ -86,6 +86,14 @@
   padding: 0.75vh;
   border-radius: 0.5vh;
   font-size: 1.75vh;
+}
+
+.fieldInputRow {
+  display: flex;
+}
+
+.fieldInputRow .deleteButton {
+  margin-left: 1vh;
 }
 
 .subInput:focus {

@@ -114,20 +114,37 @@ const Outline = () => {
           <div key={sub.id} className={styles.subsectionItem}>
             <div className={styles.subsectionFields}>
               {sub.fields?.map((field) => (
-                <input
-                  key={field.id}
-                  className={styles.subInput}
-                  value={field.value}
-                  placeholder={field.label}
-                  onChange={(e) =>
-                    handleFieldChange(
-                      section.id,
-                      sub.id,
-                      field.id,
-                      e.target.value
-                    )
-                  }
-                />
+                <div className={styles.fieldInputRow}>
+                  <input
+                    key={field.id}
+                    className={styles.subInput}
+                    value={field.value}
+                    placeholder={field.label}
+                    onChange={(e) =>
+                      handleFieldChange(
+                        section.id,
+                        sub.id,
+                        field.id,
+                        e.target.value
+                      )
+                    }
+                    />
+                    <button
+                      className={styles.deleteButton}
+                      onClick={() =>
+                        dispatch(
+                          deleteField({
+                            sectionId: section.id,
+                            subsectionId: sub.id,
+                            fieldId: field.id
+                          })
+                        )
+                      }
+                    >
+                      ✕
+                    </button>
+          
+                  </div>
               ))}
 
               {/* Add Field Button */}
@@ -151,7 +168,7 @@ const Outline = () => {
                 )
               }
             >
-              ✕
+              Delete {section.data.sectionTitle} Subsection
             </button>
           </div>
         ))}

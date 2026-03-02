@@ -1,40 +1,44 @@
 import { useDispatch } from "react-redux";
-import { updateField } from "../../store/resumeSlice";
+import { updateSection } from "../../store/resumeSlice";
 import styles from "./Header.module.css";
 import "./Sections.css";
 
 const Header = ({ id, data }) => {
   const dispatch = useDispatch();
 
-  const handleFieldChange = (fieldId, value) => {
+  const handleChange = (field, value) => {
     dispatch(
-      updateField({
-        sectionId: id,
-        subsectionId: null, // header has no subsections currently
-        fieldId,
-        newValue: value
+      updateSection({
+        id,
+        changes: {
+          data: {
+            ...data,
+            [field]: value
+          }
+        }
       })
     );
   };
 
   return (
     <div className="sectionContainerDiv">
-      {data.fields?.map((field) => (
-        <input
-          key={field.id}
-          className={
-            field.key === "name"
-              ? styles.nameInput
-              : styles.titleInput
-          }
-          type="text"
-          placeholder={field.label}
-          value={field.value}
-          onChange={(e) => handleFieldChange(field.id, e.target.value)}
-        />
-      ))}
+      <input
+        className={styles.nameInput}
+        type="text"
+        placeholder="Your Name"
+        value={data.name}
+        onChange={(e) => handleChange("name", e.target.value)}
+      />
+
+      <input
+        className={styles.titleInput}
+        type="text"
+        placeholder="Your Title"
+        value={data.title}
+        onChange={(e) => handleChange("title", e.target.value)}
+      />
     </div>
   );
-};
+}
 
 export default Header;

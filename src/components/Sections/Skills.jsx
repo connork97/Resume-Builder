@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { updateField } from "../../store/resumeSlice";
+import AutoWidthInput from "../AutoWidthInput"; // adjust path as needed
 import styles from "./Skills.module.css";
 import "./Sections.css";
 
@@ -21,25 +22,24 @@ const Skills = ({ id, data }) => {
     <div className="sectionContainerDiv">
       <div className="sectionTitle">{data.sectionTitle}</div>
 
-      <div className={styles.skillsInputFlexWrapper}>
+      {/* <div className="subsectionWrapperDiv"> */}
         {data.subsections?.map((sub) => (
-          <div key={sub.id} className={styles.skillRow}>
+          <div key={sub.id} className="subsectionWrapperDiv">
             {sub.fields?.map((field) => (
-              <input
+              <AutoWidthInput
                 key={field.id}
                 className="sectionInput"
-                type="text"
-                placeholder={field.label}
                 value={field.value}
-                onChange={(e) =>
-                  handleFieldChange(sub.id, field.id, e.target.value)
+                placeholder={field.label}
+                onChange={(value) =>
+                  handleFieldChange(sub.id, field.id, value)
                 }
               />
             ))}
           </div>
         ))}
       </div>
-    </div>
+    // </div>
   );
 };
 

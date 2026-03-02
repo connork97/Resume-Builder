@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { updateField } from "../../store/resumeSlice";
+import AutoWidthInput from "../AutoWidthInput"; // adjust path
 import styles from "./Contact.module.css";
 import "./Sections.css";
 
@@ -12,7 +13,7 @@ const Contact = ({ id, data }) => {
         sectionId: id,
         subsectionId: subId,
         fieldId,
-        newValue: value
+        newValue: value,
       })
     );
   };
@@ -21,25 +22,25 @@ const Contact = ({ id, data }) => {
     <div className="sectionContainerDiv">
       <div className="sectionTitle">{data.sectionTitle}</div>
 
-      <div className={styles.contactInputWrapperDiv}>
+      {/* <div className={styles.contactInputWrapperDiv}> */}
         {data.subsections?.map((sub) => (
-          <div key={sub.id} className={styles.contactRow}>
+          <div key={sub.id} className="subsectionWrapperDiv" style={{justifyContent: 'space-evenly'}}>
             {sub.fields?.map((field) => (
-              <input
+              <AutoWidthInput
+                id={field.id}
                 key={field.id}
                 className="sectionInput"
-                type="text"
-                placeholder={field.label}
                 value={field.value}
-                onChange={(e) =>
-                  handleFieldChange(sub.id, field.id, e.target.value)
+                placeholder={field.label}
+                onChange={(value) =>
+                  handleFieldChange(sub.id, field.id, value)
                 }
               />
             ))}
           </div>
         ))}
       </div>
-    </div>
+    // </div>
   );
 };
 

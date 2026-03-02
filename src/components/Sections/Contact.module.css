@@ -6,6 +6,17 @@
    /* overflow: hidden; */
 }
 
+.contactSubsection {
+   display: flex;
+   flex-wrap: wrap;
+   flex: 1;
+   justify-content: space-evenly;
+}
+
 .contactSectionInput {
    text-align: center;
+   /* width: 3rem;
+   border-bottom: 1px solid black;
+   font-size: 12px; */
+
 }

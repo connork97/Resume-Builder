@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { updateField } from "../../store/resumeSlice";
+import AutoWidthInput from "../AutoWidthInput"; // adjust path as needed
 import "./Sections.css";
 
 const Education = ({ id, data }) => {
@@ -23,13 +24,11 @@ const Education = ({ id, data }) => {
 
       {/* Render All Subsections */}
       {data.subsections?.map((sub) => (
-        <div key={sub.id} className="educationSubsection">
+        <div key={sub.id} className="subsectionWrapperDiv">
           {sub.fields?.map((field) => {
             const isDescription = field.key === "description";
-            const isStartOrEnd =
-              field.key === "startDate" || field.key === "endDate";
 
-            // DESCRIPTION → textarea
+            // DESCRIPTION → textarea (not auto-width)
             if (isDescription) {
               return (
                 <textarea
@@ -44,32 +43,15 @@ const Education = ({ id, data }) => {
               );
             }
 
-            // START/END DATE → normal input (you can wrap in a row if desired)
-            if (isStartOrEnd) {
-              return (
-                <input
-                  key={field.id}
-                  className="sectionInput"
-                  type="text"
-                  placeholder={field.label}
-                  value={field.value}
-                  onChange={(e) =>
-                    handleFieldChange(sub.id, field.id, e.target.value)
-                  }
-                />
-              );
-            }
-
-            // DEFAULT FIELD → normal input
+            // DEFAULT FIELD → AutoWidthInput
             return (
-              <input
+              <AutoWidthInput
                 key={field.id}
                 className="sectionInput"
-                type="text"
-                placeholder={field.label}
                 value={field.value}
-                onChange={(e) =>
-                  handleFieldChange(sub.id, field.id, e.target.value)
+                placeholder={field.label}
+                onChange={(value) =>
+                  handleFieldChange(sub.id, field.id, value)
                 }
               />
             );

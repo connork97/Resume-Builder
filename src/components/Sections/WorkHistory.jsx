@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { updateField } from "../../store/resumeSlice";
+import AutoWidthInput from "../AutoWidthInput"; // adjust path as needed
 import styles from "./WorkHistory.module.css";
 import "./Sections.css";
 
@@ -19,18 +20,13 @@ const WorkHistory = ({ id, data }) => {
 
   return (
     <div className="sectionContainerDiv">
-      {/* Section Title */}
       <div className="sectionTitle">{data.sectionTitle}</div>
 
-      {/* Render All Subsections */}
       {data.subsections?.map((sub) => (
-        <div key={sub.id} className="workHistorySubsection">
+        <div key={sub.id} className="subsectionWrapperDiv">
           {sub.fields?.map((field) => {
             const isDescription = field.key === "description";
-            const isStartOrEnd =
-              field.key === "startDate" || field.key === "endDate";
 
-            // DESCRIPTION → textarea
             if (isDescription) {
               return (
                 <textarea
@@ -45,32 +41,14 @@ const WorkHistory = ({ id, data }) => {
               );
             }
 
-            // START/END DATE → normal input (you can wrap in a row if desired)
-            if (isStartOrEnd) {
-              return (
-                <input
-                  key={field.id}
-                  className="sectionInput"
-                  type="text"
-                  placeholder={field.label}
-                  value={field.value}
-                  onChange={(e) =>
-                    handleFieldChange(sub.id, field.id, e.target.value)
-                  }
-                />
-              );
-            }
-
-            // DEFAULT FIELD → normal input
             return (
-              <input
+              <AutoWidthInput
                 key={field.id}
                 className="sectionInput"
-                type="text"
-                placeholder={field.label}
                 value={field.value}
-                onChange={(e) =>
-                  handleFieldChange(sub.id, field.id, e.target.value)
+                placeholder={field.label}
+                onChange={(value) =>
+                  handleFieldChange(sub.id, field.id, value)
                 }
               />
             );

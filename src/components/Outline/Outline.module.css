@@ -3,7 +3,7 @@
   left: 0;
   top: 0;
   margin-top: 6vh;
-  width: 40vh;
+  width: 42.5vh;
   height: 100vh;
   background: #1e1e1e;
   color: #ffffff;
@@ -40,6 +40,11 @@
   user-select: none;
 }
 
+.subsectionHeaderSpan {
+  padding-left: 2vh;
+  font-size: 2.25vh;
+}
+
 .dragHandle:active {
   cursor: grabbing;
 }
@@ -66,6 +71,7 @@
   gap: 1vh;
 }
 
+
 .subsectionItem {
   /* display: flex; */
   /* align-items: flex-start; */
@@ -77,6 +83,7 @@
   flex-direction: column;
   gap: 0.75vh;
   flex: 1;
+  margin-top: 1vh;
 }
 
 .subInput {
@@ -109,6 +116,7 @@
   border-radius: 0.5vh;
   cursor: pointer;
   font-size: 1.75vh;
+  margin-left: 2vh;
 }
 
 .deleteButton:hover {
@@ -122,6 +130,11 @@
   cursor: pointer;
   font-size: 2vh;
   text-align: left;
+  padding-left: 3vh;
+}
+
+.addFieldButton {
+  padding-left: 4vh;
 }
 
 .addButton:hover {
@@ -137,8 +150,21 @@
   cursor: pointer;
   font-size: 2vh;
   width: fit-content;
+  margin-left: 3vh;
 }
 
 .deleteSectionButton:hover {
   background: #662222;
+}
+
+.sectionRow {
+  padding-left: 0vh;
+}
+
+.subsectionRow {
+  padding-left: 1vh;
+}
+
+.fieldRow {
+  padding-left: 1vh;
 }

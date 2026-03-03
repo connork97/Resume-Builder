@@ -18,36 +18,48 @@ const Outline = () => {
   const sections = useSelector((state) => state.resume.sections);
 
   const [openSections, setOpenSections] = useState({});
-  const [draggingSection, setDraggingSection] = useState(null);
+
+  // Single source of truth for any active drag
+  // type: "section" | "subsection" | "field"
+  // sectionId: string
+  // subsectionId: string | null
+  // index: number (position within its parent)
+
+  const [dragItem, setDragItem] = useState(null);
 
   const toggleOpen = (id) => {
     setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  //  Section Reording by User Drag
-  const handleDragStart = (e, index) => {
-    setDraggingSection(index);
+  // Section Drag/Reorder Handler
+
+  const handleSectionDragStart = (e, index, sectionId) => {
+    if (dragItem) return;
+    setDragItem({ type: "section", sectionId, index });
     e.dataTransfer.effectAllowed = "move";
   };
 
-  const handleDragOver = (e, index) => {
+  const handleSectionDragOver = (e, index) => {
+    if (!dragItem || dragItem.type !== "section") return;
     e.preventDefault();
-    if (draggingSection === index) return;
+    if (dragItem.index === index) return;
 
     dispatch(
       reorderSections({
-        fromIndex: draggingSection,
+        fromIndex: dragItem.index,
         toIndex: index
       })
     );
-    setDraggingSection(index);
+
+    setDragItem((prev) => ({ ...prev, index }));
   };
 
-  const handleDragEnd = () => {
-    setDraggingSection(null);
+  const handleSectionDragEnd = () => {
+    setDragItem(null);
   };
 
-  //  Subsection Field Editing
+  // Field Change Handler
+
   const handleFieldChange = (sectionId, subsectionId, fieldId, value) => {
     dispatch(
       updateField({
@@ -59,17 +71,17 @@ const Outline = () => {
     );
   };
 
-  //  Add Subsections
+  // Add Subsection and Add Field Function Handlers
+
   const handleAddSubsection = (section) => {
     dispatch(
       addSubsection({
         sectionId: section.id,
-        subsectionData: {} // resumeSlice fills in default fields
+        subsectionData: {}
       })
     );
   };
 
-  //  Add Fields to Subsections
   const handleAddField = (sectionId, subsectionId) => {
     dispatch(
       addField({
@@ -84,79 +96,176 @@ const Outline = () => {
     );
   };
 
-  //  Render Sections and their Content
+  // FIELD ROW RENDERER
+
+  const renderFieldRow = (
+    sectionId,
+    subsectionId, // null for header/summary
+    field,
+    fieldIndex
+  ) => {
+    const isHeaderOrSummary = subsectionId === null;
+
+    return (
+      <div
+        key={field.id}
+        className={`${styles.fieldInputRow} ${styles.fieldRow}`}
+        draggable={true}
+        onDragStart={(e) => {
+          e.stopPropagation();
+          if (dragItem) return;
+          setDragItem({
+            type: "field",
+            sectionId,
+            subsectionId,
+            index: fieldIndex
+          });
+          e.dataTransfer.effectAllowed = "move";
+        }}
+        onDragOver={(e) => {
+          e.stopPropagation();
+          if (!dragItem || dragItem.type !== "field") return;
+          e.preventDefault();
+
+          // Only reorder fields within the same section + same subsection (or same "no subsection" group)
+          if (
+            dragItem.sectionId !== sectionId ||
+            dragItem.subsectionId !== subsectionId
+          ) {
+            return;
+          }
+
+          if (dragItem.index === fieldIndex) return;
+
+          dispatch(
+            reorderFields({
+              sectionId,
+              subsectionId: isHeaderOrSummary ? null : subsectionId,
+              fromIndex: dragItem.index,
+              toIndex: fieldIndex
+            })
+          );
+
+          setDragItem((prev) => ({ ...prev, index: fieldIndex }));
+        }}
+        onDragEnd={(e) => {
+          e.stopPropagation();
+          setDragItem(null);
+        }}
+        onDrop={(e) => {
+          e.stopPropagation();
+          setDragItem(null);
+        }}
+      >
+        <div className={styles.dragHandle}>⋮⋮</div>
+
+        <input
+          className={styles.subInput}
+          value={field.value}
+          placeholder={field.label}
+          onChange={(e) =>
+            handleFieldChange(sectionId, subsectionId, field.id, e.target.value)
+          }
+        />
+
+        <button
+          className={styles.deleteButton}
+          onClick={() =>
+            dispatch(
+              deleteField({
+                sectionId,
+                subsectionId,
+                fieldId: field.id
+              })
+            )
+          }
+        >
+          ✕
+        </button>
+      </div>
+    );
+  };
+
+  //  SECTION CONTENT RENDERER
+
   const renderSectionContent = (section) => {
     const { type, data } = section;
 
-    //  HEADER & SUMMARY (No Subsections)
+    // Header & Summary
     if (type === "header" || type === "summary") {
       return (
-        <div className={styles.subsectionFields}>
-          {data.fields?.map((field) => (
-            <input
-              key={field.id}
-              className={styles.subInput}
-              value={field.value}
-              placeholder={field.label}
-              onChange={(e) =>
-                handleFieldChange(section.id, null, field.id, e.target.value)
-              }
-            />
-          ))}
+        <div className={styles.sectionContent}>
+          {data.fields?.map((field, fieldIndex) =>
+            renderFieldRow(section.id, null, field, fieldIndex)
+          )}
         </div>
       );
     }
 
-    //  Work History, Education, Skills, Contact (Sections including Subsections)
+    // Sections with Subsections
     return (
       <>
-        {data.subsections?.map((sub) => (
-          <div key={sub.id} className={styles.subsectionItem}>
-            <div className={styles.subsectionFields}>
-              {sub.fields?.map((field) => (
-                <div className={styles.fieldInputRow}>
-                  <input
-                    key={field.id}
-                    className={styles.subInput}
-                    value={field.value}
-                    placeholder={field.label}
-                    onChange={(e) =>
-                      handleFieldChange(
-                        section.id,
-                        sub.id,
-                        field.id,
-                        e.target.value
-                      )
-                    }
-                    />
-                    <button
-                      className={styles.deleteButton}
-                      onClick={() =>
-                        dispatch(
-                          deleteField({
-                            sectionId: section.id,
-                            subsectionId: sub.id,
-                            fieldId: field.id
-                          })
-                        )
-                      }
-                    >
-                      ✕
-                    </button>
-          
-                  </div>
-              ))}
+        {data.subsections?.map((sub, subIndex) => (
+          <div
+            key={sub.id}
+            className={`${styles.subsectionItem} ${styles.subsectionRow}`}
+            draggable={true}
+            onDragStart={(e) => {
+              e.stopPropagation();
+              if (dragItem) return;
+              setDragItem({
+                type: "subsection",
+                sectionId: section.id,
+                subsectionId: sub.id,
+                index: subIndex
+              });
+              e.dataTransfer.effectAllowed = "move";
+            }}
+            onDragOver={(e) => {
+              e.stopPropagation();
+              if (!dragItem || dragItem.type !== "subsection") return;
+              e.preventDefault();
 
-              {/* Add Field Button */}
+              // Only reorder subsections within the same section
+              if (dragItem.sectionId !== section.id) return;
+              if (dragItem.index === subIndex) return;
+
+              dispatch(
+                reorderSubsections({
+                  sectionId: section.id,
+                  fromIndex: dragItem.index,
+                  toIndex: subIndex
+                })
+              );
+
+              setDragItem((prev) => ({ ...prev, index: subIndex }));
+            }}
+            onDragEnd={(e) => {
+              e.stopPropagation();
+              setDragItem(null);
+            }}
+            onDrop={(e) => {
+              e.stopPropagation();
+              setDragItem(null);
+            }}
+          >
+            <div className={styles.dragHandle}>⋮⋮
+              <span className={styles.subsectionHeaderSpan}>{data.sectionTitle} {subIndex + 1}</span>
+            </div>
+
+            <div className={styles.subsectionFields}>
+              {sub.fields?.map((field, fieldIndex) =>
+                renderFieldRow(section.id, sub.id, field, fieldIndex)
+              )}
+
               <button
-                className={styles.addButton}
+                className={`${styles.addButton} ${styles.addFieldButton}`}
                 onClick={() => handleAddField(section.id, sub.id)}
               >
                 + Add Field
               </button>
             </div>
 
-            {/* Delete Subsection */}
             <button
               className={styles.deleteButton}
               onClick={() =>
@@ -173,7 +282,6 @@ const Outline = () => {
           </div>
         ))}
 
-        {/* Add Subsection */}
         <button
           className={styles.addButton}
           onClick={() => handleAddSubsection(section)}
@@ -184,7 +292,8 @@ const Outline = () => {
     );
   };
 
-  //  Main Render
+  // MAIN RENDER
+
   return (
     <div className={styles.outlineContainer}>
       <div className={styles.title}>Resume Outline</div>
@@ -192,11 +301,12 @@ const Outline = () => {
       {sections.map((section, index) => (
         <div
           key={section.id}
-          className={styles.sectionBlock}
-          draggable
-          onDragStart={(e) => handleDragStart(e, index)}
-          onDragOver={(e) => handleDragOver(e, index)}
-          onDragEnd={handleDragEnd}
+          className={`${styles.sectionBlock} ${styles.sectionRow}`}
+          draggable={true}
+          onDragStart={(e) => handleSectionDragStart(e, index, section.id)}
+          onDragOver={(e) => handleSectionDragOver(e, index)}
+          onDragEnd={handleSectionDragEnd}
+          onDrop={() => setDragItem(null)}
         >
           <div className={styles.sectionHeader}>
             <div className={styles.dragHandle}>⋮⋮</div>

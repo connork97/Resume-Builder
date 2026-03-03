@@ -3,19 +3,7 @@ import { updateField } from "../../store/resumeSlice";
 import AutoWidthInput from "../AutoWidthInput"; // adjust path as needed
 import "./Sections.css";
 
-const Education = ({ id, data }) => {
-  const dispatch = useDispatch();
-
-  const handleFieldChange = (subId, fieldId, value) => {
-    dispatch(
-      updateField({
-        sectionId: id,
-        subsectionId: subId,
-        fieldId,
-        newValue: value
-      })
-    );
-  };
+const Education = ({ id, data, handleFieldChange }) => {
 
   return (
     <div className="sectionContainerDiv">

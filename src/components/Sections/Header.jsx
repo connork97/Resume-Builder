@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux";
 import { updateSection } from "../../store/resumeSlice";
 import styles from "./Header.module.css";
 import "./Sections.css";

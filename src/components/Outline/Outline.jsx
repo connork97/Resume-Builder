@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   reorderSections,
@@ -11,6 +11,10 @@ import {
   deleteField,
   reorderFields
 } from "../../store/resumeSlice";
+
+import OutlineSection from "./OutlineSection.jsx";
+import FieldRow from "./FieldRow.jsx";
+
 import styles from "./Outline.module.css";
 
 const Outline = () => {
@@ -85,29 +89,33 @@ const toggleOpen = (id) => {
     );
   };
 
-  // Add Subsection and Add Field Function Handlers
+  //  SECTION CONTENT RENDERER
 
-  const handleAddSubsection = (section) => {
-    dispatch(
-      addSubsection({
-        sectionId: section.id,
-        subsectionData: {}
-      })
-    );
-  };
+  const renderSectionContent = (section) => {
+    const { type, data } = section;
 
-  const handleAddField = (sectionId, subsectionId) => {
-    dispatch(
-      addField({
-        sectionId,
-        subsectionId,
-        fieldData: {
-          key: "customField",
-          label: "New Field",
-          value: ""
-        }
-      })
-    );
+    // Header & Summary
+    // if (type === "header" || type === "summary") {
+    //   return (
+    //     <div className={styles.sectionContent}>
+    //       {data.fields?.map((field, fieldIndex) =>
+    //         renderFieldRow(section.id, null, field, fieldIndex)
+    //       )}
+    //     </div>
+    //   );
+    // }
+
+    // Sections with Subsections
+    return (
+      <OutlineSection
+        dispatch={dispatch}
+        data={data}
+        section={section}
+        dragItem={dragItem}
+        setDragItem={setDragItem}
+        renderFieldRow={renderFieldRow}
+      />
+    )
   };
 
   // FIELD ROW RENDERER
@@ -121,188 +129,18 @@ const toggleOpen = (id) => {
     const isHeaderOrSummary = subsectionId === null;
 
     return (
-      <div
+      <FieldRow
         key={field.id}
-        className={`${styles.fieldInputRow} ${styles.fieldRow}`}
-        draggable={true}
-        onDragStart={(e) => {
-          e.stopPropagation();
-          if (dragItem) return;
-          setDragItem({
-            type: "field",
-            sectionId,
-            subsectionId,
-            index: fieldIndex
-          });
-          e.dataTransfer.effectAllowed = "move";
-        }}
-        onDragOver={(e) => {
-          e.stopPropagation();
-          if (!dragItem || dragItem.type !== "field") return;
-          e.preventDefault();
-
-          // Only reorder fields within the same section + same subsection (or same "no subsection" group)
-          if (
-            dragItem.sectionId !== sectionId ||
-            dragItem.subsectionId !== subsectionId
-          ) {
-            return;
-          }
-
-          if (dragItem.index === fieldIndex) return;
-
-          dispatch(
-            reorderFields({
-              sectionId,
-              subsectionId: isHeaderOrSummary ? null : subsectionId,
-              fromIndex: dragItem.index,
-              toIndex: fieldIndex
-            })
-          );
-
-          setDragItem((prev) => ({ ...prev, index: fieldIndex }));
-        }}
-        onDragEnd={(e) => {
-          e.stopPropagation();
-          setDragItem(null);
-        }}
-        onDrop={(e) => {
-          e.stopPropagation();
-          setDragItem(null);
-        }}
-      >
-        <div className={styles.dragHandle}>⋮⋮</div>
-
-        <input
-          className={styles.subInput}
-          value={field.value}
-          placeholder={field.label}
-          onChange={(e) =>
-            handleFieldChange(sectionId, subsectionId, field.id, e.target.value)
-          }
-        />
-
-        <button
-          className={styles.deleteButton}
-          onClick={() =>
-            dispatch(
-              deleteField({
-                sectionId,
-                subsectionId,
-                fieldId: field.id
-              })
-            )
-          }
-        >
-          ✕
-        </button>
-      </div>
-    );
-  };
-
-  //  SECTION CONTENT RENDERER
-
-  const renderSectionContent = (section) => {
-    const { type, data } = section;
-
-    // Header & Summary
-    if (type === "header" || type === "summary") {
-      return (
-        <div className={styles.sectionContent}>
-          {data.fields?.map((field, fieldIndex) =>
-            renderFieldRow(section.id, null, field, fieldIndex)
-          )}
-        </div>
-      );
-    }
-
-    // Sections with Subsections
-    return (
-      <>
-        {data.subsections?.map((sub, subIndex) => (
-          <div
-            key={sub.id}
-            className={`${styles.subsectionItem} ${styles.subsectionRow}`}
-            draggable={true}
-            onDragStart={(e) => {
-              e.stopPropagation();
-              if (dragItem) return;
-              setDragItem({
-                type: "subsection",
-                sectionId: section.id,
-                subsectionId: sub.id,
-                index: subIndex
-              });
-              e.dataTransfer.effectAllowed = "move";
-            }}
-            onDragOver={(e) => {
-              e.stopPropagation();
-              if (!dragItem || dragItem.type !== "subsection") return;
-              e.preventDefault();
-
-              // Only reorder subsections within the same section
-              if (dragItem.sectionId !== section.id) return;
-              if (dragItem.index === subIndex) return;
-
-              dispatch(
-                reorderSubsections({
-                  sectionId: section.id,
-                  fromIndex: dragItem.index,
-                  toIndex: subIndex
-                })
-              );
-
-              setDragItem((prev) => ({ ...prev, index: subIndex }));
-            }}
-            onDragEnd={(e) => {
-              e.stopPropagation();
-              setDragItem(null);
-            }}
-            onDrop={(e) => {
-              e.stopPropagation();
-              setDragItem(null);
-            }}
-          >
-            <div className={styles.dragHandle}>⋮⋮
-              <span className={styles.subsectionHeaderSpan}>{data.sectionTitle} {subIndex + 1}</span>
-            </div>
-
-            <div className={styles.subsectionFields}>
-              {sub.fields?.map((field, fieldIndex) =>
-                renderFieldRow(section.id, sub.id, field, fieldIndex)
-              )}
-
-              <button
-                className={`${styles.addButton} ${styles.addFieldButton}`}
-                onClick={() => handleAddField(section.id, sub.id)}
-              >
-                + Add Field
-              </button>
-            </div>
-
-            <button
-              className={styles.deleteButton}
-              onClick={() =>
-                dispatch(
-                  deleteSubsection({
-                    sectionId: section.id,
-                    subsectionId: sub.id
-                  })
-                )
-              }
-            >
-              Delete {section.data.sectionTitle} Subsection
-            </button>
-          </div>
-        ))}
-
-        <button
-          className={styles.addButton}
-          onClick={() => handleAddSubsection(section)}
-        >
-          + Add {section.data.sectionTitle} Subsection
-        </button>
-      </>
+        dispatch={dispatch}
+        field={field}
+        fieldIndex={fieldIndex}
+        sectionId={sectionId}
+        subsectionId={subsectionId}
+        handleFieldChange={handleFieldChange}
+        isHeaderOrSummary={isHeaderOrSummary}
+        dragItem={dragItem}
+        setDragItem={setDragItem}
+      />
     );
   };
 

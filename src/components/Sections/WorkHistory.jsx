@@ -1,22 +1,8 @@
-import { useDispatch } from "react-redux";
-import { updateField } from "../../store/resumeSlice";
 import AutoWidthInput from "../AutoWidthInput"; // adjust path as needed
 import styles from "./WorkHistory.module.css";
 import "./Sections.css";
 
-const WorkHistory = ({ id, data }) => {
-  const dispatch = useDispatch();
-
-  const handleFieldChange = (subId, fieldId, value) => {
-    dispatch(
-      updateField({
-        sectionId: id,
-        subsectionId: subId,
-        fieldId,
-        newValue: value
-      })
-    );
-  };
+const WorkHistory = ({ id, data, handleFieldChange }) => {
 
   return (
     <div className="sectionContainerDiv">

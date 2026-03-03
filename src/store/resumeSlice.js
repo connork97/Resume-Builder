@@ -6,9 +6,14 @@ const createDefaultData = (type) => {
     case "header":
       return {
         sectionTitle: "Header",
-        fields: [
-          { id: nanoid(), key: "name", label: "Name", value: "" },
-          { id: nanoid(), key: "title", label: "Title", value: "" }
+        subsections: [
+          {
+            id: nanoid(),
+            fields: [
+              { id: nanoid(), key: "name", label: "Name", value: "" },
+              { id: nanoid(), key: "title", label: "Title", value: "" }
+            ]
+          }
         ]
       };
 
@@ -32,8 +37,13 @@ const createDefaultData = (type) => {
     case "summary":
       return {
         sectionTitle: "Summary",
-        fields: [
-          { id: nanoid(), key: "content", label: "Summary", value: "" }
+        subsections: [
+          {
+            id: nanoid(),
+            fields: [
+              { id: nanoid(), key: "content", label: "Summary", value: "" }
+            ]
+          }
         ]
       };
 
@@ -63,6 +73,15 @@ const createDefaultData = (type) => {
 // Default Subsection Fields (for Initial AND Additional Subsections)
 const createDefaultSubsection = (type) => {
   switch (type) {
+    case "header":
+      return {
+        sectionTitle: "Header",
+        fields: [
+          { id: nanoid(), key: "name", label: "Name", value: "" },
+          { id: nanoid(), key: "title", label: "Title", value: "" }
+        ]
+      };
+
     case "workHistory":
       return {
         fields: [
@@ -100,6 +119,13 @@ const createDefaultSubsection = (type) => {
         fields: [
           { id: nanoid(), key: "value", label: "New Contact Item", value: "" },
           // { id: nanoid(), key: "value", label: "Value", value: "" }
+        ]
+      };
+    
+    case "summary":
+      return {
+        fields: [
+          { id: nanoid(), key: "content", label: "Summary", value: "" }
         ]
       };
 

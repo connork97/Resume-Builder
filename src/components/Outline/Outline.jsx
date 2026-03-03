@@ -17,6 +17,7 @@ const Outline = () => {
   const dispatch = useDispatch();
   const sections = useSelector((state) => state.resume.sections);
 
+  const [outlineIsHidden, setOutlineIsHidden] = useState(false);
   const [openSections, setOpenSections] = useState({});
 
   // Single source of truth for any active drag
@@ -27,9 +28,22 @@ const Outline = () => {
 
   const [dragItem, setDragItem] = useState(null);
 
-  const toggleOpen = (id) => {
-    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
+  // const toggleOpen = (id) => {
+  //   setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
+  // };
+const toggleOpen = (id) => {
+  setOpenSections((prev) => {
+    const isCurrentlyOpen = !!prev[id];
+
+    // If clicking an already-open section → close all
+    if (isCurrentlyOpen) {
+      return {};
+    }
+
+    // Otherwise open only this one
+    return { [id]: true };
+  });
+};
 
   // Section Drag/Reorder Handler
 
@@ -295,10 +309,24 @@ const Outline = () => {
   // MAIN RENDER
 
   return (
-    <div className={styles.outlineContainer}>
-      <div className={styles.title}>Resume Outline</div>
+    <div
+      className={`${styles.outlineWrapper} ${
+        outlineIsHidden ? styles.hidden : styles.visible
+      }`}
+    >
+        <button
+          className={!outlineIsHidden ? styles.hideOutlineButton : styles.showOutlineButton}
+          onClick={() => setOutlineIsHidden(!outlineIsHidden)}
+        >
+          {!outlineIsHidden ? '⟨⟨⟨' : '⟩⟩⟩'}
+        </button>
 
-      {sections.map((section, index) => (
+
+      {
+        <div className={styles.outlineContainer}>
+          <h1 className={styles.outlineTitle}>Resume Outline</h1>
+
+      {!sections.length ? <h2>No Sections to </h2> : sections.map((section, index) => (
         <div
           key={section.id}
           className={`${styles.sectionBlock} ${styles.sectionRow}`}
@@ -337,6 +365,8 @@ const Outline = () => {
           )}
         </div>
       ))}
+        </div>
+      }
     </div>
   );
 };

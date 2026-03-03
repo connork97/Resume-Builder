@@ -7,6 +7,12 @@
   font-size: 12px;
 }
 
+.sectionContainerDiv:hover {
+  outline: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  outline-offset: 1rem;
+}
+
 .sectionInput, .sectionTitle {
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);

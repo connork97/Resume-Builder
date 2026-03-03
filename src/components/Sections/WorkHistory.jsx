@@ -55,6 +55,7 @@ const WorkHistory = ({ id, data }) => {
           })}
         </div>
       ))}
+      {/* <div style={{width: "5rem", height: "2rem", border: "1px solid black"}} contentEditable /> */}
     </div>
   );
 };

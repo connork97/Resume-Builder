@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+
+// import { createEditor } from 'slate';
+// import { Slate, Editable, withReact } from 'slate-react';
 
 import styles from "./App.module.css";
 
@@ -6,6 +9,8 @@ import Toolbar from "./components/Toolbar/Toolbar";
 import Outline from "./components/Outline/Outline";
 import Page from "./components/Page/Page";
 import SectionWrapper from "./components/Sections/SectionWrapper";
+
+import MainSlate from './components/Slate/MainSlate.jsx';
 
 import { useSelector } from "react-redux";
 
@@ -20,8 +25,11 @@ const App = () => {
       <Outline />
       <Page resumeStyling={resumeStyling} >
         {sections.map((section) => (
-          <SectionWrapper key={section.id} {...section} />
+          <MainSlate id={section.id} data={section.data} key={section.id} />
         ))}
+        {/* {sections.map((section) => (
+          <SectionWrapper key={section.id} {...section} />
+        ))} */}
       </Page>
 
     </div>

@@ -1,4 +1,5 @@
-import React from "react";
+
+
 import { useDispatch } from "react-redux";
 import { updateField } from "../../store/resumeSlice";
 
@@ -27,6 +28,36 @@ const SectionWrapper = ({ id, type, data }) => {
       })
     );
   };
+
+  // // SLATE IMPLEMENTATION STARTS HERE
+
+  // const [editor] = useState(() => withReact(createEditor()));
+
+  // const initialValue = [
+  //   {
+  //     type: 'paragraph',
+  //     children: [{ text: 'A line of text in a paragraph.' }],
+  //   },
+  // ]
+
+  // const renderElement = useCallback(props => {
+  //   switch (props.element.type) {
+  //     default:
+  //       return <DefaultElement {...props} />
+  //   }
+  // }, [])
+
+  // if (editor) return (
+  //   <Slate
+  //     editor={editor}
+  //     initialValue={initialValue}
+  //   >
+  //     <Editable
+  //       renderElement={renderElement}
+  //     />
+  //   </Slate>
+  // )
+
   return (
 
     <div className="sectionContainerDiv">
@@ -72,22 +103,6 @@ const SectionWrapper = ({ id, type, data }) => {
       ))}
     </div>
   )
-  // switch (type) {
-  //   case "header":
-  //     return <Header id={id} data={data} handleFieldChange={handleFieldChange} />;
-  //   case "contact":
-  //     return <Contact id={id} data={data} handleFieldChange={handleFieldChange} />;
-  //   case "workHistory":
-  //     return <WorkHistory id={id} data={data} handleFieldChange={handleFieldChange} />;
-  //   case "education":
-  //     return <Education id={id} data={data} handleFieldChange={handleFieldChange} />;
-  //   case "skills":
-  //     return <Skills id={id} data={data} handleFieldChange={handleFieldChange} />;
-  //   case "summary":
-  //     return <Summary id={id} data={data} handleFieldChange={handleFieldChange} />;
-  //   default:
-  //     return <div>Unknown section type: {type}</div>;
-  // }
 }
 
 export default SectionWrapper;

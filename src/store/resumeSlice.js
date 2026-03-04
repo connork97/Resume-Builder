@@ -6,24 +6,78 @@ const createDefaultData = (type) => {
     case "header":
       return {
         sectionTitle: "Header",
-        styling: {display: 'none'},
+        styling: { textAlign: 'center' },
+        // styling: {},
         subsections: []
       };
 
     case "contact":
       return {
         sectionTitle: "Contact",
-        styling: {},
+        styling: { textAlign: 'center', justifyContent: 'center' },
         subsections: [
           {
             id: nanoid(),
-            styling: {display: 'flex', justifyContent: 'space-evenly'},
+            styling: { display: 'flex', justifyContent: 'space-evenly' },
             fields: [
-              { id: nanoid(), key: "value", label: "Email", styling: {}, value: "" },
-              { id: nanoid(), key: "value", label: "Phone", styling: {}, value: "" },
-              { id: nanoid(), key: "value", label: "Location", styling: {}, value: "" },
-              { id: nanoid(), key: "value", label: "Website", styling: {}, value: "" },
-              { id: nanoid(), key: "value", label: "LinkedIn", styling: {}, value: "" }
+              {
+                id: nanoid(),
+                key: "value",
+                label: "Email",
+                styling: {},
+                value: [
+                  {
+                    type: "paragraph",
+                    children: [{ text: "" }]
+                  }
+                ]
+              },
+              {
+                id: nanoid(),
+                key: "value",
+                label: "Phone",
+                styling: {},
+                value: [
+                  {
+                    type: "paragraph",
+                    children: [{ text: "" }]
+                  }
+                ]
+              },
+              {
+                id: nanoid(),
+                key: "value",
+                label: "Location", styling: {}, value: [
+                  {
+                    type: "paragraph",
+                    children: [{ text: "" }]
+                  }
+                ]
+              },
+              {
+                id: nanoid(),
+                key: "value",
+                label: "Website",
+                styling: {},
+                value: [
+                  {
+                    type: "paragraph",
+                    children: [{ text: "" }]
+                  }
+                ]
+              },
+              {
+                id: nanoid(),
+                key: "value",
+                label: "LinkedIn",
+                styling: {},
+                value: [
+                  {
+                    type: "paragraph",
+                    children: [{ text: "" }]
+                  }
+                ]
+              }
             ]
           },
         ]
@@ -32,13 +86,24 @@ const createDefaultData = (type) => {
     case "summary":
       return {
         sectionTitle: "Summary",
-        styling: {},
+        styling: { textAlign: 'center' },
         subsections: [
           {
             id: nanoid(),
             styling: {},
             fields: [
-              { id: nanoid(), key: "description", label: "Summary", styling: {}, value: "" }
+              {
+                id: nanoid(),
+                key: "description",
+                label: "Summary",
+                styling: {},
+                value: [
+                  {
+                    type: "paragraph",
+                    children: [{ text: "" }]
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -47,21 +112,21 @@ const createDefaultData = (type) => {
     case "skills":
       return {
         sectionTitle: "Skills",
-        styling: {},
+        styling: { textAlign: 'center' },
         subsections: []
       };
 
     case "workHistory":
       return {
         sectionTitle: "Work History",
-        styling: {},
+        styling: { textAlign: 'center' },
         subsections: []
       };
 
     case "education":
       return {
         sectionTitle: "Education",
-        styling: {},
+        styling: { textAlign: 'center' },
         subsections: []
       };
 
@@ -73,72 +138,358 @@ const createDefaultData = (type) => {
 // Default Subsection Fields (for Initial AND Additional Subsections)
 const createDefaultSubsection = (type) => {
   switch (type) {
+
     case "header":
       return {
-        // sectionTitle: "Header",
-        styling: {display: 'flex', flexDirection: 'column', margin: 'auto', textAlign: 'center'},
+        styling: {},
         fields: [
-          { id: nanoid(), key: "name", label: "Name", styling: {fontSize: '24px', fontWeight: 'bold'}, value: "" },
-          { id: nanoid(), key: "title", label: "Title", styling: {fontSize: '16px', fontWeight: 'bold'}, value: "" }
+          {
+            id: nanoid(),
+            key: "name",
+            label: "Name",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "title",
+            label: "Title",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
         ]
       };
 
     case "workHistory":
       return {
-        styling: {justifyContent: 'space-between'},
+        styling: { justifyContent: 'space-between' },
         fields: [
-          { id: nanoid(), key: "jobTitle", label: "Job Title", styling: {}, value: "" },
-          { id: nanoid(), key: "company", label: "Company", styling: {}, value: "" },
-          { id: nanoid(), key: "location", label: "Location", styling: {}, value: "" },
-          { id: nanoid(), key: "startDate", label: "Start Date", styling: {}, value: "" },
-          { id: nanoid(), key: "endDate", label: "End Date", styling: {}, value: "" },
-          { id: nanoid(), key: "description", label: "Description", styling: {}, value: "" }
+          {
+            id: nanoid(),
+            key: "jobTitle",
+            label: "Job Title",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "company",
+            label: "Company",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "location",
+            label: "Location",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "startDate",
+            label: "Start Date",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "endDate",
+            label: "End Date",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "description",
+            label: "Description",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          }
         ]
       };
 
     case "education":
       return {
-        styling: {justifyContent: 'space-between'},
+        styling: { justifyContent: 'space-between' },
         fields: [
-          { id: nanoid(), key: "school", label: "School", styling: {}, value: "" },
-          { id: nanoid(), key: "degree", label: "Degree", styling: {}, value: "" },
-          { id: nanoid(), key: "field", label: "Field of Study", styling: {}, value: "" },
-          { id: nanoid(), key: "location", label: "Location", styling: {}, value: "" },
-          { id: nanoid(), key: "startDate", label: "Start Date", styling: {}, value: "" },
-          { id: nanoid(), key: "endDate", label: "End Date", styling: {}, value: "" },
-          { id: nanoid(), key: "description", label: "Description", styling: {}, value: "" }
+          {
+            id: nanoid(),
+            key: "school",
+            label: "School",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "degree",
+            label: "Degree",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "field",
+            label: "Field of Study",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "location",
+            label: "Location",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "startDate",
+            label: "Start Date",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "endDate",
+            label: "End Date",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "description",
+            label: "Description",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          }
         ]
       };
 
     case "skills":
       return {
-        styling: {justifyContent: 'space-between'},
+        styling: { justifyContent: 'space-between' },
         fields: [
-          { id: nanoid(), key: "skill", label: "Skill", styling: {}, value: "" },
-          { id: nanoid(), key: "skill", label: "Skill", styling: {}, value: "" },
-          { id: nanoid(), key: "skill", label: "Skill", styling: {}, value: "" },
-          { id: nanoid(), key: "skill", label: "Skill", styling: {}, value: "" },
-          { id: nanoid(), key: "skill", label: "Skill", styling: {}, value: "" }
+          {
+            id: nanoid(),
+            key: "skill",
+            label: "Skill",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "skill",
+            label: "Skill",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "skill",
+            label: "Skill",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "skill",
+            label: "Skill",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "skill",
+            label: "Skill",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          }
         ]
       };
 
     case "contact":
       return {
-        styling: {justifyContent: 'space-evenly'},
+        styling: { justifyContent: 'space-evenly' },
         fields: [
-          { id: nanoid(), key: "value", label: "Contact", styling: {}, value: "" },
-          { id: nanoid(), key: "value", label: "Contact", styling: {}, value: "" },
-          { id: nanoid(), key: "value", label: "Contact", styling: {}, value: "" },
-          { id: nanoid(), key: "value", label: "Contact", styling: {}, value: "" },
-          { id: nanoid(), key: "value", label: "Contact", styling: {}, value: "" }
+          {
+            id: nanoid(),
+            key: "value",
+            label: "Contact",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "value",
+            label: "Contact",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "value",
+            label: "Contact",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "value",
+            label: "Contact",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          },
+          {
+            id: nanoid(),
+            key: "value",
+            label: "Contact",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          }
         ]
       };
-    
+
     case "summary":
       return {
         styling: {},
         fields: [
-          { id: nanoid(), key: "description", label: "Summary", styling: {}, value: "" }
+          {
+            id: nanoid(),
+            key: "description",
+            label: "Summary",
+            styling: {},
+            value: [
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]
+          }
         ]
       };
 
@@ -150,7 +501,7 @@ const createDefaultSubsection = (type) => {
 // Resume Slice
 
 const initialState = {
-  styling: {background: '#ffffff'},
+  styling: { background: '#ffffff' },
   sections: []
 };
 

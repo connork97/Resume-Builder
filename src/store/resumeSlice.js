@@ -131,7 +131,6 @@ const createDefaultSubsection = (type) => {
           { id: nanoid(), key: "value", label: "Contact", styling: {}, value: "" },
           { id: nanoid(), key: "value", label: "Contact", styling: {}, value: "" },
           { id: nanoid(), key: "value", label: "Contact", styling: {}, value: "" }
-          // { id: nanoid(), key: "value", label: "Value", value: "" }
         ]
       };
     
@@ -151,6 +150,7 @@ const createDefaultSubsection = (type) => {
 // Resume Slice
 
 const initialState = {
+  styling: {background: '#ffffff'},
   sections: []
 };
 

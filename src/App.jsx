@@ -11,13 +11,14 @@ import { useSelector } from "react-redux";
 
 const App = () => {
 
+  const resumeStyling = useSelector((state) => state.resume.styling)
   const sections = useSelector((state) => state.resume.sections);
 
   return (
     <div className={styles.appContainerDiv}>
       <Toolbar />
       <Outline />
-      <Page>
+      <Page resumeStyling={resumeStyling} >
         {sections.map((section) => (
           <SectionWrapper key={section.id} {...section} />
         ))}

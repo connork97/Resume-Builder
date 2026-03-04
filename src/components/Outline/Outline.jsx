@@ -164,7 +164,7 @@ const toggleOpen = (id) => {
         <div className={styles.outlineContainer}>
           <h1 className={styles.outlineTitle}>Resume Outline</h1>
 
-      {!sections.length ? <h2>No Sections to </h2> : sections.map((section, index) => (
+      {!sections.length ? <h2>No Sections to Display</h2> : sections.map((section, index) => (
         <div
           key={section.id}
           className={`${styles.sectionBlock} ${styles.sectionRow}`}

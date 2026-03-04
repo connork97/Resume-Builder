@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-const AutoWidthInput = ({ value, placeholder, className, onChange }) => {
+const AutoWidthInput = ({ value, placeholder, styling, className, onChange }) => {
   const spanRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -22,6 +22,7 @@ const AutoWidthInput = ({ value, placeholder, className, onChange }) => {
           whiteSpace: "pre",
           font: "inherit",
           padding: "0",
+          ...styling
         }}
       />
       <input
@@ -34,7 +35,8 @@ const AutoWidthInput = ({ value, placeholder, className, onChange }) => {
           width: "auto",
           minWidth: "1ch",
           boxSizing: "content-box",
-          ...((value.length || placeholder.length) && {borderBottom: 'none'})
+          ...((value.length || placeholder.length) && {borderBottom: 'none'}),
+          ...styling
         }}
       />
     </div>

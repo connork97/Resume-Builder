@@ -1,5 +1,4 @@
-import { useDispatch } from "react-redux";
-import { updateField } from "../../store/resumeSlice";
+import React from "react";
 import AutoWidthInput from "../AutoWidthInput"; // adjust path as needed
 import "./Sections.css";
 

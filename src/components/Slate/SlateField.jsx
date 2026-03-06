@@ -40,7 +40,7 @@ const SlateField = (({ field, sectionId, subsectionId }) => {
         { type: 'paragraph', children: [{ text: '' }] }
       ]}
       onChange={handleUpdateField}
-    >
+      >
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}

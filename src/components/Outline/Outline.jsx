@@ -6,8 +6,6 @@ import {
   updateField,
 } from "../../store/resumeSlice";
 
-import SlateField from '../Slate/SlateField.jsx';
-
 import OutlineSection from "./OutlineSection.jsx";
 import FieldRow from "./FieldRow.jsx";
 
@@ -18,31 +16,19 @@ const Outline = () => {
   const sections = useSelector((state) => state.resume.sections);
 
   const [outlineIsHidden, setOutlineIsHidden] = useState(false);
-  const [openSections, setOpenSections] = useState({});
 
-  // Single source of truth for any active drag
-  // type: "section" | "subsection" | "field"
-  // sectionId: string
-  // subsectionId: string | null
-  // index: number (position within its parent)
+  // Collapse state for SECTIONS
+  const [collapsedSections, setCollapsedSections] = useState({});
 
-  const [dragItem, setDragItem] = useState(null);
-
-  const toggleOpen = (id) => {
-    setOpenSections((prev) => {
-      const isCurrentlyOpen = !!prev[id];
-
-      // If clicking an already-open section → close all
-      if (isCurrentlyOpen) {
-        return {};
-      }
-
-      // Otherwise open only this one
-      return { [id]: true };
-    });
+  const toggleSection = (id) => {
+    setCollapsedSections((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
-  // Section Drag/Reorder Handler
+  // Drag state
+  const [dragItem, setDragItem] = useState(null);
 
   const handleSectionDragStart = (e, index, sectionId) => {
     if (dragItem) return;
@@ -58,7 +44,7 @@ const Outline = () => {
     dispatch(
       reorderSections({
         fromIndex: dragItem.index,
-        toIndex: index
+        toIndex: index,
       })
     );
 
@@ -69,65 +55,26 @@ const Outline = () => {
     setDragItem(null);
   };
 
-  // Field Change Handler
-
   const handleFieldChange = (sectionId, subsectionId, fieldId, value) => {
     dispatch(
       updateField({
         sectionId,
         subsectionId,
         fieldId,
-        newValue: value
+        newValue: value,
       })
     );
   };
 
-  //  SECTION CONTENT RENDERER
-
-  const renderSectionContent = (section) => {
-    const { type, data } = section;
-
-    // Header & Summary
-    // if (type === "header" || type === "summary") {
-    //   return (
-    //     <div className={styles.sectionContent}>
-    //       {data.fields?.map((field, fieldIndex) =>
-    //         renderFieldRow(section.id, null, field, fieldIndex)
-    //       )}
-    //     </div>
-    //   );
-    // }
-
-    // Sections with Subsections
-    return (
-      <OutlineSection
-        dispatch={dispatch}
-        data={data}
-        section={section}
-        dragItem={dragItem}
-        setDragItem={setDragItem}
-        renderFieldRow={renderFieldRow}
-      />
-    )
-  };
-
-  // FIELD ROW RENDERER
-
   const renderFieldRow = (
     sectionId,
-    subsectionId, // null for header/summary
+    subsectionId,
     field,
     fieldIndex
   ) => {
     const isHeaderOrSummary = subsectionId === null;
 
     return (
-      // <SlateField
-      //   // key={Math.random()}
-      //   field={field}
-      //   sectionId={sectionId}
-      //   subsectionId={subsectionId}
-      // />
       <FieldRow
         key={field.id}
         dispatch={dispatch}
@@ -143,31 +90,37 @@ const Outline = () => {
     );
   };
 
-  // MAIN RENDER
-
   return (
     <div
-      className={`${styles.outlineWrapper} ${outlineIsHidden ? styles.hidden : styles.visible
-        }`}
+      className={`${styles.outlineWrapper} ${
+        outlineIsHidden ? styles.hidden : styles.visible
+      }`}
     >
       <button
-        className={!outlineIsHidden ? styles.hideOutlineButton : styles.showOutlineButton}
+        className={
+          !outlineIsHidden
+            ? styles.hideOutlineButton
+            : styles.showOutlineButton
+        }
         onClick={() => setOutlineIsHidden(!outlineIsHidden)}
       >
-        {!outlineIsHidden ? '⟨⟨⟨' : '⟩⟩⟩'}
+        {!outlineIsHidden ? "⟨⟨⟨" : "⟩⟩⟩"}
       </button>
 
+      <div className={styles.outlineContainer}>
+        <h1 className={styles.outlineTitle}>Resume Outline</h1>
 
-      {
-        <div className={styles.outlineContainer}>
-          <h1 className={styles.outlineTitle}>Resume Outline</h1>
-
-          {!sections.length ? <h2>No Sections to Display</h2> : sections.map((section, index) => (
+        {!sections.length ? (
+          <h2>No Sections to Display</h2>
+        ) : (
+          sections.map((section, index) => (
             <div
               key={section.id}
               className={`${styles.sectionBlock} ${styles.sectionRow}`}
               draggable={true}
-              onDragStart={(e) => handleSectionDragStart(e, index, section.id)}
+              onDragStart={(e) =>
+                handleSectionDragStart(e, index, section.id)
+              }
               onDragOver={(e) => handleSectionDragOver(e, index)}
               onDragEnd={handleSectionDragEnd}
               onDrop={() => setDragItem(null)}
@@ -180,16 +133,24 @@ const Outline = () => {
                 </div>
 
                 <button
-                  className={styles.dropdownButton}
-                  onClick={() => toggleOpen(section.id)}
+                  className={styles.collapseButton}
+                  onClick={() => toggleSection(section.id)}
                 >
-                  ▾
+                  {/* {collapsedSections[section.id] ? "▶" : "▼"} */}
+                  ▼
                 </button>
               </div>
 
-              {openSections[section.id] && (
+              {!collapsedSections[section.id] && (
                 <div className={styles.sectionContent}>
-                  {renderSectionContent(section)}
+                  <OutlineSection
+                    dispatch={dispatch}
+                    data={section.data}
+                    section={section}
+                    dragItem={dragItem}
+                    setDragItem={setDragItem}
+                    renderFieldRow={renderFieldRow}
+                  />
 
                   <button
                     className={styles.deleteSectionButton}
@@ -200,9 +161,9 @@ const Outline = () => {
                 </div>
               )}
             </div>
-          ))}
-        </div>
-      }
+          ))
+        )}
+      </div>
     </div>
   );
 };

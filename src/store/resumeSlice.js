@@ -18,7 +18,7 @@ const createDefaultData = (type) => {
         subsections: [
           {
             id: nanoid(),
-            styling: { display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' },
+            styling: { display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' },
             fields: [
               {
                 id: nanoid(),

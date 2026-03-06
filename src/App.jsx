@@ -25,7 +25,7 @@ const App = () => {
       <Outline />
       <Page resumeStyling={resumeStyling} >
         {sections.map((section) => (
-          <MainSlate id={section.id} data={section.data} key={section.id} />
+          <MainSlate key={section.id} section={section} />
         ))}
         {/* {sections.map((section) => (
           <SectionWrapper key={section.id} {...section} />

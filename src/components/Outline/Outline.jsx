@@ -3,14 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   reorderSections,
   deleteSection,
-  addSubsection,
-  deleteSubsection,
-  reorderSubsections,
-  addField,
   updateField,
-  deleteField,
-  reorderFields
 } from "../../store/resumeSlice";
+
+import SlateField from '../Slate/SlateField.jsx';
 
 import OutlineSection from "./OutlineSection.jsx";
 import FieldRow from "./FieldRow.jsx";
@@ -32,22 +28,19 @@ const Outline = () => {
 
   const [dragItem, setDragItem] = useState(null);
 
-  // const toggleOpen = (id) => {
-  //   setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
-  // };
-const toggleOpen = (id) => {
-  setOpenSections((prev) => {
-    const isCurrentlyOpen = !!prev[id];
+  const toggleOpen = (id) => {
+    setOpenSections((prev) => {
+      const isCurrentlyOpen = !!prev[id];
 
-    // If clicking an already-open section → close all
-    if (isCurrentlyOpen) {
-      return {};
-    }
+      // If clicking an already-open section → close all
+      if (isCurrentlyOpen) {
+        return {};
+      }
 
-    // Otherwise open only this one
-    return { [id]: true };
-  });
-};
+      // Otherwise open only this one
+      return { [id]: true };
+    });
+  };
 
   // Section Drag/Reorder Handler
 
@@ -129,6 +122,12 @@ const toggleOpen = (id) => {
     const isHeaderOrSummary = subsectionId === null;
 
     return (
+      // <SlateField
+      //   // key={Math.random()}
+      //   field={field}
+      //   sectionId={sectionId}
+      //   subsectionId={subsectionId}
+      // />
       <FieldRow
         key={field.id}
         dispatch={dispatch}
@@ -148,61 +147,60 @@ const toggleOpen = (id) => {
 
   return (
     <div
-      className={`${styles.outlineWrapper} ${
-        outlineIsHidden ? styles.hidden : styles.visible
-      }`}
+      className={`${styles.outlineWrapper} ${outlineIsHidden ? styles.hidden : styles.visible
+        }`}
     >
-        <button
-          className={!outlineIsHidden ? styles.hideOutlineButton : styles.showOutlineButton}
-          onClick={() => setOutlineIsHidden(!outlineIsHidden)}
-        >
-          {!outlineIsHidden ? '⟨⟨⟨' : '⟩⟩⟩'}
-        </button>
+      <button
+        className={!outlineIsHidden ? styles.hideOutlineButton : styles.showOutlineButton}
+        onClick={() => setOutlineIsHidden(!outlineIsHidden)}
+      >
+        {!outlineIsHidden ? '⟨⟨⟨' : '⟩⟩⟩'}
+      </button>
 
 
       {
         <div className={styles.outlineContainer}>
           <h1 className={styles.outlineTitle}>Resume Outline</h1>
 
-      {!sections.length ? <h2>No Sections to Display</h2> : sections.map((section, index) => (
-        <div
-          key={section.id}
-          className={`${styles.sectionBlock} ${styles.sectionRow}`}
-          draggable={true}
-          onDragStart={(e) => handleSectionDragStart(e, index, section.id)}
-          onDragOver={(e) => handleSectionDragOver(e, index)}
-          onDragEnd={handleSectionDragEnd}
-          onDrop={() => setDragItem(null)}
-        >
-          <div className={styles.sectionHeader}>
-            <div className={styles.dragHandle}>⋮⋮</div>
-
-            <div className={styles.sectionTitle}>
-              {section.data.sectionTitle}
-            </div>
-
-            <button
-              className={styles.dropdownButton}
-              onClick={() => toggleOpen(section.id)}
+          {!sections.length ? <h2>No Sections to Display</h2> : sections.map((section, index) => (
+            <div
+              key={section.id}
+              className={`${styles.sectionBlock} ${styles.sectionRow}`}
+              draggable={true}
+              onDragStart={(e) => handleSectionDragStart(e, index, section.id)}
+              onDragOver={(e) => handleSectionDragOver(e, index)}
+              onDragEnd={handleSectionDragEnd}
+              onDrop={() => setDragItem(null)}
             >
-              ▾
-            </button>
-          </div>
+              <div className={styles.sectionHeader}>
+                <div className={styles.dragHandle}>⋮⋮</div>
 
-          {openSections[section.id] && (
-            <div className={styles.sectionContent}>
-              {renderSectionContent(section)}
+                <div className={styles.sectionTitle}>
+                  {section.data.sectionTitle}
+                </div>
 
-              <button
-                className={styles.deleteSectionButton}
-                onClick={() => dispatch(deleteSection(section.id))}
-              >
-                Delete Section
-              </button>
+                <button
+                  className={styles.dropdownButton}
+                  onClick={() => toggleOpen(section.id)}
+                >
+                  ▾
+                </button>
+              </div>
+
+              {openSections[section.id] && (
+                <div className={styles.sectionContent}>
+                  {renderSectionContent(section)}
+
+                  <button
+                    className={styles.deleteSectionButton}
+                    onClick={() => dispatch(deleteSection(section.id))}
+                  >
+                    Delete Section
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      ))}
+          ))}
         </div>
       }
     </div>

@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  reorderSections,
-  deleteSection,
   addSubsection,
   deleteSubsection,
   reorderSubsections,
   addField,
-  updateField,
-  deleteField,
-  reorderFields
 } from "../../store/resumeSlice";
 
 import styles from "./Outline.module.css";

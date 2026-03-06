@@ -14,11 +14,11 @@ const createDefaultData = (type) => {
     case "contact":
       return {
         sectionTitle: "Contact",
-        styling: { textAlign: 'center', justifyContent: 'center' },
+        styling: { display: 'flex', flexDirection: 'row', textAlign: 'center', justifyContent: 'center' },
         subsections: [
           {
             id: nanoid(),
-            styling: { display: 'flex', justifyContent: 'space-evenly' },
+            styling: { display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' },
             fields: [
               {
                 id: nanoid(),
@@ -28,7 +28,7 @@ const createDefaultData = (type) => {
                 value: [
                   {
                     type: "paragraph",
-                    children: [{ text: "" }]
+                    children: [{ text: "this is a ", italic: true, fontSize: '30px' }, {text: "bolded string", bold: true, fontSize: '10px' }]
                   }
                 ]
               },
@@ -47,7 +47,9 @@ const createDefaultData = (type) => {
               {
                 id: nanoid(),
                 key: "value",
-                label: "Location", styling: {}, value: [
+                label: "Location",
+                styling: {},
+                value: [
                   {
                     type: "paragraph",
                     children: [{ text: "" }]

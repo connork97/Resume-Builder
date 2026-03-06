@@ -110,12 +110,26 @@
   font-size: 1.75vh;
 }
 
+.subFieldText, .placeholderFieldText {
+  /* background: #3a3a3a; */
+  /* border: 1px solid #555; */
+  color: #ffffff;
+  padding: 0.75vh;
+  border-radius: 0.5vh;
+  font-size: 1.75vh;
+}
+
+.placeholderFieldText {
+  color: rgba(255, 255, 255, 0.25);
+}
+
 .fieldInputRow {
   display: flex;
+  width: 100%;
 }
 
 .fieldInputRow .deleteButton {
-  margin-left: 1vh;
+  margin-left: auto;
 }
 
 .subInput:focus {

@@ -23,6 +23,7 @@
   margin-bottom: 3vh;
   /* text-align: center; */
   justify-content: space-between;
+  align-items: center;
   display: flex;
 }
 
@@ -50,6 +51,7 @@
 
 .dragHandle {
   cursor: grab;
+  display: flex;
   padding: 0 1vh;
   font-size: 2.5vh;
   user-select: none;
@@ -73,7 +75,7 @@
 
 .collapseButton {
   background: none;
-  /* margin-left: 10vh; */
+  margin-left: auto;
   border: none;
   color: white;
   font-size: 2.5vh;
@@ -228,12 +230,11 @@
 }
 
 .hideOutlineButton, .showOutlineButton {
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  top: 9.25vh;
+  position: fixed;
+  top: 9vh;
   width: 5vh;
   margin: auto;
+  font-size: 2.25vh;
   justify-content: center;
   align-items: center;
   /* width: 15vh; */
@@ -248,14 +249,12 @@
   cursor: pointer;
   /* scale: 1.25; */
   font-weight: bold;
-  z-index: 10;
+  z-index: 100;
 }
 
 .showOutlineButton {
   left: 43.5vh;
   background: #555;
-
-  /* left: 0; */
   /* transform: translateX(100%); */
 }
 

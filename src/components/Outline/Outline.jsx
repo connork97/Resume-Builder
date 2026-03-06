@@ -96,19 +96,20 @@ const Outline = () => {
         outlineIsHidden ? styles.hidden : styles.visible
       }`}
     >
-      <button
-        className={
-          !outlineIsHidden
-            ? styles.hideOutlineButton
-            : styles.showOutlineButton
-        }
-        onClick={() => setOutlineIsHidden(!outlineIsHidden)}
-      >
-        {!outlineIsHidden ? "⟨⟨⟨" : "⟩⟩⟩"}
-      </button>
 
       <div className={styles.outlineContainer}>
-        <h1 className={styles.outlineTitle}>Resume Outline</h1>
+        <div className={styles.outlineTitle}>Resume Outline
+        </div>
+          <button
+            className={
+              !outlineIsHidden
+              ? styles.hideOutlineButton
+              : styles.showOutlineButton
+            }
+            onClick={() => setOutlineIsHidden(!outlineIsHidden)}
+            >
+            {!outlineIsHidden ? "⟨⟨⟨" : "⟩⟩⟩"}
+          </button>
 
         {!sections.length ? (
           <h2>No Sections to Display</h2>

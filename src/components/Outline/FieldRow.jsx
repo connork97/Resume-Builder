@@ -13,7 +13,7 @@ import {
 const FieldRow = ({ dispatch, field, fieldIndex, sectionId, subsectionId, handleFieldChange, isHeaderOrSummary, dragItem, setDragItem }) => {
   //  console.log(field.value[0].children)
   // console.log("FIELD", field.value[0].children[0].text)
-  console.log("FIELD:", field.value[0].children[0].text)
+  // console.log("FIELD:", field.value[0].children[0].text)
 
   // const fieldValueText = field.value[0].children[0].text;
   const fieldValueText = Node.string(field.value[0]);

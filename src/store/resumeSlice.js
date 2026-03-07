@@ -524,7 +524,7 @@ const resumeSlice = createSlice({
   reducers: {
     setActiveEditorId(state, action) {
       state.activeEditorId = action.payload;
-      console.log('PAYLOAD: ', action.payload)
+      // console.log('PAYLOAD: ', action.payload)
       // return state.activeEditorId;
     },
 

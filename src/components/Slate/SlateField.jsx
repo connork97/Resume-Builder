@@ -4,6 +4,7 @@ import { createEditor } from "slate";
 import { useDispatch } from "react-redux";
 import { updateField, setActiveEditorId } from "../../store/resumeSlice.js";
 import renderLeaf from './renderLeaf.jsx';
+import RenderElement from './RenderElement.jsx';
 
 import { editorRegistry } from './editorRegistry.js';
 import { nanoid } from '@reduxjs/toolkit';
@@ -17,18 +18,20 @@ const SlateField = (({ field, sectionId, subsectionId }) => {
   // console.log('EDITOR:', editor)
   useEffect(() => {
     editorRegistry.set(editorId, editor);
-    console.log("EDITOR REGISTRY: ", editorRegistry)
+    // console.log("EDITOR REGISTRY: ", editorRegistry)
     return () => editorRegistry.delete(editorId);
   }, [editorId, editor]);
 
-
-
   if (!field.value) return null;
+  
   const renderElement = useCallback((props) => {
     return (
-      <p {...props.attributes} style={{ minWidth: "4rem" }}>
-        {props.children}
-      </p>
+      <RenderElement
+        attributes={props.attributes}
+        type={props.element.type}
+        children={props.children}
+        styling={{ minWidth: '4rem' }}
+      />
     );
   }, []);
 

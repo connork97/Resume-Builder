@@ -1,0 +1,26 @@
+.toolbarContainer {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  /* background: #f5f5f5; */
+  /* border-bottom: 1px solid #ddd; */
+}
+
+.toolbarButton {
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.toolbarButton:hover {
+  background: #eee;
+}
+
+.active {
+  background: #333;
+  color: white;
+  border-color: #333;
+}

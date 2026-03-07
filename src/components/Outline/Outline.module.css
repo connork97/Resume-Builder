@@ -212,10 +212,6 @@
   z-index: 999;
 }
 
-.visible {
-  /* transform: translateX(0); */
-}
-
 .hidden {
   transform: translateX(-40.5vh);
 }

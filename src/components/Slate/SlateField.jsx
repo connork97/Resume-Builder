@@ -1,15 +1,28 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useEffect } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor } from "slate";
 import { useDispatch } from "react-redux";
-import { updateField } from "../../store/resumeSlice";
+import { updateField, setActiveEditorId } from "../../store/resumeSlice.js";
 import renderLeaf from './renderLeaf.jsx';
+
+import { editorRegistry } from './editorRegistry.js';
+import { nanoid } from '@reduxjs/toolkit';
 
 const SlateField = (({ field, sectionId, subsectionId }) => {
   const dispatch = useDispatch();
 
   // Stable editor instance
+  const editorId = useMemo(() => nanoid(), []);
   const editor = useMemo(() => withReact(createEditor()), []);
+  // console.log('EDITOR:', editor)
+  useEffect(() => {
+    editorRegistry.set(editorId, editor);
+    console.log("EDITOR REGISTRY: ", editorRegistry)
+    return () => editorRegistry.delete(editorId);
+  }, [editorId, editor]);
+
+
+
   if (!field.value) return null;
   const renderElement = useCallback((props) => {
     return (
@@ -40,8 +53,9 @@ const SlateField = (({ field, sectionId, subsectionId }) => {
         { type: 'paragraph', children: [{ text: '' }] }
       ]}
       onChange={handleUpdateField}
-      >
+    >
       <Editable
+        onFocus={() => dispatch(setActiveEditorId(editorId))}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={field.label}

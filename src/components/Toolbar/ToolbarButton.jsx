@@ -8,6 +8,7 @@ const ToolbarButton = (props) => {
       <button
          className={styles.toolbarButton}
          onClick={props.command}
+         style={props.styling}
       >
          {props.text}
       </button>

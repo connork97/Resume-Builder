@@ -14,11 +14,21 @@ const createDefaultData = (type) => {
     case "contact":
       return {
         sectionTitle: "Contact",
-        styling: { display: 'flex', flexDirection: 'row', textAlign: 'center', justifyContent: 'center' },
+        styling: {
+          display: 'flex',
+          flexDirection: 'row',
+          textAlign: 'center',
+          justifyContent: 'center'
+        },
         subsections: [
           {
             id: nanoid(),
-            styling: { display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' },
+            styling: {
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+              alignItems: 'center'
+            },
             fields: [
               {
                 id: nanoid(),
@@ -504,13 +514,20 @@ const createDefaultSubsection = (type) => {
 
 const initialState = {
   styling: { background: '#ffffff' },
-  sections: []
+  sections: [],
+  activeEditorId: null
 };
 
 const resumeSlice = createSlice({
   name: "resume",
   initialState,
   reducers: {
+    setActiveEditorId(state, action) {
+      state.activeEditorId = action.payload;
+      console.log('PAYLOAD: ', action.payload)
+      // return state.activeEditorId;
+    },
+
     addSection: {
       reducer(state, action) {
         state.sections.push(action.payload);
@@ -657,6 +674,7 @@ const resumeSlice = createSlice({
 });
 
 export const {
+  setActiveEditorId,
   addSection,
   updateSection,
   deleteSection,

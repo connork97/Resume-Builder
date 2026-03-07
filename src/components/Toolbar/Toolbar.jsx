@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./Toolbar.module.css";
 
+import RichTextToolbar from "./RichTextToolbar.jsx";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addSection, addSubsection } from "../../store/resumeSlice";
 
@@ -51,28 +53,27 @@ const Toolbar = () => {
 
   return (
     <div className={styles.toolbarContainerDiv} ref={dropdownRef}>
+      <RichTextToolbar />
       <div className={styles.addSectionWrapperDiv}>
-
-      <button
-        className={styles.addSectionButton}
-        onClick={() => setOpen((prev) => !prev)}
+        <button
+          className={styles.addSectionButton}
+          onClick={() => setOpen((prev) => !prev)}
         >
-        + Add Section
-      </button>
-
-      {open && (
-        <div className={styles.dropdownMenu}>
-          {sectionOptions.map((option) => (
-            <div
-            key={option.type}
-            className={styles.dropdownItem}
-            onClick={() => handleAddOrAppend(option.type)}
-            >
-              {option.label}
-            </div>
-          ))}
-        </div>
-      )}
+          + Add Section
+        </button>
+        {open && (
+          <div className={styles.dropdownMenu}>
+            {sectionOptions.map((option) => (
+              <div
+                key={option.type}
+                className={styles.dropdownItem}
+                onClick={() => handleAddOrAppend(option.type)}
+              >
+                {option.label}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

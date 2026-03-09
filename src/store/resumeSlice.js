@@ -1,7 +1,7 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 // Default Data for Brand New Section
-const createDefaultData = (type) => {
+const createDefaultSection = (type) => {
   switch (type) {
     case "header":
       return {
@@ -524,6 +524,7 @@ const resumeSlice = createSlice({
   reducers: {
     setActiveEditorId(state, action) {
       state.activeEditorId = action.payload;
+      
       // console.log('PAYLOAD: ', action.payload)
       // return state.activeEditorId;
     },
@@ -533,7 +534,7 @@ const resumeSlice = createSlice({
         state.sections.push(action.payload);
       },
       prepare(type, columnIndex = 0) {
-        const baseData = createDefaultData(type);
+        const baseData = createDefaultSection(type);
 
         let data = { ...baseData };
 

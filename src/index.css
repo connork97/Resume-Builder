@@ -1,4 +1,4 @@
-/* 1. Reset + box model */
+/* Reset + box model */
 *,
 *::before,
 *::after {
@@ -7,7 +7,7 @@
   padding: 0;
 }
 
-/* 2. Root defaults */
+/* Root defaults */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -22,14 +22,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 3. Body layout */
+/* Body layout */
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* 4. Remove default button/input styles without breaking usability */
+/* Remove default button/input styles without breaking usability */
 button,
 input,
 textarea,
@@ -38,13 +38,17 @@ select {
   color: inherit;
 }
 
-/* 5. Links (not required yet, but safe defaults) */
+/* Links (not required yet, but safe defaults) */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* 6. Prevent contentEditable from inheriting weird outlines */
+/* Prevent contentEditable from inheriting weird outlines */
 [contenteditable]:focus {
   outline: none;
+}
+
+ul, ol {
+  padding-left: 1.25rem;
 }

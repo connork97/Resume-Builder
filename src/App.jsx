@@ -23,7 +23,25 @@ const App = () => {
     <div className={styles.appContainerDiv}>
       <Toolbar />
       <Outline />
-      <Page resumeStyling={resumeStyling} >
+      <Page resumeStyling={resumeStyling}>
+      {/* <div>
+        <ul>
+          <li>Bullet 1</li>
+          <li>Bullet 2</li>
+          <li>Bullet 3</li>
+          <ul>
+            <li>Indented Bullet 1</li>
+            <ul>
+              <li><p>Extra indented bullet 1</p></li>
+              <li><p>Extra indented bullet 2</p></li>
+                          <ul>
+              <li><p>Extra extra indented bullet 1</p></li>
+              <li><p>Extra extra indented bullet 2</p></li>
+            </ul>
+            </ul>
+          </ul>
+        </ul>
+      </div> */}
         {sections.map((section) => (
           <MainSlate key={section.id} section={section} />
         ))}

@@ -35,14 +35,14 @@ const RichTextToolbar = () => {
       />
       <ToolbarButton
         text="•"
-        active={editor && isBlockActive(editor, "bulleted-list")}
-        command={() => editor && toggleBlock(editor, "bulleted-list")}
+        active={editor && isBlockActive(editor, "unordered-list")}
+        command={() => editor && toggleBlock(editor, "unordered-list")}
       />
 
       <ToolbarButton
         text="1."
-        active={editor && isBlockActive(editor, "numbered-list")}
-        command={() => editor && toggleBlock(editor, "numbered-list")}
+        active={editor && isBlockActive(editor, "ordered-list")}
+        command={() => editor && toggleBlock(editor, "ordered-list")}
       />
 
     </div>

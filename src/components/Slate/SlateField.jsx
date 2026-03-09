@@ -49,6 +49,10 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
   };
 
   const handleKeyDown = (event) => {
+    // Early exit from keydown function
+    const validKeyDowns = ['Enter', 'Tab']
+    if (!validKeyDowns.includes(event.key)) return;
+
     const [listItemEntry] = Editor.nodes(editor, {
       match: (n) => n.type === "list-item",
     });
@@ -58,9 +62,12 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
       return;
     };
 
-    if (event.key === "Enter") {
+    if (validKeyDowns.includes(event.key)) {
       event.preventDefault();
       event.stopPropagation();
+    };
+
+    if (event.key === "Enter") {
       // Editor.normalize(editor, { force: true });
       console.log("Adding List Item.")
       addListItem(editor, listItemEntry);
@@ -68,8 +75,6 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
     }
 
     if (event.key === "Tab") {
-      event.preventDefault();
-      event.stopPropagation();
       // Editor.normalize(editor, { force: true });
       if (event.shiftKey) {
         console.log("Outdenting List Item.")

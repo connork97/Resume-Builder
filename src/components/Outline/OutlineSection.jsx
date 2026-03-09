@@ -43,7 +43,12 @@ const OutlineSection = ({
         fieldData: {
           key: "customField",
           label: "New Field",
-          value: "",
+          value: [
+            {
+              type: 'paragraph',
+              children: [{ text: '' }]
+            }
+          ],
         },
       })
     );

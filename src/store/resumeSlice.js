@@ -15,10 +15,7 @@ const createDefaultSection = (type) => {
       return {
         sectionTitle: "Contact",
         styling: {
-          display: 'flex',
-          flexDirection: 'row',
           textAlign: 'center',
-          justifyContent: 'center'
         },
         subsections: [
           {
@@ -354,7 +351,7 @@ const createDefaultSubsection = (type) => {
 
     case "skills":
       return {
-        styling: { justifyContent: 'space-between' },
+        styling: { display: 'flex', justifyContent: 'space-between' },
         fields: [
           {
             id: nanoid(),

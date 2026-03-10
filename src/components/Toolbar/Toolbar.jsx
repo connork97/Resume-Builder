@@ -5,10 +5,9 @@ import RichTextToolbar from "./RichTextToolbar.jsx";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addSection, addSubsection } from "../../store/resumeSlice";
-import { nanoid } from "@reduxjs/toolkit";
 
 const Toolbar = () => {
-  // Function to add each section type, as well as default data for each section upon page load.  Just use lorem ipsum text, with each word filling in each subsection field
+  // Function to add each section type, as well as default/dummy data for each section upon page load.  Just use lorem ipsum text, with each word filling in each subsection field
   const initialized = useRef(false);
   const addDefaultSections = () => {
     if (sections.length > 0) return; // Prevent adding sections if already present
@@ -30,6 +29,7 @@ const Toolbar = () => {
       handleAddOrAppend(option.type, {}, data);
     });
   };
+  // End default/dummy data function
   
   useEffect(() => {
     if (initialized.current) return;

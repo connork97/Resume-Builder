@@ -1,21 +1,24 @@
 import React from 'react';
 
-const RenderElement = ({ attributes, children, type, styling }) => {
+const RenderElement = ({ element, attributes, children, type }) => {
    // console.log(attributes, children)
+   const stylingObj = {
+      textAlign: element.textAlign,
+      // fontSize: element.fontSize,
+      // color: element.color,
+      // backgroundColor: element.backgroundColor
+   }
    switch (type) {
       case 'unordered-list':
          return <ul {...attributes}>{children}</ul>
       case 'ordered-list':
          return <ol {...attributes}>{children}</ol>
       case 'list-item':
-         return (
-            <li {...attributes}>
-               {children}
-               {/* <p>{children}</p> */}
-            </li>
-         )
+         return <li {...attributes}>{children}</li>
+      case 'paragraph':
+         return <p {...attributes} style={stylingObj}>{children}</p>
       default:
-         return <p {...attributes}>{children}</p>
+         return <p {...attributes} style={stylingObj}>{children}</p>
    }
 }
 

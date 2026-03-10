@@ -15,6 +15,14 @@ const renderLeaf = (props) => {
     styledChildren = <u>{styledChildren}</u>;
   }
 
+  if (leaf.strikeThrough) {
+    styledChildren = <s>{styledChildren}</s>;
+  }
+
+  // if (leaf.align) {
+  //   styledChildren = <span style={leaf.align}>{styledChildren}</span>;
+  // }
+
   if (leaf.color) {
     styledChildren = <span style={{ color: leaf.color }}>{styledChildren}</span>;
   }

@@ -30,8 +30,9 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
   const renderElement = useCallback((props) => {
     return (
       <RenderElement
-        attributes={props.attributes}
+        element={props.element}
         type={props.element.type}
+        attributes={props.attributes}
         children={props.children}
       />
     );

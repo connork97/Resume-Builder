@@ -9,7 +9,7 @@ export const isBlockActive = (editor, format) => {
    return !!match;
 };
 
-export const toggleBlock = (editor, format) => {
+export const toggleList = (editor, format) => {
    const isActive = isBlockActive(editor, format);
    const isList = LIST_TYPES.includes(format);
 
@@ -26,7 +26,11 @@ export const toggleBlock = (editor, format) => {
          ? "list-item"
          : format;
 
-   Transforms.setNodes(editor, { type: newType });
+   Transforms.setNodes(
+      editor,
+      // { alignment: format },
+      { type: newType }
+   );
 
    // Wrap list items in parent list
    if (!isActive && isList) {
@@ -39,4 +43,15 @@ export const toggleBlock = (editor, format) => {
 
    }
    // console.log("THIS ONE", JSON.stringify(editor.children, null, 2));
+};
+
+export const setAlignment = (editor, alignment) => {
+   Transforms.setNodes(
+      editor,
+      { textAlign: alignment },
+      {
+         match: (n) => SlateElement.isElement(n) && n.type === 'paragraph',
+         split: false,
+      }
+   );
 };

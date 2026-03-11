@@ -1,6 +1,14 @@
 const renderLeaf = (props) => {
   const { attributes, children, leaf } = props;
 
+  const stylingObj = {
+    fontSize: leaf.fontSize,
+    color: leaf.fontColor,
+    backgroundColor: leaf.highlightColor,
+    display: 'inline-block',
+    lineHeight: leaf.fontSize || '12px'
+  }
+
   let styledChildren = children;
 
   if (leaf.bold) {
@@ -19,12 +27,8 @@ const renderLeaf = (props) => {
     styledChildren = <s>{styledChildren}</s>;
   }
 
-  if (leaf.fontSize) {
-    styledChildren = <span style={{ fontSize: leaf.fontSize }}>{styledChildren}</span>;
-  }
-
-  if (leaf.fontColor) {
-    styledChildren = <span style={{ color: leaf.fontColor }}>{styledChildren}</span>;
+  if (leaf.fontSize || leaf.fontColor || leaf.highlightColor) {
+    styledChildren = <span {...attributes} style={stylingObj}>{styledChildren}</span>;
   }
 
   return <span {...attributes}>{styledChildren}</span>;

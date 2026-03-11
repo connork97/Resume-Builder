@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSlate } from "slate-react";
 import { useSelector } from "react-redux";
-import { toggleMark, isMarkActive, getActiveMark, setFontSize, setFontColor } from "../Slate/marks.js";
+import { toggleMark, isMarkActive, getActiveMark, setFontSize, setFontColor, setHighlightColor } from "../Slate/marks.js";
 import { isBlockActive, toggleList, setAlignment } from '../Slate/blocks.js';
 
 import { editorRegistry } from '../Slate/editorRegistry.js';
@@ -18,6 +18,7 @@ const RichTextToolbar = () => {
 
   const [fontSizeInputValue, setFontSizeInputValue] = useState(12);
   const [currentEditorFontColor, setCurrentEditorFontColor] = useState("#000000");
+  const [currentEditorHighlightColor, setCurrentEditorHighlightColor] = useState("#ffffff");
 
   const setNewFontSize = (newFontSize = fontSizeInputValue) => {
     if (!editor) {
@@ -44,6 +45,11 @@ const RichTextToolbar = () => {
     setCurrentEditorFontColor(newFontColor);
   }
 
+  const setNewHighlightColor = (newHighlightColor = currentEditorHighlightColor) => {
+    setHighlightColor(editor, newHighlightColor);
+    setCurrentEditorHighlightColor(newHighlightColor);
+  }
+
   useEffect(() => {
     if (!editor || !selection) {
       console.error('Editor is not ready.');
@@ -67,11 +73,17 @@ const RichTextToolbar = () => {
       <ToolbarDropdown
         text="A"
         styling={{ fontWeight: 'bold', boxShadow: `0 -0.35vh 0 ${currentEditorFontColor} inset` }}
-        handleSetFontColor={setNewFontColor}
+        handleSetColor={setNewFontColor}
         currentEditorFontColor={currentEditorFontColor}
       />
 
-
+      {/* Highlight COLOR */}
+      <ToolbarDropdown
+        text="HC"
+        styling={{  }}
+        handleSetColor={setNewHighlightColor}
+        currentEditorHighlightColor={currentEditorHighlightColor}
+      />
 
       {/* FONT SIZE */}
       <ToolbarButton

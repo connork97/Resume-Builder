@@ -35,9 +35,13 @@ export const setFontSize = (editor, fontSize) => {
   console.log(`Font size set to ${parsedFontSize}`);
 };
 
-
-
 export const setFontColor = (editor, fontColor) => {
   Editor.addMark(editor, 'fontColor', fontColor);
   console.log(`Font fontColor set to ${fontColor}`);
+}
+
+export const setHighlightColor = (editor, highlightColor) => {
+  const transparentHighlightColor = highlightColor.replace(/, *1\)$/, ", 0.5)");
+  Editor.addMark(editor, 'highlightColor', transparentHighlightColor);
+  console.log(`Font highlightColor set to ${transparentHighlightColor}`);
 }

@@ -1,12 +1,8 @@
 .pageContainerDiv {
    margin: 10vh auto 4vh auto;
-   /* width: 51rem;   816px / 16 */
-   /* height: 66rem;  1056px / 16 */
    height: 50rem;
    width: auto;
 
-   /* height: 85vh; */
-   /* width: auto; */
    aspect-ratio: 8.5/11;
 
    background: #ffffff;

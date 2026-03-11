@@ -1,24 +1,35 @@
 import React, { useState } from 'react';
 import styles from "./RichTextToolbar.module.css";
 
-const FONT_COLORS = [
+const COLORS = [
   // Column 1
-  "#000000", "#FF4444", "#FFA000", "#FFFF33", "#00FF88", "#0055FF", "#FF33FF",
+  "rgba(0, 0, 0, 1)",       "rgba(255, 68, 68, 1)",     "rgba(255, 160, 0, 1)",
+  "rgba(255, 255, 51, 1)",  "rgba(0, 255, 136, 1)",     "rgba(0, 85, 255, 1)",
+  "rgba(255, 51, 255, 1)",
 
   // Column 2
-  "#3A3A3A", "#CC3333", "#CC8000", "#CCCC00", "#00CC66", "#0044CC", "#CC00CC",
+  "rgba(58, 58, 58, 1)",    "rgba(204, 51, 51, 1)",     "rgba(204, 128, 0, 1)",
+  "rgba(204, 204, 0, 1)",   "rgba(0, 204, 102, 1)",     "rgba(0, 68, 204, 1)",
+  "rgba(204, 0, 204, 1)",
 
   // Column 3
-  "#777777", "#992222", "#996000", "#999900", "#009944", "#003399", "#990099",
+  "rgba(119, 119, 119, 1)", "rgba(153, 34, 34, 1)",     "rgba(153, 96, 0, 1)",
+  "rgba(153, 153, 0, 1)",   "rgba(0, 153, 68, 1)",      "rgba(0, 51, 153, 1)",
+  "rgba(153, 0, 153, 1)",
 
   // Column 4
-  "#B5B5B5", "#661111", "#664000", "#666600", "#006622", "#002266", "#660066",
+  "rgba(181, 181, 181, 1)", "rgba(102, 17, 17, 1)",     "rgba(102, 64, 0, 1)",
+  "rgba(102, 102, 0, 1)",   "rgba(0, 102, 34, 1)",      "rgba(0, 34, 102, 1)",
+  "rgba(102, 0, 102, 1)",
 
   // Column 5
-  "#FFFFFF", "#330000", "#332000", "#333300", "#003300", "#001133", "#330033"
+  "rgba(255, 255, 255, 1)", "rgba(51, 0, 0, 1)",        "rgba(51, 32, 0, 1)",
+  "rgba(51, 51, 0, 1)",     "rgba(0, 51, 0, 1)",        "rgba(0, 17, 51, 1)",
+  "rgba(51, 0, 51, 1)"
 ];
 
-const ToolbarDropdown = ({ styling, currentEditorFontColor, handleSetFontColor }) => {
+
+const ToolbarDropdown = ({ text, styling, handleSetColor }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,18 +39,18 @@ const ToolbarDropdown = ({ styling, currentEditorFontColor, handleSetFontColor }
         style={styling}
         onClick={() => setOpen(o => !o)}
       >
-        A
+        {text}
       </button>
 
       {open && (
         <div className={styles.dropdownPanel}>
-          {FONT_COLORS.map((color, index) => (
+          {COLORS.map((color, index) => (
             <div
               key={index}
               className={styles.colorSwatch}
               style={{ backgroundColor: color }}
               onClick={() => {
-                handleSetFontColor(color);
+                handleSetColor(color);
                 setOpen(false);
               }}
             />

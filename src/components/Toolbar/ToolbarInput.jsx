@@ -2,23 +2,21 @@ import React from 'react';
 
 import styles from "./ToolbarButton.module.css";
 
-const ToolbarInput = ({ value, setFontSizeInputValue, handleFontSizeSubmit }) => {
+const ToolbarInput = ({ value, handleSetFontSizeInputValue, handleSetNewFontSize }) => {
 
-   console.log(value.length)
    return (
-      <form 
-         className={styles.toolbarButton}
-         onSubmit={handleFontSizeSubmit}
-         >
+      // <form 
+         // className={styles.toolbarButton}
+         // >
          <input
+            onKeyDown={(e) => e.key === 'Enter' ? handleSetNewFontSize() : null}
             className={styles.toolbarInput}
             value={value}
-            style={{ width: `${value.length * 2}vh` }}
-            onChange={(e) => setFontSizeInputValue(e.target.value)}
+            // style={{ width: `${value.length * 2}vh` }}
+            onChange={(e) => handleSetFontSizeInputValue(e.target.value)}
          >
       </input>
-      px
-      </form>
+      // </form>
    );
 }
 

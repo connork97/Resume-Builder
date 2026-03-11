@@ -6,12 +6,12 @@
    display: flex;
    align-items: center;
    justify-content: center;
+   border: 1px solid #3a3a3a;
+   border-radius: 0.5vh;
+   padding: 0.5vh 1vh;
 }
 
 .toolbarButton {
-   border: 1px solid #3a3a3a;
-   padding: 0.5vh 1vh;
-   border-radius: 0.5vh;
    cursor: pointer;
 }
 
@@ -20,5 +20,6 @@
 }
 
 .toolbarInput {
-   /* width: ; */
+   text-align: center;
+   width: 4vh;
 }

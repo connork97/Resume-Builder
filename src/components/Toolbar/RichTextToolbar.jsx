@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSlate } from "slate-react";
 import { useSelector } from "react-redux";
-import { toggleMark, isMarkActive, getActiveFontSize, setFontSize, incrementFontSize, decrementFontSize } from "../Slate/marks.js";
+import { toggleMark, isMarkActive, getActiveFontSize, setFontSize } from "../Slate/marks.js";
 import { isBlockActive, toggleList, setAlignment } from '../Slate/blocks.js';
 
 import { editorRegistry } from '../Slate/editorRegistry.js';
@@ -13,20 +13,37 @@ import ToolbarInput from "./ToolbarInput.jsx";
 const RichTextToolbar = () => {
   const activeEditorId = useSelector((state) => state.resume.activeEditorId);
   const editor = editorRegistry.get(activeEditorId);
-
   const selection = useSelector(state => state.resume.activeEditorSelection);
 
-  const [editorToggle, setEditorToggle] = useState(true);
-  const [fontSizeInputValue, setFontSizeInputValue] = useState('12');
+  const [fontSizeInputValue, setFontSizeInputValue] = useState(12);
+
+  const setNewFontSize = (newFontSize = fontSizeInputValue) => {
+    if (!editor) {
+      console.error('Editor not found.');
+      return;
+    }
+    if (newFontSize === 'increment') {
+      let currentFontSize = getActiveFontSize(editor);
+      currentFontSize += 1;
+      setFontSize(editor, currentFontSize);
+      setFontSizeInputValue(currentFontSize);
+    } else if (newFontSize === 'decrement') {
+      let currentFontSize = getActiveFontSize(editor);
+      currentFontSize -= 1;
+      setFontSize(editor, currentFontSize);
+      setFontSizeInputValue(currentFontSize);
+    } else  {
+      setFontSize(editor, newFontSize);
+    }
+  }
 
   useEffect(() => {
     if (!editor || !selection) {
-      console.log('editor is not ready');
+      console.error('Editor is not ready.');
       return;
     }
-    console.log('editor is ready')
+    console.log('Editor is ready.')
     const currentEditorFontSize = getActiveFontSize(editor);
-    // const parsedCurrentEditorFontSize = parseInt(currentEditorFontSize);
     setFontSizeInputValue(currentEditorFontSize);
   }, [editor, selection])
 
@@ -39,24 +56,20 @@ const RichTextToolbar = () => {
         text="-"
         styling={{}}
         active={editor && isMarkActive(editor, "fontSize")}
-        command={() => editor && decrementFontSize(editor)}
+        command={() => editor && setNewFontSize('decrement')}
       />
 
       <ToolbarInput
         value={fontSizeInputValue}
-        setFontSizeInputValue={setFontSizeInputValue}
-        handleFontSizeSubmit={(e) => {
-          e.preventDefault();
-          setFontSize(editor, fontSizeInputValue);
-        }
-        }
+        handleSetFontSizeInputValue={setFontSizeInputValue}
+        handleSetNewFontSize={setNewFontSize}
       />
 
       <ToolbarButton
         text="+"
         styling={{}}
         active={editor && isMarkActive(editor, "fontSize")}
-        command={() => editor && incrementFontSize(editor)}
+        command={() => editor && setNewFontSize('increment')}
       />
 
       {/* INLINE TEXT FORMATTING */}

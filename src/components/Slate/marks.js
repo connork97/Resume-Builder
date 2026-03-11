@@ -24,19 +24,7 @@ export const getActiveFontSize = (editor) => {
 };
 
 export const setFontSize = (editor, fontSize) => {
-  Editor.addMark(editor, 'fontSize', `${fontSize}px`)
+  const parsedFontSize = parseInt(fontSize);
+  Editor.addMark(editor, 'fontSize', parsedFontSize);
+  console.log(`Font size set to ${parsedFontSize}`);
 };
-
-export const incrementFontSize = (editor) => {
-  let currentFontSize = getActiveFontSize(editor);
-  let fontSizeToNum = parseInt(currentFontSize);
-  console.log(fontSizeToNum)
-  setFontSize(editor, fontSizeToNum + 1);
-  // console.log(currentParsedFontSize)
-};
-
-export const decrementFontSize = (editor) => {
-  let currentFontSize = getActiveFontSize(editor);
-  let parsedFontSize = parseFloat(currentFontSize).toFixed(2);
-  setFontSize(editor, parsedFontSize - 1);
-;}

@@ -209,7 +209,7 @@
   left: 0;
   height: 100vh;
   transition: transform 0.25s ease-in-out;
-  z-index: 999;
+  z-index: 99;
 }
 
 .hidden {

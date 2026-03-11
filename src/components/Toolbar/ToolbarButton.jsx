@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from "./ToolbarButton.module.css";
+import styles from "./RichTextToolbar.module.css";
 
 const ToolbarButton = (props) => {
 

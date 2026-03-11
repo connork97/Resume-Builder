@@ -19,32 +19,15 @@ const renderLeaf = (props) => {
     styledChildren = <s>{styledChildren}</s>;
   }
 
-  // if (leaf.align) {
-  //   styledChildren = <span style={leaf.align}>{styledChildren}</span>;
-  // }
-
-  if (leaf.color) {
-    styledChildren = <span style={{ color: leaf.color }}>{styledChildren}</span>;
+  if (leaf.fontSize) {
+    styledChildren = <span style={{ fontSize: leaf.fontSize }}>{styledChildren}</span>;
   }
 
-  if (leaf.fontSize) {
-    styledChildren = (
-      <span style={{ fontSize: leaf.fontSize }}>{styledChildren}</span>
-    );
+  if (leaf.fontColor) {
+    styledChildren = <span style={{ color: leaf.fontColor }}>{styledChildren}</span>;
   }
 
   return <span {...attributes}>{styledChildren}</span>;
 }
 
 export default renderLeaf;
-
-
-  // const renderLeaf = useCallback((props) => {
-  //   let { children, attributes, leaf } = props;
-
-  //   if (leaf.bold) {
-  //     children = <strong>{children}</strong>;
-  //   }
-
-  //   return <span {...attributes}>{children}</span>;
-  // }, []);

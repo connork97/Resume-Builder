@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useSlate } from "slate-react";
 import { useSelector } from "react-redux";
-import { toggleMark, isMarkActive, getActiveFontSize, setFontSize } from "../Slate/marks.js";
+import { toggleMark, isMarkActive, getActiveMark, setFontSize, setFontColor } from "../Slate/marks.js";
 import { isBlockActive, toggleList, setAlignment } from '../Slate/blocks.js';
 
 import { editorRegistry } from '../Slate/editorRegistry.js';
 
 import ToolbarButton from "../Toolbar/ToolbarButton";
-import styles from "./RichTextToolbar.module.css";
 import ToolbarInput from "./ToolbarInput.jsx";
+import ToolbarDropdown from './ToolbarDropdown.jsx';
+import styles from "./RichTextToolbar.module.css";
 
 const RichTextToolbar = () => {
   const activeEditorId = useSelector((state) => state.resume.activeEditorId);
@@ -16,6 +17,7 @@ const RichTextToolbar = () => {
   const selection = useSelector(state => state.resume.activeEditorSelection);
 
   const [fontSizeInputValue, setFontSizeInputValue] = useState(12);
+  const [currentEditorFontColor, setCurrentEditorFontColor] = useState("#000000");
 
   const setNewFontSize = (newFontSize = fontSizeInputValue) => {
     if (!editor) {
@@ -23,18 +25,23 @@ const RichTextToolbar = () => {
       return;
     }
     if (newFontSize === 'increment') {
-      let currentFontSize = getActiveFontSize(editor);
+      let currentFontSize = getActiveMark(editor, 'fontSize');
       currentFontSize += 1;
       setFontSize(editor, currentFontSize);
       setFontSizeInputValue(currentFontSize);
     } else if (newFontSize === 'decrement') {
-      let currentFontSize = getActiveFontSize(editor);
+      let currentFontSize = getActiveMark(editor, 'fontSize');
       currentFontSize -= 1;
       setFontSize(editor, currentFontSize);
       setFontSizeInputValue(currentFontSize);
-    } else  {
+    } else {
       setFontSize(editor, newFontSize);
     }
+  }
+
+  const setNewFontColor = (newFontColor = currentEditorFontColor) => {
+    setFontColor(editor, newFontColor);
+    setCurrentEditorFontColor(newFontColor);
   }
 
   useEffect(() => {
@@ -43,14 +50,29 @@ const RichTextToolbar = () => {
       return;
     }
     console.log('Editor is ready.')
-    const currentEditorFontSize = getActiveFontSize(editor);
-    setFontSizeInputValue(currentEditorFontSize);
+
+    const currentFontSize = getActiveMark(editor, 'fontSize');
+    const currentFontColor = getActiveMark(editor, 'fontColor');
+
+    setFontSizeInputValue(currentFontSize);
+    setCurrentEditorFontColor(currentFontColor);
   }, [editor, selection])
 
 
   return (
 
     <div className={styles.toolbarContainer}>
+
+      {/* FONT COLOR */}
+      <ToolbarDropdown
+        text="A"
+        styling={{ fontWeight: 'bold', boxShadow: `0 -0.35vh 0 ${currentEditorFontColor} inset` }}
+        handleSetFontColor={setNewFontColor}
+        currentEditorFontColor={currentEditorFontColor}
+      />
+
+
+
       {/* FONT SIZE */}
       <ToolbarButton
         text="-"

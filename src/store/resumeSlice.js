@@ -35,7 +35,7 @@ const createDefaultSection = (type) => {
                 value: [
                   {
                     type: "paragraph",
-                    children: [{ text: "this is a ", italic: true, fontSize: '30px' }, {text: "bolded string", bold: true, fontSize: '10px' }]
+                    children: [{ text: "this is a ", italic: true, fontSize: '30px' }, { text: "bolded string", bold: true, fontSize: '10px' }]
                   }
                 ]
               },
@@ -47,7 +47,7 @@ const createDefaultSection = (type) => {
                 value: [
                   {
                     type: "paragraph",
-                    children: [{ text: "" }]
+                    children: [{ text: "", fontSize: "12px" }]
                   }
                 ]
               },
@@ -59,7 +59,7 @@ const createDefaultSection = (type) => {
                 value: [
                   {
                     type: "paragraph",
-                    children: [{ text: "" }]
+                    children: [{ text: "", fontSize: "12px" }]
                   }
                 ]
               },
@@ -71,7 +71,7 @@ const createDefaultSection = (type) => {
                 value: [
                   {
                     type: "paragraph",
-                    children: [{ text: "" }]
+                    children: [{ text: "", fontSize: "12px" }]
                   }
                 ]
               },
@@ -83,7 +83,7 @@ const createDefaultSection = (type) => {
                 value: [
                   {
                     type: "paragraph",
-                    children: [{ text: "" }]
+                    children: [{ text: "", fontSize: "12px" }]
                   }
                 ]
               }
@@ -109,7 +109,7 @@ const createDefaultSection = (type) => {
                 value: [
                   {
                     type: "paragraph",
-                    children: [{ text: "" }]
+                    children: [{ text: "", fontSize: "12px" }]
                   }
                 ]
               }
@@ -160,7 +160,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -172,7 +172,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -191,7 +191,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -203,7 +203,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -215,7 +215,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -227,7 +227,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -239,7 +239,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -251,7 +251,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           }
@@ -270,7 +270,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -282,7 +282,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -294,7 +294,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -306,7 +306,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -318,7 +318,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -330,7 +330,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -342,7 +342,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           }
@@ -361,7 +361,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -373,7 +373,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -385,7 +385,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -397,7 +397,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -409,7 +409,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           }
@@ -428,7 +428,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -440,7 +440,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -452,7 +452,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -464,7 +464,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           },
@@ -476,7 +476,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           }
@@ -495,7 +495,7 @@ const createDefaultSubsection = (type) => {
             value: [
               {
                 type: "paragraph",
-                children: [{ text: "" }]
+                children: [{ text: "", fontSize: "12px" }]
               }
             ]
           }
@@ -512,7 +512,8 @@ const createDefaultSubsection = (type) => {
 const initialState = {
   styling: { background: '#ffffff' },
   sections: [],
-  activeEditorId: null
+  activeEditorId: null,
+  activeEditorSelection: null
 };
 
 const resumeSlice = createSlice({
@@ -521,10 +522,15 @@ const resumeSlice = createSlice({
   reducers: {
     setActiveEditorId(state, action) {
       state.activeEditorId = action.payload;
-      
+
       // console.log('PAYLOAD: ', action.payload)
       // return state.activeEditorId;
     },
+
+    setActiveEditorSelection(state, action) {
+      state.activeEditorSelection = action.payload;
+    },
+
 
     addSection: {
       reducer(state, action) {
@@ -673,6 +679,7 @@ const resumeSlice = createSlice({
 
 export const {
   setActiveEditorId,
+  setActiveEditorSelection,
   addSection,
   updateSection,
   deleteSection,

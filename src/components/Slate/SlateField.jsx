@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, useEffect } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, Editor, Transforms } from "slate";
 import { useDispatch } from "react-redux";
-import { updateField, setActiveEditorId } from "../../store/resumeSlice.js";
+import { updateField, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
 
 import renderLeaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
@@ -97,11 +97,17 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
           { type: "paragraph", children: [{ text: "" }] },
         ]
       }
-      onChange={handleUpdateField}
+      onChange={(value) => {
+        handleUpdateField(value);
+        dispatch(setActiveEditorSelection(editor.selection));
+      }
+
+      }
     >
       <Editable
         onKeyDown={handleKeyDown}
         onFocus={() => dispatch(setActiveEditorId(editorId))}
+        // onClick={() => dispatch(setActiveEditorId(editorId))}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={field.label}

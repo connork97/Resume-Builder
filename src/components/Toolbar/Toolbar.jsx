@@ -22,7 +22,7 @@ const Toolbar = () => {
   
       data.subsections.forEach(sub => {
         sub.fields.forEach(field => {
-          field.value = [{ type: "paragraph", children: [{ text: getNextWord(), fontSize: '12px' }] }];
+          field.value = [{ type: "paragraph", children: [{ text: getNextWord() }] }];
         });
       });
   

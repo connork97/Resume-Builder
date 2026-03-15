@@ -7,9 +7,9 @@ import { updateField, setActiveEditorId, setActiveEditorSelection } from "../../
 import renderLeaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
-import { addListItem, indentList, outdentList } from "./listBehavior.js";
+import { addListItem, indentList, outdentList } from "./helpers/listBehavior.js";
 
-import { editorRegistry } from "./editorRegistry.js";
+import { editorRegistry } from "./helpers/editorRegistry.js";
 import { nanoid } from "@reduxjs/toolkit";
 
 const SlateField = ({ field, sectionId, subsectionId }) => {
@@ -111,6 +111,14 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={field.label}
+        renderPlaceholder={(props) => (
+          <span
+            {...props.attributes}
+            style={{ opacity: 0.5, pointerEvents: "none" }}
+          >
+            {props.children}
+          </span>
+        )}
       />
     </Slate>
   );

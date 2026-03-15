@@ -1,0 +1,37 @@
+.mainSlateContainerDiv {
+   position: relative;
+}
+
+.mainSlatePsuedoContainerDiv {
+   position: absolute;
+   border: 1px solid transparent;
+   width: 98%;
+   height: calc(100% + 5px);
+   margin: auto auto 0 -4%;
+   /* margin-left: -4%; */
+   pointer-events: none;
+   z-index: 10;
+   /* padding: auto; */
+   /* margin: 0 -5% 0 auto; */
+}
+
+.mainSlateContainerDiv:hover .mainSlatePsuedoContainerDiv {
+   border: 1px solid rgba(0, 0, 0, 0.2);
+   border-radius: 10px;
+}
+
+.mainSlateContainerDiv:hover .sectionSettingsButton {
+   opacity: 1;
+   transition: opacity 0.1s ease;
+}
+
+.sectionSettingsButton{
+   position: absolute;
+   opacity: 0;
+   /* top: calc(50% - 15px); */
+   right: -25px;
+   background: none;
+   border: none;
+   cursor: pointer;
+   transition: opacity 0.1s ease;
+}

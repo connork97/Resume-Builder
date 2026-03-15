@@ -1,12 +1,16 @@
+import React from 'react';
+import { useSelector } from 'react-redux';
+
 const renderLeaf = (props) => {
   const { attributes, children, leaf } = props;
+  const resumeStyling = useSelector((state) => state.resume.styling);
 
   const stylingObj = {
-    fontSize: leaf.fontSize,
-    color: leaf.fontColor,
-    backgroundColor: leaf.highlightColor,
     display: 'inline-block',
-    lineHeight: leaf.fontSize || '12px'
+    fontSize: leaf.fontSize || resumeStyling.fontSize,
+    color: leaf.color || resumeStyling.color,
+    backgroundColor: leaf.highlightColor,
+    lineHeight: leaf.lineHeight || resumeStyling.lineHeight,
   }
 
   let styledChildren = children;
@@ -27,7 +31,7 @@ const renderLeaf = (props) => {
     styledChildren = <s>{styledChildren}</s>;
   }
 
-  if (leaf.fontSize || leaf.fontColor || leaf.highlightColor) {
+  if (leaf.fontSize || leaf.color || leaf.highlightColor) {
     styledChildren = <span {...attributes} style={stylingObj}>{styledChildren}</span>;
   }
 

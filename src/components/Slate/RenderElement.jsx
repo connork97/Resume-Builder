@@ -1,12 +1,17 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 const RenderElement = ({ element, attributes, children, type }) => {
    // console.log(attributes, children)
+   const resumeStyling = useSelector((state) => state.resume.styling);
+   
    const stylingObj = {
+      fontSize: element.fontSize || resumeStyling.fontSize,
+      lineHeight: element.lineHeight || resumeStyling.lineHeight,
+      // gap: element.gap || resumeStyling.gap,
+      color: element.color || resumeStyling.color,
+      backgroundColor: element.backgroundColor || resumeStyling.backgroundColor,
       textAlign: element.textAlign,
-      // fontSize: element.fontSize,
-      // color: element.color,
-      // backgroundColor: element.backgroundColor
    }
    switch (type) {
       case 'unordered-list':

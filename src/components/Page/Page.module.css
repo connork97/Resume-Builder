@@ -5,13 +5,13 @@
 
    aspect-ratio: 8.5/11;
 
-   background: #ffffff;
-   padding: 2rem;
+   /* background: #ffffff; */
+   /* padding: 2rem; */
 
    box-shadow: 0 0 20px rgba(0,0,0,0.15);
    border-radius: 4px;
 
    display: flex;
    flex-direction: column;
-   gap: 1.5rem;
+   /* gap: 1.5rem; */
 }

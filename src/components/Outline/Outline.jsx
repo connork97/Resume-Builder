@@ -15,7 +15,7 @@ const Outline = () => {
   const dispatch = useDispatch();
   const sections = useSelector((state) => state.resume.sections);
 
-  const [outlineIsHidden, setOutlineIsHidden] = useState(false);
+  const [outlineIsHidden, setOutlineIsHidden] = useState(true);
 
   // Collapse state for SECTIONS
   const [collapsedSections, setCollapsedSections] = useState({});

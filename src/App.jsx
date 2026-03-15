@@ -10,7 +10,7 @@ import Outline from "./components/Outline/Outline";
 import Page from "./components/Page/Page";
 import SectionWrapper from "./components/Sections/SectionWrapper";
 
-import MainSlate from './components/Slate/MainSlate.jsx';
+import SlateWrapper from './components/Slate/SlateWrapper.jsx';
 
 import { useSelector } from "react-redux";
 
@@ -24,30 +24,10 @@ const App = () => {
       <Toolbar />
       <Outline />
       <Page resumeStyling={resumeStyling}>
-      {/* <div>
-        <ul>
-          <li>Bullet 1</li>
-          <li>Bullet 2</li>
-          <li>Bullet 3</li>
-          <ul>
-            <li>Indented Bullet 1</li>
-            <ul>
-              <li><p>Extra indented bullet 1</p></li>
-              <li><p>Extra indented bullet 2</p></li>
-                          <ul>
-              <li><p>Extra extra indented bullet 1</p></li>
-              <li><p>Extra extra indented bullet 2</p></li>
-            </ul>
-            </ul>
-          </ul>
-        </ul>
-      </div> */}
-        {sections.map((section) => (
-          <MainSlate key={section.id} section={section} />
-        ))}
-        {/* {sections.map((section) => (
-          <SectionWrapper key={section.id} {...section} />
-        ))} */}
+        {sections.map((section, index) =>{
+          return <SlateWrapper key={section.id} section={section} index={index} />
+        }
+            )}
       </Page>
 
     </div>

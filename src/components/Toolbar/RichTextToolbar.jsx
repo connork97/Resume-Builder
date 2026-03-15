@@ -1,28 +1,53 @@
 import React, { useState, useEffect } from "react";
 import { useSlate } from "slate-react";
-import { useSelector } from "react-redux";
-import { toggleMark, isMarkActive, getActiveMark, setFontSize, setFontColor, setHighlightColor } from "../Slate/marks.js";
-import { isBlockActive, toggleList, setAlignment } from '../Slate/blocks.js';
+import { useSelector, useDispatch } from "react-redux";
 
-import { editorRegistry } from '../Slate/editorRegistry.js';
+import { updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
+import { toggleMark, isMarkActive, getActiveMark, setFontSize, setFontColor, setHighlightColor } from "../Slate/helpers/marks.js";
+import { isBlockActive, toggleList, setAlignment } from '../Slate/helpers/blocks.js';
+
+import { editorRegistry } from '../Slate/helpers/editorRegistry.js';
 
 import ToolbarButton from "../Toolbar/ToolbarButton";
 import ToolbarInput from "./ToolbarInput.jsx";
 import ToolbarDropdown from './ToolbarDropdown.jsx';
 import styles from "./RichTextToolbar.module.css";
+import { resume } from "react-dom/server";
 
 const RichTextToolbar = () => {
+  const dispatch = useDispatch();
+  const resumeStyling = useSelector((state) => state.resume.styling);
+  const activeSectionId = useSelector(state => state.resume.activeSectionId);
   const activeEditorId = useSelector((state) => state.resume.activeEditorId);
-  const editor = editorRegistry.get(activeEditorId);
   const selection = useSelector(state => state.resume.activeEditorSelection);
+  const editor = editorRegistry.get(activeEditorId);
 
   const [fontSizeInputValue, setFontSizeInputValue] = useState(12);
-  const [currentEditorFontColor, setCurrentEditorFontColor] = useState("#000000");
-  const [currentEditorHighlightColor, setCurrentEditorHighlightColor] = useState("#ffffff");
+  const [currentEditorFontColor, setCurrentEditorFontColor] = useState('rgba(0, 0, 0, 1)');
+  const [currentEditorHighlightColor, setCurrentEditorHighlightColor] = useState("rgba(255, 255, 255, 0.5)");
+
+  const handleSetSectionBackgroundColor = (color) => {
+    console.log(color, activeSectionId);
+    dispatch(updateSection({
+      id: activeSectionId,
+      changes: { styling: { backgroundColor: color } }
+    }));
+  };
 
   const setNewFontSize = (newFontSize = fontSizeInputValue) => {
     if (!editor) {
       console.error('Editor not found.');
+      let resumeFontSize = parseInt(resumeStyling.fontSize);
+      console.log(resumeFontSize)
+      if (newFontSize === 'increment') {
+        resumeFontSize += 1;
+      } else if (newFontSize === 'decrement') {
+        resumeFontSize -= 1;
+      } else {
+        resumeFontSize = fontSizeInputValue;
+      }
+      dispatch(updateResumeStyling({ fontSize: `${resumeFontSize}px` }));
+      setFontSizeInputValue(resumeFontSize);
       return;
     }
     if (newFontSize === 'increment') {
@@ -74,15 +99,20 @@ const RichTextToolbar = () => {
         text="A"
         styling={{ fontWeight: 'bold', boxShadow: `0 -0.35vh 0 ${currentEditorFontColor} inset` }}
         handleSetColor={setNewFontColor}
-        currentEditorFontColor={currentEditorFontColor}
       />
 
-      {/* Highlight COLOR */}
+      {/* HIGHLIGHT COLOR */}
       <ToolbarDropdown
         text="HC"
-        styling={{  }}
+        styling={{}}
         handleSetColor={setNewHighlightColor}
-        currentEditorHighlightColor={currentEditorHighlightColor}
+      />
+
+      {/* SECTION BACKGROUND COLOR */}
+      <ToolbarDropdown
+        text="BC"
+        styling={{}}
+        handleSetColor={handleSetSectionBackgroundColor}
       />
 
       {/* FONT SIZE */}
@@ -90,7 +120,7 @@ const RichTextToolbar = () => {
         text="-"
         styling={{}}
         active={editor && isMarkActive(editor, "fontSize")}
-        command={() => editor && setNewFontSize('decrement')}
+        command={() => setNewFontSize('decrement')}
       />
 
       <ToolbarInput
@@ -103,7 +133,7 @@ const RichTextToolbar = () => {
         text="+"
         styling={{}}
         active={editor && isMarkActive(editor, "fontSize")}
-        command={() => editor && setNewFontSize('increment')}
+        command={() => setNewFontSize('increment')}
       />
 
       {/* INLINE TEXT FORMATTING */}
@@ -172,6 +202,7 @@ const RichTextToolbar = () => {
         active={editor && isBlockActive(editor, "ordered-list")}
         command={() => editor && toggleList(editor, "ordered-list")}
       />
+      <p>Currently editing: {editor ? editor.id : 'full resume'}</p>
 
     </div>
   );

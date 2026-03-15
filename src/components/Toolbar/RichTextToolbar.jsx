@@ -3,7 +3,7 @@ import { useSlate } from "slate-react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setActiveEditorId, setActiveSection, updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
-import { toggleMark, isMarkActive, getActiveMark, setFontSize, setFontColor, setHighlightColor } from "../Slate/helpers/marks.js";
+import { toggleMark, isMarkActive, getActiveMark, setFontSize, setLineHeight, setFontColor, setHighlightColor } from "../Slate/helpers/marks.js";
 import { isBlockActive, toggleList, setAlignment } from '../Slate/helpers/blocks.js';
 
 import { editorRegistry } from '../Slate/helpers/editorRegistry.js';
@@ -24,7 +24,8 @@ const RichTextToolbar = () => {
 
   const activeSectionTitle = sections.find(section => section.id === activeSectionId)?.data.sectionTitle;
 
-  const [fontSizeInputValue, setFontSizeInputValue] = useState(12);
+  const [fontSizeInputValue, setFontSizeInputValue] = useState(parseInt(resumeStyling.fontSize));
+  const [lineHeightInputValue, setLineHeightInputValue] = useState(parseFloat(resumeStyling.lineHeight));
   const [currentEditorFontColor, setCurrentEditorFontColor] = useState('rgba(0, 0, 0, 1)');
   const [currentEditorHighlightColor, setCurrentEditorHighlightColor] = useState("rgba(255, 255, 255, 0.5)");
 
@@ -51,7 +52,7 @@ const RichTextToolbar = () => {
 
   const setNewFontSize = (newFontSize = fontSizeInputValue) => {
     if (!editor) {
-      console.error('Editor not found.');
+      // console.error('Editor not found.');
       let resumeFontSize = parseInt(resumeStyling.fontSize);
       console.log(resumeFontSize)
       if (newFontSize === 'increment') {
@@ -80,6 +81,37 @@ const RichTextToolbar = () => {
     }
   }
 
+  const setNewLineHeight = (newLineHeight = lineHeightInputValue) => {
+    if (!editor) {
+      // console.error('Editor not found.');
+      let resumeLineHeight = parseFloat(resumeStyling.lineHeight).toFixed(1);
+      console.log(resumeLineHeight)
+      if (newLineHeight === 'increment') {
+        resumeLineHeight = (parseFloat(resumeLineHeight) + 0.1).toFixed(1);
+      } else if (newLineHeight === 'decrement') {
+        resumeLineHeight = (parseFloat(resumeLineHeight) - 0.1).toFixed(1);
+      } else {
+        resumeLineHeight = parseFloat(lineHeightInputValue).toFixed(1);
+      }
+      dispatch(updateResumeStyling({ lineHeight: resumeLineHeight }));
+      setLineHeightInputValue(resumeLineHeight);
+      return;
+    }
+    if (newLineHeight === 'increment') {
+      let currentLineHeight = getActiveMark(editor, 'lineHeight') || parseFloat(lineHeightInputValue);
+        currentLineHeight = (parseFloat(currentLineHeight) + 0.1).toFixed(1);
+      setLineHeight(editor, currentLineHeight);
+      setLineHeightInputValue(currentLineHeight);
+    } else if (newLineHeight === 'decrement') {
+      let currentLineHeight = getActiveMark(editor, 'lineHeight') || parseFloat(lineHeightInputValue);
+        currentLineHeight = (parseFloat(currentLineHeight) - 0.1).toFixed(1);
+      setLineHeight(editor, currentLineHeight);
+      setLineHeightInputValue(currentLineHeight);
+    } else {
+      setLineHeight(editor, newLineHeight);
+    }
+  }
+
   const setNewFontColor = (newFontColor = currentEditorFontColor) => {
     setFontColor(editor, newFontColor);
     setCurrentEditorFontColor(newFontColor);
@@ -99,10 +131,12 @@ const RichTextToolbar = () => {
 
     const currentFontSize = getActiveMark(editor, 'fontSize');
     const currentFontColor = getActiveMark(editor, 'color');
+    const currentLineHeight = getActiveMark(editor, 'lineHeight');
     currentFontSize && setFontSizeInputValue(currentFontSize);
     // setFontSizeInputValue(currentFontSize);
     currentFontColor && setCurrentEditorFontColor(currentFontColor);
     // setCurrentEditorFontColor(currentFontColor);
+    currentLineHeight && setLineHeightInputValue(currentLineHeight);
 
   }, [editor, selection])
 
@@ -110,6 +144,27 @@ const RichTextToolbar = () => {
   return (
 
     <div className={styles.toolbarContainer}>
+      {/* LINE HEIGHT */}
+      <ToolbarButton
+        text="-"
+        styling={{}}
+        active={editor && isMarkActive(editor, "lineHeight")}
+        command={() => setNewLineHeight('decrement')}
+      />
+
+      <ToolbarInput
+        value={lineHeightInputValue}
+        handleSetFontSizeInputValue={setLineHeightInputValue}
+        handleSetNewFontSize={setNewLineHeight}
+      />
+
+      <ToolbarButton
+        text="+"
+        styling={{}}
+        active={editor && isMarkActive(editor, "lineHeight")}
+        command={() => setNewLineHeight('increment')}
+      />
+
 
       {/* FONT COLOR */}
       <ToolbarDropdown
@@ -211,7 +266,7 @@ const RichTextToolbar = () => {
       <ToolbarButton
         text="•"
         active={editor && isBlockActive(editor, "unordered-list")}
-        command={() => editor && setAlignment(editor, "unordered-list")}
+        command={() => editor && toggleList(editor, "unordered-list")}
       />
 
       <ToolbarButton

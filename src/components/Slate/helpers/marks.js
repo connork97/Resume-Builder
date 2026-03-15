@@ -34,6 +34,9 @@ export const getActiveMark = (editor, mark) => {
         const parsedActiveMark = parseInt(activeMark);
         // return parsedActiveMark;
         return parsedActiveMark ?? console.error("No active font size found.");
+      case ('lineHeight'):
+        const parsedLineHeight = parseFloat(activeMark).toFixed(1);
+        return parsedLineHeight ?? console.error("No active line height found.");
       case ('color'):
         return activeMark ?? console.error("No active font color found.");
     }
@@ -44,8 +47,11 @@ export const getActiveMark = (editor, mark) => {
         return parseInt(getResumeStyling('fontSize'));
       case ('color'):
         return getResumeStyling('color');
+      case ('lineHeight'):
+        const resumeLineHeight = getResumeStyling('lineHeight');
+        return parseFloat(resumeLineHeight).toFixed(1);
       default:
-        return activeMark;
+        return getResumeStyling(mark);
     }
   }
   // return activeMark;
@@ -58,6 +64,12 @@ export const setFontSize = (editor, fontSize) => {
   Editor.addMark(editor, 'fontSize', `${fontSize}px`);
   console.log(`Font size set to ${fontSize}px`);
 };
+
+export const setLineHeight = (editor, lineHeight) => {
+  const parsedLineHeight = parseFloat(lineHeight).toFixed(1);
+  Editor.addMark(editor, 'lineHeight', parsedLineHeight);
+  console.log(`Line height set to ${parsedLineHeight}`);
+}
 
 export const setFontColor = (editor, fontColor) => {
   Editor.addMark(editor, 'color', fontColor);

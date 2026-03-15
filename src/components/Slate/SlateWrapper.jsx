@@ -50,10 +50,15 @@ const SlateWrapper = ({ section, index }) => {
       <button className={styles.sectionSettingsButton}>
         ⚙️
       </button>
-      <div>{data.sectionTitle}</div>
 
       {data.subsections.map((sub) => (
         <div key={sub.id} style={sub.styling}>
+          <SlateField
+            key={data.sectionTitle}
+            field={data.sectionTitle}
+            sectionId={id}
+            subsectionId={sub.id}
+          />
           {sub.fields.map((field) => (
             <SlateField
               key={field.id}

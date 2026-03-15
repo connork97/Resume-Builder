@@ -3,7 +3,7 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 // Default Data for Brand New Section
 const createDefaultSection = (type) => {
   const defaultStyling = {
-    textAlign: 'center',
+    // textAlign: 'center',
     paddingLeft: '2rem',
     paddingRight: '2rem',
     backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -12,6 +12,8 @@ const createDefaultSection = (type) => {
     case "header":
       return {
         sectionTitle: "Header",
+        value: "Header",
+        id: nanoid(),
         styling: {...defaultStyling},
         subsections: []
       };
@@ -27,7 +29,8 @@ const createDefaultSection = (type) => {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-evenly',
-              alignItems: 'center'
+              flexWrap: 'wrap',
+              alignItems: 'center',
             },
             fields: [
               {
@@ -544,7 +547,7 @@ const resumeSlice = createSlice({
     },
 
     updateResumeStyling(state, action) {
-      console.log('TEST')
+      // console.log('TEST')
       state.styling = { ...state.styling, ...action.payload };
       // return action.payload;
     },

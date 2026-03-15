@@ -35,7 +35,7 @@ const renderLeaf = (props) => {
     styledChildren = <span {...attributes} style={stylingObj}>{styledChildren}</span>;
   }
 
-  return <span {...attributes}>{styledChildren}</span>;
+  return <span {...attributes} style={stylingObj}>{styledChildren}</span>;
 }
 
 export default renderLeaf;

@@ -1,17 +1,14 @@
 .pageContainerDiv {
-   margin: 10vh auto 4vh auto;
-   height: 50rem;
-   width: auto;
-
-   aspect-ratio: 8.5/11;
-
-   /* background: #ffffff; */
-   /* padding: 2rem; */
-
-   box-shadow: 0 0 20px rgba(0,0,0,0.15);
-   border-radius: 4px;
-
    display: flex;
    flex-direction: column;
-   /* gap: 1.5rem; */
+   margin: 10vh auto 4vh auto;
+   height: 50rem;
+   /* max-height: 50rem; */
+   width: auto;
+   /* overflow-wrap: break-word; */
+   word-break: break-word;
+   aspect-ratio: 8.5/11;
+
+   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+   border-radius: 4px;
 }

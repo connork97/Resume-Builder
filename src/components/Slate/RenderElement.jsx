@@ -10,7 +10,7 @@ const RenderElement = ({ element, attributes, children, type }) => {
       lineHeight: element.lineHeight || resumeStyling.lineHeight,
       // gap: element.gap || resumeStyling.gap,
       color: element.color || resumeStyling.color,
-      backgroundColor: element.backgroundColor || resumeStyling.backgroundColor,
+      backgroundColor: element.backgroundColor || 'rgba(255, 255, 255, 0)',
       textAlign: element.textAlign,
    }
    switch (type) {

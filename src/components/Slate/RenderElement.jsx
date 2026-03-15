@@ -15,11 +15,11 @@ const RenderElement = ({ element, attributes, children, type }) => {
    }
    switch (type) {
       case 'unordered-list':
-         return <ul {...attributes}>{children}</ul>
+         return <ul {...attributes} style={stylingObj}>{children}</ul>
       case 'ordered-list':
-         return <ol {...attributes}>{children}</ol>
+         return <ol {...attributes} style={stylingObj}>{children}</ol>
       case 'list-item':
-         return <li {...attributes}>{children}</li>
+         return <li {...attributes} style={stylingObj}>{children}</li>
       case 'paragraph':
          return <p {...attributes} style={stylingObj}>{children}</p>
       default:

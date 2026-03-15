@@ -590,7 +590,7 @@ const resumeSlice = createSlice({
     updateSection(state, action) {
       const { id, changes } = action.payload;
       const section = state.sections.find(s => s.id === id);
-      console.log("SECTION: ", section)
+      // console.log("SECTION: ", section)
 
       if (section) {
         for (const key in changes) {

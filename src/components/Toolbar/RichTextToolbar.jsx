@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSlate } from "slate-react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
+import { setActiveEditorId, setActiveSection, updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
 import { toggleMark, isMarkActive, getActiveMark, setFontSize, setFontColor, setHighlightColor } from "../Slate/helpers/marks.js";
 import { isBlockActive, toggleList, setAlignment } from '../Slate/helpers/blocks.js';
 
@@ -12,22 +12,37 @@ import ToolbarButton from "../Toolbar/ToolbarButton";
 import ToolbarInput from "./ToolbarInput.jsx";
 import ToolbarDropdown from './ToolbarDropdown.jsx';
 import styles from "./RichTextToolbar.module.css";
-import { resume } from "react-dom/server";
 
 const RichTextToolbar = () => {
   const dispatch = useDispatch();
   const resumeStyling = useSelector((state) => state.resume.styling);
+  const sections = useSelector((state) => state.resume.sections);
   const activeSectionId = useSelector(state => state.resume.activeSectionId);
   const activeEditorId = useSelector((state) => state.resume.activeEditorId);
   const selection = useSelector(state => state.resume.activeEditorSelection);
   const editor = editorRegistry.get(activeEditorId);
 
+  const activeSectionTitle = sections.find(section => section.id === activeSectionId)?.data.sectionTitle;
+
   const [fontSizeInputValue, setFontSizeInputValue] = useState(12);
   const [currentEditorFontColor, setCurrentEditorFontColor] = useState('rgba(0, 0, 0, 1)');
   const [currentEditorHighlightColor, setCurrentEditorHighlightColor] = useState("rgba(255, 255, 255, 0.5)");
 
+
+  const clearToolbarSelection = () => {
+    dispatch(setActiveEditorId(null));
+    dispatch(setActiveSection(null));
+    setFontSizeInputValue(parseInt(resumeStyling.fontSize));
+    // useSelector((state) => {state.resume.activeSectionId = null});
+
+  }
+
   const handleSetSectionBackgroundColor = (color) => {
-    console.log(color, activeSectionId);
+    // console.log(color, activeSectionId);
+    if (!activeSectionId) {
+      dispatch(updateResumeStyling({ backgroundColor: color }));
+      return;
+    }
     dispatch(updateSection({
       id: activeSectionId,
       changes: { styling: { backgroundColor: color } }
@@ -51,12 +66,12 @@ const RichTextToolbar = () => {
       return;
     }
     if (newFontSize === 'increment') {
-      let currentFontSize = getActiveMark(editor, 'fontSize');
+      let currentFontSize = getActiveMark(editor, 'fontSize') || parseInt(fontSizeInputValue);
       currentFontSize += 1;
       setFontSize(editor, currentFontSize);
       setFontSizeInputValue(currentFontSize);
     } else if (newFontSize === 'decrement') {
-      let currentFontSize = getActiveMark(editor, 'fontSize');
+      let currentFontSize = getActiveMark(editor, 'fontSize') || parseInt(fontSizeInputValue);
       currentFontSize -= 1;
       setFontSize(editor, currentFontSize);
       setFontSizeInputValue(currentFontSize);
@@ -83,10 +98,12 @@ const RichTextToolbar = () => {
     console.log('Editor is ready.')
 
     const currentFontSize = getActiveMark(editor, 'fontSize');
-    const currentFontColor = getActiveMark(editor, 'fontColor');
+    const currentFontColor = getActiveMark(editor, 'color');
+    currentFontSize && setFontSizeInputValue(currentFontSize);
+    // setFontSizeInputValue(currentFontSize);
+    currentFontColor && setCurrentEditorFontColor(currentFontColor);
+    // setCurrentEditorFontColor(currentFontColor);
 
-    setFontSizeInputValue(currentFontSize);
-    setCurrentEditorFontColor(currentFontColor);
   }, [editor, selection])
 
 
@@ -202,7 +219,10 @@ const RichTextToolbar = () => {
         active={editor && isBlockActive(editor, "ordered-list")}
         command={() => editor && toggleList(editor, "ordered-list")}
       />
-      <p>Currently editing: {editor ? editor.id : 'full resume'}</p>
+      <ToolbarButton
+        text={`Currently Editing: ${activeSectionTitle ? activeSectionTitle : 'Full Resume'}. Click to reset.`}
+        command={() => clearToolbarSelection()}
+      />
 
     </div>
   );

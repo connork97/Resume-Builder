@@ -44,7 +44,7 @@ const SlateHeading = ({ section }) => {
         sectionId: section.id,
         //   subid,
         //   id: section.id,
-        newValue,
+        changes: { value: newValue },
       })
     );
   };
@@ -56,9 +56,6 @@ const SlateHeading = ({ section }) => {
       editor={editor}
       initialValue={
         section.value ?? null
-        // section.value ?? [
-        //   { type: "paragraph", children: [{ text: "" }] },
-        // ]
       }
       onChange={(value) => {
         handleUpdateSection(value);
@@ -67,18 +64,9 @@ const SlateHeading = ({ section }) => {
     >
       <Editable
         onFocus={() => dispatch(setActiveEditorId(editorId))}
-        // onClick={() => dispatch(setActiveEditorId(editorId))}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={section.label}
-      // renderPlaceholder={(props) => (
-      //   <span
-      //     {...props.attributes}
-      //     style={{ opacity: 0.5, pointerEvents: "none" }}
-      //   >
-      //     {props.children}
-      //   </span>
-      // )}
       />
     </Slate>
   );

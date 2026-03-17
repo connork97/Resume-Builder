@@ -167,14 +167,8 @@ const resumeSlice = createSlice({
         state.sections.push(action.payload);
       },
       prepare(type) {
-        const baseData = createDefaultSection(type);
-        let data = { ...baseData };
         return {
           payload: createDefaultSection(type)
-          // id: nanoid(),
-            // type,
-            // data
-          
         };
       }
     },
@@ -184,27 +178,20 @@ const resumeSlice = createSlice({
     //   const section = state.sections.find((s) => s.id === id);
     //   if (section) Object.assign(section, changes);
 
-
-    // },
-    //     updateField(state, action) {
-    //   const { sectionId, subsectionId, fieldId, newValue } = action.payload;
-    //   const section = state.sections.find((s) => s.id === sectionId);
-    //   if (!section) return;
-
-    //   const subsection = section.data.subsections.find((s) => s.id === subsectionId);
-    //   if (!subsection) return;
-
-    //   const field = subsection.fields.find((f) => f.id === fieldId);
-    //   if (field) field.value = newValue;
-    // },
-
     updateSection(state, action) {
-      const { sectionId, newValue } = action.payload;
+      const { sectionId, changes } = action.payload;
       const section = state.sections.find(s => s.id === sectionId);
-      console.log("SECTION", section, "STATE", state, "ACTION PAYLOAD", action.payload, "NEW VALUE", newValue, "SECTION TO UPDATE", section)
       if (section) {
-        // console.log("SECTION EXISTS", section)
-        section.value = newValue};
+        for (const key in changes) {
+          if (key === "styling") {
+            section.styling = { ...section.styling, ...changes.styling };
+          } else {
+            section[key] = changes[key];
+          }
+        }
+        // Object.assign(section, changes);
+        // section.value = newValue};
+      }
     },
     // if (section) Object.assign(section, newValue);
     // if (section) {

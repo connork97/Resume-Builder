@@ -56,7 +56,8 @@ const OutlineSection = ({
 
   return (
     <>
-      {data.subsections?.map((sub, subIndex) => (
+      {/* {data.subsections?.map((sub, subIndex) => ( */}
+      {section.subsections?.map((sub, subIndex) => (
         <div
           key={sub.id}
           className={`${styles.subsectionItem} ${styles.subsectionRow}`}
@@ -101,7 +102,8 @@ const OutlineSection = ({
         >
             <div className={styles.dragHandle}>⋮⋮
               <span className={styles.subsectionHeaderSpan}>
-                {data.sectionTitle} {subIndex + 1}
+                {section.label} {subIndex + 1}
+                {/* {data.sectionTitle} {subIndex + 1} */}
               </span>
             {/* </div> */}
           {/* <div className={styles.dragHandle}>⋮⋮</div>
@@ -149,7 +151,8 @@ const OutlineSection = ({
               )
             }
           >
-            Delete {section.data.sectionTitle} Subsection
+            Delete {section.label} Subsection
+            {/* Delete {section.data.sectionTitle} Subsection */}
           </button>
         </div>
       ))}
@@ -158,7 +161,8 @@ const OutlineSection = ({
         className={styles.addButton}
         onClick={() => handleAddSubsection(section)}
       >
-        + Add {section.data.sectionTitle} Subsection
+        + Add {section.label} Subsection
+        {/* + Add {section.data.sectionTitle} Subsection */}
       </button>
     </>
   );

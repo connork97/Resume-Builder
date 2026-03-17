@@ -8,9 +8,11 @@ import styles from './SlateWrapper.module.css';
 
 const SlateWrapper = ({ section, index }) => {
   const dispatch = useDispatch();
-  const { id, data } = section;
+  // const { id, data } = section;
+  const { id } = section;
 
-  if (!data || !data.subsections) return null; // <-- prevents early render
+  // if (!data || !data.subsections) return null; // <-- prevents early render
+  if (!section || !section.subsections) return null; // <-- prevents early render
 
   const sectionsLength = useSelector((state) => state.resume.sections.length);
   const activeSectionId = useSelector((state) => state.resume.activeSectionId);
@@ -26,15 +28,13 @@ const SlateWrapper = ({ section, index }) => {
   const setNewActiveSection = () => {
     console.log("Setting active section", section.id);
     dispatch(setActiveSection(section.id));
-  }
-
-  console.log("SECTION", section.data)
+  }  
 
   return (
     <div
       className={styles.mainSlateContainerDiv}
       style={{
-        ...data.styling,
+        // ...data.styling,
         ...section.styling,
         marginTop:
           isFirstSection && '2rem',
@@ -45,7 +45,7 @@ const SlateWrapper = ({ section, index }) => {
       <div
         className={styles.mainSlatePsuedoContainerDiv}
         style={{
-          ...data.styling,
+          // ...data.styling,
           ...section.styling
         }}
       />
@@ -53,14 +53,14 @@ const SlateWrapper = ({ section, index }) => {
       <button className={styles.sectionSettingsButton}>
         ⚙️
       </button>
-
+        {/* <p>{section.value?.[0]?.children?.[0]?.text}</p> */}
       <SlateHeading
-        key={section.sectionTitle}
-        field={section.data}
-        sectionId={section.id}
-        // subsectionId={section.id}
+        key={section.id}
+        section={section}
+        id={section.id}
       />
-      {data.subsections.map((sub) => (
+      {/* {data.subsections.map((sub) => ( */}
+      {section.subsections.map((sub) => (
         <div key={sub.id} style={sub.styling}>
           {sub.fields.map((field) => (
             <SlateField

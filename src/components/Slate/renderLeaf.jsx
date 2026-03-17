@@ -5,12 +5,20 @@ const renderLeaf = (props) => {
   const { attributes, children, leaf } = props;
   const resumeStyling = useSelector((state) => state.resume.styling);
 
+  // const stylingObj = {
+    // display: 'inline-block',
+    // fontSize: leaf.fontSize || resumeStyling.fontSize,
+    // color: leaf.color || resumeStyling.color,
+    // backgroundColor: leaf.highlightColor,
+    // lineHeight: leaf.lineHeight || resumeStyling.lineHeight,
+  // }
+
   const stylingObj = {
     display: 'inline-block',
-    fontSize: leaf.fontSize || resumeStyling.fontSize,
-    color: leaf.color || resumeStyling.color,
+    fontSize: leaf.fontSize,
+    lineHeight: leaf.lineHeight,
+    color: leaf.color,
     backgroundColor: leaf.highlightColor,
-    lineHeight: leaf.lineHeight || resumeStyling.lineHeight,
   }
 
   let styledChildren = children;
@@ -31,7 +39,7 @@ const renderLeaf = (props) => {
     styledChildren = <s>{styledChildren}</s>;
   }
 
-  if (leaf.fontSize || leaf.color || leaf.highlightColor) {
+  if (leaf.color || leaf.highlightColor) {
     styledChildren = <span {...attributes} style={stylingObj}>{styledChildren}</span>;
   }
 

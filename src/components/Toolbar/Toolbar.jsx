@@ -18,7 +18,7 @@ const Toolbar = () => {
   
     sectionOptions.forEach((option) => {
       const action = addSection(option.type);
-      const data = action.payload.data;
+      const data = action.payload;
   
       data.subsections.forEach(sub => {
         sub.fields.forEach(field => {
@@ -61,7 +61,7 @@ const Toolbar = () => {
     if (!existing) {
       if (sectionData) {
         const action = addSection(type);
-        action.payload.data = sectionData;
+        action.payload = sectionData;
         dispatch(action);
       } else {
         dispatch(addSection(type));

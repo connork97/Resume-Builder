@@ -129,9 +129,9 @@ const Outline = () => {
               <div className={styles.sectionHeader}>
                 <div className={styles.dragHandle}>⋮⋮</div>
 
-                <div className={styles.sectionTitle}>
+                {/* <div className={styles.sectionTitle}>
                   {section.data.sectionTitle}
-                </div>
+                </div> */}
 
                 <button
                   className={styles.collapseButton}
@@ -146,7 +146,7 @@ const Outline = () => {
                 <div className={styles.sectionContent}>
                   <OutlineSection
                     dispatch={dispatch}
-                    data={section.data}
+                    // data={section.data}
                     section={section}
                     dragItem={dragItem}
                     setDragItem={setDragItem}

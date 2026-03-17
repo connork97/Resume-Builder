@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useEffect } from "react";
+import React, { useMemo, useCallback, useEffect, use } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, Editor, Transforms } from "slate";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ import { addListItem, indentList, outdentList } from "./helpers/listBehavior.js"
 import { editorRegistry } from "./helpers/editorRegistry.js";
 import { nanoid } from "@reduxjs/toolkit";
 
-const SlateField = ({ field, sectionId, subsectionId }) => {
+const SlateHeading = ({ section }) => {
   const dispatch = useDispatch();
 
   // Stable editor instance
@@ -25,7 +25,7 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
     return () => editorRegistry.delete(editorId);
   }, [editorId, editor]);
 
-  if (!field.value) return null;
+  if (!section.value) return null;
 
   const renderElement = useCallback((props) => {
     return (
@@ -41,9 +41,9 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
   const handleUpdateSection = (newValue) => {
     dispatch(
       updateSection({
-        sectionId,
-      //   subsectionId,
-      //   fieldId: field.id,
+        sectionId: section.id,
+        //   subid,
+        //   id: section.id,
         newValue,
       })
     );
@@ -55,34 +55,33 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
     <Slate
       editor={editor}
       initialValue={
-        field.value ?? [
-          { type: "paragraph", children: [{ text: "" }] },
-        ]
+        section.value ?? null
+        // section.value ?? [
+        //   { type: "paragraph", children: [{ text: "" }] },
+        // ]
       }
       onChange={(value) => {
         handleUpdateSection(value);
         dispatch(setActiveEditorSelection(editor.selection));
-      }
-
-      }
+      }}
     >
       <Editable
         onFocus={() => dispatch(setActiveEditorId(editorId))}
         // onClick={() => dispatch(setActiveEditorId(editorId))}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
-        placeholder={field.label}
-        renderPlaceholder={(props) => (
-          <span
-            {...props.attributes}
-            style={{ opacity: 0.5, pointerEvents: "none" }}
-          >
-            {props.children}
-          </span>
-        )}
+        placeholder={section.label}
+      // renderPlaceholder={(props) => (
+      //   <span
+      //     {...props.attributes}
+      //     style={{ opacity: 0.5, pointerEvents: "none" }}
+      //   >
+      //     {props.children}
+      //   </span>
+      // )}
       />
     </Slate>
   );
 };
 
-export default SlateField;
+export default SlateHeading;

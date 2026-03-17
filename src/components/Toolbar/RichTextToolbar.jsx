@@ -22,7 +22,7 @@ const RichTextToolbar = () => {
   const selection = useSelector(state => state.resume.activeEditorSelection);
   const editor = editorRegistry.get(activeEditorId);
 
-  const activeSectionTitle = sections.find(section => section.id === activeSectionId)?.data.sectionTitle;
+  const activeSectionTitle = sections.find(section => section.id === activeSectionId)?.label;
 
   const [fontSizeInputValue, setFontSizeInputValue] = useState(parseInt(resumeStyling.fontSize));
   const [lineHeightInputValue, setLineHeightInputValue] = useState(parseFloat(resumeStyling.lineHeight));

@@ -92,10 +92,10 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
   return (
     <Slate
       editor={editor}
-      initialValue={
-        field.value ?? [
-          { type: "paragraph", children: [{ text: "" }] },
-        ]
+      initialValue={ field.value ?? null
+        // field.value ?? [
+        //   { type: "paragraph", children: [{ text: "" }] },
+        // ]
       }
       onChange={(value) => {
         handleUpdateField(value);
@@ -111,14 +111,6 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={field.label}
-        renderPlaceholder={(props) => (
-          <span
-            {...props.attributes}
-            style={{ opacity: 0.5, pointerEvents: "none" }}
-          >
-            {props.children}
-          </span>
-        )}
       />
     </Slate>
   );

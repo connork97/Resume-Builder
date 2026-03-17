@@ -22,6 +22,8 @@ const RenderElement = ({ element, attributes, children, type }) => {
          return <li {...attributes} style={stylingObj}>{children}</li>
       case 'paragraph':
          return <p {...attributes} style={stylingObj}>{children}</p>
+      case 'heading':
+         return <h1 {...attributes} style={stylingObj}>{children}</h1>
       default:
          return <p {...attributes} style={stylingObj}>{children}</p>
    }

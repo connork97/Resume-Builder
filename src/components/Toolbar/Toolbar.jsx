@@ -29,13 +29,13 @@ const Toolbar = () => {
       handleAddOrAppend(option.type, {}, data);
     });
   };
+  // useEffect(() => {
+  //   if (initialized.current) return;
+  //   initialized.current = true;
+  //   addDefaultSections();
+  // }, [])
   // End default/dummy data function
   
-  useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-    addDefaultSections();
-  }, [])
 
   const dispatch = useDispatch();
   const sections = useSelector((state) => state.resume.sections);

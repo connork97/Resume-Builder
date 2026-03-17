@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setActiveSection } from "../../store/resumeSlice.js";
 
 import SlateField from "./SlateField.jsx";
+import SlateHeading from "./SlateHeading.jsx";
 import styles from './SlateWrapper.module.css';
 
 const SlateWrapper = ({ section, index }) => {
@@ -26,6 +27,8 @@ const SlateWrapper = ({ section, index }) => {
     console.log("Setting active section", section.id);
     dispatch(setActiveSection(section.id));
   }
+
+  console.log("SECTION", section.data)
 
   return (
     <div
@@ -51,14 +54,14 @@ const SlateWrapper = ({ section, index }) => {
         ⚙️
       </button>
 
+      <SlateHeading
+        key={section.sectionTitle}
+        field={section.data}
+        sectionId={section.id}
+        // subsectionId={section.id}
+      />
       {data.subsections.map((sub) => (
         <div key={sub.id} style={sub.styling}>
-          <SlateField
-            key={data.sectionTitle}
-            field={data.sectionTitle}
-            sectionId={id}
-            subsectionId={sub.id}
-          />
           {sub.fields.map((field) => (
             <SlateField
               key={field.id}

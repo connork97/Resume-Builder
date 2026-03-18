@@ -26,7 +26,6 @@ const SlateWrapper = ({ section, index }) => {
   }, [index, sectionsLength]);
 
   const setNewActiveSection = () => {
-    console.log("Setting active section", section.id);
     dispatch(setActiveSection(section.id));
   }  
 

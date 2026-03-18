@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSlate } from "slate-react";
+import { Node } from "slate";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setActiveEditorId, setActiveSection, updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
@@ -16,19 +17,25 @@ import styles from "./RichTextToolbar.module.css";
 const RichTextToolbar = () => {
   const dispatch = useDispatch();
   const resumeStyling = useSelector((state) => state.resume.styling);
+
   const sections = useSelector((state) => state.resume.sections);
   const activeSectionId = useSelector(state => state.resume.activeSectionId);
-  const activeEditorId = useSelector((state) => state.resume.activeEditorId);
-  const selection = useSelector(state => state.resume.activeEditorSelection);
-  const editor = editorRegistry.get(activeEditorId);
+  const activeSection = sections.find(section => section.id === activeSectionId);
+  const activeSectionText = activeSection ? Node.string({ children: activeSection?.value ?? [] }) : null;
 
-  const activeSectionTitle = sections.find(section => section.id === activeSectionId)?.label;
+  const activeEditorId = useSelector((state) => state.resume.activeEditorId);
+  const editor = editorRegistry.get(activeEditorId);
+  const activeEditor = editorRegistry.get(activeEditorId);
+  const activeEditorText = activeEditor ? Node.string(activeEditor) : null;
+
+  const selection = useSelector(state => state.resume.activeEditorSelection);
+  const currentSelectionText = selection ? Node.string({ children: selection }) : null;
+  // console.log('SELECTION', Node.string({selection}))
 
   const [fontSizeInputValue, setFontSizeInputValue] = useState(parseInt(resumeStyling.fontSize));
   const [lineHeightInputValue, setLineHeightInputValue] = useState(parseFloat(resumeStyling.lineHeight));
   const [currentEditorFontColor, setCurrentEditorFontColor] = useState('rgba(0, 0, 0, 1)');
   const [currentEditorHighlightColor, setCurrentEditorHighlightColor] = useState("rgba(255, 255, 255, 0.5)");
-
 
   const clearToolbarSelection = () => {
     dispatch(setActiveEditorId(null));
@@ -135,7 +142,6 @@ const RichTextToolbar = () => {
     currentFontColor && setCurrentEditorFontColor(currentFontColor);
     // setCurrentEditorFontColor(currentFontColor);
     currentLineHeight && setLineHeightInputValue(currentLineHeight);
-
   }, [editor, selection])
 
 
@@ -258,8 +264,6 @@ const RichTextToolbar = () => {
         command={() => editor && setAlignment(editor, "justify")}
       />
 
-
-
       {/* LISTS */}
       <ToolbarButton
         text="•"
@@ -272,8 +276,10 @@ const RichTextToolbar = () => {
         active={editor && isBlockActive(editor, "ordered-list")}
         command={() => editor && toggleList(editor, "ordered-list")}
       />
+
+      {/* CURRENTLY EDITING BUTTON */}
       <ToolbarButton
-        text={`Currently Editing: ${activeSectionTitle ? activeSectionTitle : 'Full Resume'}. Click to reset.`}
+        text={`Currently Editing: ${currentSelectionText || activeSectionText || 'Full Resume'}. Click to reset.`}
         command={() => clearToolbarSelection()}
       />
 

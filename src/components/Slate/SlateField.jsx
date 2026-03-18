@@ -51,6 +51,7 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
   const handleKeyDown = (event) => {
     // Early exit from keydown function
     const validKeyDowns = ['Enter', 'Tab']
+    // console.log(editor.children)
     if (!validKeyDowns.includes(event.key)) return;
 
     const [listItemEntry] = Editor.nodes(editor, {
@@ -83,7 +84,6 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
         console.log("Indenting List Item.")
         indentList(editor, listItemEntry);
       }
-
       return;
     }
   };
@@ -91,22 +91,23 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
   return (
     <Slate
       editor={editor}
-      initialValue={ field.value ?? null
+      initialValue={field.value ?? null
         // field.value ?? [
         //   { type: "paragraph", children: [{ text: "" }] },
         // ]
       }
       onChange={(value) => {
         handleUpdateField(value);
-        dispatch(setActiveEditorSelection(editor.selection));
+        dispatch(setActiveEditorSelection(editor.children));
       }
 
       }
+      onClick={() => dispatch(setActiveEditorId(editorId))}
     >
       <Editable
         onKeyDown={handleKeyDown}
         onFocus={() => dispatch(setActiveEditorId(editorId))}
-        // onClick={() => dispatch(setActiveEditorId(editorId))}
+        onClick={() => dispatch(setActiveEditorId(editorId))}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={field.label}

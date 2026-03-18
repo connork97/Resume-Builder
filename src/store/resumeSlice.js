@@ -116,6 +116,7 @@ const resumeSlice = createSlice({
       state.activeEditorId = action.payload;
     },
 
+    // For Slate Purposes, sets the currently selected Slate Editor due to there being many different editors on the page at once.
     setActiveEditorSelection(state, action) {
       state.activeEditorSelection = action.payload;
     },
@@ -154,10 +155,7 @@ const resumeSlice = createSlice({
 
     deleteSection(state, action) {
       const sectionId = action.payload;
-      console.log('ACTION PAYLOAD: ', action.payload);
-      console.log('SECTION ID TO DELETE:', sectionId);
       const section = state.sections.find(s => s.id === sectionId);
-      console.log('SECTION TO DELETE:', section);
       if (!section) return;
 
       state.sections = state.sections.filter((s) => s.id !== sectionId);

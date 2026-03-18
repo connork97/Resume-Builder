@@ -1,65 +1,60 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 // Default Data for Brand New Section
-const createDefaultSection = (type) => {
+const createDefaultSection = (type = 'defaultSection') => {
 
-  const createDefaultSectionHeading = (headingTitle) => {
-    return {
-      id: nanoid(),
-      type: type,
-      label: headingTitle,
-      styling: {
-        paddingLeft: '2rem',
-        paddingRight: '2rem',
-        backgroundColor: 'rgba(0, 0, 0, 0)',
-      },
-      // sectionTitle: headingTitle,
-      value: [
-        {
-          type: "heading",
-          children: [{ text: headingTitle, fontSize: '16px', lineHeight: initialState.styling.lineHeight }]
-        }
-      ],
-      subsections: [createDefaultSubsection(type)]
-    };
+  const sectionHeadingDict = {
+    header: "Header",
+    contact: "Contact",
+    skills: "Skills",
+    workHistory: "Work History",
+    education: "Education",
+    summary: "Summary",
+    defaultSection: "Default Section"
   };
 
-  switch (type) {
+  const defaultSectionObj = {
+    id: nanoid(),
+    type: type,
+    label: sectionHeadingDict[type],
+    styling: {
+      paddingLeft: '2rem',
+      paddingRight: '2rem',
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+    },
+    value: [
+      {
+        type: "heading",
+        children: [
+          {
+            text: sectionHeadingDict[type],
+            fontSize: '16px',
+            lineHeight: initialState.styling.lineHeight
+          }
+        ]
+      }
+    ],
+    subsections: [createDefaultSubsection(type)]
+  };
 
-    case "header":
-      return createDefaultSectionHeading("Header");
-
-    case "contact":
-      return createDefaultSectionHeading("Contact");
-
-    case "skills":
-      return createDefaultSectionHeading("Skills");
-
-    case "workHistory":
-      return createDefaultSectionHeading("Work History");
-
-    case "education":
-      return createDefaultSectionHeading("Education");
-
-    case "summary":
-      return createDefaultSectionHeading("Summary");
-
-    default:
-      return {};
-  }
+  return defaultSectionObj;
 };
 
 // Default Subsection Fields (for Initial AND Additional Subsections)
-const createDefaultSubsection = (type) => {
-  const defaultHeaderFieldsArr = ["Name", "Title"];
-  const defaultWorkHistoryFieldsArr = ["Job Title", "Company", "Location", "Start Date", "End Date", "Description"];
-  const defaultEducationFieldsArr = ["School", "Degree", "Field of Study", "Location", "Start Date", "End Date", "Description"];
-  const defaultSkillsFieldsArr = ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"];
-  const defaultContactFieldsArr = ["Email", "Phone", "Location", "Website", "LinkedIn"];
-  const defaultSummaryFieldsArr = ["Summary"];
+const createDefaultSubsection = (type = 'defaultSubsection') => {
+
+  const defaultFieldsObj = {
+    header: ["Name", "Title"],
+    workHistory: ["Job Title", "Company", "Location", "Start Date", "End Date", "Description"],
+    education: ["School", "Degree", "Field of Study", "Location", "Start Date", "End Date", "Description"],
+    skills: ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"],
+    contact: ["Email", "Phone", "Location", "Website", "LinkedIn"],
+    summary: ["Summary"],
+    defaultSubsection: ["Default Subsection Field"]
+  };
 
   // Helper function to create standardized fields regardless of section type
-  const createDefaultFields = (arrToMap) => {
+  const createDefaultSubsectionFields = (arrToMap) => {
     return (
       arrToMap.map((field) => ({
         id: nanoid(),
@@ -68,60 +63,27 @@ const createDefaultSubsection = (type) => {
         value: [
           {
             type: "paragraph",
-            children: [{ text: "", fontSize: initialState.styling.fontSize, lineHeight: initialState.styling.lineHeight }]
+            children: [
+              {
+                text: "",
+                fontSize: initialState.styling.fontSize,
+                lineHeight: initialState.styling.lineHeight
+              }
+            ]
           }
-        ]
+        ],
       }))
     )
   };
 
-  switch (type) {
-    case "header":
-      return {
-        id: nanoid(),
-        styling: {},
-        fields: createDefaultFields(defaultHeaderFieldsArr)
-      };
-
-    case "workHistory":
-      return {
-        id: nanoid(),
-        styling: { justifyContent: 'space-between' },
-        fields: createDefaultFields(defaultWorkHistoryFieldsArr)
-      };
-
-    case "education":
-      return {
-        id: nanoid(),
-        styling: { justifyContent: 'space-between' },
-        fields: createDefaultFields(defaultEducationFieldsArr),
-      };
-
-    case "skills":
-      return {
-        id: nanoid(),
-        styling: { justifyContent: 'space-between' },
-        // styling: { display: 'flex', justifyContent: 'space-between' },
-        fields: createDefaultFields(defaultSkillsFieldsArr),
-      };
-
-    case "contact":
-      return {
-        id: nanoid(),
-        styling: { justifyContent: 'space-between' },
-        fields: createDefaultFields(defaultContactFieldsArr)
-      };
-
-    case "summary":
-      return {
-        id: nanoid(),
-        styling: {},
-        fields: createDefaultFields(defaultSummaryFieldsArr)
-      };
-
-    default:
-      return { id: nanoid(), styling: {}, fields: createDefaultFields(["Field"]) };
+  const defaultSubsectionObj = {
+    id: nanoid(),
+    label: type,
+    styling: {},
+    fields: createDefaultSubsectionFields(defaultFieldsObj[type])
   }
+
+  return defaultSubsectionObj;
 };
 
 // Resume Slice
@@ -173,11 +135,6 @@ const resumeSlice = createSlice({
       }
     },
 
-    // updateSection(state, action) {
-    //   const { id, changes } = action.payload;
-    //   const section = state.sections.find((s) => s.id === id);
-    //   if (section) Object.assign(section, changes);
-
     updateSection(state, action) {
       const { sectionId, changes } = action.payload;
       const section = state.sections.find(s => s.id === sectionId);
@@ -193,19 +150,10 @@ const resumeSlice = createSlice({
         // section.value = newValue};
       }
     },
-    // if (section) Object.assign(section, newValue);
-    // if (section) {
-    // for (const key in changes) {
-    // if (key === "styling") {
-    // section.styling = { ...section.styling, ...changes.styling };
-    // } else {
-    // section[key] = changes[key];
-    // }
-    // }
-    // }
 
     deleteSection(state, action) {
-      state.sections = state.sections.filter((s) => s.id !== action.payload);
+      const { sectionId } = action.payload;
+      state.sections = state.sections.filter((s) => s.id !== sectionId);
     },
 
     reorderSections(state, action) {
@@ -216,39 +164,40 @@ const resumeSlice = createSlice({
 
     addSubsection(state, action) {
       const { sectionId } = action.payload;
-      const section = state.sections.find((s) => s.id === sectionId);
+      const section = state.sections.find(s => s.id === sectionId);
+
       if (!section) return;
 
       const type = section.type;
 
-      if (!Array.isArray(section.data.subsections)) {
-        section.data.subsections = [];
+      if (!Array.isArray(section.subsections)) {
+        section.subsections = [];
       }
 
-      section.data.subsections.push({
-        id: nanoid(),
-        // ...subsectionData
+      section.subsections.push({
         ...createDefaultSubsection(type)
-
       });
     },
 
     deleteSubsection(state, action) {
       const { sectionId, subsectionId } = action.payload;
-      const section = state.sections.find((s) => s.id === sectionId);
-      if (!section || !Array.isArray(section.data.subsections)) return;
+      const section = state.sections.find(s => s.id === sectionId);
 
-      section.data.subsections = section.data.subsections.filter(
+      if (!section || !Array.isArray(section.subsections)) return;
+
+      section.subsections = section.subsections.filter(
         (sub) => sub.id !== subsectionId
       );
     },
 
+    // Reorder Subsections within a Section via Indexes
     reorderSubsections(state, action) {
       const { sectionId, fromIndex, toIndex } = action.payload;
-      const section = state.sections.find((s) => s.id === sectionId);
-      if (!section || !Array.isArray(section.data.subsections)) return;
+      const section = state.sections.find(s => s.id === sectionId);
 
-      const arr = section.data.subsections;
+      if (!section) return;
+
+      const arr = section.subsections;
       const [moved] = arr.splice(fromIndex, 1);
       arr.splice(toIndex, 0, moved);
     },
@@ -256,10 +205,11 @@ const resumeSlice = createSlice({
     //  Add field to a subsection
     addField(state, action) {
       const { sectionId, subsectionId, fieldData } = action.payload;
-      const section = state.sections.find((s) => s.id === sectionId);
+      const section = state.sections.find(s => s.id === sectionId);
+
       if (!section) return;
 
-      const subsection = section.data.subsections.find((s) => s.id === subsectionId);
+      const subsection = section.subsections.find((s) => s.id === subsectionId);
       if (!subsection) return;
 
       subsection.fields.push({
@@ -274,7 +224,6 @@ const resumeSlice = createSlice({
       const section = state.sections.find((s) => s.id === sectionId);
       if (!section) return;
 
-      // const subsection = section.data.subsections.find((s) => s.id === subsectionId);
       const subsection = section.subsections.find((s) => s.id === subsectionId);
       if (!subsection) return;
 
@@ -288,7 +237,7 @@ const resumeSlice = createSlice({
       const section = state.sections.find((s) => s.id === sectionId);
       if (!section) return;
 
-      const subsection = section.data.subsections.find((s) => s.id === subsectionId);
+      const subsection = section.subsections.find((s) => s.id === subsectionId);
       if (!subsection) return;
 
       subsection.fields = subsection.fields.filter((f) => f.id !== fieldId);
@@ -300,7 +249,7 @@ const resumeSlice = createSlice({
       const section = state.sections.find((s) => s.id === sectionId);
       if (!section) return;
 
-      const subsection = section.data.subsections.find((s) => s.id === subsectionId);
+      const subsection = section.subsections.find((s) => s.id === subsectionId);
       if (!subsection) return;
 
       const arr = subsection.fields;

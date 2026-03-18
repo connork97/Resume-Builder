@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveSection } from "../../store/resumeSlice.js";
+import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
 
 import SlateField from "./SlateField.jsx";
 import SlateHeading from "./SlateHeading.jsx";
@@ -25,9 +25,16 @@ const SlateWrapper = ({ section, index }) => {
     setIsLastSection(index === sectionsLength - 1);
   }, [index, sectionsLength]);
 
-  const setNewActiveSection = () => {
-    dispatch(setActiveSection(section.id));
-  }  
+  // const setNewActiveSection = () => {
+    // dispatch(setActiveSectionId(section.id));
+  // }
+
+  const handleClearSelections = (e) => {
+    e.stopPropagation();
+    dispatch(setActiveEditorId(null));
+    dispatch(setActiveEditorSelection(null));
+    dispatch(setActiveSectionId(section.id));
+  }
 
   return (
     <div
@@ -35,24 +42,31 @@ const SlateWrapper = ({ section, index }) => {
       style={{
         // ...data.styling,
         ...section.styling,
-        marginTop:
+        paddingTop:
           isFirstSection && '2rem',
-        marginBottom: isLastSection && '2rem'
+        paddingBottom: isLastSection && '2rem'
       }}
-      onClick={setNewActiveSection}
+      onClick={() => dispatch(setActiveSectionId(section.id))}
     >
       <div
         className={styles.mainSlatePsuedoContainerDiv}
         style={{
-          // ...data.styling,
-          ...section.styling
+          height: (isFirstSection || isLastSection) && 'calc(100% - 1.5rem)',
         }}
       />
 
-      <button className={styles.sectionSettingsButton}>
-        ⚙️
+      <button
+        className={styles.sectionSettingsButton}
+      // onClick={}
+      >
+        <span
+          className={styles.sectionSettingsButtonIcon}
+          onClick={(e) => handleClearSelections(e)}
+        >
+          ⚙️
+        </span>
       </button>
-        {/* <p>{section.value?.[0]?.children?.[0]?.text}</p> */}
+      {/* <p>{section.value?.[0]?.children?.[0]?.text}</p> */}
       <SlateHeading
         key={section.id}
         section={section}

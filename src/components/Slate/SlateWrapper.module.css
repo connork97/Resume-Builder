@@ -7,7 +7,7 @@
    border: 1px solid transparent;
    width: 98%;
    height: calc(100% + 5px);
-   margin: auto auto 0 -4%;
+   margin: -0.5% auto 0 -4%;
    /* margin-left: -4%; */
    pointer-events: none;
    z-index: 10;
@@ -16,7 +16,7 @@
 }
 
 .mainSlateContainerDiv:hover .mainSlatePsuedoContainerDiv {
-   border: 1px solid rgba(0, 0, 0, 0.2);
+   border: 2px solid rgba(0, 0, 0, 0.2);
    border-radius: 10px;
 }
 
@@ -29,9 +29,13 @@
    position: absolute;
    opacity: 0;
    /* top: calc(50% - 15px); */
-   right: -25px;
+   right: -35px;
    background: none;
    border: none;
    cursor: pointer;
    transition: opacity 0.1s ease;
+}
+
+.sectionSettingsButtonIcon {
+   font-size: 24px;
 }

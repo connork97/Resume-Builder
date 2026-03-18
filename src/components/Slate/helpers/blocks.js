@@ -50,7 +50,7 @@ export const setAlignment = (editor, alignment) => {
       editor,
       { textAlign: alignment },
       {
-         match: (n) => SlateElement.isElement(n) && n.type === 'paragraph',
+         match: (n) => SlateElement.isElement(n),
          split: false,
       }
    );

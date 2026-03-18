@@ -17,6 +17,7 @@ const RenderElement = ({ element, attributes, children, type }) => {
    const stylingObj = {
       // fontSize: element.fontSize ?? resumeStyling.fontSize,
       // lineHeight: element.lineHeight ?? resumeStyling.lineHeight,
+      textAlign: element.textAlign,
    }
 
    switch (type) {

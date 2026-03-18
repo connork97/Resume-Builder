@@ -19,6 +19,7 @@ const renderLeaf = (props) => {
     lineHeight: leaf.lineHeight ?? attributes.lineHeight,
     color: leaf.color,
     backgroundColor: leaf.highlightColor,
+    // textAlign: leaf.textAlign
   }
   
 

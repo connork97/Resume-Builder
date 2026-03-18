@@ -30,6 +30,7 @@ const AddSection = () => {
                field.value = [
                   {
                      type: "paragraph",
+                     label: field.label,
                      children: [
                         {
                            text: getNextWord(),

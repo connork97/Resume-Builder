@@ -51,6 +51,7 @@ const createDefaultField = (arrToMap = ["Field"]) => {
       value: [
         {
           type: "paragraph",
+          label: field,
           children: [
             {
               text: "",
@@ -108,7 +109,7 @@ const resumeSlice = createSlice({
   name: "resume",
   initialState,
   reducers: {
-    setActiveSection(state, action) {
+    setActiveSectionId(state, action) {
       state.activeSectionId = action.payload;
     },
 
@@ -139,7 +140,9 @@ const resumeSlice = createSlice({
 
     updateSection(state, action) {
       const { sectionId, changes } = action.payload;
+      console.log("Updating section", sectionId, changes);
       const section = state.sections.find(s => s.id === sectionId);
+      console.log("Found section", section);
       if (section) {
         for (const key in changes) {
           if (key === "styling") {
@@ -224,6 +227,7 @@ const resumeSlice = createSlice({
         value: fieldData?.value ?? [
           {
             type: "paragraph",
+            label: fieldData?.label ?? "New Field",
             children: [
               {
                 text: "",
@@ -278,7 +282,7 @@ const resumeSlice = createSlice({
 });
 
 export const {
-  setActiveSection,
+  setActiveSectionId,
   setActiveEditorId,
   setActiveEditorSelection,
   updateResumeStyling,

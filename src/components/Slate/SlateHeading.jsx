@@ -17,7 +17,6 @@ const SlateHeading = ({ section }) => {
 
   // Stable editor instance
   const editorId = useMemo(() => nanoid(), []);
-  // const editor = useMemo(() => withLists(withReact(createEditor())), []);
   const editor = useMemo(() => withReact(createEditor()), []);
 
   useEffect(() => {
@@ -42,8 +41,6 @@ const SlateHeading = ({ section }) => {
     dispatch(
       updateSection({
         sectionId: section.id,
-        //   subid,
-        //   id: section.id,
         changes: { value: newValue },
       })
     );

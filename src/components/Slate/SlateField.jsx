@@ -17,7 +17,6 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
 
   // Stable editor instance
   const editorId = useMemo(() => nanoid(), []);
-  // const editor = useMemo(() => withLists(withReact(createEditor())), []);
   const editor = useMemo(() => withReact(createEditor()), []);
 
   useEffect(() => {

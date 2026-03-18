@@ -1,4 +1,5 @@
 .pageContainerDiv {
+   /* font-size: inherit; */
    display: flex;
    flex-direction: column;
    margin: 10vh auto 4vh auto;

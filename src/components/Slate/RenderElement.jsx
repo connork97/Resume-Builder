@@ -15,9 +15,10 @@ const RenderElement = ({ element, attributes, children, type }) => {
       // textAlign: element.textAlign,
    // }
    const stylingObj = {
-      // fontSize: element.fontSize,
-      // lineHeight: element.lineHeight,
+      // fontSize: element.fontSize ?? resumeStyling.fontSize,
+      // lineHeight: element.lineHeight ?? resumeStyling.lineHeight,
    }
+
    switch (type) {
       case 'unordered-list':
          return <ul {...attributes} style={stylingObj}>{children}</ul>

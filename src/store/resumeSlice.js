@@ -15,8 +15,8 @@ const createDefaultSection = (type = 'defaultSection') => {
 
   const defaultSectionObj = {
     id: nanoid(),
-    type: type,
     label: sectionHeadingDict[type],
+    type: type,
     styling: {
       paddingLeft: '2rem',
       paddingRight: '2rem',
@@ -28,8 +28,8 @@ const createDefaultSection = (type = 'defaultSection') => {
         children: [
           {
             text: sectionHeadingDict[type],
-            fontSize: '16px',
-            lineHeight: initialState.styling.lineHeight
+            // fontSize: initialState.styling.fontSize,
+            // lineHeight: initialState.styling.lineHeight
           }
         ]
       }
@@ -38,6 +38,30 @@ const createDefaultSection = (type = 'defaultSection') => {
   };
 
   return defaultSectionObj;
+};
+
+// Helper function to create standardized fields regardless of section type
+const createDefaultField = (arrToMap = ["Field"]) => {
+  
+  return (
+    arrToMap.map((field) => ({
+      id: nanoid(),
+      label: field,
+      styling: {},
+      value: [
+        {
+          type: "paragraph",
+          children: [
+            {
+              text: "",
+              // fontSize: initialState.styling.fontSize,
+              // lineHeight: initialState.styling.lineHeight
+            }
+          ]
+        }
+      ],
+    }))
+  )
 };
 
 // Default Subsection Fields (for Initial AND Additional Subsections)
@@ -50,37 +74,14 @@ const createDefaultSubsection = (type = 'defaultSubsection') => {
     skills: ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"],
     contact: ["Email", "Phone", "Location", "Website", "LinkedIn"],
     summary: ["Summary"],
-    defaultSubsection: ["Default Subsection Field"]
+    defaultSubsection: ["Field"]
   };
-
-  // Helper function to create standardized fields regardless of section type
-  const createDefaultSubsectionFields = (arrToMap) => {
-    return (
-      arrToMap.map((field) => ({
-        id: nanoid(),
-        label: field,
-        styling: {},
-        value: [
-          {
-            type: "paragraph",
-            children: [
-              {
-                text: "",
-                fontSize: initialState.styling.fontSize,
-                lineHeight: initialState.styling.lineHeight
-              }
-            ]
-          }
-        ],
-      }))
-    )
-  };
-
+  
   const defaultSubsectionObj = {
     id: nanoid(),
     label: type,
     styling: {},
-    fields: createDefaultSubsectionFields(defaultFieldsObj[type])
+    fields: createDefaultField(defaultFieldsObj[type])
   }
 
   return defaultSubsectionObj;
@@ -152,7 +153,13 @@ const resumeSlice = createSlice({
     },
 
     deleteSection(state, action) {
-      const { sectionId } = action.payload;
+      const sectionId = action.payload;
+      console.log('ACTION PAYLOAD: ', action.payload);
+      console.log('SECTION ID TO DELETE:', sectionId);
+      const section = state.sections.find(s => s.id === sectionId);
+      console.log('SECTION TO DELETE:', section);
+      if (!section) return;
+
       state.sections = state.sections.filter((s) => s.id !== sectionId);
     },
 
@@ -205,8 +212,8 @@ const resumeSlice = createSlice({
     //  Add field to a subsection
     addField(state, action) {
       const { sectionId, subsectionId, fieldData } = action.payload;
-      const section = state.sections.find(s => s.id === sectionId);
 
+      const section = state.sections.find(s => s.id === sectionId);
       if (!section) return;
 
       const subsection = section.subsections.find((s) => s.id === subsectionId);
@@ -214,7 +221,20 @@ const resumeSlice = createSlice({
 
       subsection.fields.push({
         id: nanoid(),
-        ...fieldData
+        label: fieldData?.label ?? "New Field",
+        styling: fieldData?.styling ?? {},
+        value: fieldData?.value ?? [
+          {
+            type: "paragraph",
+            children: [
+              {
+                text: "",
+                fontSize: initialState.styling.fontSize,
+                lineHeight: initialState.styling.lineHeight
+              }
+            ]
+          }
+        ],
       });
     },
 

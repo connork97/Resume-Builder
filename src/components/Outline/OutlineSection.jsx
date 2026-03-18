@@ -10,12 +10,12 @@ import styles from "./Outline.module.css";
 
 const OutlineSection = ({
   dispatch,
-  data,
   section,
   dragItem,
   setDragItem,
   renderFieldRow,
 }) => {
+
   // Collapse state for SUBSECTIONS
   const [collapsedSubsections, setCollapsedSubsections] = useState({});
 
@@ -26,34 +26,60 @@ const OutlineSection = ({
     }));
   };
 
-  const handleAddSubsection = (section) => {
-    dispatch(
-      addSubsection({
-        sectionId: section.id,
-        subsectionData: {},
-      })
-    );
+  const handleAddSubsection = () => {
+    dispatch(addSubsection({ sectionId: section.id }));
   };
 
   const handleAddField = (sectionId, subsectionId) => {
-    dispatch(
-      addField({
-        sectionId,
-        subsectionId,
-        fieldData: {
-          key: "customField",
-          label: "New Field",
-          value: [
-            {
-              type: 'paragraph',
-              children: [{ text: '' }]
-            }
-          ],
-        },
-      })
-    );
+    dispatch(addField({ sectionId, subsectionId }));
   };
 
+  const handleOnDragStart = (e, subIndex, subId) => {
+    e.stopPropagation();
+    if (dragItem) return;
+    setDragItem({
+      type: "subsection",
+      sectionId: section.id,
+      subsectionId: sub.id,
+      index: subIndex,
+    });
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleOnDragOver = (e, subIndex) => {
+    e.stopPropagation();
+    if (!dragItem || dragItem.type !== "subsection") return;
+    e.preventDefault();
+
+    if (dragItem.sectionId !== section.id) return;
+    if (dragItem.index === subIndex) return;
+
+    dispatch(
+      reorderSubsections({
+        sectionId: section.id,
+        fromIndex: dragItem.index,
+        toIndex: subIndex,
+      })
+    );
+
+    setDragItem((prev) => ({ ...prev, index: subIndex }));
+    //     e.stopPropagation();
+    // if (!dragItem || dragItem.type !== "subsection") return;
+    // e.preventDefault();
+
+    // if (dragItem.sectionId !== section.id) return;
+    // if (dragItem.index === subIndex) return;
+
+    // dispatch(
+    //   reorderSubsections({
+    //     sectionId: section.id,
+    //     fromIndex: dragItem.index,
+    //     toIndex: subIndex,
+    //   })
+    // );
+
+    // setDragItem((prev) => ({ ...prev, index: subIndex }));
+  }
   return (
     <>
       {/* {data.subsections?.map((sub, subIndex) => ( */}
@@ -63,33 +89,12 @@ const OutlineSection = ({
           className={`${styles.subsectionItem} ${styles.subsectionRow}`}
           draggable={true}
           onDragStart={(e) => {
-            e.stopPropagation();
-            if (dragItem) return;
-            setDragItem({
-              type: "subsection",
-              sectionId: section.id,
-              subsectionId: sub.id,
-              index: subIndex,
-            });
-            e.dataTransfer.effectAllowed = "move";
+            handleOnDragStart(e, subIndex, sub.id)
           }}
+
           onDragOver={(e) => {
-            e.stopPropagation();
-            if (!dragItem || dragItem.type !== "subsection") return;
-            e.preventDefault();
+            handleOnDragOver(e, subIndex)
 
-            if (dragItem.sectionId !== section.id) return;
-            if (dragItem.index === subIndex) return;
-
-            dispatch(
-              reorderSubsections({
-                sectionId: section.id,
-                fromIndex: dragItem.index,
-                toIndex: subIndex,
-              })
-            );
-
-            setDragItem((prev) => ({ ...prev, index: subIndex }));
           }}
           onDragEnd={(e) => {
             e.stopPropagation();
@@ -100,18 +105,18 @@ const OutlineSection = ({
             setDragItem(null);
           }}
         >
-            <div className={styles.dragHandle}>⋮⋮
-              <span className={styles.subsectionHeaderSpan}>
-                {section.label} {subIndex + 1}
-                {/* {data.sectionTitle} {subIndex + 1} */}
-              </span>
-            {/* </div> */}
-          {/* <div className={styles.dragHandle}>⋮⋮</div>
-
-          <div className={styles.subsectionHeader}>
+          <div className={styles.dragHandle}>⋮⋮
             <span className={styles.subsectionHeaderSpan}>
-              {data.sectionTitle} {subIndex + 1}
-            </span> */}
+              {section.label} {subIndex + 1}
+            </span>
+            {/* </div> */}
+            {/* <div className={styles.dragHandle}>⋮⋮</div> */}
+
+          {/* <div className={styles.subsectionHeader}>
+            <span className={styles.subsectionHeaderSpan}>
+              {section.label} {subIndex + 1}
+            </span>
+            </div> */}
 
             <button
               className={styles.collapseButton}
@@ -159,7 +164,7 @@ const OutlineSection = ({
 
       <button
         className={styles.addButton}
-        onClick={() => handleAddSubsection(section)}
+        onClick={handleAddSubsection}
       >
         + Add {section.label} Subsection
         {/* + Add {section.data.sectionTitle} Subsection */}

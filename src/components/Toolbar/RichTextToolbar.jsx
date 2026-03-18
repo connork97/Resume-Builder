@@ -35,7 +35,6 @@ const RichTextToolbar = () => {
     dispatch(setActiveSection(null));
     setFontSizeInputValue(parseInt(resumeStyling.fontSize));
     // useSelector((state) => {state.resume.activeSectionId = null});
-
   }
 
   const handleSetSectionBackgroundColor = (color) => {
@@ -52,7 +51,6 @@ const RichTextToolbar = () => {
 
   const setNewFontSize = (newFontSize = fontSizeInputValue) => {
     if (!editor) {
-      // console.error('Editor not found.');
       let resumeFontSize = parseInt(resumeStyling.fontSize);
       console.log(resumeFontSize)
       if (newFontSize === 'increment') {

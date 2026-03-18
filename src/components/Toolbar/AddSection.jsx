@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addSection, addSubsection } from "../../store/resumeSlice";
 
 const AddSection = () => {
+   const resumeStyling = useSelector((state) => state.resume.styling);
    const sections = useSelector((state) => state.resume.sections);
 
    const dispatch = useDispatch();
@@ -26,7 +27,18 @@ const AddSection = () => {
 
          data.subsections.forEach(sub => {
             sub.fields.forEach(field => {
-               field.value = [{ type: "paragraph", children: [{ text: getNextWord() }] }];
+               field.value = [
+                  {
+                     type: "paragraph",
+                     children: [
+                        {
+                           text: getNextWord(),
+                           // fontSize: resumeStyling.fontSize,
+                           // lineHeight: resumeStyling.lineHeight
+                        }
+                     ]
+                  }
+               ];
             });
          });
 

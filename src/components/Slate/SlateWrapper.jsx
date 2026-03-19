@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
+import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection, updateSubsection } from "../../store/resumeSlice.js";
 
 import SlateField from "./SlateField.jsx";
 import SlateHeading from "./SlateHeading.jsx";
 import styles from './SlateWrapper.module.css';
+import LayoutRenderer from "./LayoutRenderer.jsx";
 
 const SlateWrapper = ({ section, index }) => {
   const dispatch = useDispatch();
@@ -29,8 +30,22 @@ const SlateWrapper = ({ section, index }) => {
     // dispatch(setActiveSectionId(section.id));
   // }
 
-  const handleClearSelections = (e) => {
+  const handleSettingsIconClick = (e) => {
     e.stopPropagation();
+    section.subsections.map((sub) => {
+      console.log ("Subsection Layout: ", sub.layout);
+      dispatch(updateSubsection({
+        sectionId: section.id,
+        subsectionId: sub.id,
+        changes: {
+          layout: {
+            ...sub.layout,
+            direction: sub.layout.direction === 'row' ? 'column' : 'row',
+            justifyContent: 'space-between'
+          }
+        }
+      }))
+    });
     dispatch(setActiveEditorId(null));
     dispatch(setActiveEditorSelection(null));
     dispatch(setActiveSectionId(section.id));
@@ -61,7 +76,7 @@ const SlateWrapper = ({ section, index }) => {
       >
         <span
           className={styles.sectionSettingsButtonIcon}
-          onClick={(e) => handleClearSelections(e)}
+          onClick={(e) => handleSettingsIconClick(e)}
         >
           ⚙️
         </span>
@@ -74,17 +89,22 @@ const SlateWrapper = ({ section, index }) => {
       />
       {/* {data.subsections.map((sub) => ( */}
       {section.subsections.map((sub) => (
-        <div key={sub.id} style={sub.styling}>
-          {sub.fields.map((field) => (
-            <SlateField
-              key={field.id}
-              field={field}
-              sectionId={id}
-              subsectionId={sub.id}
-            />
+        // <div key={sub.id} style={sub.styling}>
+        <LayoutRenderer
+          layout={sub.layout}
+          fields={sub.fields}
+        />
+          // {console.log(sub)}
+          // {sub.fields.map((field) => (
+          //   <SlateField
+          //     key={field.id}
+          //     field={field}
+          //     sectionId={id}
+          //     subsectionId={sub.id}
+            // />
           ))}
-        </div>
-      ))}
+        {/* // </div> */}
+      {/* ))} */}
     </div>
   );
 };

@@ -77,12 +77,29 @@ const createDefaultSubsection = (type = 'defaultSubsection') => {
     summary: ["Summary"],
     defaultSubsection: ["Field"]
   };
+
+  const fields = createDefaultField(defaultFieldsObj[type]);
   
   const defaultSubsectionObj = {
     id: nanoid(),
     label: type,
     styling: {},
-    fields: createDefaultField(defaultFieldsObj[type])
+    fields,
+    layout: {
+      id: nanoid(),
+      display: 'grid',
+      columns: 'repeat(3, 1fr)',
+      rows: 'auto',
+      // type: 'flex',
+      // direction: 'column',
+      // justifyContent: 'space-evenly',
+      // justifySelf: 'start',
+      children: fields.map((field) => ({
+        id: nanoid(),
+        type: 'field',
+        fieldId: field.id
+      }))
+    }
   }
 
   return defaultSubsectionObj;
@@ -185,6 +202,23 @@ const resumeSlice = createSlice({
       section.subsections.push({
         ...createDefaultSubsection(type)
       });
+    },
+
+    updateSubsection(state, action) {
+      const { sectionId, subsectionId, changes } = action.payload;
+      const section = state.sections.find(s => s.id === sectionId);
+      if (!section) return;
+
+      const subsection = section.subsections.find((s) => s.id === subsectionId);
+      if (!subsection) return;
+
+      for (const key in changes) {
+        if (key === "styling") {
+          subsection.styling = { ...subsection.styling, ...changes.styling };
+        } else {
+          subsection[key] = changes[key];
+        }
+      }
     },
 
     deleteSubsection(state, action) {
@@ -291,6 +325,7 @@ export const {
   deleteSection,
   reorderSections,
   addSubsection,
+  updateSubsection,
   deleteSubsection,
   reorderSubsections,
   addField,

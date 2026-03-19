@@ -32,23 +32,24 @@ const SlateWrapper = ({ section, index }) => {
 
   const handleSettingsIconClick = (e) => {
     e.stopPropagation();
-    section.subsections.map((sub) => {
-      console.log ("Subsection Layout: ", sub.layout);
-      dispatch(updateSubsection({
-        sectionId: section.id,
-        subsectionId: sub.id,
-        changes: {
-          layout: {
-            ...sub.layout,
-            direction: sub.layout.direction === 'row' ? 'column' : 'row',
-            justifyContent: 'space-between'
-          }
-        }
-      }))
-    });
     dispatch(setActiveEditorId(null));
     dispatch(setActiveEditorSelection(null));
     dispatch(setActiveSectionId(section.id));
+    console.log('Section ID set to: ', section.id);
+    // section.subsections.map((sub) => {
+    //   console.log ("Subsection Layout: ", sub.layout);
+    //   dispatch(updateSubsection({
+    //     sectionId: section.id,
+    //     subsectionId: sub.id,
+    //     changes: {
+    //       layout: {
+    //         ...sub.layout,
+    //         direction: sub.layout.direction === 'row' ? 'column' : 'row',
+    //         justifyContent: 'space-between'
+    //       }
+    //     }
+    //   }))
+    // });
   }
 
   return (

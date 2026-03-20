@@ -93,7 +93,7 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
             display: 'grid',
             gridTemplateColumns: `repeat(${columnsValue}, 1fr)`,
             gridTemplateRows: rowsValue > 1 ? `repeat(${rowsValue}, auto)` : 'auto',
-            // justifyItems: 'center'
+            alignItems: 'center'
          };
       } else if (columnsValue == 'auto') {
          layoutChanges = {

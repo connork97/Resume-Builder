@@ -22,6 +22,16 @@ const createDefaultSection = (type = 'defaultSection') => {
       paddingRight: '2rem',
       backgroundColor: 'rgba(0, 0, 0, 0)',
     },
+    layout: {
+      id: nanoid(),
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      // gridTemplateColumns: 'repeat(3, 1fr)',
+      // gridTemplateRows: 'auto',
+      // gridTemplateColumns: 'repeat(3, 1fr)',
+      // gridTemplateRows: 'auto',
+    },
     value: [
       {
         type: "heading",
@@ -42,7 +52,7 @@ const createDefaultSection = (type = 'defaultSection') => {
 
 // Helper function to create standardized fields regardless of section type
 const createDefaultField = (arrToMap = ["Field"]) => {
-  
+
   return (
     arrToMap.map((field) => ({
       id: nanoid(),
@@ -66,12 +76,12 @@ const createDefaultField = (arrToMap = ["Field"]) => {
 };
 
 // Default Subsection Fields (for Initial AND Additional Subsections)
-const createDefaultSubsection = (type = 'defaultSubsection') => {
+const createDefaultSubsection = (type = 'defaultSubsection', sectionLayout) => {
 
   const defaultFieldsObj = {
     header: ["Name", "Title"],
     workHistory: ["Job Title", "Company", "Location", "Start Date", "End Date", "Description"],
-    education: ["School", "Degree", "Field of Study", "Location", "Start Date", "End Date", "Description"],
+    education: ["School", "Degree", "Field of Study", "Location", "Start/End Dates", "Description"],
     skills: ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"],
     contact: ["Email", "Phone", "Location", "Website", "LinkedIn"],
     summary: ["Summary"],
@@ -79,17 +89,21 @@ const createDefaultSubsection = (type = 'defaultSubsection') => {
   };
 
   const fields = createDefaultField(defaultFieldsObj[type]);
-  
+
   const defaultSubsectionObj = {
     id: nanoid(),
     label: type,
     styling: {},
     fields,
     layout: {
-      id: nanoid(),
-      display: 'grid',
-      columns: 'repeat(3, 1fr)',
-      rows: 'auto',
+      ...sectionLayout,
+      // id: nanoid(),
+      // display: 'grid',
+      // gridTemplateColumns: 'repeat(3, 1fr)',
+      // gridTemplateRows: 'auto',
+
+
+
       // type: 'flex',
       // direction: 'column',
       // justifyContent: 'space-evenly',

@@ -1,0 +1,137 @@
+/* .settingsModalContainerDiv {
+  display: flex;
+  gap: 0.5vh;
+  padding: 0.5vh;
+} */
+
+.settingsModalOverlayDiv {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   background: rgba(0, 0, 0, 0);
+   z-index: 998;
+}
+
+.settingsModalContainerDiv {
+   position: absolute;
+   display: flex;
+   flex-direction: column;
+   width: max-content;
+   padding: 0.5vh;
+   border: 1px solid #444;
+   border-radius: 0.5vh;
+   /* top: 35px; */
+   left: 101%;
+   right: -35px;
+   background: #222;
+   z-index: 999;
+}
+
+.settingsModalRow {
+   display: flex;
+   justify-content: space-between;
+   gap: 0.5vh;
+   align-items: center;
+   margin-bottom: 0.5vh;
+}
+
+.settingsModalLabel {
+   color: white;
+   font-size: 1.5vh;
+   display: flex;
+   /* align-items: center; */
+   /* justify-content: center; */
+}
+
+.settingsModalInput {
+   text-align: center;
+   min-width: 4vh;
+   max-width: 6vh;
+   width: max-content;
+}
+
+.settingsModalSectionTitle {
+   color: white;
+   font-size: 1.75vh;
+   font-weight: bold;
+   margin-bottom: 0.5vh;
+}
+.settingsModalButton,
+.settingsModalInput,
+.settingsModalDropdownButton {
+   /* background: #2a2a2a; */
+   background: #222;
+
+   color: white;
+   border: none;
+   font-size: 1.5vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border: 1px solid #3a3a3a;
+   border-radius: 0.5vh;
+   padding: 0.5vh 1vh;
+}
+
+.settingsModalDropdownContainerDiv {
+   position: relative;
+   display: flex;
+   
+   /* flex-direction: column; */
+   z-index: 999;
+}
+
+.settingsModalDropdownPanel {
+   /* position: absolute; */
+   display: flex;
+   /* flex-direction: column; */
+   /* top: 125%; */
+   top: 0;
+   left: 100%;
+   color: white;
+   /* background: #222; */
+   /* border: 1px solid #444; */
+   border-radius: 0.5vh;
+   margin-left: 0.5vh;
+   /* padding: 0.75vh; */
+   /* display: grid; */
+   /* grid-template-columns: repeat(7, 2.5vh); */
+   gap: 0.75vh;
+}
+
+.settingsModalOption {
+   /* opacity: 50%; */
+   /* width: 2.5vh; */
+   /* height: 2.5vh; */
+   display: flex;
+   padding: 0.5vh;
+   width: max-content;
+   border-radius: 0.5vh;
+   cursor: pointer;
+   border: 1px solid #555;
+}
+
+.settingsModalOption:hover {
+   background: #333;
+}
+
+.settingsModalButton,
+.settingsModalDropdownContainerDiv,
+.settingsModalDropdownButton {
+   cursor: pointer;
+}
+
+.settingsModalButton:hover,
+.settingsModalDropdownContainerDiv:hover,
+.settingsModalDropdownOption:hover {
+   /* background: #333333; */
+}
+
+
+.active {
+   background: #333;
+   color: white;
+   border-color: #333;
+}

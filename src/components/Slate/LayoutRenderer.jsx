@@ -6,11 +6,11 @@ const LayoutRenderer = ({ layout, fields }) => {
 
    const parentLayoutDict = {
       display: layout.display,
-      flexDirection: layout.direction,
+      flexDirection: layout.flexDirection,
       justifyContent: layout.justifyContent,
       justifySelf: layout.justifySelf,
-      gridTemplateColumns: layout.columns,
-      gridTemplateRows: layout.rows,
+      gridTemplateColumns: layout.gridTemplateColumns,
+      gridTemplateRows: layout.gridTemplateRows,
       gap: layout.gap,
    }
 

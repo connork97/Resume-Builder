@@ -5,6 +5,7 @@ import SlateField from './SlateField';
 const ChildLayoutRenderer = ({ child, index, fieldData, layout, parentLayoutDict }) => {
 
    const childLayoutDict = {
+      width: child.width ?? '100%',
       justifySelf: child.justifySelf,
       alignSelf: child.alignSelf,
       textAlign: child.textAlign,

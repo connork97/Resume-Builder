@@ -6,13 +6,11 @@ import SlateField from "./SlateField.jsx";
 import SlateHeading from "./SlateHeading.jsx";
 import styles from './SlateWrapper.module.css';
 import LayoutRenderer from "./LayoutRenderer.jsx";
+import SettingsModal from "./SettingsModal.jsx";
 
 const SlateWrapper = ({ section, index }) => {
   const dispatch = useDispatch();
-  // const { id, data } = section;
-  const { id } = section;
 
-  // if (!data || !data.subsections) return null; // <-- prevents early render
   if (!section || !section.subsections) return null; // <-- prevents early render
 
   const sectionsLength = useSelector((state) => state.resume.sections.length);
@@ -21,21 +19,19 @@ const SlateWrapper = ({ section, index }) => {
   const [isFirstSection, setIsFirstSection] = useState(false);
   const [isLastSection, setIsLastSection] = useState(false);
 
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+
   useEffect(() => {
     setIsFirstSection(index === 0);
     setIsLastSection(index === sectionsLength - 1);
   }, [index, sectionsLength]);
-
-  // const setNewActiveSection = () => {
-    // dispatch(setActiveSectionId(section.id));
-  // }
 
   const handleSettingsIconClick = (e) => {
     e.stopPropagation();
     dispatch(setActiveEditorId(null));
     dispatch(setActiveEditorSelection(null));
     dispatch(setActiveSectionId(section.id));
-    console.log('Section ID set to: ', section.id);
+    setIsSettingsModalOpen(!isSettingsModalOpen);
     // section.subsections.map((sub) => {
     //   console.log ("Subsection Layout: ", sub.layout);
     //   dispatch(updateSubsection({
@@ -70,10 +66,8 @@ const SlateWrapper = ({ section, index }) => {
           height: (isFirstSection || isLastSection) && 'calc(100% - 1.5rem)',
         }}
       />
-
       <button
         className={styles.sectionSettingsButton}
-      // onClick={}
       >
         <span
           className={styles.sectionSettingsButtonIcon}
@@ -82,30 +76,25 @@ const SlateWrapper = ({ section, index }) => {
           ⚙️
         </span>
       </button>
-      {/* <p>{section.value?.[0]?.children?.[0]?.text}</p> */}
+      {isSettingsModalOpen && (
+        <SettingsModal
+          section={section}
+          isSettingsModalOpen={isSettingsModalOpen}
+          setIsSettingsModalOpen={setIsSettingsModalOpen}
+        />
+      )}
       <SlateHeading
         key={section.id}
         section={section}
         id={section.id}
       />
-      {/* {data.subsections.map((sub) => ( */}
       {section.subsections.map((sub) => (
-        // <div key={sub.id} style={sub.styling}>
         <LayoutRenderer
           layout={sub.layout}
           fields={sub.fields}
         />
-          // {console.log(sub)}
-          // {sub.fields.map((field) => (
-          //   <SlateField
-          //     key={field.id}
-          //     field={field}
-          //     sectionId={id}
-          //     subsectionId={sub.id}
-            // />
-          ))}
-        {/* // </div> */}
-      {/* ))} */}
+
+      ))}
     </div>
   );
 };

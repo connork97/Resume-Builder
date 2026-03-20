@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
+import { useDispatch } from 'react-redux';
+
 import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
 import { getActiveMark, setLineHeight } from "../Slate/helpers/marks.js";
+
+import styles from './RichTextToolbar.module.css';
 
 import ToolbarButton from "../Toolbar/ToolbarButton";
 import ToolbarInput from "./ToolbarInput.jsx";
 
-const LineHeight = ({ editor, selection, dispatch, sections, activeSectionId, resumeStyling }) => {
+const LineHeight = ({ editor, selection, sections, activeSectionId, resumeStyling }) => {
+
+   const dispatch = useDispatch();
 
    const [lineHeightInputValue, setLineHeightInputValue] = useState(parseFloat(resumeStyling.lineHeight));
 
@@ -54,7 +60,7 @@ const LineHeight = ({ editor, selection, dispatch, sections, activeSectionId, re
    }
 
    return (
-      <>
+      <div className={styles.toolBarButtonInputWrapper}>
          <ToolbarButton
             text="-"
             command={() => setNewLineHeight('decrement')}
@@ -70,7 +76,7 @@ const LineHeight = ({ editor, selection, dispatch, sections, activeSectionId, re
             text="+"
             command={() => setNewLineHeight('increment')}
          />
-      </>
+      </div>
    )
 }
 

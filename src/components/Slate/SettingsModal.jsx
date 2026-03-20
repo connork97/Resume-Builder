@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { updateSubsection } from "../../store/resumeSlice.js";
 
@@ -8,10 +8,18 @@ import styles from './SettingsModal.module.css';
 
 import SettingsModalInput from './SettingsModalInput.jsx';
 import SettingsModalDropdown from './SettingsModalDropdown.jsx';
+import FontSize from '../Toolbar/FontSize.jsx';
+import FontColor from '../Toolbar/FontColor.jsx';
+import LineHeight from '../Toolbar/LineHeight.jsx';
+import TextAlign from '../Toolbar/TextAlign.jsx';
 
 const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen }) => {
 
    const dispatch = useDispatch();
+
+   const resumeStyling = useSelector(state => state.resume.styling);
+   const sections = useSelector(state => state.resume.sections);
+   const activeSectionId = useSelector(state => state.resume.activeSectionId);
 
    const getColumnCount = (gridTemplateColumns) => {
       const match = gridTemplateColumns.match(/repeat\((\d+),\s*1fr\)/);
@@ -112,6 +120,27 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
       }
    ];
 
+   const renderSettingsModalRows = () => {
+      // let modalRowPropsArr = [sections={sections}, resumeStyling={resumeStyling}, activeSectionId={activeSectionId}];
+      let componentsArr = [
+         {component: FontSize, label: "Font Size"},
+         {component: FontColor, label: "Font Color"},
+         {component: LineHeight, label: "Line Height"},
+         {component: TextAlign, label: "Text Align"},
+      ];
+
+      return componentsArr.map((Component, index) => (
+         <div className={styles.settingsModalRow} key={index}>
+            <p className={styles.settingsModalLabel}>{Component.label}:</p>
+            <Component.component
+               sections={sections}
+               resumeStyling={resumeStyling}
+               activeSectionId={activeSectionId}
+            />
+         </div>
+      ));
+   }
+
    return (
       <>
          <div
@@ -129,26 +158,9 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
                   handleSetInputValue={input.handleSetInputValue}
                   handleSetValue={input.handleSetValue}
                   setIsSettingsModalOpen={setIsSettingsModalOpen}
-               // onBlur={() => setIsSettingsModalOpen(false)}
                />
             ))}
-            {/* <SettingsModalInput
-         label="Columns"
-         value={columnsInputValue}
-         handleSetInputValue={setColumnsInputValue}
-         handleSetValue={handleSetLayoutChanges}
-         />
-         <SettingsModalInput
-         label="Rows"
-         value={rowsInputValue}
-         handleSetInputValue={setRowsInputValue}
-         handleSetValue={handleSetLayoutChanges}
-         /> */}
-            {/* <SettingsModalDropdown
-            type={modalSettingsOptions.display.text}
-            options={modalSettingsOptions.display.options}
-            handleSetLayout={handleSetLayout}
-            />             */}
+            {renderSettingsModalRows()}
          </div>
       </>
    );

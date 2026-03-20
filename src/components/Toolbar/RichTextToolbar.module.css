@@ -19,9 +19,14 @@
    padding: 0.5vh 1vh;
 }
 
+.toolBarButtonInputWrapper {
+  display: flex;
+  gap: 0.5vh;
+}
+
 .toolbarInput {
   text-align: center;
-  width: 4vh;
+  width: 5vh;
 }
 
 .toolbarDropdownContainer {

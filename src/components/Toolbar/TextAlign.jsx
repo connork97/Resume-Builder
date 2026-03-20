@@ -1,12 +1,15 @@
 import React from 'react';
 
+import { useDispatch } from 'react-redux';
+
 import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
 import { setAlignment } from "../Slate/helpers/blocks.js";
 
 import ToolbarButton from "../Toolbar/ToolbarButton";
 
-const TextAlign = ({ editor, dispatch, activeSectionId }) => {
+const TextAlign = ({ editor, activeSectionId }) => {
 
+   const dispatch = useDispatch();
    const handleSetTextAlign = (editor, alignment) => {
       if (!editor && !activeSectionId) {
          dispatch(updateResumeStyling({ textAlign: alignment }));

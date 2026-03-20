@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
+import { useDispatch } from 'react-redux';
+
 import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
 import { getActiveMark, setFontSize } from "../Slate/helpers/marks.js";
+
+import styles from './RichTextToolbar.module.css';
 
 import ToolbarButton from "../Toolbar/ToolbarButton";
 import ToolbarInput from "./ToolbarInput.jsx";
 
-const FontSize = ({ editor, selection, dispatch, sections, activeSectionId, resumeStyling }) => {
+const FontSize = ({ editor, selection, sections, activeSectionId, resumeStyling }) => {
+
+   const dispatch = useDispatch();
    const [fontSizeInputValue, setFontSizeInputValue] = useState(parseInt(resumeStyling.fontSize));
 
    useEffect(() => {
@@ -52,7 +58,7 @@ const FontSize = ({ editor, selection, dispatch, sections, activeSectionId, resu
    }
 
    return (
-      <>
+      <div className={styles.toolBarButtonInputWrapper}>
          <ToolbarButton
             text="-"
             command={() => setNewFontSize('decrement')}
@@ -68,7 +74,7 @@ const FontSize = ({ editor, selection, dispatch, sections, activeSectionId, resu
             text="+"
             command={() => setNewFontSize('increment')}
          />
-      </>
+      </div>
    )
 }
 

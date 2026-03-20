@@ -14,8 +14,8 @@ const SettingsModalInput = ({ label, value, handleSetInputValue, handleSetValue,
             value={value}
             // style={{ width: `${value.length * 2}vh` }}
             onChange={(e) => handleSetInputValue(e.target.value)}
-            onBlur={() => setIsSettingsModalOpen(false)}
-            onLostPointerCapture={() => setIsSettingsModalOpen(false)}
+            // onBlur={() => setIsSettingsModalOpen(false)}
+            // onLostPointerCapture={() => setIsSettingsModalOpen(false)}
          >
          </input>
          </div>

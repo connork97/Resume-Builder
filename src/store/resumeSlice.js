@@ -178,6 +178,11 @@ const resumeSlice = createSlice({
         for (const key in changes) {
           if (key === "styling") {
             section.styling = { ...section.styling, ...changes.styling };
+          }else if (key === "layout") {
+            section.layout = { ...section.layout, ...changes.layout };
+            section.subsections.forEach(sub => {
+              sub.layout = { ...sub.layout, ...changes.layout };
+            });
           } else {
             section[key] = changes[key];
           }

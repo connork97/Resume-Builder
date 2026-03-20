@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateSubsection } from "../../store/resumeSlice.js";
+import { updateSection } from "../../store/resumeSlice.js";
 
 import styles from './SettingsModal.module.css';
 
@@ -46,18 +46,19 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
    const dispatchLayoutChanges = (layoutChanges) => {
       // Update the section's layout in the state
       // dispatch(updateSectionLayout({ sectionId: section.id, layout }));
-      section.subsections.map((sub) => {
-         dispatch(updateSubsection({
-            sectionId: section.id,
-            subsectionId: sub.id,
-            changes: {
-               layout: {
-                  ...sub.layout,
-                  ...layoutChanges
-               }
+      // section.subsections.map((sub) => {
+         console.log("Dispatching layout changes for section", section.label, "with changes:", layoutChanges);
+      dispatch(updateSection({
+         sectionId: section.id,
+         // subsectionId: sub.id,
+         changes: {
+            layout: {
+               ...section.layout,
+               ...layoutChanges
             }
-         }))
-      });
+         }
+      }))
+      // });
 
       console.log(`Setting new layout values: ${layoutChanges} for section ${section.label}`);
    }
@@ -91,7 +92,8 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
          layoutChanges = {
             display: 'grid',
             gridTemplateColumns: `repeat(${columnsValue}, 1fr)`,
-            gridTemplateRows: rowsValue > 1 ? `repeat(${rowsValue}, auto)` : 'auto'
+            gridTemplateRows: rowsValue > 1 ? `repeat(${rowsValue}, auto)` : 'auto',
+            // justifyItems: 'center'
          };
       } else if (columnsValue == 'auto') {
          layoutChanges = {
@@ -123,10 +125,10 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
    const renderSettingsModalRows = () => {
       // let modalRowPropsArr = [sections={sections}, resumeStyling={resumeStyling}, activeSectionId={activeSectionId}];
       let componentsArr = [
-         {component: FontSize, label: "Font Size"},
-         {component: FontColor, label: "Font Color"},
-         {component: LineHeight, label: "Line Height"},
-         {component: TextAlign, label: "Text Align"},
+         { component: FontSize, label: "Font Size" },
+         { component: FontColor, label: "Font Color" },
+         { component: LineHeight, label: "Line Height" },
+         { component: TextAlign, label: "Text Align" },
       ];
 
       return componentsArr.map((Component, index) => (

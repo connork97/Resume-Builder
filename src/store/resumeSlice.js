@@ -18,20 +18,9 @@ const createDefaultSection = (type = 'defaultSection') => {
     label: sectionHeadingDict[type],
     type: type,
     styling: {
-      paddingLeft: '2rem',
-      paddingRight: '2rem',
-      backgroundColor: 'rgba(0, 0, 0, 0)',
     },
     layout: {
-      id: nanoid(),
       columnIndex: 0,
-      display: 'flex',
-      // flexDirection: 'row',
-      // justifyContent: 'space-evenly',
-      // gridTemplateColumns: 'repeat(3, 1fr)',
-      // gridTemplateRows: 'auto',
-      // gridTemplateColumns: 'repeat(3, 1fr)',
-      // gridTemplateRows: 'auto',
     },
     value: [
       {
@@ -39,8 +28,6 @@ const createDefaultSection = (type = 'defaultSection') => {
         children: [
           {
             text: sectionHeadingDict[type],
-            // fontSize: initialState.styling.fontSize,
-            // lineHeight: initialState.styling.lineHeight
           }
         ]
       }
@@ -66,8 +53,6 @@ const createDefaultField = (arrToMap = ["Field"]) => {
           children: [
             {
               text: "",
-              // fontSize: initialState.styling.fontSize,
-              // lineHeight: initialState.styling.lineHeight
             }
           ]
         }
@@ -98,17 +83,6 @@ const createDefaultSubsection = (type = 'defaultSubsection', sectionLayout) => {
     fields,
     layout: {
       ...sectionLayout,
-      // id: nanoid(),
-      // display: 'grid',
-      // gridTemplateColumns: 'repeat(3, 1fr)',
-      // gridTemplateRows: 'auto',
-
-
-
-      // type: 'flex',
-      // direction: 'column',
-      // justifyContent: 'space-evenly',
-      // justifySelf: 'start',
       children: fields.map((field) => ({
         id: nanoid(),
         type: 'field',
@@ -127,23 +101,26 @@ const initialState = {
     display: 'flex',
     fontSize: '12px',
     lineHeight: 1.2,
-    // color: 'rgba(0, 0, 0, 1)',
+    color: 'rgba(0, 0, 0, 1)',
     backgroundColor: 'rgba(255, 255, 255, 1)',
-    // fontWeight: 400,
-    // gap: 0
-    // display: 'grid',
-    // gridTemplateColumns: '33% 67%',
-    // gridAutoRows: '100px',
-    // gridTemplateRows: 'auto',
-    // gridTemplateRows: 'auto auto auto auto auto auto',
-    // gap: '1rem'
   },
   layout: {
     columns: {
-      count: 2,
-      width: ['33%', '67%'],
-      gap: null,
+      count: 1,
+      width: ['100%'],
     },
+    margin: {
+      top: null,
+      right: null,
+      bottom: null,
+      left: null
+    },
+    padding: {
+      top: null,
+      right: null,
+      bottom: null,
+      left: null
+    }
   },
   sections: [],
   activeSectionId: null,
@@ -168,9 +145,20 @@ const resumeSlice = createSlice({
       state.activeEditorSelection = action.payload;
     },
 
+    constUpdateResume(state, action) {
+      // const { changes } = action.payload;
+      // resume[key] = changes[key];
+      return { ...state, ...action.payload };
+    },
+
     updateResumeStyling(state, action) {
       state.styling = { ...state.styling, ...action.payload };
       // return action.payload;
+    },
+
+    updateResume(state, action) {
+      const { key, changes } = action.payload;
+      state.layout = { ...state[key], ...changes };
     },
 
     addSection: {
@@ -353,6 +341,7 @@ export const {
   setActiveSectionId,
   setActiveEditorId,
   setActiveEditorSelection,
+  updateResume,
   updateResumeStyling,
   addSection,
   updateSection,

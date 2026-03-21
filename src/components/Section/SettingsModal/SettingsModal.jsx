@@ -6,6 +6,7 @@ import { updateSection } from "../../../store/resumeSlice.js";
 
 import styles from './SettingsModal.module.css';
 
+import ColumnIndex from './ColumnIndex.jsx';
 import SettingsModalInput from './SettingsModalInput.jsx';
 import SettingsModalDropdown from './SettingsModalDropdown.jsx';
 import FontSize from '../../Formatting/FontSize.jsx';
@@ -105,12 +106,6 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
 
    const settingModalInputArr = [
       {
-         label: section.label + " Column Index",
-         value: columnIndexInputValue,
-         handleSetInputValue: setColumnIndexInputValue,
-         handleSetValue: handleSetColumnIndex
-      },
-      {
          label: "Columns",
          value: columnsInputValue,
          handleSetInputValue: setColumnsInputValue,
@@ -140,6 +135,7 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
                sections={sections}
                resumeStyling={resumeStyling}
                activeSectionId={activeSectionId}
+               {...Component.props}
             />
          </div>
       ));
@@ -154,6 +150,7 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
          />
          <div className={styles.settingsModalContainerDiv}>
             <p className={styles.settingsModalSectionTitle}>Editing: {section.label}</p>
+            <ColumnIndex section={section} />
             {settingModalInputArr.map((input) => (
                <SettingsModalInput
                   key={input.label}

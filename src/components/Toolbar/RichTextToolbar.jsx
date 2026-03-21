@@ -16,6 +16,7 @@ import BackgroundColor from "../Formatting/BackgroundColor.jsx";
 import TextAlign from "../Formatting/TextAlign.jsx";
 import Lists from "../Formatting/Lists.jsx";
 import Marks from "../Formatting/Marks.jsx";
+import Layout from "./Columns.jsx";
 
 import styles from "./RichTextToolbar.module.css";
 
@@ -115,6 +116,8 @@ const RichTextToolbar = () => {
       />
 
       <Lists editor={editor} />
+
+      <Layout />
 
       {/* CURRENTLY EDITING BUTTON */}
       <ToolbarButton

@@ -1,12 +1,13 @@
 .mainSlateContainerDiv {
    position: relative;
+   height: min-content;
 }
 
 .mainSlatePsuedoContainerDiv {
    position: absolute;
    border: 1px solid transparent;
    width: 98%;
-   height: calc(100% + 5px);
+   /* height: calc(100% + 5px); */
    margin: -0.5% auto 0 -4%;
    /* margin-left: -4%; */
    pointer-events: none;
@@ -34,6 +35,7 @@
    border: none;
    cursor: pointer;
    transition: opacity 0.1s ease;
+   z-index: 20;
 }
 
 .sectionSettingsButtonIcon {

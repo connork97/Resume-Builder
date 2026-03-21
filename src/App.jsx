@@ -22,12 +22,7 @@ const App = () => {
     <div className={styles.appContainerDiv}>
       <Toolbar />
       <Outline />
-      <Page resumeStyling={resumeStyling}>
-        {sections.map((section, index) =>{
-          return <SlateWrapper key={section.id} section={section} index={index} />
-        }
-            )}
-      </Page>
+      <Page />
 
     </div>
   );

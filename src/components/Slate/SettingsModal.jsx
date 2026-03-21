@@ -32,16 +32,20 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
       return match ? parseInt(match[1], 10) : "auto";
    }
 
+   const [columnIndexInputValue, setColumnIndexInputValue] = useState(0);
    const [columnsInputValue, setColumnsInputValue] = useState("auto");
    const [rowsInputValue, setRowsInputValue] = useState("auto");
 
    useEffect(() => {
+      if (section.layout.columnIndex) setColumnIndexInputValue(section.layout.columnIndex);
       if (section.layout.gridTemplateColumns) setColumnsInputValue(getColumnCount(section.layout.gridTemplateColumns));
       if (section.layout.gridTemplateRows) setRowsInputValue(getRowCount(section.layout.gridTemplateRows));
+      console.log('columnIndexInputValue:', columnIndexInputValue);
+      console.log('columnsInputValue:', columnsInputValue);
+      console.log('rowsInputValue:', rowsInputValue);
    }, []);
 
-   console.log('columnsInputValue:', columnsInputValue);
-   console.log('rowsInputValue:', rowsInputValue);
+   
 
    const dispatchLayoutChanges = (layoutChanges) => {
       // Update the section's layout in the state
@@ -63,6 +67,11 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
       console.log(`Setting new layout values: ${layoutChanges} for section ${section.label}`);
    }
 
+   const handleSetColumnIndex = () => {
+      const columnIndexValue = columnIndexInputValue;
+      dispatchLayoutChanges({ columnIndex: columnIndexValue });
+   }
+
    const handleSetLayoutChanges = () => {
       let columnsValue = columnsInputValue;
       let rowsValue = rowsInputValue;
@@ -70,6 +79,7 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
       if (rowsInputValue == 0) rowsValue = 'auto';
 
       let layoutChanges = {};
+      
       if (columnsValue == 1) {
          layoutChanges = {
             display: 'flex',
@@ -108,6 +118,12 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
    }
 
    const settingModalInputArr = [
+      {
+         label: section.label + " Column Index",
+         value: columnIndexInputValue,
+         handleSetInputValue: setColumnIndexInputValue,
+         handleSetValue: handleSetColumnIndex
+      },
       {
          label: "Columns",
          value: columnsInputValue,

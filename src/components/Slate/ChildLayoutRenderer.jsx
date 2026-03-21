@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import SlateField from './SlateField';
 
@@ -9,9 +9,16 @@ const ChildLayoutRenderer = ({ child, index, fieldData, layout, parentLayoutDict
       justifySelf: child.justifySelf,
       alignSelf: child.alignSelf,
       textAlign: child.textAlign,
-      gridColumn: child.gridColumn
+      gridColumn: fieldData.label === 'Description' ? '1 / -1' : child.gridColumn,
    }
+   
    const isGrid = layout.display === 'grid';
+
+   useEffect(() => {
+      if (fieldData.label === 'Description') {
+         childLayoutDict.gridColumn = '1 / -1';
+      }
+   }, [fieldData]);
 
    const getColumnCount = (columns) => {
       if (!columns) return 0;

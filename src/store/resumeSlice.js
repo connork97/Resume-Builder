@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { autoBatchEnhancer, createSlice, nanoid } from "@reduxjs/toolkit";
 
 // Default Data for Brand New Section
 const createDefaultSection = (type = 'defaultSection') => {
@@ -24,6 +24,7 @@ const createDefaultSection = (type = 'defaultSection') => {
     },
     layout: {
       id: nanoid(),
+      columnIndex: 0,
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-evenly',
@@ -80,7 +81,7 @@ const createDefaultSubsection = (type = 'defaultSubsection', sectionLayout) => {
 
   const defaultFieldsObj = {
     header: ["Name", "Title"],
-    workHistory: ["Job Title", "Company", "Location", "Start Date", "End Date", "Description"],
+    workHistory: ["Job Title", "Company", "Location", "Start/End Dates", "Description"],
     education: ["School", "Degree", "Field of Study", "Location", "Start/End Dates", "Description"],
     skills: ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"],
     contact: ["Email", "Phone", "Location", "Website", "LinkedIn"],
@@ -123,12 +124,26 @@ const createDefaultSubsection = (type = 'defaultSubsection', sectionLayout) => {
 
 const initialState = {
   styling: {
+    display: 'flex',
     fontSize: '12px',
     lineHeight: 1.2,
     // color: 'rgba(0, 0, 0, 1)',
     backgroundColor: 'rgba(255, 255, 255, 1)',
     // fontWeight: 400,
     // gap: 0
+    // display: 'grid',
+    // gridTemplateColumns: '33% 67%',
+    // gridAutoRows: '100px',
+    // gridTemplateRows: 'auto',
+    // gridTemplateRows: 'auto auto auto auto auto auto',
+    // gap: '1rem'
+  },
+  layout: {
+    columns: {
+      count: 2,
+      width: ['33%', '67%'],
+      gap: null,
+    },
   },
   sections: [],
   activeSectionId: null,
@@ -178,7 +193,7 @@ const resumeSlice = createSlice({
         for (const key in changes) {
           if (key === "styling") {
             section.styling = { ...section.styling, ...changes.styling };
-          }else if (key === "layout") {
+          } else if (key === "layout") {
             section.layout = { ...section.layout, ...changes.layout };
             section.subsections.forEach(sub => {
               sub.layout = { ...sub.layout, ...changes.layout };

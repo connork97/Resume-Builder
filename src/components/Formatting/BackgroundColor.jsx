@@ -1,10 +1,15 @@
 import React from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
 
-import ToolbarDropdown from "./ToolbarDropdown";
+import ToolbarDropdown from "../Toolbar/ToolbarDropdown.jsx";
 
-const BackgroundColor = ({ dispatch, activeSectionId }) => {
+const BackgroundColor = () => {
+
+   const dispatch = useDispatch();
+   const activeSectionId = useSelector(state => state.resume.activeSectionId);
 
    const handleSetSectionBackgroundColor = (color) => {
       if (!activeSectionId) {

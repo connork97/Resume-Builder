@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateSection } from "../../store/resumeSlice.js";
+import { updateSection } from "../../../store/resumeSlice.js";
 
 import styles from './SettingsModal.module.css';
 
 import SettingsModalInput from './SettingsModalInput.jsx';
 import SettingsModalDropdown from './SettingsModalDropdown.jsx';
-import FontSize from '../Toolbar/FontSize.jsx';
-import FontColor from '../Toolbar/FontColor.jsx';
-import LineHeight from '../Toolbar/LineHeight.jsx';
-import TextAlign from '../Toolbar/TextAlign.jsx';
+import FontSize from '../../Formatting/FontSize.jsx';
+import FontColor from '../../Formatting/FontColor.jsx';
+import LineHeight from '../../Formatting/LineHeight.jsx';
+import TextAlign from '../../Formatting/TextAlign.jsx';
 
 const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen }) => {
 
@@ -28,7 +28,6 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
 
    const getRowCount = (gridTemplateRows) => {
       const match = gridTemplateRows.match(/repeat\((\d+),\s*auto\)/);
-      console.log("getRowCount match:", match);
       return match ? parseInt(match[1], 10) : "auto";
    }
 
@@ -40,21 +39,11 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
       if (section.layout.columnIndex) setColumnIndexInputValue(section.layout.columnIndex);
       if (section.layout.gridTemplateColumns) setColumnsInputValue(getColumnCount(section.layout.gridTemplateColumns));
       if (section.layout.gridTemplateRows) setRowsInputValue(getRowCount(section.layout.gridTemplateRows));
-      console.log('columnIndexInputValue:', columnIndexInputValue);
-      console.log('columnsInputValue:', columnsInputValue);
-      console.log('rowsInputValue:', rowsInputValue);
    }, []);
 
-   
-
    const dispatchLayoutChanges = (layoutChanges) => {
-      // Update the section's layout in the state
-      // dispatch(updateSectionLayout({ sectionId: section.id, layout }));
-      // section.subsections.map((sub) => {
-         console.log("Dispatching layout changes for section", section.label, "with changes:", layoutChanges);
       dispatch(updateSection({
          sectionId: section.id,
-         // subsectionId: sub.id,
          changes: {
             layout: {
                ...section.layout,
@@ -62,9 +51,6 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
             }
          }
       }))
-      // });
-
-      console.log(`Setting new layout values: ${layoutChanges} for section ${section.label}`);
    }
 
    const handleSetColumnIndex = () => {

@@ -12,10 +12,7 @@ const SettingsModalInput = ({ label, value, handleSetInputValue, handleSetValue,
             onKeyDown={(e) => e.key === 'Enter' ? handleSetValue() : null}
             className={styles.settingsModalInput}
             value={value}
-            // style={{ width: `${value.length * 2}vh` }}
             onChange={(e) => handleSetInputValue(e.target.value)}
-            // onBlur={() => setIsSettingsModalOpen(false)}
-            // onLostPointerCapture={() => setIsSettingsModalOpen(false)}
          >
          </input>
          </div>

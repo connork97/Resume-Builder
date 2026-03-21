@@ -63,26 +63,9 @@ const OutlineSection = ({
     );
 
     setDragItem((prev) => ({ ...prev, index: subIndex }));
-    //     e.stopPropagation();
-    // if (!dragItem || dragItem.type !== "subsection") return;
-    // e.preventDefault();
-
-    // if (dragItem.sectionId !== section.id) return;
-    // if (dragItem.index === subIndex) return;
-
-    // dispatch(
-    //   reorderSubsections({
-    //     sectionId: section.id,
-    //     fromIndex: dragItem.index,
-    //     toIndex: subIndex,
-    //   })
-    // );
-
-    // setDragItem((prev) => ({ ...prev, index: subIndex }));
   }
   return (
     <>
-      {/* {data.subsections?.map((sub, subIndex) => ( */}
       {section.subsections?.map((sub, subIndex) => (
         <div
           key={sub.id}
@@ -109,14 +92,6 @@ const OutlineSection = ({
             <span className={styles.subsectionHeaderSpan}>
               {section.label} {subIndex + 1}
             </span>
-            {/* </div> */}
-            {/* <div className={styles.dragHandle}>⋮⋮</div> */}
-
-          {/* <div className={styles.subsectionHeader}>
-            <span className={styles.subsectionHeaderSpan}>
-              {section.label} {subIndex + 1}
-            </span>
-            </div> */}
 
             <button
               className={styles.collapseButton}
@@ -157,7 +132,6 @@ const OutlineSection = ({
             }
           >
             Delete {section.label} Subsection
-            {/* Delete {section.data.sectionTitle} Subsection */}
           </button>
         </div>
       ))}
@@ -167,7 +141,6 @@ const OutlineSection = ({
         onClick={handleAddSubsection}
       >
         + Add {section.label} Subsection
-        {/* + Add {section.data.sectionTitle} Subsection */}
       </button>
     </>
   );

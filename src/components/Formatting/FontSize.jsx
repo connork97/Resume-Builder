@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
-import { getActiveMark, setFontSize } from "../Slate/helpers/marks.js";
+import { getActiveMark, setFontSize } from "../../helpers/marks.js";
 
-import styles from './RichTextToolbar.module.css';
+import styles from '../Toolbar/RichTextToolbar.module.css';
 
-import ToolbarButton from "../Toolbar/ToolbarButton";
-import ToolbarInput from "./ToolbarInput.jsx";
+import ToolbarButton from "../Toolbar/ToolbarButton.jsx";
+import ToolbarInput from "../Toolbar/ToolbarInput.jsx";
 
-const FontSize = ({ editor, selection, sections, activeSectionId, resumeStyling }) => {
+const FontSize = ({ editor, selection }) => {
 
    const dispatch = useDispatch();
+   const sections = useSelector(state => state.resume.sections);
+   const activeSectionId = useSelector(state => state.resume.activeSectionId);
+   const resumeStyling = useSelector(state => state.resume.styling);
+
    const [fontSizeInputValue, setFontSizeInputValue] = useState(parseInt(resumeStyling.fontSize));
 
    useEffect(() => {

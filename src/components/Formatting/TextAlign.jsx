@@ -1,15 +1,17 @@
 import React from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
-import { setAlignment } from "../Slate/helpers/blocks.js";
+import { setAlignment } from "../../helpers/blocks.js";
 
-import ToolbarButton from "../Toolbar/ToolbarButton";
+import ToolbarButton from "../Toolbar/ToolbarButton.jsx";
 
-const TextAlign = ({ editor, activeSectionId }) => {
+const TextAlign = ({ editor }) => {
 
    const dispatch = useDispatch();
+   const activeSectionId = useSelector(state => state.resume.activeSectionId);
+
    const handleSetTextAlign = (editor, alignment) => {
       if (!editor && !activeSectionId) {
          dispatch(updateResumeStyling({ textAlign: alignment }));
@@ -31,7 +33,6 @@ const TextAlign = ({ editor, activeSectionId }) => {
          <ToolbarButton
             text="L"
             command={() => handleSetTextAlign(editor, 'left')}
-         // command={() => editor && setAlignment(editor, "left")}
          />
          <ToolbarButton
             text="C"

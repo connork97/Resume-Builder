@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { toggleMark } from "../Slate/helpers/marks.js";
+import { toggleMark } from "../../helpers/marks.js";
 
-import ToolbarButton from "./ToolbarButton";
+import ToolbarButton from "../Toolbar/ToolbarButton.jsx";
 
 const Marks = ({ editor }) => {
    return (

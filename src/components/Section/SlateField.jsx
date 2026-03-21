@@ -7,9 +7,9 @@ import { updateField, setActiveEditorId, setActiveEditorSelection } from "../../
 import renderLeaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
-import { addListItem, indentList, outdentList } from "./helpers/listBehavior.js";
+import { addListItem, indentList, outdentList } from "../../helpers/listBehavior.js";
 
-import { editorRegistry } from "./helpers/editorRegistry.js";
+import { editorRegistry } from "../../helpers/editorRegistry.js";
 import { nanoid } from "@reduxjs/toolkit";
 
 const SlateField = ({ field, sectionId, subsectionId }) => {
@@ -51,7 +51,6 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
   const handleKeyDown = (event) => {
     // Early exit from keydown function
     const validKeyDowns = ['Enter', 'Tab']
-    // console.log(editor.children)
     if (!validKeyDowns.includes(event.key)) return;
 
     const [listItemEntry] = Editor.nodes(editor, {
@@ -70,7 +69,6 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
 
     if (event.key === "Enter") {
       // Editor.normalize(editor, { force: true });
-      console.log("Adding List Item.")
       addListItem(editor, listItemEntry);
       return;
     }
@@ -78,10 +76,8 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
     if (event.key === "Tab") {
       // Editor.normalize(editor, { force: true });
       if (event.shiftKey) {
-        console.log("Outdenting List Item.")
         outdentList(editor, listItemEntry);
       } else {
-        console.log("Indenting List Item.")
         indentList(editor, listItemEntry);
       }
       return;
@@ -92,9 +88,6 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
     <Slate
       editor={editor}
       initialValue={field.value ?? null
-        // field.value ?? [
-        //   { type: "paragraph", children: [{ text: "" }] },
-        // ]
       }
       onChange={(value) => {
         handleUpdateField(value);

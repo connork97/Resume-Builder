@@ -1,16 +1,19 @@
 import React from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import SlateWrapper from "../Slate/SlateWrapper";
+import { updateSection } from "../../store/resumeSlice";
+
+import SlateWrapper from "../Section/Section";
 
 import styles from "./Page.module.css";
-import { resume } from "react-dom/server";
 
 const Page = (props) => {
    const sections = useSelector((state) => state.resume.sections);
    const resumeStyling = useSelector((state) => state.resume.styling);
    const resumeLayout = useSelector((state) => state.resume.layout);
+
+   const dispatch = useDispatch();
 
    if (resumeLayout.columns.count > 1) {
       const columns = Array.from({ length: resumeLayout.columns.count });
@@ -21,16 +24,25 @@ const Page = (props) => {
                const columnStyling = {
                   width: resumeLayout.columns.width[columnIndex],
                }
-               // padding: '0 0.5rem',
                return (
                   <div key={columnIndex} className={styles.columnWrapperDiv} style={columnStyling}>
                      {sections.map((section) => {
-                        if (section.layout.columnIndex == columnIndex) {
+                        if (
+                           (section.layout.columnIndex == columnIndex)
+                           || (columnIndex === 0
+                              && (!section.layout.columnIndex || section.layout.columnIndex >= resumeLayout.columns.count)
+                           )) {
+                              // dispatch(updateSection({
+                              //    sectionId: section.id,
+                              //    changes: {
+                              //       layout: {
+                              //          columnIndex: columnIndex,
+                              //       }
+                              //    }
+                              // }))
                            return <SlateWrapper key={section.id} section={section} />
                         }
-
                      })}
-                     {/* {sections.map((section, sectionIndex) => section.layout.columnIndex === columnIndex ? <SlateWrapper key={section.id} section={section} index={sectionIndex} /> : null)} */}
                   </div>
                )
             })}
@@ -38,7 +50,6 @@ const Page = (props) => {
       )
    } else {
 
-      // console.log(Object.keys(props.resumeStyling), Object.values(props.resumeStyling))
       return (
          <div className={styles.pageContainerDiv} style={resumeStyling}>
             {sections.map((section, index) => {

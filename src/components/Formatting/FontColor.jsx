@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getActiveMark, setFontColor } from "../Slate/helpers/marks.js";
+import { getActiveMark, setFontColor } from "../../helpers/marks.js";
 import { updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
 
-import ToolbarDropdown from "./ToolbarDropdown";
+import ToolbarDropdown from "../Toolbar/ToolbarDropdown.jsx";
 
-const FontColor = ({ editor, selection, activeSectionId }) => {
+const FontColor = ({ editor, selection }) => {
 
    const dispatch = useDispatch();
-   
+   const activeSectionId = useSelector(state => state.resume.activeSectionId);
+   const resumeStyling = useSelector(state => state.resume.styling);
+
    const [currentEditorFontColor, setCurrentEditorFontColor] = useState('rgba(0, 0, 0, 1)');
 
    useEffect(() => {

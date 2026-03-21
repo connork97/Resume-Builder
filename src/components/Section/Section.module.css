@@ -1,14 +1,14 @@
-.mainSlateContainerDiv {
+.sectionContainerDiv {
    position: relative;
    height: min-content;
 }
 
-.mainSlatePsuedoContainerDiv {
+.sectionPseudoContainerDiv {
    position: absolute;
    border: 1px solid transparent;
    width: 98%;
    /* height: calc(100% + 5px); */
-   margin: -0.5% auto 0 -4%;
+   margin: -0.5% 0 0 -4%;
    /* margin-left: -4%; */
    pointer-events: none;
    z-index: 10;
@@ -16,12 +16,12 @@
    /* margin: 0 -5% 0 auto; */
 }
 
-.mainSlateContainerDiv:hover .mainSlatePsuedoContainerDiv {
+.sectionContainerDiv:hover .sectionPseudoContainerDiv {
    border: 2px solid rgba(0, 0, 0, 0.2);
    border-radius: 10px;
 }
 
-.mainSlateContainerDiv:hover .sectionSettingsButton {
+.sectionContainerDiv:hover .sectionSettingsButton {
    opacity: 1;
    transition: opacity 0.1s ease;
 }

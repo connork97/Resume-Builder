@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  reorderSections,
-  deleteSection,
-  updateField,
-} from "../../store/resumeSlice";
+import { reorderSections, deleteSection, updateField } from "../../store/resumeSlice";
 
 import OutlineSection from "./OutlineSection.jsx";
 import FieldRow from "./FieldRow.jsx";
@@ -77,7 +73,6 @@ const Outline = () => {
     return (
       <FieldRow
         key={field.id}
-        dispatch={dispatch}
         field={field}
         fieldIndex={fieldIndex}
         sectionId={sectionId}
@@ -96,10 +91,9 @@ const Outline = () => {
         outlineIsHidden ? styles.hidden : styles.visible
       }`}
     >
-
       <div className={styles.outlineContainer}>
-        <div className={styles.outlineTitle}>Resume Outline
-        </div>
+        <div className={styles.outlineTitle}>Resume Outline</div>
+        
           <button
             className={
               !outlineIsHidden

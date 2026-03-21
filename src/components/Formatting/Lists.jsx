@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { toggleList } from '../Slate/helpers/blocks';
+import { toggleList } from '../../helpers/blocks';
 
-import ToolbarButton from './ToolbarButton';
+import ToolbarButton from '../Toolbar/ToolbarButton';
 
 const Lists = ({ editor }) => {
    return (

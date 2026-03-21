@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { getActiveMark, setHighlightColor } from "../Slate/helpers/marks.js";
-import { updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
+import { getActiveMark, setHighlightColor } from "../../helpers/marks.js";
 
-import ToolbarDropdown from "./ToolbarDropdown";
+import ToolbarDropdown from "../Toolbar/ToolbarDropdown.jsx";
 
-const HighlightColor = ({ editor, selection, dispatch, activeSectionId }) => {
+const HighlightColor = ({ editor, selection }) => {
 
   const [currentEditorHighlightColor, setCurrentEditorHighlightColor] = React.useState("rgba(255, 255, 255, 0.5)");
 
@@ -15,18 +14,6 @@ const HighlightColor = ({ editor, selection, dispatch, activeSectionId }) => {
     const currentHighlightColor = getActiveMark(editor, 'highlightColor');
     currentHighlightColor && setCurrentEditorHighlightColor(currentHighlightColor);
   }, [editor, selection])
-
-//   const setNewSectionBackgroundColor = (color) => {
-//      if (!activeSectionId) {
-//       dispatch(updateResumeStyling({ backgroundColor: color }));
-//       return;
-//     }
-//     dispatch(updateSection({
-//       sectionId: activeSectionId,
-//       changes: { styling: { backgroundColor: color } }
-//     }));
-//   };
-
 
   const setNewHighlightColor = (newHighlightColor = currentEditorHighlightColor) => {
     if (!editor) {

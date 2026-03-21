@@ -28,7 +28,6 @@ export const toggleList = (editor, format) => {
 
    Transforms.setNodes(
       editor,
-      // { alignment: format },
       { type: newType }
    );
 
@@ -42,7 +41,6 @@ export const toggleList = (editor, format) => {
       });
 
    }
-   // console.log("THIS ONE", JSON.stringify(editor.children, null, 2));
 };
 
 export const setAlignment = (editor, alignment) => {

@@ -1,21 +1,15 @@
 import React from 'react';
-import styles from './Outline.module.css';
 
+import { useDispatch } from 'react-redux';
 import { Node } from 'slate';
 
-import SlateField from '../Slate/SlateField.jsx';
+import { deleteField, reorderFields } from "../../store/resumeSlice";
 
-import {
-  deleteField,
-  reorderFields
-} from "../../store/resumeSlice";
+import styles from './Outline.module.css';
 
-const FieldRow = ({ dispatch, field, fieldIndex, sectionId, subsectionId, handleFieldChange, isHeaderOrSummary, dragItem, setDragItem }) => {
-  //  console.log(field.value[0].children)
-  // console.log("FIELD", field.value[0].children[0].text)
-  // console.log("FIELD:", field.value[0].children[0].text)
+const FieldRow = ({ field, fieldIndex, sectionId, subsectionId, isHeaderOrSummary, dragItem, setDragItem }) => {
 
-  // const fieldValueText = field.value[0].children[0].text;
+  const dispatch = useDispatch();
   const fieldValueText = Node.string(field.value[0]);
   const placeholderFieldText = field.label;
 
@@ -71,27 +65,11 @@ const FieldRow = ({ dispatch, field, fieldIndex, sectionId, subsectionId, handle
       }}
     >
       <div className={styles.dragHandle}>⋮⋮</div>
-      {/* <SlateField
-        key={field.id}
-        field={field}
-        sectionId={field.id}
-        subsectionId={subsectionId} */}
-                  {/* // onChange={(e) => */}
-            {/* // handleFieldChange(sectionId, subsectionId, field.id, e.target.value) */}
-          {/* // } */}
-      {/* // /> */}
-      {/* <input
-          className={styles.subInput}
-          value={field.value.children}
-          placeholder={field.label}
-          onChange={(e) => {
-            console.log(field.value)
-            handleFieldChange(sectionId, subsectionId, field.id, e.target.value)
-          }
-          }
-        /> */}
-        <p className={fieldValueText.length ? styles.subFieldText : styles.placeholderFieldText}>{fieldValueText.length? fieldValueText : placeholderFieldText}</p>
-
+      <p className={
+        fieldValueText.length ? styles.subFieldText : styles.placeholderFieldText
+      }>
+        {fieldValueText.length ? fieldValueText : placeholderFieldText}
+      </p>
       <button
         className={styles.deleteButton}
         onClick={() =>

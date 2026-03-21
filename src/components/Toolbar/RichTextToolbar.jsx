@@ -3,19 +3,19 @@ import { Node } from "slate";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setActiveEditorId, setActiveSectionId, updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
-import { toggleMark } from "../Slate/helpers/marks.js";
+import { toggleMark } from "../../helpers/marks.js";
 
-import { editorRegistry } from '../Slate/helpers/editorRegistry.js';
+import { editorRegistry } from '../../helpers/editorRegistry.js';
 
 import ToolbarButton from "../Toolbar/ToolbarButton";
-import LineHeight from './LineHeight.jsx';
-import FontSize from './FontSize.jsx';
-import FontColor from "./FontColor.jsx";
-import HighlightColor from "./HighlightColor.jsx";
-import BackgroundColor from "./BackgroundColor.jsx";
-import TextAlign from "./TextAlign.jsx";
-import Lists from "./Lists.jsx";
-import Marks from "./Marks.jsx";
+import LineHeight from '../Formatting/LineHeight.jsx';
+import FontSize from '../Formatting/FontSize.jsx';
+import FontColor from "../Formatting/FontColor.jsx";
+import HighlightColor from "../Formatting/HighlightColor.jsx";
+import BackgroundColor from "../Formatting/BackgroundColor.jsx";
+import TextAlign from "../Formatting/TextAlign.jsx";
+import Lists from "../Formatting/Lists.jsx";
+import Marks from "../Formatting/Marks.jsx";
 
 import styles from "./RichTextToolbar.module.css";
 

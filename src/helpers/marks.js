@@ -1,6 +1,6 @@
 import { Editor } from "slate";
 
-import { store } from "../../../store/store.js";
+import { store } from "../store/store.js";
 
 const getResumeStyling = (style) => {
   const state = store.getState();

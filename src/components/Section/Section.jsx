@@ -2,13 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection, updateSubsection } from "../../store/resumeSlice.js";
 
-import SlateField from "./SlateField.jsx";
 import SlateHeading from "./SlateHeading.jsx";
-import styles from './SlateWrapper.module.css';
+import styles from './Section.module.css';
 import LayoutRenderer from "./LayoutRenderer.jsx";
-import SettingsModal from "./SettingsModal.jsx";
+import SettingsModal from "./SettingsModal/SettingsModal.jsx";
 
-const SlateWrapper = ({ section, index }) => {
+const Section = ({ section, index }) => {
   const dispatch = useDispatch();
   
   
@@ -44,10 +43,6 @@ const SlateWrapper = ({ section, index }) => {
     setResumeColumnCount(columnCount);
     setSectionRowIndex(rowIndex);
 
-    // console.log("Section Index: ", index);
-    // console.log("Resume Grid Template Columns: ", resumeStyling.gridTemplateColumns);
-    console.log("Section Row: ", sectionRowIndex);
-    console.log("Column Count: ", columnCount);
   }, [index, sectionRowIndex, resumeStyling.gridTemplateColumns, resumeColumnCount]);
 
 
@@ -65,26 +60,11 @@ const SlateWrapper = ({ section, index }) => {
     dispatch(setActiveEditorSelection(null));
     dispatch(setActiveSectionId(section.id));
     setIsSettingsModalOpen(!isSettingsModalOpen);
-    // section.subsections.map((sub) => {
-    //   console.log ("Subsection Layout: ", sub.layout);
-    //   dispatch(updateSubsection({
-    //     sectionId: section.id,
-    //     subsectionId: sub.id,
-    //     changes: {
-    //       layout: {
-    //         ...sub.layout,
-    //         direction: sub.layout.direction === 'row' ? 'column' : 'row',
-    //         justifyContent: 'space-between'
-    //       }
-    //     }
-    //   }))
-    // });
   }
 
   const additionalSectionStyling = {
     paddingTop: isFirstSection && '2rem',
     paddingBottom: isLastSection && '2rem',
-    // breakInside: resumeStyling.columns ? 'avoid' : null,
   };
 
   const pseudoContainerStyling = {
@@ -98,23 +78,18 @@ const SlateWrapper = ({ section, index }) => {
 
   return (
     <div
-      className={styles.mainSlateContainerDiv}
+      className={styles.sectionContainerDiv}
       ref={sectionRef}
       style={{
-        // ...data.styling,
         ...section.styling,
         ...additionalSectionStyling
-        // paddingTop:
-        //   isFirstSection && '2rem',
-        // paddingBottom: isLastSection && '2rem',
       }}
       onClick={() => dispatch(setActiveSectionId(section.id))}
     >
       <div
-        className={styles.mainSlatePsuedoContainerDiv}
+        className={styles.sectionPseudoContainerDiv}
         style={
           pseudoContainerStyling
-          // height: (isFirstSection || isLastSection) && 'calc(100% - 1.5rem)',
         }
       />
       <button
@@ -150,4 +125,4 @@ const SlateWrapper = ({ section, index }) => {
   );
 };
 
-export default SlateWrapper;
+export default Section;

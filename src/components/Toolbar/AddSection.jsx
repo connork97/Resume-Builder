@@ -34,8 +34,6 @@ const AddSection = () => {
                      children: [
                         {
                            text: getNextWord(),
-                           // fontSize: resumeStyling.fontSize,
-                           // lineHeight: resumeStyling.lineHeight
                         }
                      ]
                   }

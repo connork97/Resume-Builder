@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
-import { getActiveMark, setLineHeight } from "../Slate/helpers/marks.js";
+import { getActiveMark, setLineHeight } from "../../helpers/marks.js";
 
-import styles from './RichTextToolbar.module.css';
+import styles from '../Toolbar/RichTextToolbar.module.css';
 
-import ToolbarButton from "../Toolbar/ToolbarButton";
-import ToolbarInput from "./ToolbarInput.jsx";
+import ToolbarButton from "../Toolbar/ToolbarButton.jsx";
+import ToolbarInput from "../Toolbar/ToolbarInput.jsx";
 
-const LineHeight = ({ editor, selection, sections, activeSectionId, resumeStyling }) => {
+const LineHeight = ({ editor, selection }) => {
 
    const dispatch = useDispatch();
+   const sections = useSelector(state => state.resume.sections);
+   const activeSectionId = useSelector(state => state.resume.activeSectionId);
+   const resumeStyling = useSelector(state => state.resume.styling);
 
    const [lineHeightInputValue, setLineHeightInputValue] = useState(parseFloat(resumeStyling.lineHeight));
 
@@ -24,7 +27,6 @@ const LineHeight = ({ editor, selection, sections, activeSectionId, resumeStylin
 
 
    const findLineHeightValue = (lineHeightToChange, value) => {
-      // lineHeightToChange = (parseFloat(lineHeightToChange) + 0.1).toFixed(1);
       if (value === 'increment') {
          lineHeightToChange = (parseFloat(lineHeightToChange) + 0.1).toFixed(1);
       } else if (value === 'decrement') {

@@ -7,6 +7,7 @@ import { addSection, addSubsection } from "../../store/resumeSlice";
 const AddSection = () => {
    const resumeStyling = useSelector((state) => state.resume.styling);
    const sections = useSelector((state) => state.resume.sections);
+   const resumeColumns = useSelector((state) => state.resume.layout.columns);
 
    const dispatch = useDispatch();
    const [open, setOpen] = useState(false);
@@ -62,7 +63,7 @@ const AddSection = () => {
    // Add a section OR append a subsection if it already exists
    const handleAddOrAppend = (type, subsectionData = {}, sectionData = null) => {
       const existing = sections.find((s) => s.type === type);
-
+      
       if (!existing) {
          if (sectionData) {
             const action = addSection(type);

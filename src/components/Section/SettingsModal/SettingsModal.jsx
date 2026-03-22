@@ -13,6 +13,7 @@ import FontSize from '../../Formatting/FontSize.jsx';
 import FontColor from '../../Formatting/FontColor.jsx';
 import LineHeight from '../../Formatting/LineHeight.jsx';
 import TextAlign from '../../Formatting/TextAlign.jsx';
+import BackgroundColor from '../../Formatting/BackgroundColor.jsx';
 
 const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen }) => {
 
@@ -126,6 +127,7 @@ const SettingsModal = ({ section, isSettingsModalOpen, setIsSettingsModalOpen })
          { component: FontColor, label: "Font Color" },
          { component: LineHeight, label: "Line Height" },
          { component: TextAlign, label: "Text Align" },
+         { component: BackgroundColor, label: 'Background Color'},
       ];
 
       return componentsArr.map((Component, index) => (

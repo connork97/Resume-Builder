@@ -9,50 +9,35 @@ import SettingsModal from "./SettingsModal/SettingsModal.jsx";
 
 const Section = ({ section, index }) => {
   const dispatch = useDispatch();
-  
-  
+
+
   const resumeStyling = useSelector((state) => state.resume.styling);
-  
+  const resumeLayout = useSelector((state) => state.resume.layout);
+  const resumeColumns = useSelector((state) => state.resume.layout.columns);
+
   if (!section || !section.subsections) return null; // <-- prevents early render
-  
+
   const sectionRef = useRef(null);
-  const sectionsLength = useSelector((state) => state.resume.sections.length);
-  const activeSectionId = useSelector((state) => state.resume.activeSectionId);
+  const sections = useSelector((state) => state.resume.sections);
+  const sectionColumnIndex = section.layout.columnIndex;
 
-  const [isFirstSection, setIsFirstSection] = useState(false);
-  const [isLastSection, setIsLastSection] = useState(false);
-
-  const [resumeColumnCount, setResumeColumnCount] = useState(null);
-
-  const [sectionRowIndex, setSectionRowIndex] = useState(null);
+  const [isFirstColumn, setIsFirstColumn] = useState(false);
+  const [isLastColumn, setIsLastColumn] = useState(false);
+  const [isFirstRow, setIsFirstRow] = useState(false);
+  const [isLastRow, setIsLastRow] = useState(false);
 
   useEffect(() => {
-    let columnCount = null;
-    let rowIndex = null;
-    if (resumeStyling.gridTemplateColumns && resumeStyling.display === 'grid') {
-      columnCount = resumeStyling.gridTemplateColumns.split(' ').length;
-      rowIndex = Math.floor(index / columnCount);
-      const sectionRowIsFirstRow = rowIndex === 0;
-      const sectionRowIsLastRow = rowIndex === Math.floor((sectionsLength - 1) / columnCount);
-      if (sectionRowIsFirstRow) setIsFirstSection(true);
-      if (sectionRowIsLastRow) setIsLastSection(true);
-    } else {
-      setIsFirstSection(index === 0);
-      setIsLastSection(index === sectionsLength - 1);
-    }
-    setResumeColumnCount(columnCount);
-    setSectionRowIndex(rowIndex);
-
-  }, [index, sectionRowIndex, resumeStyling.gridTemplateColumns, resumeColumnCount]);
-
+    setIsFirstColumn(section.layout.columnIndex === 0);
+    setIsLastColumn(section.layout.columnIndex === resumeColumns.length - 1);
+    setIsFirstRow(sections.find((section) => {
+      return section.layout.columnIndex === sectionColumnIndex && section.id === section.id;
+    }) === section);
+    setIsLastRow(sections.findLast((section) => {
+      return section.layout.columnIndex === sectionColumnIndex && section.id === section.id;
+    }) === section);
+  }, [section, sectionColumnIndex]);
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-
-  useEffect(() => {
-
-    setIsFirstSection(index === 0);
-    setIsLastSection(index === sectionsLength - 1);
-  }, [index, sectionsLength]);
 
   const handleSettingsIconClick = (e) => {
     e.stopPropagation();
@@ -63,15 +48,17 @@ const Section = ({ section, index }) => {
   }
 
   const additionalSectionStyling = {
-    paddingTop: isFirstSection && '2rem',
-    paddingBottom: isLastSection && '2rem',
-  };
+      paddingLeft: isFirstColumn && resumeLayout.padding.left,
+      paddingRight: isLastColumn && resumeLayout.padding.right,
+      paddingTop: isFirstRow ? resumeLayout.padding.top : '0.5rem',
+      paddingBottom: isLastRow ? resumeLayout.padding.bottom : '0.5rem',
+    }
 
   const pseudoContainerStyling = {
     minHeight: (
-      (sectionRef.current && !isFirstSection && !isLastSection) ? sectionRef.current.clientHeight + 7.5 + 'px'
-      : (sectionRef.current && (isFirstSection || isLastSection)) ? 'calc(100% - 1.5rem)'
-      : 'calc(100% + 7.5px)'
+      (sectionRef.current && !isFirstRow && !isLastRow) ? sectionRef.current.clientHeight + 5 + 'px'
+        : (sectionRef.current && (isFirstRow || isLastRow)) ? 'calc(100% - 2.5rem)'
+          : 'calc(100% + 5px)'
     ),
     // height: (isFirstSection || isLastSection) && 'calc(100% - 1.5rem)',
   };

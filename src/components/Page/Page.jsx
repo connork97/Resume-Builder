@@ -12,7 +12,7 @@ const Page = () => {
    const sections = useSelector((state) => state.resume.sections);
    const resumeStyling = useSelector((state) => state.resume.styling);
    const resumeLayout = useSelector((state) => state.resume.layout);
-   const resumeColumnCount = resumeLayout.columns.count;
+   const resumeColumnCount = resumeLayout.columns.length;
 
    const dispatch = useDispatch();
 
@@ -23,10 +23,10 @@ const Page = () => {
    // Handle how many columns to render on the page based on resume layout settings.
    const renderColumns = () => {
       if (resumeColumnCount) {
-         const columns = Array.from({ length: resumeColumnCount });
-         return columns.map((_, columnIndex) => {
+         // const columns = Array.from({ length: resumeColumnCount });
+         return resumeLayout.columns.map((column, columnIndex) => {
             const columnStyling = {
-               width: resumeLayout.columns.width[columnIndex],
+               width: column.width,
             }
             return (
                <div key={columnIndex} className={styles.columnWrapperDiv} style={columnStyling}>
@@ -41,7 +41,14 @@ const Page = () => {
                      }
 
                      if (sectionColumnIndex == columnIndex) {
-                        return <Section key={section.id} section={section} index={sectionIndex} />
+                        return (
+                           <Section
+                              key={section.id}
+                              section={section}
+                              index={sectionIndex}
+                              // columnIndex={columnIndex}
+                           />
+                        )
                      }
                   }
                   )}
@@ -54,7 +61,7 @@ const Page = () => {
    }
 
    return (
-      <div className={styles.pageContainerDiv} style={resumeStyling}>
+      <div className={styles.pageContainerDiv} style={{ ...resumeStyling }}>
          {renderColumns()}
       </div>
    )

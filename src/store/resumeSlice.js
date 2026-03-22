@@ -1,7 +1,17 @@
 import { autoBatchEnhancer, createSlice, nanoid } from "@reduxjs/toolkit";
 
+
+const createDefaultColumn = (width = '100%') => {
+  return {
+    id: nanoid(),
+    width: width,
+    // sections: []
+    // children: []
+  }
+};
+
 // Default Data for Brand New Section
-const createDefaultSection = (type = 'defaultSection') => {
+const createDefaultSection = (type = 'defaultSection', columnIndex = 0) => {
 
   const sectionHeadingDict = {
     header: "Header",
@@ -20,7 +30,7 @@ const createDefaultSection = (type = 'defaultSection') => {
     styling: {
     },
     layout: {
-      columnIndex: 0,
+      columnIndex: columnIndex,
     },
     value: [
       {
@@ -105,21 +115,21 @@ const initialState = {
     backgroundColor: 'rgba(255, 255, 255, 1)',
   },
   layout: {
-    columns: {
-      count: 1,
-      width: ['100%'],
-    },
+    columns: [
+      createDefaultColumn('100%')
+      // children: [sections => sections.filter((section) => section.columnIndex === 0).map(section => section.id)],
+    ],
     margin: {
-      top: null,
-      right: null,
-      bottom: null,
-      left: null
+      top: 'auto',
+      right: 'auto',
+      bottom: 'auto',
+      left: 'auto'
     },
     padding: {
-      top: null,
-      right: null,
-      bottom: null,
-      left: null
+      top: '3rem',
+      right: '3rem',
+      bottom: '3rem',
+      left: '3rem'
     }
   },
   sections: [],
@@ -145,12 +155,6 @@ const resumeSlice = createSlice({
       state.activeEditorSelection = action.payload;
     },
 
-    constUpdateResume(state, action) {
-      // const { changes } = action.payload;
-      // resume[key] = changes[key];
-      return { ...state, ...action.payload };
-    },
-
     updateResumeStyling(state, action) {
       state.styling = { ...state.styling, ...action.payload };
       // return action.payload;
@@ -161,6 +165,22 @@ const resumeSlice = createSlice({
       state.layout = { ...state[key], ...changes };
     },
 
+    addColumn(state, action) {
+      // const { width } = action.payload;
+      const width = state.layout.columns.length === 0 ? '100%' : `${100 / (state.layout.columns.length + 1)}%`;
+      state.layout.columns.push(createDefaultColumn(width));
+      state.layout.columns.map((column) => {
+        column.width = width;
+      })
+    },
+
+    updateColumn(state, action) {
+      const { id, changes } = action.payload;
+      const column = state.layout.columns.find((col) => col.id === id);
+      if (column) {
+        Object.assign(column, changes);
+      }
+    },
     addSection: {
       reducer(state, action) {
         state.sections.push(action.payload);
@@ -343,6 +363,8 @@ export const {
   setActiveEditorSelection,
   updateResume,
   updateResumeStyling,
+  addColumn,
+  updateColumn,
   addSection,
   updateSection,
   deleteSection,

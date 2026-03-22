@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateResume, updateSection } from '../../store/resumeSlice.js';
+import { addColumn, updateResume, updateSection } from '../../store/resumeSlice.js';
 
 import ToolbarButton from "./ToolbarButton.jsx";
 import ToolbarInput from "./ToolbarInput.jsx";
@@ -15,24 +15,17 @@ const Columns = () => {
 
    const sections = useSelector(state => state.resume.sections);
    const resumeLayout = useSelector(state => state.resume.layout);
+   const resumeColumns = resumeLayout.columns;
 
-   const [columnCountInputValue, setColumnCountInputValue] = useState(resumeLayout.columns.count);
+   const [columnCountInputValue, setColumnCountInputValue] = useState(resumeColumns.length);
 
    const handleUpdateResumeColumns = (newColumnCount) => {
       if (newColumnCount < 1) {
          window.alert("You must have at least one column.");
          return;
       }
-      const newColumnWidthsArr = Array(newColumnCount).fill(`${100 / newColumnCount}%`);
-      dispatch(updateResume({
-         key: 'layout',
-         changes: {
-            columns: {
-               count: newColumnCount,
-               width: newColumnWidthsArr
-            }
-         }
-      }));
+      // const newColumnWidthsArr = Array(newColumnCount).fill(`${100 / newColumnCount}%`);
+      dispatch(addColumn());
       setColumnCountInputValue(newColumnCount);
    }
 
@@ -40,7 +33,7 @@ const Columns = () => {
       <div className={styles.toolBarButtonInputWrapper}>
          <ToolbarButton
             text="-"
-            command={() => handleUpdateResumeColumns(resumeLayout.columns.count - 1)}
+            command={() => handleUpdateResumeColumns(resumeColumns.length - 1)}
          />
          <ToolbarInput
             value={columnCountInputValue}
@@ -49,7 +42,7 @@ const Columns = () => {
          />
          <ToolbarButton
             text="+"
-            command={() => handleUpdateResumeColumns(resumeLayout.columns.count + 1)}
+            command={() => handleUpdateResumeColumns(resumeColumns.length + 1)}
          />
       </div>
    )

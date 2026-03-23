@@ -2,23 +2,23 @@ import React, { useEffect } from 'react';
 
 import SlateField from './SlateField';
 
-const ChildLayoutRenderer = ({ child, index, fieldData, layout, parentLayoutDict }) => {
+const FieldRenderer = ({ index, field, layout, parentLayoutDict }) => {
 
-   const childLayoutDict = {
-      width: child.width ?? '100%',
-      justifySelf: child.justifySelf,
-      alignSelf: child.alignSelf,
-      textAlign: child.textAlign,
-      gridColumn: fieldData.label === 'Description' ? '1 / -1' : child.gridColumn,
+   const fieldLayoutDict = {
+      width: field.width ?? '100%',
+      justifySelf: field.justifySelf,
+      alignSelf: field.alignSelf,
+      textAlign: field.textAlign,
+      gridColumn: field.label === 'Description' ? '1 / -1' : field.gridColumn,
    }
    
    const isGrid = layout.display === 'grid';
 
    useEffect(() => {
-      if (fieldData.label === 'Description') {
-         childLayoutDict.gridColumn = '1 / -1';
+      if (field.label === 'Description') {
+         fieldLayoutDict.gridColumn = '1 / -1';
       }
-   }, [fieldData]);
+   }, [field]);
 
    const getColumnCount = (columns) => {
       if (!columns) return 0;
@@ -43,23 +43,28 @@ const ChildLayoutRenderer = ({ child, index, fieldData, layout, parentLayoutDict
 
    if (isGrid && columnCount) {
       const autoAlign = getAutoAlignment(index, columnCount);
-      childLayoutDict.justifySelf = child.justifySelf ?? autoAlign;
+      fieldLayoutDict.justifySelf = field.justifySelf ?? autoAlign;
    }
    return (
-      <div
-         key={child.id}
-         style={{
-            ...fieldData.styling,
-            ...childLayoutDict,
-         }}>
+      // <div
+      //    key={field.id}
+      //    style={{
+      //       ...field.styling,
+      //       ...fieldLayoutDict,
+      //    }}>
          <SlateField
-            field={fieldData}
-            sectionId={fieldData.sectionId}
-            subsectionId={fieldData.subsectionId}
+            key={field.id}
+            field={field}
+            styling={{
+               ...field.styling,
+               ...fieldLayoutDict,
+            }}
+            sectionId={field.sectionId}
+            subsectionId={field.subsectionId}
             layout={parentLayoutDict}
          />
-      </div>
+      // </div>
    )
 }
 
-export default ChildLayoutRenderer;
+export default FieldRenderer;

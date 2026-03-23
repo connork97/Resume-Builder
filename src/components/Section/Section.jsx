@@ -4,8 +4,8 @@ import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection, update
 
 import SlateHeading from "./SlateHeading.jsx";
 import styles from './Section.module.css';
-import LayoutRenderer from "./LayoutRenderer.jsx";
 import SettingsModal from "./SettingsModal/SettingsModal.jsx";
+import SubsectionRenderer from "./SubsectionRenderer.jsx";
 
 const Section = ({ section, index }) => {
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const Section = ({ section, index }) => {
 
   useEffect(() => {
     setAddtionalSectionStyling((prevStyling) => {
-      console.log({...prevStyling, paddingLeft: isFirstColumn ?? resumeLayout.padding.left})
+      // console.log({...prevStyling, paddingLeft: isFirstColumn ?? resumeLayout.padding.left})
       return {
         ...prevStyling,
         paddingLeft: isFirstColumn ? resumeLayout.padding.left : '0',
@@ -160,9 +160,12 @@ const Section = ({ section, index }) => {
         id={section.id}
       />
       {section.subsections.map((sub) => (
-        <LayoutRenderer
-          layout={sub.layout}
-          fields={sub.fields}
+        <SubsectionRenderer
+          key={sub.id}
+          sub={sub}
+          // layout={sub.layout}
+          // fields={sub.fields}
+          // fieldIds={sub.fieldIds}
         />
 
       ))}

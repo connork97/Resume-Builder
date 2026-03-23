@@ -12,7 +12,7 @@ import styles from '../../Toolbar/RichTextToolbar.module.css';
 import SettingsModal from './SettingsModal.jsx';
 import SettingsModalInput from './SettingsModalInput.jsx';
 
-const ColumnIndex = ({ section }) => {
+const ColumnIndex = ({ section, setHaveColumnsChanged }) => {
 
    const dispatch = useDispatch();
 
@@ -24,8 +24,10 @@ const ColumnIndex = ({ section }) => {
    // console.log(section.)
    const updateColumnIndex = (newColumnIndex) => {
       console.log('Updating column index to:', newColumnIndex);
-      if (newColumnIndex < 0 || newColumnIndex >= resumeLayout.columns.count) {
-         window.alert(`Column index must be between 0 and ${resumeLayout.columns.count - 1}.`);
+      setHaveColumnsChanged(prev => !prev);
+
+      if (newColumnIndex < 0 || newColumnIndex >= resumeLayout.columns.length) {
+         window.alert(`Column index must be between 0 and ${resumeLayout.columns.length - 1}.`);
          return;
       } dispatch(updateSection({
          sectionId: section.id,

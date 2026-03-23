@@ -13,3 +13,10 @@
    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
    border-radius: 4px;
 }
+
+.columnWrapperDiv {
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+   flex: 1;
+}

@@ -16,7 +16,7 @@
 
 .settingsModalContainerDiv {
    position: absolute;
-   display: flex;
+   /* display: flex; */
    flex-direction: column;
    width: max-content;
    padding: 0.5vh;
@@ -69,9 +69,9 @@
    color: white;
    border: none;
    font-size: 1.5vh;
-   display: flex;
-   align-items: center;
-   justify-content: center;
+   /* display: flex; */
+   /* align-items: center; */
+   /* justify-content: center; */
    border: 1px solid #3a3a3a;
    border-radius: 0.5vh;
    padding: 0.5vh 1vh;
@@ -79,7 +79,7 @@
 
 .settingsModalDropdownContainerDiv {
    position: relative;
-   display: flex;
+   /* display: flex; */
    
    /* flex-direction: column; */
    z-index: 999;
@@ -87,7 +87,7 @@
 
 .settingsModalDropdownPanel {
    /* position: absolute; */
-   display: flex;
+   /* display: flex; */
    /* flex-direction: column; */
    /* top: 125%; */
    top: 0;
@@ -107,7 +107,7 @@
    /* opacity: 50%; */
    /* width: 2.5vh; */
    /* height: 2.5vh; */
-   display: flex;
+   /* display: flex; */
    padding: 0.5vh;
    width: max-content;
    border-radius: 0.5vh;

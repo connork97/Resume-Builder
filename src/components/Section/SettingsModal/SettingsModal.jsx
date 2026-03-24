@@ -20,11 +20,12 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
    const dispatch = useDispatch();
 
    const resumeStyling = useSelector(state => state.resume.styling);
-   const resumeColumns = useSelector(state => state.resume.layout.columns);
    const sections = useSelector(state => state.resume.sections);
+   const columns = useSelector(state => state.resume.columns);
    const activeSectionId = useSelector(state => state.resume.activeSectionId);
-   const sectionColumnIndex = section.layout.columnIndex;
 
+   const sectionColumnIndex = columns.allIds.indexOf(section.columnId);
+   console.log("sectionColumnIndex:", sectionColumnIndex);
 
    const getColumnCount = (gridTemplateColumns) => {
       const match = gridTemplateColumns.match(/repeat\((\d+),\s*1fr\)/);
@@ -36,14 +37,14 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
       return match ? parseInt(match[1], 10) : "auto";
    }
 
-   const [columnWidthInputValue, setColumnWidthInputValue] = useState(column.width);
+   const [columnWidthInputValue, setColumnWidthInputValue] = useState('auto');
 
    const [columnIndexInputValue, setColumnIndexInputValue] = useState(0);
    const [columnsInputValue, setColumnsInputValue] = useState("auto");
    const [rowsInputValue, setRowsInputValue] = useState("auto");
 
    useEffect(() => {
-      if (section.layout.columnIndex) {
+      if (sectionColumnIndex) {
          setColumnIndexInputValue(sectionColumnIndex)};
          setColumnWidthInputValue(column.width);
          // resumeColumns.map((column, index) => {
@@ -56,8 +57,8 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
          // })
          // const columnWidth = resumeColumns.map((column) => column.index === sectionColumnIndex) || "?";
          // console.log("columnWidth in useEffect:", columnWidth);
-      if (section.layout.gridTemplateColumns) setColumnsInputValue(getColumnCount(section.layout.gridTemplateColumns));
-      if (section.layout.gridTemplateRows) setRowsInputValue(getRowCount(section.layout.gridTemplateRows));
+      // if (section.layout.gridTemplateColumns) setColumnsInputValue(getColumnCount(section.layout.gridTemplateColumns));
+      // if (section.layout.gridTemplateRows) setRowsInputValue(getRowCount(section.layout.gridTemplateRows));
 
    }, []);
 
@@ -172,7 +173,10 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
          />
          <div className={styles.settingsModalContainerDiv}>
             <p className={styles.settingsModalSectionTitle}>Editing: {section.label}</p>
-            <ColumnIndex section={section} setHaveColumnsChanged={setHaveColumnsChanged} />
+            <ColumnIndex
+               section={section}
+               sectionColumnIndex={sectionColumnIndex}
+            />
             {settingModalInputArr.map((input) => (
                <SettingsModalInput
                   key={input.label}

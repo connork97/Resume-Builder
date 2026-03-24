@@ -1,9 +1,9 @@
 import { autoBatchEnhancer, createSlice, nanoid } from "@reduxjs/toolkit";
 
 
-const createDefaultColumn = (columnId, width = '100%') => {
+const createDefaultColumn = (width = '100%') => {
   const column = {
-    id: columnId ?? nanoid(),
+    id: nanoid(),
     width: width,
     sectionIds: [],
   }
@@ -110,7 +110,9 @@ const initialState = {
   columns: {
     byId: {
       [firstColumnId]: {
-        ...createDefaultColumn(firstColumnId)
+         id: firstColumnId,
+         width: '100%',
+         sectionIds: []
       },
     },
     allIds: [firstColumnId]
@@ -239,14 +241,41 @@ const resumeSlice = createSlice({
       subsection.fieldIds.push(newField.id);
     },
 
+    addColumn(state, action) {
+      const columnsLength = state.columns.allIds.length;
+      const width = columnsLength === 0 ? '100%' : `${100 / (columnsLength + 1)}%`;
+      const newColumn = createDefaultColumn(width);
+      state.columns.byId[newColumn.id] = newColumn;
+      state.columns.allIds.push(newColumn.id);
+
+      // state.columns.allIds.map((id) => {
+      //   state.columns.byId[id].width = width;
+      // })
+    },
+
+    deleteColumn(state, action) {
+      const { columnId } = action.payload;
+      const column = state.columns.byId[columnId];
+      if (!column) return;
+
+      // Move sections in deleted column to last available column
+      column.sectionIds.forEach((sectionId) => {
+        const section = state.sections.byId[sectionId];
+        section.columnId = state.columns.allIds.findLast((id) => id !== columnId);
+      });
+
+      delete state.columns.byId[columnId];
+      state.columns.allIds = state.columns.allIds.filter((id) => id !== columnId);
+    },
+
     updateSection(state, action) {
       const { sectionId, changes } = action.payload;
       const section = state.sections.byId[sectionId];
       if (!section) {
         console.error(`Cannot update section. ID of ${sectionId} not found.`);
         return;
-
       }
+      console.log('SECTION CHANGES: ', changes);
       // if (section) {
       //   for (const key in changes) {
       //     if (key === "styling") {
@@ -376,15 +405,6 @@ const resumeSlice = createSlice({
       state.layout = { ...state[key], ...changes };
     },
 
-    addColumn(state, action) {
-      // const { width } = action.payload;
-      const width = state.layout.columns.length === 0 ? '100%' : `${100 / (state.layout.columns.length + 1)}%`;
-      state.layout.columns.push(createDefaultColumn(width));
-      state.layout.columns.map((column) => {
-        column.width = width;
-      })
-    },
-
     updateColumn(state, action) {
       const { id, changes } = action.payload;
       const column = state.layout.columns.find((col) => col.id === id);
@@ -428,6 +448,7 @@ export const {
   updateResume,
   updateResumeStyling,
   addColumn,
+  deleteColumn,
   updateColumn,
   addSection,
   updateSection,

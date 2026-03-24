@@ -70,8 +70,8 @@ const FontSize = ({ editor, selection }) => {
 
          <ToolbarInput
             value={fontSizeInputValue}
-            handleSetFontSizeInputValue={setFontSizeInputValue}
-            handleSetNewFontSize={setNewFontSize}
+            handleChange={setFontSizeInputValue}
+            commitChange={setNewFontSize}
          />
 
          <ToolbarButton

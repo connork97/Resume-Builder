@@ -74,7 +74,6 @@ const RichTextToolbar = () => {
       <LineHeight
         editor={editor}
         selection={selection}
-        dispatch={dispatch}
         sections={sections}
         activeSectionId={activeSectionId}
         resumeStyling={resumeStyling}
@@ -83,26 +82,22 @@ const RichTextToolbar = () => {
       <FontColor
         editor={editor}
         selection={selection}
-        dispatch={dispatch}
         activeSectionId={activeSectionId}
       />
 
       <HighlightColor
         editor={editor}
         selection={selection}
-        dispatch={dispatch}
         activeSectionId={activeSectionId}
       />
 
       <BackgroundColor
-        dispatch={dispatch}
         activeSectionId={activeSectionId}
       />
 
       <FontSize
         editor={editor}
         selection={selection}
-        dispatch={dispatch}
         sections={sections}
         activeSectionId={activeSectionId}
         resumeStyling={resumeStyling}
@@ -112,7 +107,6 @@ const RichTextToolbar = () => {
 
       <TextAlign
         editor={editor}
-        dispatch={dispatch}
         activeSectionId={activeSectionId}
       />
 

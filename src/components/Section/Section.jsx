@@ -123,7 +123,6 @@ const Section = ({ section, column }) => {
           section={section}
           isSettingsModalOpen={isSettingsModalOpen}
           setIsSettingsModalOpen={setIsSettingsModalOpen}
-          set={set}
           column={column}
         />
       )}

@@ -12,14 +12,14 @@ import styles from '../../Toolbar/RichTextToolbar.module.css';
 import SettingsModal from './SettingsModal.jsx';
 import SettingsModalInput from './SettingsModalInput.jsx';
 
-const ColumnIndex = ({ section, setHaveColumnsChanged }) => {
+const ColumnIndex = ({ section, sectionColumnIndex, setHaveColumnsChanged }) => {
 
    const dispatch = useDispatch();
 
    const sections = useSelector(state => state.resume.sections);
    const resumeLayout = useSelector(state => state.resume.layout);
 
-   const [columnIndexInputValue, setColumnIndexInputValue] = useState(section.layout.columnIndex);
+   const [columnIndexInputValue, setColumnIndexInputValue] = useState(sectionColumnIndex);
 
    // console.log(section.)
    const updateColumnIndex = (newColumnIndex) => {

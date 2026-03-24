@@ -2,14 +2,14 @@ import React from 'react';
 
 import styles from "./RichTextToolbar.module.css";
 
-const ToolbarInput = ({ value, handleSetFontSizeInputValue, handleSetNewFontSize }) => {
+const ToolbarInput = ({ value, handleChange, commitChange }) => {
 
    return (
       <input
-         onKeyDown={(e) => e.key === 'Enter' ? handleSetNewFontSize() : null}
+         onKeyDown={(e) => e.key === 'Enter' ? commitChange() : null}
          className={styles.toolbarInput}
          value={value}
-         onChange={(e) => handleSetFontSizeInputValue(e.target.value)}
+         onChange={(e) => handleChange(e.target.value)}
       >
       </input>
    );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addColumn, updateResume, updateSection } from '../../store/resumeSlice.js';
+import { addColumn, deleteColumn, updateResume, updateSection } from '../../store/resumeSlice.js';
 
 import ToolbarButton from "./ToolbarButton.jsx";
 import ToolbarInput from "./ToolbarInput.jsx";
@@ -15,35 +15,51 @@ const Columns = () => {
 
    const sections = useSelector(state => state.resume.sections);
    const resumeLayout = useSelector(state => state.resume.layout);
-   // const resumeColumns = resumeLayout.columns;
-   const resumeColumns = useSelector(state => state.resume.columns);
+   // const columns = resumeLayout.columns;
+   const columns = useSelector(state => state.resume.columns);
 
-   const [columnCountInputValue, setColumnCountInputValue] = useState(resumeColumns.length);
+   const [columnInputValue, setColumnInputValue] = useState(columns.allIds.length);
 
-   const handleUpdateResumeColumns = (newColumnCount) => {
+   const handleUpdateColumns = (newColumnCount) => {
+
+      if (newColumnCount === 'decrement') newColumnCount = columns.allIds.length - 1;
+      if (newColumnCount === 'increment') newColumnCount = columns.allIds.length + 1;
+      if (newColumnCount === 'input') newColumnCount = parseInt(columnInputValue);
+
+      if (newColumnCount == columns.allIds.length) return;
       if (newColumnCount < 1) {
          window.alert("You must have at least one column.");
          return;
       }
-      // const newColumnWidthsArr = Array(newColumnCount).fill(`${100 / newColumnCount}%`);
-      dispatch(addColumn());
-      setColumnCountInputValue(newColumnCount);
+      if (newColumnCount > columns.allIds.length) {
+         for (let i = columns.allIds.length; i < newColumnCount; i++) {
+            dispatch(addColumn());
+         }
+      }
+      if (newColumnCount < columns.allIds.length) {
+         for (let i = columns.allIds.length; i >= newColumnCount; i--) {
+            const columnIdToRemove = columns.allIds[i];
+            dispatch(deleteColumn({ columnId: columnIdToRemove }));
+         }
+      }
+      setColumnInputValue(newColumnCount);
    }
 
    return (
       <div className={styles.toolBarButtonInputWrapper}>
          <ToolbarButton
             text="-"
-            command={() => handleUpdateResumeColumns(resumeColumns.length - 1)}
+            command={() => handleUpdateColumns('decrement')}
          />
          <ToolbarInput
-            value={columnCountInputValue}
-            onChange={(e) => setColumnCountInputValue(parseInt(e.target.value) || 1)}
-            onBlur={() => handleUpdateResumeColumns(columnCountInputValue)}
+            value={columnInputValue}
+            handleChange={setColumnInputValue}
+            commitChange={() => handleUpdateColumns('input')}
+            onBlur={() => handleUpdateColumns(columnInputValue)}
          />
          <ToolbarButton
             text="+"
-            command={() => handleUpdateResumeColumns(resumeColumns.length + 1)}
+            command={() => handleUpdateColumns('increment')}
          />
       </div>
    )

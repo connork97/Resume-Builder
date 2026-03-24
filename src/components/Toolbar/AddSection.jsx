@@ -7,6 +7,7 @@ import { addSection, addSubsection } from "../../store/resumeSlice";
 const AddSection = () => {
    const resumeStyling = useSelector((state) => state.resume.styling);
    const sections = useSelector((state) => state.resume.sections);
+   const subsections = useSelector((state) => state.resume.subsections);
    const resumeColumns = useSelector((state) => state.resume.layout.columns);
 
    const dispatch = useDispatch();
@@ -25,24 +26,29 @@ const AddSection = () => {
       sectionOptions.forEach((option) => {
          const action = addSection(option.type);
          const data = action.payload;
+         // console.log('DEFAULT DATA: ', data.subsection)
+         const subsection = data.subsection;
+         const section = data.section;
+         // console.log(data)
+         // console.log(subsections)
+         // data.subsections.forEach(sub => {
+         //    sub.fields.forEach(field => {
+         //       field.value = [
+         //          {
+         //             type: "paragraph",
+         //             label: field.label,
+         //             children: [
+         //                {
+         //                   text: getNextWord(),
+         //                }
+         //             ]
+         //          }
+         //       ];
+         //    });
+         // });
 
-         data.subsections.forEach(sub => {
-            sub.fields.forEach(field => {
-               field.value = [
-                  {
-                     type: "paragraph",
-                     label: field.label,
-                     children: [
-                        {
-                           text: getNextWord(),
-                        }
-                     ]
-                  }
-               ];
-            });
-         });
-
-         handleAddOrAppend(option.type, {}, data);
+         // console.log('DATA: ', data.subsection, data.section)
+         handleAddOrAppend(option.type, data.subsection, data.section);
       });
    };
    useEffect(() => {
@@ -62,7 +68,10 @@ const AddSection = () => {
 
    // Add a section OR append a subsection if it already exists
    const handleAddOrAppend = (type, subsectionData = {}, sectionData = null) => {
-      const existing = sections.find((s) => s.type === type);
+      // const existing = sections.find((s) => s.type === type);
+      // const existing = Object.values(sections.byId).find((s) => s.type === type);
+      const existing = sections.byId[sectionData?.id];
+      // console.log('EXISTING SECTION: ', sectionData)
       
       if (!existing) {
          if (sectionData) {

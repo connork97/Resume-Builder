@@ -5,17 +5,17 @@ import SlateField from './SlateField';
 const FieldRenderer = ({ index, field, layout, parentLayoutDict }) => {
 
    const fieldLayoutDict = {
-      width: field.width ?? '100%',
-      justifySelf: field.justifySelf,
-      alignSelf: field.alignSelf,
-      textAlign: field.textAlign,
-      gridColumn: field.label === 'Description' ? '1 / -1' : field.gridColumn,
+      width: field?.width ?? '100%',
+      justifySelf: field?.justifySelf,
+      alignSelf: field?.alignSelf,
+      textAlign: field?.textAlign,
+      gridColumn: field?.label === 'Description' ? '1 / -1' : field?.gridColumn,
    }
    
-   const isGrid = layout.display === 'grid';
+   const isGrid = layout?.display === 'grid';
 
    useEffect(() => {
-      if (field.label === 'Description') {
+      if (field?.label === 'Description') {
          fieldLayoutDict.gridColumn = '1 / -1';
       }
    }, [field]);

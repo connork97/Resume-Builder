@@ -7,22 +7,23 @@ import styles from './Section.module.css';
 import SettingsModal from "./SettingsModal/SettingsModal.jsx";
 import SubsectionRenderer from "./SubsectionRenderer.jsx";
 
-const Section = ({ section, index }) => {
+const Section = ({ section, column }) => {
+  useEffect(() => {
+    if (!section) {
+      console.error('Section component rendered without a valid section prop.');
+      return null; // <-- prevents early render
+    }
+  }, []);
+
   const dispatch = useDispatch();
 
-
-  const resumeStyling = useSelector((state) => state.resume.styling);
-  const resumeLayout = useSelector((state) => state.resume.layout);
-  const resumeColumns = useSelector((state) => state.resume.layout.columns);
-
-  if (!section || !section.subsections) return null; // <-- prevents early render
-
   const sectionRef = useRef(null);
-  const sections = useSelector((state) => state.resume.sections);
-  const sectionId = section.id;
-  const sectionColumnIndex = section.layout.columnIndex;
-  const columns = useSelector(state => state.resume.layout.columns);
-  const column = useSelector(state => state.resume.layout.columns[sectionColumnIndex]);
+
+  const resumeLayout = useSelector((state) => state.resume.layout);
+  
+  
+  // const subsections = useSelector((state) => section.subsectionIds.filter((id) => state.resume.subsections.byId[id]));
+  // console.log('SUBSECTIONS', subsections)
   
   const [isFirstColumn, setIsFirstColumn] = useState(false);
   const [isLastColumn, setIsLastColumn] = useState(false);
@@ -35,69 +36,41 @@ const Section = ({ section, index }) => {
       paddingBottom: '0',
   });
 
-  const [haveColumnsChanged, setHaveColumnsChanged] = useState(false);
-
-  useEffect(() => {
-    if (columns.length === 1) {
-      setIsFirstColumn(true);
-      setIsLastColumn(true);
-      setIsFirstRow(section.id === sections[0].id);
-      setIsLastRow(section.id === sections[sections.length - 1].id);
-    } else if (columns.length > 1) {
-      setIsFirstColumn(section.layout.columnIndex === 0);
-      setIsLastColumn(section.layout.columnIndex === columns.length - 1);
-      const sectionsInSameColumn = sections.filter(sec => sec.layout.columnIndex === section.layout.columnIndex);
-      setIsFirstRow(section.id === sectionsInSameColumn[0].id);
-      setIsLastRow(section.id === sectionsInSameColumn[sectionsInSameColumn.length - 1].id);
+  const renderedSubsections = section.subsectionIds?.map((subId) => {
+    const subsection = useSelector((state) => state.resume.subsections.byId[subId]);
+    if (!subsection) {
+      console.error(`Subsection with ID ${subId} not found.`);
+      return null;
     }
-  }, [haveColumnsChanged]);
+    return (
+      <SubsectionRenderer
+        key={subsection.id}
+        subsection={subsection}
+        // layout={subsection.layout}
+        // fields={subsection.fields}
+        // fieldIds={subsection.fieldIds}
+      />
+    );
+  });
 
-  useEffect(() => {
-    setAddtionalSectionStyling((prevStyling) => {
-      // console.log({...prevStyling, paddingLeft: isFirstColumn ?? resumeLayout.padding.left})
-      return {
-        ...prevStyling,
-        paddingLeft: isFirstColumn ? resumeLayout.padding.left : '0',
-        paddingRight: isLastColumn ? resumeLayout.padding.right : '0',
-        paddingTop: isFirstRow ? resumeLayout.padding.top : '0',
-        // marginBottom: isLastRow && 'auto',
-        flex: isLastRow ? '1' : 'none',
-        // height: isLastRow && '100%',
-        // flex: isLastRow && '1',
-        // paddingBottom: isLastRow && resumeLayout.padding.bottom,
-       }
+
+  // useEffect(() => {
+  //   setAddtionalSectionStyling((prevStyling) => {
+  //     // console.log({...prevStyling, paddingLeft: isFirstColumn ?? resumeLayout.padding.left})
+  //     return {
+  //       ...prevStyling,
+  //       paddingLeft: isFirstColumn ? resumeLayout.padding.left : '0',
+  //       paddingRight: isLastColumn ? resumeLayout.padding.right : '0',
+  //       paddingTop: isFirstRow ? resumeLayout.padding.top : '0',
+  //       // marginBottom: isLastRow && 'auto',
+  //       flex: isLastRow ? '1' : 'none',
+  //       // height: isLastRow && '100%',
+  //       // flex: isLastRow && '1',
+  //       // paddingBottom: isLastRow && resumeLayout.padding.bottom,
+  //      }
       
-    })
-  }, [haveColumnsChanged, isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding]);
-
-  // useEffect(() => {
-  //   console.log('settings addtional section styling')
-  //   setAddtionalSectionStyling({
-  //     paddingLeft: isFirstColumn ? resumeLayout.padding.left : '0.5rem',
-  //     paddingRight: isLastColumn ? resumeLayout.padding.right : '0.5rem',
-  //     paddingTop: isFirstRow ? resumeLayout.padding.top : '0.5rem',
-  //     paddingBottom: isLastRow ? resumeLayout.padding.bottom : '0.5rem',
   //   })
-  //  }, [sections, isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding]);
-  
-  // useEffect(() => {
-  //   setIsFirstColumn(section.layout.columnIndex === 0);
-  //   setIsLastColumn(section.layout.columnIndex === resumeColumns.length - 1);
-  //   sections.map((section) => {
-  //     if (section.layout.columnIndex === sectionColumnIndex && section.id === sectionId) {
-  //       console.log('temp', section)
-  //       return section;
-  //     }
-      // return false;
-    // });
-    // console.log('temp: ', temp);
-    // setIsFirstRow(sections.find((section) => {
-    //   return section.layout.columnIndex === sectionColumnIndex && section.id === sectionId;
-    // }) === section);
-  //   setIsLastRow(sections.findLast((section) => {
-  //     return section.layout.columnIndex === sectionColumnIndex && section.id === sectionId;
-  //   }) === section);
-  // }, [columns, sectionColumnIndex]);
+  // }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding]);
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
@@ -150,7 +123,7 @@ const Section = ({ section, index }) => {
           section={section}
           isSettingsModalOpen={isSettingsModalOpen}
           setIsSettingsModalOpen={setIsSettingsModalOpen}
-          setHaveColumnsChanged={setHaveColumnsChanged}
+          set={set}
           column={column}
         />
       )}
@@ -159,16 +132,7 @@ const Section = ({ section, index }) => {
         section={section}
         id={section.id}
       />
-      {section.subsections.map((sub) => (
-        <SubsectionRenderer
-          key={sub.id}
-          sub={sub}
-          // layout={sub.layout}
-          // fields={sub.fields}
-          // fieldIds={sub.fieldIds}
-        />
-
-      ))}
+      {renderedSubsections}
     </div>
   );
 };

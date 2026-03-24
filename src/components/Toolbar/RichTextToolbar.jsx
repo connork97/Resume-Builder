@@ -16,7 +16,7 @@ import BackgroundColor from "../Formatting/BackgroundColor.jsx";
 import TextAlign from "../Formatting/TextAlign.jsx";
 import Lists from "../Formatting/Lists.jsx";
 import Marks from "../Formatting/Marks.jsx";
-import Layout from "./Columns.jsx";
+import Columns from "./Columns.jsx";
 
 import styles from "./RichTextToolbar.module.css";
 
@@ -26,7 +26,8 @@ const RichTextToolbar = () => {
 
   const sections = useSelector((state) => state.resume.sections);
   const activeSectionId = useSelector(state => state.resume.activeSectionId);
-  const activeSection = sections.find(section => section.id === activeSectionId);
+  const activeSection = sections.byId[activeSectionId];
+  // const activeSection = sections.find(section => section.id === activeSectionId);
   const activeSectionText = activeSection ? Node.string({ children: activeSection?.value ?? [] }) : null;
 
   const activeEditorId = useSelector((state) => state.resume.activeEditorId);
@@ -117,7 +118,7 @@ const RichTextToolbar = () => {
 
       <Lists editor={editor} />
 
-      <Layout />
+      <Columns />
 
       {/* CURRENTLY EDITING BUTTON */}
       <ToolbarButton

@@ -15,7 +15,8 @@ const Columns = () => {
 
    const sections = useSelector(state => state.resume.sections);
    const resumeLayout = useSelector(state => state.resume.layout);
-   const resumeColumns = resumeLayout.columns;
+   // const resumeColumns = resumeLayout.columns;
+   const resumeColumns = useSelector(state => state.resume.columns);
 
    const [columnCountInputValue, setColumnCountInputValue] = useState(resumeColumns.length);
 

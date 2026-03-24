@@ -1,17 +1,18 @@
 import { autoBatchEnhancer, createSlice, nanoid } from "@reduxjs/toolkit";
 
 
-const createDefaultColumn = (width = '100%') => {
-  return {
-    id: nanoid(),
+const createDefaultColumn = (columnId, width = '100%') => {
+  const column = {
+    id: columnId ?? nanoid(),
     width: width,
-    // sections: []
-    // children: []
+    sectionIds: [],
   }
+
+  return column;
 };
 
 // Default Data for Brand New Section
-const createDefaultSection = (type = 'defaultSection', columnIndex = 0) => {
+const createDefaultSection = (type = 'defaultSection', columnId = null) => {
 
   const sectionHeadingDict = {
     header: "Header",
@@ -23,15 +24,18 @@ const createDefaultSection = (type = 'defaultSection', columnIndex = 0) => {
     defaultSection: "Default Section"
   };
 
-  const defaultSectionObj = {
-    id: nanoid(),
+  const sectionId = nanoid();
+  // const subsection = createDefaultSubsection(type, sectionId);
+
+  const section = {
+    id: sectionId,
+    columnId: columnId,
+    subsectionIds: [],
     label: sectionHeadingDict[type],
     type: type,
-    styling: {
-    },
-    layout: {
-      columnIndex: columnIndex,
-    },
+    // layout: {
+    //   columnIndex: columnIndex,
+    // },
     value: [
       {
         type: "heading",
@@ -42,20 +46,47 @@ const createDefaultSection = (type = 'defaultSection', columnIndex = 0) => {
         ]
       }
     ],
-    subsections: [createDefaultSubsection(type)]
+    styling: {},
   };
 
-  return defaultSectionObj;
+  return section;
+};
+
+// Default Subsection Fields (for Initial AND Additional Subsections)
+const createDefaultSubsection = (type = 'defaultSubsection', sectionId) => {
+
+  const defaultTypesDict = {
+    header: ["Name", "Title"],
+    workHistory: ["Job Title", "Company", "Location", "Start/End Dates", "Description"],
+    education: ["School", "Degree", "Field of Study", "Location", "Start/End Dates", "Description"],
+    skills: ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"],
+    contact: ["Email", "Phone", "Location", "Website", "LinkedIn"],
+    summary: ["Summary"],
+    defaultSubsection: ["Field"]
+  };
+
+  const subsectionId = nanoid();
+  const fields = createDefaultField(defaultTypesDict[type], subsectionId);
+
+  const subsection = {
+    id: subsectionId,
+    sectionId: sectionId,
+    fieldIds: fields.map((field) => field.id),
+    label: type,
+    styling: {},
+  }
+
+  return { subsection, fields };
 };
 
 // Helper function to create standardized fields regardless of section type
-const createDefaultField = (arrToMap = ["Field"]) => {
+const createDefaultField = (arrToMap = ["Field"], subsectionId) => {
 
   return (
     arrToMap.map((field) => ({
       id: nanoid(),
+      subsectionId: subsectionId,
       label: field,
-      styling: {},
       value: [
         {
           type: "paragraph",
@@ -67,54 +98,31 @@ const createDefaultField = (arrToMap = ["Field"]) => {
           ]
         }
       ],
+      styling: {},
     }))
   )
 };
 
-// Default Subsection Fields (for Initial AND Additional Subsections)
-const createDefaultSubsection = (type = 'defaultSubsection', sectionLayout) => {
-
-  const defaultFieldsObj = {
-    header: ["Name", "Title"],
-    workHistory: ["Job Title", "Company", "Location", "Start/End Dates", "Description"],
-    education: ["School", "Degree", "Field of Study", "Location", "Start/End Dates", "Description"],
-    skills: ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"],
-    contact: ["Email", "Phone", "Location", "Website", "LinkedIn"],
-    summary: ["Summary"],
-    defaultSubsection: ["Field"]
-  };
-
-  const fields = createDefaultField(defaultFieldsObj[type]);
-
-  const defaultSubsectionObj = {
-    id: nanoid(),
-
-    fieldIds: fields.map((field) => field.id),
-
-    label: type,
-    styling: {},
-    fields,
-    layout: {
-      ...sectionLayout,
-      children: fields.map((field) => ({
-        id: nanoid(),
-        type: 'field',
-        fieldId: field.id
-      }))
-    }
-  }
-
-  return defaultSubsectionObj;
-};
-
 // Resume Slice
-
+const firstColumnId = nanoid();
 const initialState = {
-  sections: [],
-  // sections: {
-  //     byId: {},
-  //     allIds: []
-  // },
+  // sections: [],
+  columns: {
+    byId: {
+      [firstColumnId]: {
+        ...createDefaultColumn(firstColumnId)
+      },
+    },
+    allIds: [firstColumnId]
+  },
+  sections: {
+    byId: {},
+    allIds: []
+  },
+  subsections: {
+    byId: {},
+    allIds: []
+  },
   fields: {
     byId: {},
     allIds: []
@@ -126,11 +134,12 @@ const initialState = {
     color: 'rgba(0, 0, 0, 1)',
     backgroundColor: 'rgba(255, 255, 255, 1)',
   },
+
   layout: {
-    columns: [
-      createDefaultColumn('100%')
-      // children: [sections => sections.filter((section) => section.columnIndex === 0).map(section => section.id)],
-    ],
+    // columns: [
+    // createDefaultColumn('100%')
+    // children: [sections => sections.filter((section) => section.columnIndex === 0).map(section => section.id)],
+    // ],
     margin: {
       top: 'auto',
       right: 'auto',
@@ -156,13 +165,39 @@ const resumeSlice = createSlice({
     addSection: {
       reducer(state, action) {
         const section = action.payload;
-        section.subsections.forEach((subsection) => {
-          subsection.fields.forEach((field) => {
-            state.fields.byId[field.id] = field;
-            state.fields.allIds.push(field.id);
-          })
-        })
-        state.sections.push(section);
+        // Establish Section/Column Relationship
+        if (!section.columnId) {
+          const firstColumnId = state.columns.allIds[0];
+          section.columnId = firstColumnId;
+          state.columns.byId[firstColumnId].sectionIds.push(section.id);
+        }
+        // Add Section to State
+        if (!state.sections.byId[section.id]) {
+          state.sections.byId[section.id] = section;
+          state.sections.allIds.push(section.id);
+        }
+        if (!section.subsectionIds) {
+          section.subsectionIds = [];
+        }
+
+        // Create First Subsection for the Section
+        const subsectionData = createDefaultSubsection(section.type, section.id);
+        const subsection = subsectionData.subsection;
+
+        // Establish Section/Subsection Relationship
+        section.subsectionIds.push(subsection.id);
+
+        // Add Subsection to State
+        state.subsections.byId[subsection.id] = subsection;
+        state.subsections.allIds.push(subsection.id);
+
+        // Add Fields to State
+        // Subsection/Fields Relationship is Already Established in createDefaultSubsection Function
+        const subsectionFields = subsectionData.fields;
+        subsectionFields.forEach((field) => {
+          state.fields.byId[field.id] = field;
+          state.fields.allIds.push(field.id);
+        });
       },
       prepare(type) {
         return {
@@ -173,78 +208,127 @@ const resumeSlice = createSlice({
 
     addSubsection(state, action) {
       const { sectionId } = action.payload;
-      const section = state.sections.find(s => s.id === sectionId);
 
+      const section = state.sections.byId[sectionId];
       if (!section) return;
 
       const type = section.type;
 
-      const subsection = createDefaultSubsection(type);
+      // Create New Subsection
+      const subsection = createDefaultSubsection(type, sectionId);
 
-      subsection.fields.forEach((field) => {
-        state.fields.byId[field.id] = field;
-        state.fields.allIds.push(field.id);
-      })
-
-      section.subsections.push(subsection);
-
-      // if (!Array.isArray(section.subsections)) {
-      //   section.subsections = [];
-      // }
+      // Add Subsection to State
+      state.subsections.byId[subsection.id] = subsection;
+      state.subsections.allIds.push(subsection.id);
 
     },
 
-    //  Add field to a subsection
     addField(state, action) {
-      const { sectionId, subsectionId, fieldData } = action.payload;
+      const { subsectionId, fieldData } = action.payload;
 
-      const section = state.sections.find(s => s.id === sectionId);
-      if (!section) return;
-
-      const subsection = section.subsections.find((s) => s.id === subsectionId);
+      // Find the subsection to which the field will be added
+      const subsection = state.subsections.byId[subsectionId];
       if (!subsection) return;
 
-      // subsection.fields.push({
-      const newField = {
-        id: nanoid(),
-        label: fieldData?.label ?? "New Field",
-        styling: fieldData?.styling ?? {},
-        value: fieldData?.value ?? [
-          {
-            type: fieldData?.type ?? "paragraph",
-            label: fieldData?.label ?? "New Field",
-            children: [
-              {
-                text: "",
-                fontSize: initialState.styling.fontSize,
-                lineHeight: initialState.styling.lineHeight
-              }
-            ]
-          }
-        ],
-      };
-
+      // Create Field and Add to State
+      const newField = createDefaultField([fieldData?.label], subsectionId);
       state.fields.byId[newField.id] = newField;
       state.fields.allIds.push(newField.id);
 
+      //  Establish Subsection/Field Relationship
       subsection.fieldIds.push(newField.id);
-      subsection.fields.push(newField);
-      // });
     },
 
-    //  Update a field in a subsection
+    updateSection(state, action) {
+      const { sectionId, changes } = action.payload;
+      const section = state.sections.byId[sectionId];
+      if (!section) {
+        console.error(`Cannot update section. ID of ${sectionId} not found.`);
+        return;
+
+      }
+      // if (section) {
+      //   for (const key in changes) {
+      //     if (key === "styling") {
+      //       section.styling = { ...section.styling, ...changes.styling };
+      //     } else if (key === "layout") {
+      //       section.layout = { ...section.layout, ...changes.layout };
+      //       section.subsections.forEach(sub => {
+      //         sub.layout = { ...sub.layout, ...changes.layout };
+      //       });
+      //     } else {
+      //       section[key] = changes[key];
+      //     }
+      //   }
+
+        // Object.assign(section, changes);
+        // section.value = newValue};
+    },
+
+    updateSubsection(state, action) {
+      const { subsectionId, changes } = action.payload;
+      const subsection = state.subsections.byId[subsectionId];
+      if (!subsection) {
+        console.error(`Cannot update subsection. ID of ${subsectionId} not found.`);
+        return;
+      }
+      const section = state.sections.byId[subsection.sectionId];
+      if (!section) {
+        console.error(`Cannot update subsection. Section with ID ${subsection.sectionId} not found.`);
+        return;
+      }
+
+      // for (const key in changes) {
+      //   if (key === "styling") {
+      //     subsection.styling = { ...subsection.styling, ...changes.styling };
+      //     normalizedSubsection.styling = { ...normalizedSubsection.styling, ...changes.styling };
+      //   } else {
+      //     subsection[key] = changes[key];
+      //     normalizedSubsection[key] = changes[key];
+      //   }
+      // }
+    },
+
     updateField(state, action) {
       const { fieldId, newValue } = action.payload;
       const field = state.fields.byId[fieldId];
-      if (field) field.value = newValue;
+      if (!field) {
+        console.error(`Cannot update field. ID of ${fieldId} not found.`);
+        return;
+      }
+      const subsection = state.subsections.byId[field.subsectionId];
+      if (!subsection) {
+        console.error(`Cannot update field. Subsection with ID ${field.subsectionId} not found.`);
+        return;
+      }
+      field.value = newValue;
+    },
+
+    deleteSubsection(state, action) {
+      const { sectionId, subsectionId } = action.payload;
+      const section = state.sections.find((s) => s.id === sectionId);
+      const subsection = section.subsections.find((s) => s.id === subsectionId);
+
+      if (!section || !Array.isArray(section.subsections) || !subsection) return;
+
+      subsection.fieldIds.forEach((fieldId) => {
+        delete state.fields.byId[fieldId];
+        state.fields.allIds = state.fields.allIds.filter((id) => id !== fieldId);
+      })
+
+      section.subsections = section.subsections.filter(
+        (sub) => sub.id !== subsectionId
+      );
     },
 
     //  Delete a field in a subsection
     deleteField(state, action) {
-      const { fieldId, subsectionId } = action.payload;
+      const { fieldId, subsectionId, sectionId } = action.payload;
       delete state.fields.byId[fieldId];
       state.fields.allIds = state.fields.allIds.filter(id => id !== fieldId);
 
+      const section = state.sections.find((s) => s.id === sectionId);
+      if (!section) return;
 
       const subsection = section.subsections.find((s) => s.id === subsectionId);
       if (!subsection) return;
@@ -252,8 +336,6 @@ const resumeSlice = createSlice({
       subsection.fieldIds = subsection.fieldIds.filter(id => id !== fieldId);
       subsection.fields = subsection.fields.filter((f) => f.id !== fieldId);
       // const { sectionId, subsectionId, fieldId } = action.payload;
-      // const section = state.sections.find((s) => s.id === sectionId);
-      // if (!section) return;
     },
 
     //  Reorder fields in a subsection
@@ -311,29 +393,6 @@ const resumeSlice = createSlice({
       }
     },
 
-    updateSection(state, action) {
-      const { sectionId, changes } = action.payload;
-      console.log("Updating section", sectionId, changes);
-      const section = state.sections.find(s => s.id === sectionId);
-      console.log("Found section", section);
-      if (section) {
-        for (const key in changes) {
-          if (key === "styling") {
-            section.styling = { ...section.styling, ...changes.styling };
-          } else if (key === "layout") {
-            section.layout = { ...section.layout, ...changes.layout };
-            section.subsections.forEach(sub => {
-              sub.layout = { ...sub.layout, ...changes.layout };
-            });
-          } else {
-            section[key] = changes[key];
-          }
-        }
-        // Object.assign(section, changes);
-        // section.value = newValue};
-      }
-    },
-
     deleteSection(state, action) {
       const sectionId = action.payload;
       const section = state.sections.find(s => s.id === sectionId);
@@ -346,35 +405,6 @@ const resumeSlice = createSlice({
       const { fromIndex, toIndex } = action.payload;
       const [moved] = state.sections.splice(fromIndex, 1);
       state.sections.splice(toIndex, 0, moved);
-    },
-
-
-    updateSubsection(state, action) {
-      const { sectionId, subsectionId, changes } = action.payload;
-      const section = state.sections.find(s => s.id === sectionId);
-      if (!section) return;
-
-      const subsection = section.subsections.find((s) => s.id === subsectionId);
-      if (!subsection) return;
-
-      for (const key in changes) {
-        if (key === "styling") {
-          subsection.styling = { ...subsection.styling, ...changes.styling };
-        } else {
-          subsection[key] = changes[key];
-        }
-      }
-    },
-
-    deleteSubsection(state, action) {
-      const { sectionId, subsectionId } = action.payload;
-      const section = state.sections.find(s => s.id === sectionId);
-
-      if (!section || !Array.isArray(section.subsections)) return;
-
-      section.subsections = section.subsections.filter(
-        (sub) => sub.id !== subsectionId
-      );
     },
 
     // Reorder Subsections within a Section via Indexes
@@ -597,7 +627,7 @@ export default resumeSlice.reducer;
 // // Default Subsection Fields (for Initial AND Additional Subsections)
 // const createDefaultSubsection = (type = 'defaultSubsection', sectionLayout) => {
 
-//   const defaultFieldsObj = {
+//   const defaultTypesDict = {
 //     header: ["Name", "Title"],
 //     workHistory: ["Job Title", "Company", "Location", "Start/End Dates", "Description"],
 //     education: ["School", "Degree", "Field of Study", "Location", "Start/End Dates", "Description"],
@@ -607,7 +637,7 @@ export default resumeSlice.reducer;
 //     defaultSubsection: ["Field"]
 //   };
 
-//   const fields = createDefaultField(defaultFieldsObj[type]);
+//   const fields = createDefaultField(defaultTypesDict[type]);
 
 //   const defaultSubsectionObj = {
 //     id: nanoid(),

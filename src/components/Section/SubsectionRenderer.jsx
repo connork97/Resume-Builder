@@ -5,24 +5,24 @@ import { useSelector } from 'react-redux';
 import SlateField from './SlateField';
 import FieldRenderer from './FieldRenderer';
 
-const SubsectionRenderer = ({ sub }) => {
+const SubsectionRenderer = ({ subsection }) => {
 
    const fields = useSelector((state) => state.resume.fields);
-   const { layout } = sub;
+   const { layout } = subsection;
 
    const parentLayoutDict = {
-      display: layout.display,
-      flexDirection: layout.flexDirection,
-      justifyContent: layout.justifyContent,
-      justifySelf: layout.justifySelf,
-      gridTemplateColumns: layout.gridTemplateColumns,
-      gridTemplateRows: layout.gridTemplateRows,
-      gap: layout.gap,
+      display: layout?.display,
+      flexDirection: layout?.flexDirection,
+      justifyContent: layout?.justifyContent,
+      justifySelf: layout?.justifySelf,
+      gridTemplateColumns: layout?.gridTemplateColumns,
+      gridTemplateRows: layout?.gridTemplateRows,
+      gap: layout?.gap,
    }
 
    return (
       <div style={parentLayoutDict}>
-         {sub.fieldIds.map((fieldId, index) => {
+         {subsection.fieldIds.map((fieldId, index) => {
             const field = fields.byId[fieldId];
             if (!field) return null;
             return (

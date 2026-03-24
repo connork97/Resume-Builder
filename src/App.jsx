@@ -11,7 +11,7 @@ const App = () => {
   return (
     <div className={styles.appContainerDiv}>
       <Toolbar />
-      <Outline />
+      {/* <Outline /> */}
       <Page />
     </div>
   );

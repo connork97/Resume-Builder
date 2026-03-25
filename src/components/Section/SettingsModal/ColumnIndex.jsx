@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,34 +12,47 @@ import styles from '../../Toolbar/RichTextToolbar.module.css';
 import SettingsModal from './SettingsModal.jsx';
 import SettingsModalInput from './SettingsModalInput.jsx';
 
-const ColumnIndex = ({ section, sectionColumnIndex, setHaveColumnsChanged }) => {
+const ColumnIndex = ({ section, sectionColumnIndex }) => {
 
    const dispatch = useDispatch();
 
    const sections = useSelector(state => state.resume.sections);
+   const columns = useSelector(state => state.resume.columns);
    const resumeLayout = useSelector(state => state.resume.layout);
 
-   const [columnIndexInputValue, setColumnIndexInputValue] = useState(sectionColumnIndex);
+   const [columnIndexInputValue, setColumnIndexInputValue] = useState('');
+
+   useEffect(() => {
+      const columnIndex = columns.allIds.indexOf(section.columnId);
+      if (columnIndex >= 0) setColumnIndexInputValue(columnIndex);
+      else {
+         setColumnIndexInputValue('?');
+         console.error(`Invalid Section Column Index.  Column with ID ${section.columnId} not found in columns state.`);
+      }
+   }, [section.columnId]);
 
    // console.log(section.)
-   const updateColumnIndex = (newColumnIndex) => {
-      console.log('Updating column index to:', newColumnIndex);
-      setHaveColumnsChanged(prev => !prev);
+   const updateColumnIndex = (action) => {
+      let newColumnIndex;
 
-      if (newColumnIndex < 0 || newColumnIndex >= resumeLayout.columns.length) {
-         window.alert(`Column index must be between 0 and ${resumeLayout.columns.length - 1}.`);
+      if (action === 'increment') newColumnIndex = columnIndexInputValue + 1;
+      else if (action === 'decrement') newColumnIndex = columnIndexInputValue - 1;
+      else if (action === 'input') newColumnIndex = parseInt(columnIndexInputValue);
+
+      if (newColumnIndex < 0 || newColumnIndex >= columns.allIds.length) {
+         window.alert(`Column index must be between 0 and ${columns.allIds.length - 1}.`);
          return;
-      } dispatch(updateSection({
+      }
+
+      const newColumnId = columns.allIds[newColumnIndex];
+      dispatch(updateSection({
          sectionId: section.id,
          changes: {
-            layout: {
-               ...section.layout,
-               columnIndex: newColumnIndex
+               columnId: newColumnId
             }
-          }
-       }));
-       setColumnIndexInputValue(newColumnIndex);
-    }
+      }));
+      setColumnIndexInputValue(newColumnIndex);
+   }
    // const updateColumnIndex = (newColumnCount) => {
    //    if (newColumnCount < 1) {
    //       window.alert("You must have at least one column.");
@@ -64,20 +77,15 @@ const ColumnIndex = ({ section, sectionColumnIndex, setHaveColumnsChanged }) => 
             label={`${section.label} Column Index`}
             value={columnIndexInputValue}
             handleSetInputValue={setColumnIndexInputValue}
-            handleSetValue={() => updateColumnIndex(parseInt(columnIndexInputValue))}
+            handleSetValue={() => updateColumnIndex('input')}
          />
          <ToolbarButton
             text="-"
-            command={() => updateColumnIndex(parseInt(columnIndexInputValue) - 1)}
+            command={() => updateColumnIndex('decrement')}
          />
-         {/* <ToolbarInput
-            value={columnIndexInputValue}
-            onChange={(e) => setColumnIndexInputValue(e.target.value)}
-            onBlur={() => updateColumnIndex(parseInt(columnIndexInputValue))}
-            /> */}
          <ToolbarButton
             text="+"
-            command={() => updateColumnIndex(parseInt(columnIndexInputValue) + 1)}
+            command={() => updateColumnIndex('increment')}
          />
       </div>
    )

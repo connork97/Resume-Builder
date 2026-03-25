@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -8,6 +8,7 @@ import styles from './Page.module.css';
 
 const Column = ({ column }) => {
    const sections = useSelector((state) => state.resume.sections);
+   const columns = useSelector((state) => state.resume.columns);
    if (!column.sectionIds) {
       console.error(`Column with ID ${column.id} is missing sectionIds.`);
       return (
@@ -17,8 +18,24 @@ const Column = ({ column }) => {
       );
    }
    // If the column doesn't have a valid width, set it to a default value.
+   // let columnStyling = {width: '100%'};
+   const computTotalWidth = () => {
+      let totalWidth = 0;
+      columns.allIds.map((columnId) => {
+         const columnWidth = columns.byId[columnId].width;
+         if (!columnWidth) return
+         totalWidth += parseFloat(columnWidth);
+      })
+      console.log('total width: ', totalWidth);
+      return totalWidth;
+   }
+   
+   useEffect(() => {
+      computTotalWidth();
+   }, [columns])
+   
    const columnStyling = {
-      width: column?.width ?? `${100 / column?.allIds.length}%`,
+      flex: column?.width ? `1 1 ${column.width}` : '1 1 auto',
    }
 
    const renderedSections = column.sectionIds.map((sectionId) => {

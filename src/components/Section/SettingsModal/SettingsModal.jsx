@@ -40,27 +40,14 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
    const [columnWidthInputValue, setColumnWidthInputValue] = useState('auto');
 
    const [columnIndexInputValue, setColumnIndexInputValue] = useState(0);
-   const [columnsInputValue, setColumnsInputValue] = useState("auto");
+   const [columnsInputValue, setColumnsInputValue] = useState('');
    const [rowsInputValue, setRowsInputValue] = useState("auto");
 
    useEffect(() => {
       if (sectionColumnIndex) {
          setColumnIndexInputValue(sectionColumnIndex)};
          setColumnWidthInputValue(column.width);
-         // resumeColumns.map((column, index) => {
-         //    console.log(sectionColumnIndex)
-         //    console.log(index)
-         //    if (index == sectionColumnIndex) {
-         //       console.log(column.width);
-         //       setColumnWidthInputValue(column.width);
-         //    }
-         // })
-         // const columnWidth = resumeColumns.map((column) => column.index === sectionColumnIndex) || "?";
-         // console.log("columnWidth in useEffect:", columnWidth);
-      // if (section.layout.gridTemplateColumns) setColumnsInputValue(getColumnCount(section.layout.gridTemplateColumns));
-      // if (section.layout.gridTemplateRows) setRowsInputValue(getRowCount(section.layout.gridTemplateRows));
-
-   }, []);
+   }, [column.width, section.columnId]);
 
    const dispatchLayoutChanges = (layoutChanges) => {
       dispatch(updateSection({
@@ -75,10 +62,8 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
    }
 
    const handleSetColumnWidth = () => {
-      const newColumnWidth = columnWidthInputValue;
+      const newColumnWidth = columnWidthInputValue + '%';
       dispatch(updateColumn({ id: column.id, changes: { width: newColumnWidth } }));
-      // const columnWidthValue = columnsInputValue == 'auto' ? 'auto' : `repeat(${columnsInputValue}, 1fr)`;
-      // updateColumn({ column.id: columnWidthValue });
    }
 
    const handleSetLayoutChanges = () => {
@@ -130,6 +115,7 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
       {
          label: "Column Width",
          value: columnWidthInputValue,
+         text: "%",
          handleSetInputValue: setColumnWidthInputValue,
          handleSetValue: handleSetColumnWidth
       },
@@ -182,6 +168,7 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
                   key={input.label}
                   label={input.label}
                   value={input.value}
+                  text={input.text}
                   handleSetInputValue={input.handleSetInputValue}
                   handleSetValue={input.handleSetValue}
                   setIsSettingsModalOpen={setIsSettingsModalOpen}

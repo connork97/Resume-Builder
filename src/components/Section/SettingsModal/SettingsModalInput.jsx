@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from "./SettingsModal.module.css";
 
-const SettingsModalInput = ({ label, value, handleSetInputValue, handleSetValue, setIsSettingsModalOpen }) => {
+const SettingsModalInput = ({ label, value, text, handleSetInputValue, handleSetValue, setIsSettingsModalOpen }) => {
 
    return (
       <div className={styles.settingsModalInputContainerDiv}>
@@ -15,6 +15,7 @@ const SettingsModalInput = ({ label, value, handleSetInputValue, handleSetValue,
             onChange={(e) => handleSetInputValue(e.target.value)}
          >
          </input>
+         <span className={styles.settingsModalInputSpan}>{text}</span>
          </div>
       </div>
    );

@@ -74,6 +74,7 @@ const ColumnIndex = ({ section, sectionColumnIndex }) => {
    return (
       <div className={styles.toolBarButtonInputWrapper}>
          <SettingsModalInput
+            name="columnIndexInput"
             label={`${section.label} Column Index`}
             value={columnIndexInputValue}
             handleSetInputValue={setColumnIndexInputValue}

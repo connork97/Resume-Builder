@@ -54,6 +54,12 @@
    width: max-content;
 }
 
+.settingsModalInputSpan {
+   position: absolute;
+   color: white;
+   right: 1.25vh;
+}
+
 .settingsModalSectionTitle {
    color: white;
    font-size: 1.75vh;

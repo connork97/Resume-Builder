@@ -33,9 +33,10 @@ const Column = ({ column }) => {
    useEffect(() => {
       computTotalWidth();
    }, [columns])
-   
+
+   // If the column doesn't have a valid width, set it to a default value that splits remaining space evenly.
    const columnStyling = {
-      flex: column?.width ? `1 1 ${column.width}` : '1 1 auto',
+      flex: column?.width ? `0 0 ${column.width}` : '1 1 0',
    }
 
    const renderedSections = column.sectionIds.map((sectionId) => {

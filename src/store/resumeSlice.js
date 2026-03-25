@@ -433,7 +433,7 @@ const resumeSlice = createSlice({
 
     updateColumn(state, action) {
       const { id, changes } = action.payload;
-      const column = state.layout.columns.find((col) => col.id === id);
+      const column = state.columns.byId[id];
       if (column) {
         Object.assign(column, changes);
       }

@@ -46,7 +46,8 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
    useEffect(() => {
       if (sectionColumnIndex) {
          setColumnIndexInputValue(sectionColumnIndex)};
-         setColumnWidthInputValue(column.width);
+      if (column?.width) setColumnWidthInputValue(parseInt(column.width));
+         // setColumnWidthInputValue(parseInt(column?.width));
    }, [column.width, section.columnId]);
 
    const dispatchLayoutChanges = (layoutChanges) => {
@@ -119,12 +120,12 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
          handleSetInputValue: setColumnWidthInputValue,
          handleSetValue: handleSetColumnWidth
       },
-      {
-         label: "Rows",
-         value: rowsInputValue,
-         handleSetInputValue: setRowsInputValue,
-         handleSetValue: handleSetLayoutChanges
-      }
+      // {
+      //    label: "Rows",
+      //    value: rowsInputValue,
+      //    handleSetInputValue: setRowsInputValue,
+      //    handleSetValue: handleSetLayoutChanges
+      // }
    ];
 
    const renderSettingsModalRows = () => {
@@ -133,7 +134,7 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
          { component: FontSize, label: "Font Size" },
          { component: FontColor, label: "Font Color" },
          { component: LineHeight, label: "Line Height" },
-         { component: TextAlign, label: "Text Align" },
+         { component: TextAlign, label: "Text Align", styling: { justifyContent: 'end' } },
          { component: BackgroundColor, label: 'Background Color'},
       ];
 
@@ -169,6 +170,7 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
                   label={input.label}
                   value={input.value}
                   text={input.text}
+                  styling={input.styling}
                   handleSetInputValue={input.handleSetInputValue}
                   handleSetValue={input.handleSetValue}
                   setIsSettingsModalOpen={setIsSettingsModalOpen}

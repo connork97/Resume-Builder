@@ -7,7 +7,7 @@ import { setAlignment } from "../../helpers/blocks.js";
 
 import ToolbarButton from "../Toolbar/ToolbarButton.jsx";
 
-const TextAlign = ({ editor }) => {
+const TextAlign = ({ editor, styling }) => {
 
    const dispatch = useDispatch();
    const activeSectionId = useSelector(state => state.resume.activeSectionId);
@@ -29,7 +29,7 @@ const TextAlign = ({ editor }) => {
 
    return (
 
-      <>
+      <div style={{...styling, display: 'flex', justifyContent: 'center', gap: '0.25rem'}}>
          <ToolbarButton
             text="L"
             command={() => handleSetTextAlign(editor, 'left')}
@@ -46,7 +46,7 @@ const TextAlign = ({ editor }) => {
             text="J"
             command={() => handleSetTextAlign(editor, 'justify')}
          />
-      </>
+      </div>
    )
 }
 

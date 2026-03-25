@@ -26,7 +26,6 @@ const createDefaultSection = (type = 'defaultSection', columnId = null) => {
   };
 
   const sectionId = nanoid();
-  // const subsection = createDefaultSubsection(type, sectionId);
 
   const section = {
     id: sectionId,
@@ -107,7 +106,6 @@ const createDefaultField = (arrToMap = ["Field"], subsectionId) => {
 // Resume Slice
 const firstColumnId = nanoid();
 const initialState = {
-  // sections: [],
   columns: {
     byId: {
       [firstColumnId]: {
@@ -139,16 +137,6 @@ const initialState = {
   },
 
   layout: {
-    // columns: [
-    // createDefaultColumn('100%')
-    // children: [sections => sections.filter((section) => section.columnIndex === 0).map(section => section.id)],
-    // ],
-    margin: {
-      top: 'auto',
-      right: 'auto',
-      bottom: 'auto',
-      left: 'auto'
-    },
     padding: {
       top: '3rem',
       right: '3rem',
@@ -249,23 +237,10 @@ const resumeSlice = createSlice({
     },
 
     addColumn(state) {
-      // Find number of columns currently in state to determine width of all columns after new column is added
-      // const columnsLength = state.columns.allIds.length;
-      // const width = '50%';
-      // const width = columnsLength === 0 ? '100%' : `${100 / (columnsLength + 1)}%`;
-      // const width = 1;
-
       //  Create New Column and Add to State
       const newColumn = createDefaultColumn();
-      console.log('New Column Created: ', newColumn);
       state.columns.byId[newColumn.id] = newColumn;
       state.columns.allIds.push(newColumn.id);
-
-      // Update width of all columns in state to be equal after new column is added
-      // state.columns.allIds.map((id) => {
-      //   const selectedColumn = state.columns.byId[id];
-      //   selectedColumn.width = selectedColumn.width;
-      // })
     },
 
     deleteColumn(state, action) {
@@ -290,18 +265,18 @@ const resumeSlice = createSlice({
       const { sectionId, changes } = action.payload;
       const section = state.sections.byId[sectionId];
       const columnId = section.columnId;
-      
+
       if (!section) {
         console.error(`Cannot update section. ID of ${sectionId} not found.`);
         return;
       }
-      
-      for (const key in changes) {
-        // Change section key to new value from changes object
-        section[key] = changes[key];
 
+      for (const key in changes) {
+        if (key === "styling") {
+          section.styling = { ...section.styling, ...changes.styling };
+        }
         // When updating section's columnId, also update the old AND new Columns' sectionIds
-        if (key === 'columnId') {
+        else if (key === 'columnId') {
           const oldColumn = state.columns.byId[columnId];
           const newColumnId = changes.columnId;
 
@@ -315,7 +290,9 @@ const resumeSlice = createSlice({
           if (newColumn) {
             newColumn.sectionIds.push(sectionId);
           }
-
+          section[key] = changes[key];
+        } else {
+          section[key] = changes[key];
         }
       }
     },

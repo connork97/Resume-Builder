@@ -17,24 +17,59 @@ const Section = ({ section, column }) => {
 
   const dispatch = useDispatch();
 
+  const resumeLayout = useSelector(state => state.resume.layout);
+  const columns = useSelector(state => state.resume.columns);  
+
   const sectionRef = useRef(null);
 
-  const resumeLayout = useSelector((state) => state.resume.layout);
-  
-  
-  // const subsections = useSelector((state) => section.subsectionIds.filter((id) => state.resume.subsections.byId[id]));
-  // console.log('SUBSECTIONS', subsections)
-  
   const [isFirstColumn, setIsFirstColumn] = useState(false);
   const [isLastColumn, setIsLastColumn] = useState(false);
   const [isFirstRow, setIsFirstRow] = useState(false);
   const [isLastRow, setIsLastRow] = useState(false);
-  const [additionalSectionStyling, setAddtionalSectionStyling] = useState({
+  const [sectionPadding, setSectionPadding] = useState({
       paddingLeft: '0',
       paddingRight: '0',
       paddingTop: '0',
       paddingBottom: '0',
   });
+
+  useEffect(() => {
+    if (!section || !column) return;
+
+    // Determine if section is in the first column
+    const columnIndex = columns.allIds.indexOf(column.id);
+    if (columnIndex === 0) setIsFirstColumn(true);
+    else if (columnIndex !== 0) setIsFirstColumn(false);
+
+    // Determine if section is in the last column
+    const totalColumns = columns.allIds.length;
+    if (columnIndex === totalColumns - 1) setIsLastColumn(true);
+    else if (columnIndex !== totalColumns - 1) setIsLastColumn(false);
+
+    // Determine if section is in the first row of column
+    const sectionIndex = column.sectionIds.indexOf(section.id);
+    if (sectionIndex === 0) setIsFirstRow(true);
+    else if (sectionIndex !== 0) setIsFirstRow(false);
+
+    // Determine if section is in the last row of column
+    const totalSectionsInColumn = column.sectionIds.length;
+    if (sectionIndex === totalSectionsInColumn - 1) setIsLastRow(true);
+    else if (sectionIndex !== totalSectionsInColumn - 1) setIsLastRow(false);
+
+  }), [resumeLayout, section.columnId, column.sectionIds];
+
+  useEffect(() => {
+    setSectionPadding((prevStyling) => {
+      return {
+        ...prevStyling,
+        paddingLeft: isFirstColumn ? resumeLayout.padding.left : '0',
+        paddingRight: isLastColumn ? resumeLayout.padding.right : '0',
+        paddingTop: isFirstRow ? resumeLayout.padding.top : '0',
+        paddingBottom: isLastRow ? resumeLayout.padding.bottom : '0',
+        flex: isLastRow ? '1' : 'none',
+      }
+    })
+  }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding]);
 
   const renderedSubsections = section.subsectionIds?.map((subId) => {
     const subsection = useSelector((state) => state.resume.subsections.byId[subId]);
@@ -55,7 +90,7 @@ const Section = ({ section, column }) => {
 
 
   // useEffect(() => {
-  //   setAddtionalSectionStyling((prevStyling) => {
+  //   setSectionPadding((prevStyling) => {
   //     // console.log({...prevStyling, paddingLeft: isFirstColumn ?? resumeLayout.padding.left})
   //     return {
   //       ...prevStyling,
@@ -98,7 +133,7 @@ const Section = ({ section, column }) => {
       ref={sectionRef}
       style={{
         ...section.styling,
-        ...additionalSectionStyling
+        ...sectionPadding
       }}
       onClick={() => dispatch(setActiveSectionId(section.id))}
     >

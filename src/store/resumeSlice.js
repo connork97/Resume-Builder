@@ -410,6 +410,7 @@ const resumeSlice = createSlice({
 
     updateColumn(state, action) {
       const { id, changes } = action.payload;
+      console.log("Updating column with ID:", id, "Changes:", changes);
       const column = state.columns.byId[id];
       if (column) {
         Object.assign(column, changes);

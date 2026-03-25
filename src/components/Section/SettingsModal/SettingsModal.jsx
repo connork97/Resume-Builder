@@ -7,6 +7,7 @@ import { updateSection, updateColumn } from "../../../store/resumeSlice.js";
 import styles from './SettingsModal.module.css';
 
 import ColumnIndex from './ColumnIndex.jsx';
+import RowIndex from './RowIndex.jsx';
 import SettingsModalInput from './SettingsModalInput.jsx';
 import SettingsModalDropdown from './SettingsModalDropdown.jsx';
 import FontSize from '../../Formatting/FontSize.jsx';
@@ -15,7 +16,7 @@ import LineHeight from '../../Formatting/LineHeight.jsx';
 import TextAlign from '../../Formatting/TextAlign.jsx';
 import BackgroundColor from '../../Formatting/BackgroundColor.jsx';
 
-const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModalOpen, setHaveColumnsChanged }) => {
+const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModalOpen }) => {
 
    const dispatch = useDispatch();
 
@@ -121,6 +122,10 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
          handleSetValue: handleSetColumnWidth
       },
       // {
+         // label: 'Section Row',
+         // value: sectionRowInputValue,
+      // }
+      // {
       //    label: "Rows",
       //    value: rowsInputValue,
       //    handleSetInputValue: setRowsInputValue,
@@ -163,6 +168,9 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
             <ColumnIndex
                section={section}
                sectionColumnIndex={sectionColumnIndex}
+            />
+            <RowIndex
+               section={section}
             />
             {settingModalInputArr.map((input) => (
                <SettingsModalInput

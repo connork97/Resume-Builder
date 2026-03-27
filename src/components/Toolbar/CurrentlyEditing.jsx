@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Node } from 'slate';
 import { setActiveEditorId, setActiveSectionId } from '../../store/resumeSlice.js';
 
-import ToolbarButton from "./ToolbarButton.jsx";
+import ToolbarButton from "./shared/ToolbarButton.jsx";
 
 const CurrentlyEditing = ({ editor }) => {
 

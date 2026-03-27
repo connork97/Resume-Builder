@@ -26,7 +26,6 @@ const Column = ({ column }) => {
          if (!columnWidth) return
          totalWidth += parseFloat(columnWidth);
       })
-      console.log('total width: ', totalWidth);
       return totalWidth;
    }
    

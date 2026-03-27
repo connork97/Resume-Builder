@@ -25,7 +25,6 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
    const activeSectionId = useSelector(state => state.resume.activeSectionId);
 
    const sectionColumnIndex = columns.allIds.indexOf(section.columnId);
-   console.log("sectionColumnIndex:", sectionColumnIndex);
 
    const getColumnCount = (gridTemplateColumns) => {
       const match = gridTemplateColumns.match(/repeat\((\d+),\s*1fr\)/);

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { updateSection } from '../../../store/resumeSlice.js';
 
-import ToolbarButton from "../../Toolbar/ToolbarButton.jsx";
+import ToolbarButton from "../../Toolbar/shared/ToolbarButton.jsx";
 
 import styles from '../../Toolbar/RichTextToolbar.module.css';
 import SettingsModalInput from './SettingsModalInput.jsx';

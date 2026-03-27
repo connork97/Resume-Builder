@@ -1,20 +1,34 @@
 import { autoBatchEnhancer, createSlice, nanoid } from "@reduxjs/toolkit";
 import { current } from "immer";
 
+const addToState = (state, type, data, parentType = null) => {
+  if (!state[type + 's'].byId[data.id]) state[type + 's'].byId[data.id] = data;
+  if (!state[type + 's'].allIds.includes(data.id)) state[type + 's'].allIds.push(data.id);
+  if (parentType) {
+    const parentId = data[`${parentType}Id`];
+    state[parentType + 's'].byId[parentId][type + 'Ids'].push(data.id);
+  }
+}
 
-const createDefaultColumn = (width = null) => {
+// * ---------------- V
+// * DEFAULT CREATORS V
+// * ---------------- V
+
+const createDefaultColumn = (state, width = null) => {
   const column = {
     id: nanoid(),
     width: width,
     sectionIds: [],
   }
 
+  addToState(state, 'column', column);
   return column;
 };
 
 // Default Data for Brand New Section
-const createDefaultSection = (type = 'defaultSection', columnId = null) => {
+const createDefaultSection = (state, type = 'defaultSection', columnId = null) => {
   console.log('Creating section of type: ', type)
+
   const sectionHeadingDict = {
     header: "Header",
     contact: "Contact",
@@ -25,11 +39,9 @@ const createDefaultSection = (type = 'defaultSection', columnId = null) => {
     defaultSection: "Default Section"
   };
 
-  const sectionId = nanoid();
-
   const section = {
-    id: sectionId,
-    columnId: columnId,
+    id: nanoid(),
+    columnId: columnId ?? state.columns.allIds[0],
     subsectionIds: [],
     label: sectionHeadingDict[type],
     type: type,
@@ -49,12 +61,30 @@ const createDefaultSection = (type = 'defaultSection', columnId = null) => {
     styling: {},
   };
 
+  addToState(state, 'section', section, 'column');
   return section;
 };
 
 // Default Subsection Fields (for Initial AND Additional Subsections)
-const createDefaultSubsection = (type = 'defaultSubsection', sectionId) => {
+const createDefaultSubsection = (state, type = 'default', sectionId) => {
   console.log('Creating subsection of type: ', type)
+
+  const subsection = {
+    id: nanoid(),
+    sectionId: sectionId,
+    fieldIds: [],
+    label: type,
+    type: type,
+    styling: {},
+  }
+
+  addToState(state, 'subsection', subsection, 'section');
+  return subsection;
+};
+
+// Helper function to create standardized fields regardless of section type
+const createDefaultField = (state, type = 'default', subsectionId) => {
+
   const defaultTypesDict = {
     header: ["Name", "Title"],
     workHistory: ["Job Title", "Company", "Location", "Start/End Dates", "Description"],
@@ -62,48 +92,36 @@ const createDefaultSubsection = (type = 'defaultSubsection', sectionId) => {
     skills: ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"],
     contact: ["Email", "Phone", "Location", "Website", "LinkedIn"],
     summary: ["Summary"],
-    defaultSubsection: ["Field"]
+    default: ["Field"]
   };
 
-  const subsectionId = nanoid();
-  const fields = createDefaultField(defaultTypesDict[type], subsectionId);
-
-  const subsection = {
-    id: subsectionId,
-    sectionId: sectionId,
-    fieldIds: fields.map((field) => field.id),
-    label: type,
+  const fields = defaultTypesDict[type]?.map((field) => ({
+    id: nanoid(),
+    subsectionId: subsectionId,
+    label: field,
+    value: [
+      {
+        type: "paragraph",
+        label: field,
+        children: [
+          {
+            text: "",
+          }
+        ]
+      }
+    ],
     styling: {},
-  }
+  }));
 
-  return { subsection, fields };
+  fields?.forEach((field) => addToState(state, 'field', field, 'subsection'));
+
+  return fields;
 };
 
-// Helper function to create standardized fields regardless of section type
-const createDefaultField = (arrToMap = ["Field"], subsectionId) => {
+// * ------------- V
+// * INITIAL STATE V
+// * ------------- V
 
-  return (
-    arrToMap.map((field) => ({
-      id: nanoid(),
-      subsectionId: subsectionId,
-      label: field,
-      value: [
-        {
-          type: "paragraph",
-          label: field,
-          children: [
-            {
-              text: "",
-            }
-          ]
-        }
-      ],
-      styling: {},
-    }))
-  )
-};
-
-// Resume Slice
 const firstColumnId = nanoid();
 const initialState = {
   columns: {
@@ -157,106 +175,50 @@ const resumeSlice = createSlice({
   name: "resume",
   initialState,
   reducers: {
-    addSection: {
-      reducer(state, action) {
-        const section = action.payload;
-        console.log('Adding Section: ', section)
-        // Establish Section/Column Relationship
-        if (!section.columnId) {
-          const firstColumnId = state.columns.allIds[0];
-          section.columnId = firstColumnId;
-          state.columns.byId[firstColumnId].sectionIds.push(section.id);
-        }
-        // Add Section to State
-        if (!state.sections.byId[section.id]) {
-          state.sections.byId[section.id] = section;
-          state.sections.allIds.push(section.id);
-        }
-        if (!section.subsectionIds) {
-          section.subsectionIds = [];
-        }
 
-        // Create First Subsection for the Section
-        const subsectionData = createDefaultSubsection(section.type, section.id);
-        const subsection = subsectionData.subsection;
+    // * ------------ V
+    // * ADD TO STATE V
+    // * ------------ V
 
-        // Establish Section/Subsection Relationship
-        section.subsectionIds.push(subsection.id);
+    addColumn(state) {
+      createDefaultColumn(state);
+    },
 
-        // Add Subsection to State
-        state.subsections.byId[subsection.id] = subsection;
-        state.subsections.allIds.push(subsection.id);
-
-        // Add Fields to State
-        // Subsection/Fields Relationship is Already Established in createDefaultSubsection Function
-        const subsectionFields = subsectionData.fields;
-        subsectionFields.forEach((field) => {
-          state.fields.byId[field.id] = field;
-          state.fields.allIds.push(field.id);
-        });
-      },
-      prepare(type) {
-        return {
-          payload: createDefaultSection(type)
-        };
+    addSection(state, action) {
+      const type = action.payload;
+      const section = createDefaultSection(state, type);
+      if (!section) {
+        console.error(`Failed to create section of type ${type}.`);
+        return;
       }
+      const subsection = createDefaultSubsection(state, type, section.id);
+      createDefaultField(state, type, subsection.id);
     },
 
     addSubsection(state, action) {
       const { sectionId } = action.payload;
-
       const section = state.sections.byId[sectionId];
       if (!section) {
         console.error(`Cannot add subsection.  No section with ID of ${sectionId} found.`);
         return;
       }
-
-      const type = section.type;
-
-      // Create New Subsection
-      const subsectionData = createDefaultSubsection(type, sectionId);
-      const subsection = subsectionData.subsection;
-      console.log('Adding subsection: ', subsection)
-      // Add Subsection to State
-      state.subsections.byId[subsection.id] = subsection;
-      state.subsections.allIds.push(subsection.id);
-      state.sections.byId[sectionId].subsectionIds.push(subsection.id);
-
-      // Add Fields to State
-      
-      const fields = subsectionData.fields;
-      fields.forEach((field) => {
-        state.fields.byId[field.id] = field;
-        state.fields.allIds.push(field.id);
-      });
-
+      const subsection = createDefaultSubsection(state, section.type, sectionId);
+      createDefaultField(state, section.type, subsection.id);
     },
 
     addField(state, action) {
-      const { subsectionId, fieldData } = action.payload;
-
-      // Find the subsection to which the field will be added
+      const { subsectionId } = action.payload;
       const subsection = state.subsections.byId[subsectionId];
       if (!subsection) {
         console.error(`Cannot add field.  No subsection with ID of ${subsectionId} found.`);
         return;
       }
-
-      // Create Field and Add to State
-      const newField = createDefaultField([fieldData?.label], subsectionId);
-      state.fields.byId[newField.id] = newField;
-      state.fields.allIds.push(newField.id);
-
-      //  Establish Subsection/Field Relationship
-      subsection.fieldIds.push(newField.id);
+      createDefaultField(state, subsection.type, subsection.id);
     },
 
-    addColumn(state) {
-      //  Create New Column and Add to State
-      const newColumn = createDefaultColumn();
-      state.columns.byId[newColumn.id] = newColumn;
-      state.columns.allIds.push(newColumn.id);
-    },
+    // * ----------------- V
+    // * DELETE FROM STATE V
+    // * ----------------- V
 
     deleteColumn(state, action) {
       const { columnId } = action.payload;
@@ -274,6 +236,59 @@ const resumeSlice = createSlice({
 
       delete state.columns.byId[columnId];
       state.columns.allIds = state.columns.allIds.filter((id) => id !== columnId);
+    },
+
+    deleteSection(state, action) {
+      const sectionId = action.payload;
+      const section = state.sections.find(s => s.id === sectionId);
+      if (!section) return;
+
+      state.sections = state.sections.filter((s) => s.id !== sectionId);
+    },
+
+    deleteSubsection(state, action) {
+      const { sectionId, subsectionId } = action.payload;
+      const section = state.sections.find((s) => s.id === sectionId);
+      const subsection = section.subsections.find((s) => s.id === subsectionId);
+
+      if (!section || !Array.isArray(section.subsections) || !subsection) return;
+
+      subsection.fieldIds.forEach((fieldId) => {
+        delete state.fields.byId[fieldId];
+        state.fields.allIds = state.fields.allIds.filter((id) => id !== fieldId);
+      })
+
+      section.subsections = section.subsections.filter(
+        (sub) => sub.id !== subsectionId
+      );
+    },
+
+    deleteField(state, action) {
+      const { fieldId, subsectionId, sectionId } = action.payload;
+      delete state.fields.byId[fieldId];
+      state.fields.allIds = state.fields.allIds.filter(id => id !== fieldId);
+
+      const section = state.sections.find((s) => s.id === sectionId);
+      if (!section) return;
+
+      const subsection = section.subsections.find((s) => s.id === subsectionId);
+      if (!subsection) return;
+
+      subsection.fieldIds = subsection.fieldIds.filter(id => id !== fieldId);
+      subsection.fields = subsection.fields.filter((f) => f.id !== fieldId);
+    },
+
+    // * ------------ V
+    // * UPDATE STATE V
+    // * ------------ V
+
+    updateColumn(state, action) {
+      const { id, changes } = action.payload;
+      console.log("Updating column with ID:", id, "Changes:", changes);
+      const column = state.columns.byId[id];
+      if (column) {
+        Object.assign(column, changes);
+      }
     },
 
     updateSection(state, action) {
@@ -351,53 +366,13 @@ const resumeSlice = createSlice({
       field.value = newValue;
     },
 
-    deleteSubsection(state, action) {
-      const { sectionId, subsectionId } = action.payload;
-      const section = state.sections.find((s) => s.id === sectionId);
-      const subsection = section.subsections.find((s) => s.id === subsectionId);
-
-      if (!section || !Array.isArray(section.subsections) || !subsection) return;
-
-      subsection.fieldIds.forEach((fieldId) => {
-        delete state.fields.byId[fieldId];
-        state.fields.allIds = state.fields.allIds.filter((id) => id !== fieldId);
-      })
-
-      section.subsections = section.subsections.filter(
-        (sub) => sub.id !== subsectionId
-      );
+    updateResumeStyling(state, action) {
+      state.styling = { ...state.styling, ...action.payload };
     },
 
-    //  Delete a field in a subsection
-    deleteField(state, action) {
-      const { fieldId, subsectionId, sectionId } = action.payload;
-      delete state.fields.byId[fieldId];
-      state.fields.allIds = state.fields.allIds.filter(id => id !== fieldId);
-
-      const section = state.sections.find((s) => s.id === sectionId);
-      if (!section) return;
-
-      const subsection = section.subsections.find((s) => s.id === subsectionId);
-      if (!subsection) return;
-
-      subsection.fieldIds = subsection.fieldIds.filter(id => id !== fieldId);
-      subsection.fields = subsection.fields.filter((f) => f.id !== fieldId);
-      // const { sectionId, subsectionId, fieldId } = action.payload;
-    },
-
-    //  Reorder fields in a subsection
-    reorderFields(state, action) {
-      const { sectionId, subsectionId, fromIndex, toIndex } = action.payload;
-
-      const section = state.sections.find((s) => s.id === sectionId);
-      if (!section) return;
-
-      const subsection = section.subsections.find((s) => s.id === subsectionId);
-      if (!subsection) return;
-
-      const arr = subsection.fieldIds;
-      const [moved] = arr.splice(fromIndex, 1);
-      arr.splice(toIndex, 0, moved);
+    updateResume(state, action) {
+      const { key, changes } = action.payload;
+      state.layout = { ...state[key], ...changes };
     },
 
     setActiveSectionId(state, action) {
@@ -413,49 +388,63 @@ const resumeSlice = createSlice({
       state.activeEditorSelection = action.payload;
     },
 
-    updateResumeStyling(state, action) {
-      state.styling = { ...state.styling, ...action.payload };
-      // return action.payload;
-    },
-
-    updateResume(state, action) {
-      const { key, changes } = action.payload;
-      state.layout = { ...state[key], ...changes };
-    },
-
-    updateColumn(state, action) {
-      const { id, changes } = action.payload;
-      console.log("Updating column with ID:", id, "Changes:", changes);
-      const column = state.columns.byId[id];
-      if (column) {
-        Object.assign(column, changes);
-      }
-    },
-
-    deleteSection(state, action) {
-      const sectionId = action.payload;
-      const section = state.sections.find(s => s.id === sectionId);
-      if (!section) return;
-
-      state.sections = state.sections.filter((s) => s.id !== sectionId);
-    },
-
+    // * ---------- V
+    // * REORDERING V
+    // * ---------- V
+    
+    // reorder(state, childType, action, parent) {
+    //   const { childId, fromIndex, toIndex } = action.payload;
+    //   const childObj = state[childType + 's'].byId[childId];
+    //   const itemsArr = parent[childType + 'Ids'];
+    //   const [moved] = itemsArr.splice(fromIndex, 1);
+    //   itemsArr.splice(toIndex, 0, moved);
+    // },
+    
     reorderSections(state, action) {
-      const { fromIndex, toIndex } = action.payload;
+      const { sectionId, fromIndex, toIndex } = action.payload;
+
+      const section = state.sections.byId[sectionId];
+      if (!section) {
+        console.error(`Cannot reorder sections. Section with ID of ${sectionId} not found.`);
+        return;
+      }
+
+      const column = state.columns.byId[section.columnId];
+      if (!column) {
+        console.error(`Cannot reorder sections. Column with ID of ${section.columnId} not found.`);
+        return;
+      }
       const [moved] = state.sections.splice(fromIndex, 1);
       state.sections.splice(toIndex, 0, moved);
     },
 
-    // Reorder Subsections within a Section via Indexes
     reorderSubsections(state, action) {
       const { sectionId, fromIndex, toIndex } = action.payload;
-      const section = state.sections.find(s => s.id === sectionId);
+      const section = state.sections.byId[sectionId];
+      
+      if (!section) {
+        console.error(`Cannot reorder subsections. Section with ID of ${sectionId} not found.`);
+        return;
+      }
+      
+      const subsectionIdsArr = section.subsectionIds;
+      const [moved] = subsectionIdsArr.splice(fromIndex, 1);
+      subsectionIdsArr.splice(toIndex, 0, moved);
+    },
 
-      if (!section) return;
+    //  Reorder fields in a subsection
+    reorderFields(state, action) {
+      const { subsectionId, fromIndex, toIndex } = action.payload;
 
-      const arr = section.subsections;
-      const [moved] = arr.splice(fromIndex, 1);
-      arr.splice(toIndex, 0, moved);
+      const subsection = state.subsections.byId[subsectionId];
+      if (!subsection) {
+        console.error(`Cannot reorder fields. Subsection with ID of ${subsectionId} not found.`);
+        return;
+      }
+
+      const fieldIdsArr = subsection.fieldIds;
+      const [moved] = fieldIdsArr.splice(fromIndex, 1);
+      fieldIdsArr.splice(toIndex, 0, moved);
     },
   },
 });

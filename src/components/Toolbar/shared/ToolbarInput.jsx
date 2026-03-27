@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from "./RichTextToolbar.module.css";
+import styles from "./SharedToolbar.module.css";
 
 const ToolbarInput = ({ value, handleChange, commitChange }) => {
 

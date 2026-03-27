@@ -2,7 +2,7 @@ import React from 'react';
 
 import { toggleMark } from "../../helpers/marks.js";
 
-import ToolbarButton from "../Toolbar/ToolbarButton.jsx";
+import ToolbarButton from "../Toolbar/shared/ToolbarButton.jsx";
 
 const Marks = ({ editor }) => {
    return (

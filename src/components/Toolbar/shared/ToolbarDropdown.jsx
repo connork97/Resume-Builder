@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from "./RichTextToolbar.module.css";
+import styles from "./SharedToolbar.module.css";
 
 const COLORS = [
   // Column 1

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { getActiveMark, setHighlightColor } from "../../helpers/marks.js";
 
-import ToolbarDropdown from "../Toolbar/ToolbarDropdown.jsx";
+import ToolbarDropdown from "../Toolbar/shared/ToolbarDropdown.jsx";
 
 const HighlightColor = ({ editor, selection }) => {
 

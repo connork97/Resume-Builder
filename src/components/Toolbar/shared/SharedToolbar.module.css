@@ -1,0 +1,50 @@
+.toolbarDropdownContainer {
+  position: relative;
+  z-index: 999;
+}
+
+.dropdownPanel {
+  position: absolute;
+  top: 125%;
+  left: 0;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 0.5vh;
+  padding: 0.75vh;
+  display: grid;
+  grid-template-columns: repeat(7, 2.5vh);
+  gap: 0.75vh;
+}
+
+.toolbarButton, .toolbarInput, .toolbarDropdownButton {
+   background: #2a2a2a;
+   color: white;
+   border: none;
+   font-size: 1.5vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border: 1px solid #3a3a3a;
+   border-radius: 0.5vh;
+   padding: 0.5vh 1vh;
+}
+
+.toolbarInput {
+  text-align: center;
+  width: 5vh;
+}
+
+.colorSwatch {
+  width: 2.5vh;
+  height: 2.5vh;
+  border-radius: 0.5vh;
+  border: 1px solid #555;
+}
+
+.toolbarButton, .toolbarDropdownContainer, .toolbarDropdownButton, .colorSwatch {
+   cursor: pointer;
+}
+
+.toolbarButton:hover, .toolbarDropdownContainer:hover, .toolbarDropdownOption:hover {
+   background: #333333;
+}

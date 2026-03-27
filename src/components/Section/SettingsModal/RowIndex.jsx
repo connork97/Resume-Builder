@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { updateColumn } from '../../../store/resumeSlice.js';
 
-import ToolbarButton from "../../Toolbar/ToolbarButton.jsx";
+import ToolbarButton from "../../Toolbar/shared/ToolbarButton.jsx";
 
 import styles from '../../Toolbar/RichTextToolbar.module.css';
 import SettingsModalInput from './SettingsModalInput.jsx';
@@ -40,10 +40,8 @@ const RowIndex = ({ section, }) => {
       }
 
       const splicedSectionIds = [...column.sectionIds];
-      console.log("Current sectionIds:", splicedSectionIds);
       splicedSectionIds.splice(rowIndexInputValue, 1);
       splicedSectionIds.splice(newRowIndex, 0, section.id);
-      console.log("Updated sectionIds:", splicedSectionIds);
 
       dispatch(updateColumn({
          id: section.columnId,

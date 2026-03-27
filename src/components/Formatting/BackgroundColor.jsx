@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
 
-import ToolbarDropdown from "../Toolbar/ToolbarDropdown.jsx";
+import ToolbarDropdown from "../Toolbar/shared/ToolbarDropdown.jsx";
 
 const BackgroundColor = () => {
 

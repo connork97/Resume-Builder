@@ -2,7 +2,7 @@ import React from 'react';
 
 import { toggleList } from '../../helpers/blocks';
 
-import ToolbarButton from '../Toolbar/ToolbarButton';
+import ToolbarButton from '../Toolbar/shared/ToolbarButton';
 
 const Lists = ({ editor }) => {
    return (

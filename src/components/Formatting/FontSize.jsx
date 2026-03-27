@@ -7,8 +7,8 @@ import { getActiveMark, setFontSize } from "../../helpers/marks.js";
 
 import styles from '../Toolbar/RichTextToolbar.module.css';
 
-import ToolbarButton from "../Toolbar/ToolbarButton.jsx";
-import ToolbarInput from "../Toolbar/ToolbarInput.jsx";
+import ToolbarButton from "../Toolbar/shared/ToolbarButton.jsx";
+import ToolbarInput from "../Toolbar/shared/ToolbarInput.jsx";
 
 const FontSize = ({ editor, selection, label }) => {
 

@@ -14,7 +14,7 @@ const createDefaultColumn = (width = null) => {
 
 // Default Data for Brand New Section
 const createDefaultSection = (type = 'defaultSection', columnId = null) => {
-
+  console.log('Creating section of type: ', type)
   const sectionHeadingDict = {
     header: "Header",
     contact: "Contact",
@@ -54,7 +54,7 @@ const createDefaultSection = (type = 'defaultSection', columnId = null) => {
 
 // Default Subsection Fields (for Initial AND Additional Subsections)
 const createDefaultSubsection = (type = 'defaultSubsection', sectionId) => {
-
+  console.log('Creating subsection of type: ', type)
   const defaultTypesDict = {
     header: ["Name", "Title"],
     workHistory: ["Job Title", "Company", "Location", "Start/End Dates", "Description"],
@@ -138,10 +138,14 @@ const initialState = {
 
   layout: {
     padding: {
-      top: '3rem',
-      right: '3rem',
-      bottom: '3rem',
-      left: '3rem'
+      top: '2.5rem',
+      right: '2.5rem',
+      bottom: '2.5rem',
+      left: '2.5rem'
+    },
+    gap: {
+      horizontal: '1rem',
+      vertical: '0.5rem'
     }
   },
   activeSectionId: null,
@@ -156,6 +160,7 @@ const resumeSlice = createSlice({
     addSection: {
       reducer(state, action) {
         const section = action.payload;
+        console.log('Adding Section: ', section)
         // Establish Section/Column Relationship
         if (!section.columnId) {
           const firstColumnId = state.columns.allIds[0];
@@ -209,11 +214,21 @@ const resumeSlice = createSlice({
       const type = section.type;
 
       // Create New Subsection
-      const subsection = createDefaultSubsection(type, sectionId);
-
+      const subsectionData = createDefaultSubsection(type, sectionId);
+      const subsection = subsectionData.subsection;
+      console.log('Adding subsection: ', subsection)
       // Add Subsection to State
       state.subsections.byId[subsection.id] = subsection;
       state.subsections.allIds.push(subsection.id);
+      state.sections.byId[sectionId].subsectionIds.push(subsection.id);
+
+      // Add Fields to State
+      
+      const fields = subsectionData.fields;
+      fields.forEach((field) => {
+        state.fields.byId[field.id] = field;
+        state.fields.allIds.push(field.id);
+      });
 
     },
 

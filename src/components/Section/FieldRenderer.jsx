@@ -46,12 +46,6 @@ const FieldRenderer = ({ index, field, layout, parentLayoutDict }) => {
       fieldLayoutDict.justifySelf = field.justifySelf ?? autoAlign;
    }
    return (
-      // <div
-      //    key={field.id}
-      //    style={{
-      //       ...field.styling,
-      //       ...fieldLayoutDict,
-      //    }}>
          <SlateField
             key={field.id}
             field={field}
@@ -63,7 +57,6 @@ const FieldRenderer = ({ index, field, layout, parentLayoutDict }) => {
             subsectionId={field.subsectionId}
             layout={parentLayoutDict}
          />
-      // </div>
    )
 }
 

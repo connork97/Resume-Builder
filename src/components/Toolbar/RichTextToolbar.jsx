@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Node } from "slate";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-import { setActiveEditorId, setActiveSectionId, updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
-import { toggleMark } from "../../helpers/marks.js";
 
-import { editorRegistry } from '../../helpers/editorRegistry.js';
 
-import ToolbarButton from "../Toolbar/ToolbarButton";
 import LineHeight from '../Formatting/LineHeight.jsx';
 import FontSize from '../Formatting/FontSize.jsx';
 import FontColor from "../Formatting/FontColor.jsx";
@@ -20,58 +15,27 @@ import Columns from "./Columns.jsx";
 
 import styles from "./RichTextToolbar.module.css";
 
-const RichTextToolbar = () => {
-  const dispatch = useDispatch();
+const RichTextToolbar = ({ editor }) => {
+  
   const resumeStyling = useSelector((state) => state.resume.styling);
-
   const sections = useSelector((state) => state.resume.sections);
   const activeSectionId = useSelector(state => state.resume.activeSectionId);
-  const activeSection = sections.byId[activeSectionId];
-  // const activeSection = sections.find(section => section.id === activeSectionId);
-  const activeSectionText = activeSection ? Node.string({ children: activeSection?.value ?? [] }) : null;
-
-  const activeEditorId = useSelector((state) => state.resume.activeEditorId);
-  const editor = editorRegistry.get(activeEditorId);
-  // const activeEditor = editorRegistry.get(activeEditorId);
-  const activeEditorText = editor ? Node.string(editor) : null;
-  const activeEditorLabel = editor?.children[0].label;
-
   const selection = useSelector(state => state.resume.activeEditorSelection);
-  // const currentSelectionText = selection ? Node.string({ children: selection }) : null;
 
-  useEffect(() => {
-    if (!editor || !selection) {
-      console.error('Editor is not ready.');
-      return;
-    }
-    console.log('Editor is ready.')
-  }, [editor, selection])
-
-  const [currentlyEditingText, setCurrentlyEditingText] = useState('Full Resume');
-
-  useEffect(() => {
-    if (activeSectionText && activeEditorText && activeSectionText !== activeEditorText) {
-      setCurrentlyEditingText(`${activeSectionText} > ${activeEditorLabel}`);
-    } else if (activeEditorText) {
-      setCurrentlyEditingText(activeEditorText);
-    } else if (activeSectionText) {
-      setCurrentlyEditingText(activeSectionText);
-    } else {
-      setCurrentlyEditingText('Full Resume');
-    }
-  }, [activeSectionText, activeEditorText])
-
-
-  const clearToolbarSelection = () => {
-    dispatch(setActiveEditorId(null));
-    dispatch(setActiveSectionId(null));
-  }
+  // useEffect(() => {
+  //   if (!editor || !selection) {
+  //     console.error('Editor is not ready.');
+  //     return;
+  //   }
+  //   console.log('Editor is ready.')
+  // }, [editor, selection])
 
 
   return (
 
     <div className={styles.toolbarContainer}>
       <LineHeight
+        label="Line Height"
         editor={editor}
         selection={selection}
         sections={sections}
@@ -96,6 +60,7 @@ const RichTextToolbar = () => {
       />
 
       <FontSize
+        label="Font Size"
         editor={editor}
         selection={selection}
         sections={sections}
@@ -112,13 +77,7 @@ const RichTextToolbar = () => {
 
       <Lists editor={editor} />
 
-      <Columns />
-
-      {/* CURRENTLY EDITING BUTTON */}
-      <ToolbarButton
-        text={`Currently Editing: ${currentlyEditingText}. Click to reset.`}
-        command={() => clearToolbarSelection()}
-      />
+      <Columns label="Columns" />
 
     </div>
   );

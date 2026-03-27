@@ -9,7 +9,6 @@ import styles from './SettingsModal.module.css';
 import ColumnIndex from './ColumnIndex.jsx';
 import RowIndex from './RowIndex.jsx';
 import SettingsModalInput from './SettingsModalInput.jsx';
-import SettingsModalDropdown from './SettingsModalDropdown.jsx';
 import FontSize from '../../Formatting/FontSize.jsx';
 import FontColor from '../../Formatting/FontColor.jsx';
 import LineHeight from '../../Formatting/LineHeight.jsx';
@@ -105,9 +104,6 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
          layoutChanges = {
             display: 'flex',
             justifyContent: 'space-evenly'
-            // display: 'grid',
-            // gridTemplateColumns: section.subsections[0].fields.length > 0 ? `repeat(${section.subsections[0].fields.length}, 1fr)` : 'auto',
-            // gridTemplateRows: 'auto'
          };
       }
       dispatchLayoutChanges(layoutChanges);
@@ -121,20 +117,9 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
          handleSetInputValue: setColumnWidthInputValue,
          handleSetValue: handleSetColumnWidth
       },
-      // {
-         // label: 'Section Row',
-         // value: sectionRowInputValue,
-      // }
-      // {
-      //    label: "Rows",
-      //    value: rowsInputValue,
-      //    handleSetInputValue: setRowsInputValue,
-      //    handleSetValue: handleSetLayoutChanges
-      // }
    ];
 
    const renderSettingsModalRows = () => {
-      // let modalRowPropsArr = [sections={sections}, resumeStyling={resumeStyling}, activeSectionId={activeSectionId}];
       let componentsArr = [
          { component: FontSize, label: "Font Size" },
          { component: FontColor, label: "Font Color" },

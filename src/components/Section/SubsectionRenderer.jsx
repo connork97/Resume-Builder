@@ -2,7 +2,6 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
-import SlateField from './SlateField';
 import FieldRenderer from './FieldRenderer';
 
 const SubsectionRenderer = ({ subsection }) => {
@@ -35,26 +34,6 @@ const SubsectionRenderer = ({ subsection }) => {
                />
             );
          })}
-         {/* {layout.children.map((child, index) => {
-
-            if (child.type === 'field') {
-               const field = fields.find(f => f.id === child.fieldId);
-               if (!field) return null;
-               return (
-                  <FieldRenderer
-                     child={child}
-                     index={index}
-                     field={field}
-                     layout={layout}
-                     parentLayoutDict={parentLayoutDict}
-                  />
-
-               );
-            } 
-            // Handle other child types (e.g. nested layouts) if needed
-            return null;
-         })}
-            */}
       </div>
    )
 }

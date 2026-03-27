@@ -7,15 +7,15 @@ const SettingsModalInput = ({ label, value, text, handleSetInputValue, handleSet
    return (
       <div className={styles.settingsModalInputContainerDiv}>
          <div className={styles.settingsModalRow}>
-         <p className={styles.settingsModalLabel}>{label}:</p>
-         <input
-            onKeyDown={(e) => e.key === 'Enter' ? handleSetValue() : null}
-            className={styles.settingsModalInput}
-            value={value}
-            onChange={(e) => handleSetInputValue(e.target.value)}
-         >
-         </input>
-         <span className={styles.settingsModalInputSpan}>{text}</span>
+            <p className={styles.settingsModalLabel}>{label}:</p>
+            <input
+               onKeyDown={(e) => e.key === 'Enter' ? handleSetValue() : null}
+               className={styles.settingsModalInput}
+               value={value}
+               onChange={(e) => handleSetInputValue(e.target.value)}
+            >
+            </input>
+            <span className={styles.settingsModalInputSpan}>{text}</span>
          </div>
       </div>
    );

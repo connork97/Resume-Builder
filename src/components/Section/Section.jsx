@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection, updateSubsection } from "../../store/resumeSlice.js";
+import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
 
 import SlateHeading from "./SlateHeading.jsx";
 import styles from './Section.module.css';
@@ -19,6 +19,7 @@ const Section = ({ section, column }) => {
 
   const resumeLayout = useSelector(state => state.resume.layout);
   const columns = useSelector(state => state.resume.columns);  
+  const subsections = useSelector(state => state.resume.subsections);
 
   const sectionRef = useRef(null);
 
@@ -62,17 +63,17 @@ const Section = ({ section, column }) => {
     setSectionPadding((prevStyling) => {
       return {
         ...prevStyling,
-        paddingLeft: isFirstColumn ? resumeLayout.padding.left : '0',
-        paddingRight: isLastColumn ? resumeLayout.padding.right : '0',
-        paddingTop: isFirstRow ? resumeLayout.padding.top : '0',
-        paddingBottom: isLastRow ? resumeLayout.padding.bottom : '0',
+        paddingLeft: isFirstColumn ? resumeLayout.padding.left : resumeLayout.gap.horizontal,
+        paddingRight: isLastColumn ? resumeLayout.padding.right : resumeLayout.gap.horizontal,
+        paddingTop: isFirstRow ? resumeLayout.padding.top : resumeLayout.gap.vertical,
+        paddingBottom: isLastRow ? resumeLayout.padding.bottom : resumeLayout.gap.vertical,
         flex: isLastRow ? '1' : 'none',
       }
     })
   }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding]);
 
   const renderedSubsections = section.subsectionIds?.map((subId) => {
-    const subsection = useSelector((state) => state.resume.subsections.byId[subId]);
+    const subsection = subsections.byId[subId];
     if (!subsection) {
       console.error(`Subsection with ID ${subId} not found.`);
       return null;
@@ -81,31 +82,9 @@ const Section = ({ section, column }) => {
       <SubsectionRenderer
         key={subsection.id}
         subsection={subsection}
-        // layout={subsection.layout}
-        // fields={subsection.fields}
-        // fieldIds={subsection.fieldIds}
       />
     );
   });
-
-
-  // useEffect(() => {
-  //   setSectionPadding((prevStyling) => {
-  //     // console.log({...prevStyling, paddingLeft: isFirstColumn ?? resumeLayout.padding.left})
-  //     return {
-  //       ...prevStyling,
-  //       paddingLeft: isFirstColumn ? resumeLayout.padding.left : '0',
-  //       paddingRight: isLastColumn ? resumeLayout.padding.right : '0',
-  //       paddingTop: isFirstRow ? resumeLayout.padding.top : '0',
-  //       // marginBottom: isLastRow && 'auto',
-  //       flex: isLastRow ? '1' : 'none',
-  //       // height: isLastRow && '100%',
-  //       // flex: isLastRow && '1',
-  //       // paddingBottom: isLastRow && resumeLayout.padding.bottom,
-  //      }
-      
-  //   })
-  // }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding]);
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 

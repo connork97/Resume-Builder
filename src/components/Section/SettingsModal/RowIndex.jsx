@@ -5,10 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateColumn } from '../../../store/resumeSlice.js';
 
 import ToolbarButton from "../../Toolbar/ToolbarButton.jsx";
-import ToolbarInput from "../../Toolbar/ToolbarInput.jsx";
 
 import styles from '../../Toolbar/RichTextToolbar.module.css';
-import SettingsModal from './SettingsModal.jsx';
 import SettingsModalInput from './SettingsModalInput.jsx';
 
 const RowIndex = ({ section, }) => {
@@ -46,19 +44,19 @@ const RowIndex = ({ section, }) => {
       splicedSectionIds.splice(rowIndexInputValue, 1);
       splicedSectionIds.splice(newRowIndex, 0, section.id);
       console.log("Updated sectionIds:", splicedSectionIds);
-      
+
       dispatch(updateColumn({
          id: section.columnId,
          changes: {
-               sectionIds: splicedSectionIds
-            }
+            sectionIds: splicedSectionIds
+         }
       }));
       setRowIndexInputValue(newRowIndex);
    }
 
 
    return (
-      <div className={styles.toolBarButtonInputWrapper}>
+      <div className={styles.toolBarButtonInputWrapper} style={{ justifyContent: 'space-between' }}>
          <SettingsModalInput
             name="RowIndexInput"
             label={`${section.label} Row Index`}
@@ -66,14 +64,18 @@ const RowIndex = ({ section, }) => {
             handleSetInputValue={setRowIndexInputValue}
             handleSetValue={() => updateRowIndex('input')}
          />
-         <ToolbarButton
-            text="-"
-            command={() => updateRowIndex('decrement')}
-         />
-         <ToolbarButton
-            text="+"
-            command={() => updateRowIndex('increment')}
-         />
+         <div style={{ display: 'flex' }}>
+            <ToolbarButton
+               style={{ justifySelf: 'end' }}
+               text="-"
+               command={() => updateRowIndex('decrement')}
+            />
+            <ToolbarButton
+               style={{ justifySelf: 'end' }}
+               text="+"
+               command={() => updateRowIndex('increment')}
+            />
+         </div>
       </div>
    )
 }

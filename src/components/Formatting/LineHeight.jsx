@@ -10,7 +10,7 @@ import styles from '../Toolbar/RichTextToolbar.module.css';
 import ToolbarButton from "../Toolbar/ToolbarButton.jsx";
 import ToolbarInput from "../Toolbar/ToolbarInput.jsx";
 
-const LineHeight = ({ editor, selection }) => {
+const LineHeight = ({ editor, selection, label }) => {
 
    const dispatch = useDispatch();
    const sections = useSelector(state => state.resume.sections);
@@ -63,6 +63,7 @@ const LineHeight = ({ editor, selection }) => {
 
    return (
       <div className={styles.toolBarButtonInputWrapper}>
+         <span className={styles.toolbarLabelSpan}>{label}:</span>
          <ToolbarButton
             text="-"
             command={() => setNewLineHeight('decrement')}

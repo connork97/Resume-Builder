@@ -10,7 +10,7 @@ import styles from '../Toolbar/RichTextToolbar.module.css';
 import ToolbarButton from "../Toolbar/ToolbarButton.jsx";
 import ToolbarInput from "../Toolbar/ToolbarInput.jsx";
 
-const FontSize = ({ editor, selection }) => {
+const FontSize = ({ editor, selection, label }) => {
 
    const dispatch = useDispatch();
    const sections = useSelector(state => state.resume.sections);
@@ -44,7 +44,7 @@ const FontSize = ({ editor, selection }) => {
          dispatch(updateResumeStyling({ fontSize: `${resumeFontSize}px` }));
          setFontSizeInputValue(resumeFontSize);
       } else if (!editor && activeSectionId) {
-         const section = sections.find(s => s.id === activeSectionId);
+         const section = sections.byId[activeSectionId];
          let sectionFontSize = parseInt(section.styling.fontSize || resumeStyling.fontSize);
          sectionFontSize = findFontSizeValue(sectionFontSize, newFontSize);
          dispatch(updateSection({
@@ -63,6 +63,7 @@ const FontSize = ({ editor, selection }) => {
 
    return (
       <div className={styles.toolBarButtonInputWrapper}>
+         <span className={styles.toolbarLabelSpan}>{label}:</span>
          <ToolbarButton
             text="-"
             command={() => setNewFontSize('decrement')}

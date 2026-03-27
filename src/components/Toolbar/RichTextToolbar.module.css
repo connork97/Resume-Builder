@@ -2,8 +2,6 @@
   display: flex;
   gap: 0.5vh;
   padding: 0.5vh;
-  /* background: #f5f5f5; */
-  /* border-bottom: 1px solid #ddd; */
 }
 
 .toolbarButton, .toolbarInput, .toolbarDropdownButton {
@@ -17,6 +15,10 @@
    border: 1px solid #3a3a3a;
    border-radius: 0.5vh;
    padding: 0.5vh 1vh;
+}
+
+.toolbarLabelSpan {
+  align-self: center;
 }
 
 .toolBarButtonInputWrapper {
@@ -48,7 +50,6 @@
 }
 
 .colorSwatch {
-  /* opacity: 50%; */
   width: 2.5vh;
   height: 2.5vh;
   border-radius: 0.5vh;

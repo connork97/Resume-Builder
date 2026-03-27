@@ -3,13 +3,11 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateResume, updateSection } from '../../../store/resumeSlice.js';
+import { updateSection } from '../../../store/resumeSlice.js';
 
 import ToolbarButton from "../../Toolbar/ToolbarButton.jsx";
-import ToolbarInput from "../../Toolbar/ToolbarInput.jsx";
 
 import styles from '../../Toolbar/RichTextToolbar.module.css';
-import SettingsModal from './SettingsModal.jsx';
 import SettingsModalInput from './SettingsModalInput.jsx';
 
 const ColumnIndex = ({ section, sectionColumnIndex }) => {
@@ -31,7 +29,6 @@ const ColumnIndex = ({ section, sectionColumnIndex }) => {
       }
    }, [section.columnId]);
 
-   // console.log(section.)
    const updateColumnIndex = (action) => {
       let newColumnIndex;
 
@@ -53,26 +50,9 @@ const ColumnIndex = ({ section, sectionColumnIndex }) => {
       }));
       setColumnIndexInputValue(newColumnIndex);
    }
-   // const updateColumnIndex = (newColumnCount) => {
-   //    if (newColumnCount < 1) {
-   //       window.alert("You must have at least one column.");
-   //       return;
-   //    }
-   //    const newColumnWidthsArr = Array(newColumnCount).fill(`${100 / newColumnCount}%`);
-   //    dispatch(updateResume({
-   //       key: 'layout',
-   //       changes: {
-   //          columns: {
-   //             count: newColumnCount,
-   //             width: newColumnWidthsArr
-   //          }
-   //       }
-   //    }));
-   //    setColumnIndexInputValue(newColumnCount);
-   // }
 
    return (
-      <div className={styles.toolBarButtonInputWrapper}>
+      <div className={styles.toolBarButtonInputWrapper} style={{ justifySelf: 'end' }}>
          <SettingsModalInput
             name="columnIndexInput"
             label={`${section.label} Column Index`}

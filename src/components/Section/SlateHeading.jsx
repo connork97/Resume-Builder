@@ -7,7 +7,6 @@ import { updateSection, setActiveEditorId, setActiveEditorSelection } from "../.
 import renderLeaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
-
 import { editorRegistry } from "../../helpers/editorRegistry.js";
 import { nanoid } from "@reduxjs/toolkit";
 

@@ -2,20 +2,17 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addColumn, deleteColumn, updateResume, updateSection } from '../../store/resumeSlice.js';
+import { addColumn, deleteColumn } from '../../store/resumeSlice.js';
 
 import ToolbarButton from "./ToolbarButton.jsx";
 import ToolbarInput from "./ToolbarInput.jsx";
 
 import styles from '../Toolbar/RichTextToolbar.module.css';
 
-const Columns = () => {
+const Columns = ({ label }) => {
 
    const dispatch = useDispatch();
 
-   const sections = useSelector(state => state.resume.sections);
-   const resumeLayout = useSelector(state => state.resume.layout);
-   // const columns = resumeLayout.columns;
    const columns = useSelector(state => state.resume.columns);
 
    const [columnInputValue, setColumnInputValue] = useState(columns.allIds.length);
@@ -47,6 +44,7 @@ const Columns = () => {
 
    return (
       <div className={styles.toolBarButtonInputWrapper}>
+         <span className={styles.toolbarLabelSpan}>{label}:</span>
          <ToolbarButton
             text="-"
             command={() => handleUpdateColumns('decrement')}

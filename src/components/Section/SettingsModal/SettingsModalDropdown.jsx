@@ -25,7 +25,6 @@ const settingsModalDropdown = ({ type, styling, options, handleSetLayout }) => {
             <div
               key={index}
               className={styles.settingsModalOption}
-            //   style={{ backgroundColor: color }}
               onClick={() => {
                //  handleSetLayout(type, option);
                 setOpenSubOptions(!openSubOptions);

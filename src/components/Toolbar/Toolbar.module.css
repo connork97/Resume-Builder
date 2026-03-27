@@ -6,7 +6,7 @@
 
   height: 6vh;
   background: #1e1e1e;
-  color: white;
+  color: rgba(255, 255, 255, 1);
 
   display: flex;
   align-items: center;
@@ -17,20 +17,13 @@
   font-size: 1.5vh;
 }
 
-.addSectionWrapperDiv {
-  margin-left: auto;
-}
-
 .addSectionButton {
   background: #4a4a4a;
-  color: white;
-  /* padding: 8px 14px; */
+  color: rgba(255, 255, 255, 1);
   padding: 0.5vh 1vh;
   border-radius: 0.5vh;
   border: none;
   cursor: pointer;
-  /* font-size: 14px; */
-  /* width: 15vh; */
 }
 
 .addSectionButton:hover {
@@ -39,16 +32,12 @@
 
 .dropdownMenu {
   position: absolute;
-  right: 1.5vh;
   margin-top: 6px;
-  /* background: white; */
   background: #4a4a4a;
   text-align: justify;
-  /* border: 1px solid #ccc; */
   border-radius: 0.5vh;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  z-index: 100;
-  /* width: 180px; */
+  z-index: 999;
   width: 10%;
 }
 
@@ -58,6 +47,5 @@
 }
 
 .dropdownItem:hover {
-  /* background: #f0f0f0; */
   background: #555;
 }

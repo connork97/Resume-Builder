@@ -1,15 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import styles from "./Toolbar.module.css";
+import { editorRegistry } from '../../helpers/editorRegistry.js';
+import { useSelector } from "react-redux";
+
 
 import RichTextToolbar from "./RichTextToolbar.jsx";
 import AddSection from "./AddSection.jsx";
+import CurrentlyEditing from "./CurrentlyEditing.jsx";
 
 const Toolbar = () => {
 
+  const activeEditorId = useSelector((state) => state.resume.activeEditorId);
+  const editor = editorRegistry.get(activeEditorId);
+
   return (
     <div className={styles.toolbarContainerDiv}>
-      <RichTextToolbar />
+      <CurrentlyEditing editor={editor} />
       <AddSection />
+      <RichTextToolbar editor={editor} />
     </div>
   );
 };

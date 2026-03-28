@@ -13,11 +13,11 @@ import { editorRegistry } from "../../helpers/editorRegistry.js";
 import { nanoid } from "@reduxjs/toolkit";
 
 const SlateField = ({ field, sectionId, subsectionId }) => {
-  const dispatch = useDispatch();
-
   // Stable editor instance
   const editorId = useMemo(() => nanoid(), []);
   const editor = useMemo(() => withReact(createEditor()), []);
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     editorRegistry.set(editorId, editor);

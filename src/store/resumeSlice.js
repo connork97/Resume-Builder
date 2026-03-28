@@ -193,6 +193,7 @@ const resumeSlice = createSlice({
       }
       const subsection = createDefaultSubsection(state, type, section.id);
       createDefaultField(state, type, subsection.id);
+      // return section;
     },
 
     addSubsection(state, action) {
@@ -391,7 +392,7 @@ const resumeSlice = createSlice({
     // * ---------- V
     // * REORDERING V
     // * ---------- V
-    
+
     // reorder(state, childType, action, parent) {
     //   const { childId, fromIndex, toIndex } = action.payload;
     //   const childObj = state[childType + 's'].byId[childId];
@@ -399,7 +400,7 @@ const resumeSlice = createSlice({
     //   const [moved] = itemsArr.splice(fromIndex, 1);
     //   itemsArr.splice(toIndex, 0, moved);
     // },
-    
+
     reorderSections(state, action) {
       const { sectionId, fromIndex, toIndex } = action.payload;
 
@@ -421,12 +422,12 @@ const resumeSlice = createSlice({
     reorderSubsections(state, action) {
       const { sectionId, fromIndex, toIndex } = action.payload;
       const section = state.sections.byId[sectionId];
-      
+
       if (!section) {
         console.error(`Cannot reorder subsections. Section with ID of ${sectionId} not found.`);
         return;
       }
-      
+
       const subsectionIdsArr = section.subsectionIds;
       const [moved] = subsectionIdsArr.splice(fromIndex, 1);
       subsectionIdsArr.splice(toIndex, 0, moved);

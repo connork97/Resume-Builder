@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { addSection, addSubsection } from "../../store/resumeSlice";
+
+import { useDummyData } from "../../utils/useDummyData";
 
 import styles from './Toolbar.module.css';
 
 const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
 
+   const initialized = useRef(false);
    const dispatch = useDispatch();
 
+   useEffect(() => {
+      if (initialized.current) return;
+      initialized.current = true;
+   }, []);
+   
    const sections = useSelector((state) => state.resume.sections);
-
+   
    const sectionOptions = [
       { type: "header", label: "Header" },
       { type: "contact", label: "Contact" },
@@ -20,6 +28,7 @@ const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
       { type: "summary", label: "Summary" }
    ];
 
+   
    const handleAddSection = (type) => {
       let existingSectionId = null;
       sections.allIds.map((id) => {
@@ -34,6 +43,7 @@ const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
       }
       setAddSectionDropdownIsOpen(false);
    }
+   
 
    return (
       <div className={styles.dropdownMenu}>
@@ -58,7 +68,7 @@ export default AddSectionDropdown;
 
 
 
-   // const initialized = useRef(false);
+// const initialized = useRef(false);
 
 // Function to add each section type, as well as default/dummy data for each section upon page load.  Just use lorem ipsum text, with each word filling in each subsection field
 

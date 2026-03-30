@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Toolbar from "./components/Toolbar/Toolbar";
 import Outline from "./components/Outline/Outline";
@@ -9,7 +9,12 @@ import { useDummyData } from "./utils/useDummyData";
 import styles from "./App.module.css";
 
 const App = () => {
-   useDummyData();
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/api/test")
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  }, [])
+  useDummyData();
 
   return (
     <div className={styles.appContainerDiv}>

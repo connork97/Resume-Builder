@@ -2,7 +2,7 @@ import React from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateSection } from "../../store/resumeSlice";
+import { updateSection } from "../../store/resumeSlice.js";
 
 import Section from "../Section/Section.jsx";
 import Column from "./Column.jsx";

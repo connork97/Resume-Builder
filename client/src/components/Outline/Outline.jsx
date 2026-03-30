@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { reorderSections, deleteSection, updateField } from "../../store/resumeSlice";
+import { reorderSections, deleteSection, updateField } from "../../store/resumeSlice.js";
 
 import OutlineSection from "./OutlineSection.jsx";
 import FieldRow from "./FieldRow.jsx";

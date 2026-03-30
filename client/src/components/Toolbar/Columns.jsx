@@ -7,7 +7,7 @@ import { addColumn, deleteColumn } from '../../store/resumeSlice.js';
 import ToolbarButton from "./shared/ToolbarButton.jsx";
 import ToolbarInput from "./shared/ToolbarInput.jsx";
 
-import styles from '../Toolbar/RichTextToolbar.module.css';
+import styles from './RichTextToolbar.module.css';
 
 const Columns = ({ label }) => {
 

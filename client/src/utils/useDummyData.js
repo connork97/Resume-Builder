@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addSection, updateField } from "../store/resumeSlice";
+import { addSection } from "../store/resumeSlice";
 
 export const useDummyData = () => {
    const dispatch = useDispatch();
@@ -20,7 +20,6 @@ export const useDummyData = () => {
       if (initialized.current) return;
 
       // prevent adding if already exists
-      console.log('SECTIONS IN USE DUMMY: ', sections)
       if (sections.allIds.length > 0) return;
 
       initialized.current = true;

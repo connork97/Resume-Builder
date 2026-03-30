@@ -2,6 +2,8 @@ from flask import jsonify
 
 from config import app
 
+import models
+
 @app.route("/")
 def home():
     return jsonify({"message": "Resume Builder Flask backend is running"})

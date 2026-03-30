@@ -9,11 +9,20 @@ import { useDummyData } from "./utils/useDummyData";
 import styles from "./App.module.css";
 
 const App = () => {
+  const fetchAPI = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5555/");
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching API:", error);
+    }
+  };
+
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/test")
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  }, [])
+    fetchAPI();
+  }, []);
+
   useDummyData();
 
   return (
@@ -23,6 +32,6 @@ const App = () => {
       <Page />
     </div>
   );
-}
+};
 
 export default App;

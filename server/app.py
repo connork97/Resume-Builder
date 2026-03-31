@@ -3,7 +3,7 @@ from flask import jsonify, request, make_response
 from config import app, db
 
 
-from models import Resume, Column, Section, Subsection, Field
+from models import User, Resume, Column, Section, Subsection, Field
 
 @app.route("/")
 def home():
@@ -11,7 +11,40 @@ def home():
     return response
     # return jsonify({"message": "Resume Builder Flask backend is running"})
 
-@app.route("/resumes/", methods=['GET', 'POST'])
+@app.route("/users", methods=['POST'])
+def users():
+    if request.method == 'POST':
+        print("Received POST request for /users")
+        form_data = request.get_json()
+        print("Received form_data: ", form_data)        
+        
+        new_user = User(
+            first_name=form_data['firstName'],
+            last_name=form_data['lastName'],
+            username=form_data['username'],
+            email=form_data['email'],
+            password_hash=form_data['password']  # Will hash the password later
+        )
+        
+        db.session.add(new_user)
+        db.session.commit()
+        
+        print('CREATED NEW USER:', new_user.to_dict())
+        response = make_response(jsonify(new_user.to_dict()), 201)
+        return response
+    
+@app.route("/users/<int:user_id>", methods=['GET'])
+def user(user_id):
+    if request.method == 'GET':
+        print(f"Received GET request for /users/{user_id}")
+        user = User.query.filter(User.id == user_id).one_or_none()
+        if not user:
+            return make_response(jsonify({"error": "User not found"}), 404)
+        print(f"Found user: {user.to_dict()}")
+        response = make_response(jsonify(user.to_dict()), 200)
+        return response
+
+@app.route("/resumes", methods=['GET', 'POST'])
 def resumes():
     if request.method == 'GET':
         print("Received GET request for /resumes")

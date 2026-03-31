@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "./store/userSlice";
+
 import Toolbar from "./components/Toolbar/Toolbar";
 import Outline from "./components/Outline/Outline";
 import Page from "./components/Page/Page";
@@ -9,10 +12,15 @@ import { useDummyData } from "./utils/useDummyData";
 import styles from "./App.module.css";
 
 const App = () => {
-  const ROUTE = "http://127.0.0.1:5555";;
+  const dispatch = useDispatch();
+
+  const BASE_URL = "http://127.0.0.1:5555";
+
+  const user = useSelector((state) => state.user);
+
   const fetchAPI = async () => {
     try {
-      const response = await fetch(ROUTE) + '/';
+      const response = await fetch(BASE_URL);
       const data = await response.json();
       console.log(data);
     } catch (error) {
@@ -20,49 +28,51 @@ const App = () => {
     }
   };
 
-  const createResume = async () => {
+  const createGuestUser = async () => {
+    const guestData = {
+      firstName: 'Guest',
+      lastName: 'User',
+      username: 'guest',
+      email: 'guest@guest.com',
+      password: 'password'
+    }
     try {
-      const response = await fetch(`${ROUTE}/resumes`, {
+      const response = await fetch(`${BASE_URL}/users`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          title: "My New Resume"
-        })
+        body: JSON.stringify(guestData),
       });
-      const data = await response.json();
-      console.log(data);
+      const userData = await response.json();
+      if (userData) {
+        console.log('Created Guest User:', userData);
+        dispatch(setUser(userData));
+      }
     } catch (error) {
-      console.error("Error creating resume:", error);
+      console.error("Error creating guest user:", error);
     }
   };
 
-  const fetchAllResumes = async () => {
+  const fetchUser = async (userId = 1) => {
+    console.log('Fetching user with ID:', userId);
     try {
-      const response = await fetch(`${ROUTE}/resumes`);
-      const data = await response.json();
-      console.log(data);
+      const response = await fetch(`${BASE_URL}/users/${userId}`);
+      const userData = await response.json();
+      if (userData) {
+        console.log('Setting Current User:', userData);
+        dispatch(setUser(userData));
+      }
     } catch (error) {
-      console.error("Error fetching all resumes:", error);
-    }
-  }
-
-  const fetchFirstResume = async () => {
-    try {
-      const response = await fetch(`${ROUTE}/resumes/1`);
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching first resume:", error);
+      console.error("Error fetching user, creating Guest profile:");
+      createGuestUser();
     }
   }
 
 
   useEffect(() => {
-    // fetchAPI();
-    fetchAllResumes();
-    // createResume();
+    fetchAPI();
+    fetchUser();
   }, []);
 
   // useDummyData();

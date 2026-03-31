@@ -2,10 +2,46 @@ from config import db
 
 from datetime import datetime
 
+class User(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    first_name = db.Column(db.String(80), nullable=False)
+    last_name = db.Column(db.String(80), nullable=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
+    updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
+    
+    resumes = db.relationship(
+        "Resume",
+        backref="user",
+        cascade="all, delete-orphan",
+        lazy=True,
+        order_by="Resume.updated_at.desc()",
+    )
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "firstName": self.first_name,
+            "lastName": self.last_name,
+            "username": self.username,
+            "email": self.email,
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            "resumes": [resume.to_dict() for resume in self.resumes],
+        }
+        
+    def __repr__(self):
+        return f"<User {self.id}: {self.username}>"
+
 class Resume(db.Model):
     __tablename__ = "resumes"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     title = db.Column(db.String, nullable=False, default="Untitled Resume")
     styling = db.Column(db.JSON, nullable=False, default=dict)
     layout = db.Column(db.JSON, nullable=False, default=dict)
@@ -23,11 +59,12 @@ class Resume(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
+            "userId": self.user_id,
             "title": self.title,
             "styling": self.styling,
             "layout": self.layout,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
             "columns": [column.to_dict() for column in self.columns],
         }
 
@@ -56,11 +93,11 @@ class Column(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "resume_id": self.resume_id,
+            "resumeId": self.resume_id,
             "width": self.width,
             "position": self.position,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
             "sections": [section.to_dict() for section in self.sections],
         }
 
@@ -92,14 +129,14 @@ class Section(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "column_id": self.column_id,
+            "columnId": self.column_id,
             "label": self.label,
             "type": self.type,
             "value": self.value,
             "styling": self.styling,
             "position": self.position,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
             "subsections": [subsection.to_dict() for subsection in self.subsections],
         }
 
@@ -131,13 +168,13 @@ class Subsection(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "section_id": self.section_id,
+            "sectionId": self.section_id,
             "label": self.label,
             "type": self.type,
             "styling": self.styling,
             "position": self.position,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
             "fields": [field.to_dict() for field in self.fields],
         }
 
@@ -160,13 +197,13 @@ class Field(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "subsection_id": self.subsection_id,
+            "subsectionId": self.subsection_id,
             "label": self.label,
             "value": self.value,
             "styling": self.styling,
             "position": self.position,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
         }
 
     def __repr__(self):

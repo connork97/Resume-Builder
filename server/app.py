@@ -2,7 +2,8 @@ from flask import jsonify
 
 from config import app
 
-import models
+
+from models import *
 
 @app.route("/")
 def home():

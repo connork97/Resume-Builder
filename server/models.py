@@ -45,7 +45,6 @@ class Section(db.Model):
     __tablename__ = "sections"
 
     id = db.Column(db.String, primary_key=True)
-    resume_id = db.Column(db.Integer, db.ForeignKey("resumes.id"), nullable=False)
     column_id = db.Column(db.String, db.ForeignKey("columns.id"), nullable=False)
     label = db.Column(db.String, nullable=True)
     type = db.Column(db.String, nullable=False, default="defaultSection")

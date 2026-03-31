@@ -38,11 +38,19 @@ def user(user_id):
     if request.method == 'GET':
         print(f"Received GET request for /users/{user_id}")
         user = User.query.filter(User.id == user_id).one_or_none()
+        if user:
+            user_dict = user.to_dict(
+                exclude=['createdAt', 'updatedAt'],
+                condense_resume_data=True
+            )
+            # for resume in user_dict['resumes']:
+                # user_dict[resume] = {resume.id, resume.title}
+            response = make_response(jsonify(user_dict), 200)
+            return response
+            
         if not user:
             return make_response(jsonify({"error": "User not found"}), 404)
-        print(f"Found user: {user.to_dict()}")
-        response = make_response(jsonify(user.to_dict()), 200)
-        return response
+        
 
 @app.route("/resumes", methods=['GET', 'POST'])
 def resumes():
@@ -58,7 +66,10 @@ def resumes():
         form_data = request.get_json()
         print("Received form_data: ", form_data)        
         
-        new_resume = Resume(title=form_data['title'])
+        new_resume = Resume(
+            title=form_data['title'],
+            user_id=form_data['userId']
+        )
         
         db.session.add(new_resume)
         db.session.commit()

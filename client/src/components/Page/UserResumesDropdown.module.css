@@ -1,0 +1,41 @@
+.userResumesDropdownContainer {
+  margin: auto;
+  margin-top: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.025);
+  width: 50%;
+}
+
+.userResumeDropdownRow {
+  display: flex;
+  justify-content: space-evenly;
+  /* padding: 0.5rem;
+   border: 1px solid #ccc;
+   border-radius: 7.5px;
+   background-color: rgba(255, 255, 255, 0.5); */
+  margin: 0.5rem;
+}
+
+.userResumeViewButton, .userResumeDeleteButton {
+   padding: 0 15px;
+   font-size: 12px;
+   color: white;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+}
+.userResumeViewButton {
+   background-color: rgba(0, 123, 255, 0.8);
+}
+
+.userResumeDeleteButton {
+  background-color: rgba(255, 0, 0, 0.8);
+}
+
+.userResumeDropdownItem {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 7.5px;
+  background-color: rgba(255, 255, 255, 0.5);
+}

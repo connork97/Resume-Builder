@@ -22,8 +22,8 @@ class User(db.Model):
         order_by="Resume.updated_at.desc()",
     )
     
-    def to_dict(self):
-        return {
+    def to_dict(self, exclude=[], only=[], condense_resume_data=False):
+        user_dict = {
             "id": self.id,
             "firstName": self.first_name,
             "lastName": self.last_name,
@@ -31,8 +31,20 @@ class User(db.Model):
             "email": self.email,
             "createdAt": self.created_at.isoformat() if self.created_at else None,
             "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
-            "resumes": [resume.to_dict() for resume in self.resumes],
         }
+        
+        if condense_resume_data:
+            user_dict["resumes"] = [{"id": resume.id, "title": resume.title} for resume in self.resumes]
+        else:
+            user_dict["resumes"] = [resume.to_dict() for resume in self.resumes]
+        
+        if exclude:
+            for key in exclude:
+                del user_dict[key]
+        
+        # Create Function to Handle 'only' logic if Specified
+                
+        return user_dict
         
     def __repr__(self):
         return f"<User {self.id}: {self.username}>"

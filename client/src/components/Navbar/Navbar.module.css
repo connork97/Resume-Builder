@@ -34,7 +34,8 @@
 .navbarLink:hover {
   text-decoration: none;
   color: rgba(255, 255, 255, 1);
-  font-size: 1.7rem;
+  font-size: 3.5vh;
+  /* font-size: 1.7rem; */
   font-weight: lighter;
   /* right: 10vh; */
   /* position: relative; */

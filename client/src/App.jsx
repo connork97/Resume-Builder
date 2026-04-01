@@ -8,6 +8,8 @@ import NavbarLayout from "./components/Layout/NavbarLayout";
 import Home from "./pages/Home/Home.jsx";
 import DemoEditor from './pages/Demo/DemoEditor.jsx';
 import ResumeEditor from './pages/ResumeEditor/ResumeEditor.jsx';
+import SignUp from "./pages/Auth/SignUp.jsx";
+import Login from "./pages/Auth/Login.jsx";
 
 import Toolbar from "./components/Toolbar/Toolbar";
 import Outline from "./components/Outline/Outline";
@@ -60,7 +62,7 @@ const App = () => {
     }
   };
 
-  const fetchUser = async (userId = 1) => {
+  const fetchUser = async (userId) => {
     console.log('Fetching user with ID:', userId);
     try {
       const response = await fetch(`${BASE_URL}/users/${userId}`);
@@ -78,7 +80,7 @@ const App = () => {
 
   useEffect(() => {
     fetchAPI();
-    fetchUser();
+    fetchUser(user.id);
   }, []);
 
   // useDummyData();
@@ -90,6 +92,8 @@ const App = () => {
         <Route element={<NavbarLayout />}>
           <Route path='/' element={<Navigate to='/home' replace />} />
           <Route path="/home" exact='true' element={<Home />} />
+          <Route path='/signup' exact='true' element={<SignUp />} />
+          <Route path='/login' exact='true' element={<Login />} />
         </Route>
         <Route path='/demo' element={<DemoEditor />} />
         <Route path='/resume' element={<ResumeEditor />} />

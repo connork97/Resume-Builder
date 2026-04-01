@@ -17,13 +17,13 @@ const Home = () => {
          <div className={styles.homePageContent}>
             <div className={styles.welcomeDiv}>
                <h1 className={styles.welcomeH1}>Hi {user.firstName || 'there'}.</h1>
-               <h2 className={styles.welcomeH2}>Welcome to ActuallyFreeResumeBuilder.com</h2>
+               <h2 className={styles.welcomeH2}>Welcome to ActuallyFreeResume.com</h2>
             </div>
             <div className={styles.tryUsDiv}>
                {/* <p className={styles.tryUsP}>New here?</p> */}
                <button className={styles.tryUsButton}>
                   <Link to='/demo' exact='true'>
-                     New here?&nbsp; Give us a try.
+                     New here?&nbsp; Try out our demo!
                   </Link>
                </button>
             </div>

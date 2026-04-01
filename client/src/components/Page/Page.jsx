@@ -6,7 +6,7 @@ import { updateSection } from "../../store/resumeSlice.js";
 
 import Section from "../Section/Section.jsx";
 import Column from "./Column.jsx";
-import SelectResume from "./SelectResume.jsx";
+import SelectResume from "../../pages/Home/SelectResume.jsx";
 
 import styles from "./Page.module.css";
 

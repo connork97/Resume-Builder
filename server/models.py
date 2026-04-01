@@ -1,6 +1,9 @@
+from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from config import db
 
-from datetime import datetime
+
 
 class User(db.Model):
     __tablename__ = "users"
@@ -10,7 +13,7 @@ class User(db.Model):
     last_name = db.Column(db.String(80), nullable=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
     
@@ -22,7 +25,15 @@ class User(db.Model):
         order_by="Resume.updated_at.desc()",
     )
     
-    def to_dict(self, exclude=[], only=[], condense_resume_data=False):
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+        
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+    
+    def to_dict(self, exclude=None, only=None, condense_relationship_data=True):
+        exclude = exclude or []
+        only = only or []
         user_dict = {
             "id": self.id,
             "firstName": self.first_name,
@@ -33,17 +44,19 @@ class User(db.Model):
             "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
         }
         
-        if condense_resume_data:
+        if only:
+            user_dict = {key: value for key, value in user_dict.items() if key in only}
+            
+        if condense_relationship_data:
             user_dict["resumes"] = [{"id": resume.id, "title": resume.title} for resume in self.resumes]
         else:
             user_dict["resumes"] = [resume.to_dict() for resume in self.resumes]
         
         if exclude:
             for key in exclude:
-                del user_dict[key]
+                user_dict.pop(key, None)
+                # del user_dict[key]
         
-        # Create Function to Handle 'only' logic if Specified
-                
         return user_dict
         
     def __repr__(self):

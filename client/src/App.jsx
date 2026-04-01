@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 
+import { BrowserRouter, Routes, Route, Link } from 'react-router';
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/userSlice";
+
+import NavbarLayout from "./components/Layout/NavbarLayout";
+import Home from "./pages/Home/Home.jsx";
+import Resume from './pages/Resume/Resume.jsx';
 
 import Toolbar from "./components/Toolbar/Toolbar";
 import Outline from "./components/Outline/Outline";
@@ -78,11 +83,20 @@ const App = () => {
   // useDummyData();
 
   return (
-    <div className={styles.appContainerDiv}>
-      <Toolbar />
-      {/* <Outline /> */}
-      <Page />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* Routes with Navbar */}
+        <Route element={<NavbarLayout />}>
+          <Route path="/" exact='true' element={<Home />} />
+        </Route>
+        <Route path='/resume/' element={<Resume />} />
+        {/* <div className={styles.appContainerDiv}> */}
+        {/* <Toolbar /> */}
+        {/* <Outline /> */}
+        {/* <Page /> */}
+        {/* </div> */}
+      </Routes>
+    </BrowserRouter>
   );
 };
 

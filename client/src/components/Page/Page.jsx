@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -10,9 +10,14 @@ import SelectResume from "../../pages/Home/SelectResume.jsx";
 
 import styles from "./Page.module.css";
 
-const Page = () => {
+const Page = ({ resumeId }) => {
+
+   const BASE_URL = 'http://localhost:5555';
+
    const user = useSelector((state) => state.user);
    const userResumeIds = user.resumes || [];
+
+   const [resumeToEdit, setResumeToEdit] = useState({});
 
    const resumeStyling = useSelector((state) => state.resume.styling);
    const columns = useSelector((state) => state.resume.columns);
@@ -23,25 +28,44 @@ const Page = () => {
       dispatch(updateSection({ sectionId, changes: { layout: { columnIndex: 0 } } }));
    }
 
+   const fetchResumeById = async (resumeId) => {
+      try {
+         const response = await fetch(`${BASE_URL}/resumes/${resumeId}`)
+         if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+         }
+         const resumeData = await response.json();
+         console.log('Resume Data', resumeData);
+         setResumeToEdit(resumeData);
+      } catch (error) {
+         console.error(`Error fetching resume of id ${resumeId}: `, error)
+      }
+   }
+
+   useEffect(() => {
+      console.log('resumeid', resumeId)
+      if (resumeId) fetchResumeById(resumeId);
+   }, [resumeId])
+
    // Handle how many columns to render on the page based on resume layout settings.
    const renderedColumns = columns.allIds?.map((columnId) => {
-         const column = columns.byId[columnId];
-         if (!column) {
-            console.error(`Column with ID ${columnId} not found.`);
-            return null;
-         }
+      const column = columns.byId[columnId];
+      if (!column) {
+         console.error(`Column with ID ${columnId} not found.`);
+         return null;
+      }
 
-         return <Column key={column.id} column={column} />
+      return <Column key={column.id} column={column} />
    });
 
    const pageContent = userResumeIds.length > 0
-      // ? renderedColumns
-      ? <SelectResume />
-      : <SelectResume />
+   // ? renderedColumns
+   // ? <SelectResume />
+   // : <SelectResume />
 
    return (
       <div className={styles.pageContainerDiv} style={{ ...resumeStyling }}>
-         {pageContent}
+         <p>{resumeToEdit.title}</p>
       </div>
    )
 }

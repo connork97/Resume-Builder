@@ -22,7 +22,7 @@ const Home = () => {
             <div className={styles.tryUsDiv}>
                {/* <p className={styles.tryUsP}>New here?</p> */}
                <button className={styles.tryUsButton}>
-                  <Link to='/resume/' exact='true'>
+                  <Link to='/demo' exact='true'>
                      New here?&nbsp; Give us a try.
                   </Link>
                </button>

@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import styles from './Auth.module.css';
 
 const SignUp = () => {
+
+   // const BASE_URL = 'http://localhost:5555';
+   const BASE_URL = "http://localhost:5555";
+
+
    const [newUser, setNewUser] = useState({
       firstName: '',
       lastName: '',
@@ -20,9 +25,34 @@ const SignUp = () => {
       }));
    };
 
+   const createUser = async (e) => {
+      e.preventDefault();
+      try {
+         const response = await fetch(`${BASE_URL}/users`, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newUser),
+         });
+         const responseData = await response.json();
+         if (!response.ok) {
+            throw responseData.error;
+         }
+         // if (responseData.ok) {
+         console.log('Sign Up User Data: ', responseData)
+         // }
+      } catch (error) {
+         console.error('Error caught!: ', error)
+      }
+   }
+
    return (
       <div className={styles.signUpContainer}>
-         <form className={styles.signUpForm}>
+         <form
+            className={styles.signUpForm}
+            onSubmit={(e) => createUser(e)}
+         >
             <label
                htmlFor='firstName'
                className={styles.signUpLabel}

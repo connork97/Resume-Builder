@@ -72,8 +72,9 @@ const App = () => {
         dispatch(setUser(userData));
       }
     } catch (error) {
-      console.error("Error fetching user, creating Guest profile:");
-      createGuestUser();
+      console.error('Error fetching user.  No user set.', error);
+      // console.error("Error fetching user, creating Guest profile:");
+      // createGuestUser();
     }
   }
 

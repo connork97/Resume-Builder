@@ -71,4 +71,5 @@
    background-color: rgba(0, 123, 255, 0.8);
    border: 1px solid transparent;
    border-radius: 5vh;
+   cursor: pointer;
 }

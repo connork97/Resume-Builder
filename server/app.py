@@ -19,15 +19,26 @@ def users():
         print("Received POST request for /users")
         form_data = request.get_json()
         print("Received form_data: ", form_data)
-
+        email = form_data.get('email') or ''
+        existing_email = User.query.filter_by(email=email).one_or_none()
+        
+        if existing_email:
+            error = {
+                'error': {
+                    'message': f'Email {email} already in use.',
+                    'code': 'EMAIL_IN_USE'
+                }
+            }, 409
+            return make_response(error)
+        
         new_user = User(
             first_name=form_data["firstName"],
             last_name=form_data["lastName"],
-            username=form_data["username"],
             email=form_data["email"],
-            password_hash=form_data["password"],  # Will hash the password later
         )
-
+        
+        new_user.set_password(form_data['password'])
+        
         db.session.add(new_user)
         db.session.commit()
 

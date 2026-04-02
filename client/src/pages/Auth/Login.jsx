@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import { setUser } from '../../store/userSlice';
 
 import styles from './Auth.module.css';
 
 const Login = () => {
    const navigate = useNavigate();
+   const dispatch = useDispatch();
 
    const BASE_URL = 'http://localhost:5555';
 
@@ -40,10 +44,11 @@ const Login = () => {
             throw data.error;
          }
          console.log(`Welcome back`, data)
+         dispatch(setUser(data));
+         navigate('/account');
       } catch (error) {
          console.error('Error: ', error)
       }
-      navigate('/account');
    }
 
    return (

@@ -44,16 +44,16 @@ def users():
         return response
 
 
-@app.route("/users/<int:user_id>", methods=["GET"])
+@app.route("/user/<int:user_id>", methods=['GET', 'PUT'])
 def user(user_id):
     if request.method == "GET":
-        print(f"Received GET request for /users/{user_id}")
+        print(f"Received GET request for /user/{user_id}")
         user = User.query.filter(User.id == user_id).one_or_none()
         if user:
             print(f"SUCCESS. Found user: {user} and setting session[user_id] to {user.id}")
             session['user_id'] = user.id
             user_dict = user.to_dict(
-                condense_relationship_data=True
+                # condense_relationship_data=True
                 # exclude=["createdAt", "updatedAt"]
             )
             response = jsonify(user_dict), 200
@@ -62,6 +62,40 @@ def user(user_id):
         if not user:
             error = jsonify({"error": "User not found"}), 404
             return error
+    
+    if request.method == "PUT":
+        form_data = request.get_json()
+        print(f"Received PUT request for /user/{user_id} with form_data: ", form_data)
+        
+        user = User.query.filter(User.id == user_id).one_or_none()
+        
+        if not user:
+            error = jsonify({"error": "User not found"}), 404
+            return error
+        
+        user.first_name = form_data.get("firstName", user.first_name)
+        user.last_name = form_data.get("lastName", user.last_name)
+        email = (form_data.get("email") or '').strip().lower()
+        if email != user.email:
+            new_email_in_use = User.query.filter(User.email == email, User.id != user_id).one_or_none()
+            if new_email_in_use:
+                error = jsonify({
+                    'error': {
+                        'message': f'Email {email} already in use.',
+                        'code': 'EMAIL_IN_USE'
+                    }
+                }), 409
+                return error
+            user.email = email
+        
+        if form_data.get("password"):
+            user.set_password(form_data["password"])
+        
+        db.session.commit()
+        
+        print(f"SUCCESS. Updated user: {user.to_dict()}")
+        response = jsonify(user.to_dict()), 200
+        return response
 
 @app.route('/checksession', methods=['GET'])
 def check_session():
@@ -160,10 +194,10 @@ def resumes():
         return response
 
 
-@app.route("/resumes/<int:resume_id>", methods=["GET", "DELETE"])
+@app.route("/resume/<int:resume_id>", methods=["GET", "DELETE"])
 def resume(resume_id):
     if request.method == "GET":
-        print(f"Received GET request for /resumes/{resume_id}")
+        print(f"Received GET request for /resume/{resume_id}")
         resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
         if not resume:
             error = jsonify({"error": "Resume not found"}), 404
@@ -174,7 +208,7 @@ def resume(resume_id):
         return response
 
     if request.method == "DELETE":
-        print(f"Received DELETE request for /resumes/{resume_id}")
+        print(f"Received DELETE request for /resume/{resume_id}")
         resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
         
         if not resume:

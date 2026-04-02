@@ -2,18 +2,31 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
+import UserResumeRow from './UserResumeRow.jsx';
+
 import styles from '../Account.module.css';
 
 const UserResumes = () => {
 
    const user = useSelector(state => state.user);
 
+   const renderResumes = () => {
+      if (!user.resumes || user.resumes.length === 0) {
+         return <p>You have not created any resumes yet.</p>;
+      }
+
+      return user.resumes.map(resume => (
+         <UserResumeRow key={resume.id} resume={resume} />
+      ));
+   }
+
    return (
-      <div className={styles.userResumesWrapper}>
+      <>
          <h1>My Resumes</h1>
-         <p>Here you can view and manage all of your resumes.</p>
-         {/* Future implementation: List of user's resumes with options to view, edit, or delete each resume */}
-      </div>
+         <div className={styles.userResumeRowsWrapper}>
+            {renderResumes()}
+         </div>
+      </>
    );
 };
 

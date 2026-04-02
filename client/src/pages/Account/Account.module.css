@@ -1,16 +1,18 @@
 .accountContainer {
+   color: white;
+
    height: 100%;
    width: 100%;
    display: flex;
    flex-direction: row;
+   background-color: rgba(0, 0, 0, 0.7);
 }
 
 .accountOutlineWrapper {
-   color: white;
    padding: 10vh 5vh 0 5vh;
    /* padding-top: 15vh; */
    /* padding-left: 5vh; */
-   background-color: rgba(0, 0, 0, 0.5);
+   background-color: rgba(25, 25, 25, 1);
 }
 
 .accountOutlineRow {
@@ -19,6 +21,60 @@
    margin-bottom: 3vh;
 }
 
-.accountOutlineRowSpan {
-   /* cursor: pointer; */
+.accountContentWrapper {
+   width: 70%;
+   margin: 10vh auto;
+   padding: 5vh;
+   background-color: rgba(25, 25, 25, 1);
+   border: 1px solid transparent;
+   border-radius: 1.5vh;
+}
+
+.userResumeRow {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   padding: 2vh 0;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.userResumeRowsWrapper {
+   display: flex;
+   flex-direction: column;
+   margin-top: 3vh;
+}
+
+.accountSettingsForm {
+   display: flex;
+   flex-direction: column;
+   margin-top: 3vh;
+   gap: 2vh;
+   width: 50%;
+   color: black;
+}
+
+.accountSettingsInput {
+   padding: 1vh;
+   border: 1px solid transparent;
+   border-radius: 5vh;
+}
+
+.accountSettingsInput:focus {
+   outline: none;
+}
+
+.accountTimeStampsSpan {
+   color: white;
+}
+
+.submitAccountSettingsButton {
+   width: 30%;
+   padding: 1vh;
+   border: 1px solid transparent;
+   border-radius: 5vh;
+   background-color: rgba(0, 120, 255, 1);
+   color: white;
+   font-weight: bold;
+   cursor: pointer;
 }

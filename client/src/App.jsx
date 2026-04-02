@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router';
-import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+import { useDispatch } from "react-redux";
 import { setUser } from "./store/userSlice";
+import { BASE_URL } from "./config.js";
 
 import NavbarLayout from "./components/Layout/NavbarLayout";
 import Home from "./pages/Home/Home.jsx";
@@ -11,22 +12,12 @@ import ResumeEditor from './pages/ResumeEditor/ResumeEditor.jsx';
 import SignUp from "./pages/Auth/SignUp.jsx";
 import Login from "./pages/Auth/Login.jsx";
 
-import Toolbar from "./components/Toolbar/Toolbar";
-import Outline from "./components/Outline/Outline";
-import Page from "./components/Page/Page";
-
 import { useDummyData } from "./utils/useDummyData";
-
-import styles from "./App.module.css";
 
 const App = () => {
   const dispatch = useDispatch();
 
-  const BASE_URL = "http://127.0.0.1:5555";
-
-  const user = useSelector((state) => state.user);
-
-  const fetchAPI = async () => {
+  const checkAPI = async () => {
     try {
       const response = await fetch(BASE_URL);
       const data = await response.json();
@@ -36,52 +27,25 @@ const App = () => {
     }
   };
 
-  const createGuestUser = async () => {
-    const guestData = {
-      firstName: 'Guest',
-      lastName: 'User',
-      username: 'guest',
-      email: 'guest@guest.com',
-      password: 'password'
-    }
+  const checkSession = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(guestData),
+      const response = await fetch(`${BASE_URL}/checksession`, {
+        credentials: 'include',
       });
-      const userData = await response.json();
-      if (userData) {
-        console.log('Created Guest User:', userData);
-        dispatch(setUser(userData));
+      const data = await response.json();
+      if (!response.ok) {
+        throw data.error;
       }
+      console.log('Active session data:', data);
+      dispatch(setUser(data));
     } catch (error) {
-      console.error("Error creating guest user:", error);
+      console.error(error);
     }
   };
 
-  const fetchUser = async (userId) => {
-    console.log('Fetching user with ID:', userId);
-    try {
-      const response = await fetch(`${BASE_URL}/users/${userId}`);
-      const userData = await response.json();
-      if (userData) {
-        console.log('Setting Current User:', userData);
-        dispatch(setUser(userData));
-      }
-    } catch (error) {
-      console.error('Error fetching user.  No user set.', error);
-      // console.error("Error fetching user, creating Guest profile:");
-      // createGuestUser();
-    }
-  }
-
-
   useEffect(() => {
-    fetchAPI();
-    fetchUser(user.id);
+    checkAPI();
+    checkSession();
   }, []);
 
   // useDummyData();
@@ -89,6 +53,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+
         {/* Routes with Navbar */}
         <Route element={<NavbarLayout />}>
           <Route path='/' element={<Navigate to='/home' replace />} />
@@ -96,13 +61,10 @@ const App = () => {
           <Route path='/signup' exact='true' element={<SignUp />} />
           <Route path='/login' exact='true' element={<Login />} />
         </Route>
+        
+        {/* Routes without Navbar */}
         <Route path='/demo' element={<DemoEditor />} />
         <Route path='/resume' element={<ResumeEditor />} />
-        {/* <div className={styles.appContainerDiv}> */}
-        {/* <Toolbar /> */}
-        {/* <Outline /> */}
-        {/* <Page /> */}
-        {/* </div> */}
       </Routes>
     </BrowserRouter>
   );

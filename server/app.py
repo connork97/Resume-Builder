@@ -63,6 +63,33 @@ def user(user_id):
         if not user:
             return make_response(jsonify({"error": "User not found"}), 404)
 
+@app.route('/checksession', methods=['GET'])
+def check_session():
+    user_id = session.get('user_id')
+    print(f"Session found for user_id: {user_id}")
+    if not user_id:
+        error = {
+            'error': {
+                'message': 'No active session found.',
+                'code': 'NO_ACTIVE_SESSION'
+            }
+        }, 401
+        return make_response(error)
+    
+    user = db.session.get(User, user_id)
+    
+    if not user:
+        error = {
+            'error': {
+                'message': 'User associated with session not found.',
+                'code': 'USER_NOT_FOUND'
+            }
+        }, 404
+        return jsonify(error)
+    
+    response = jsonify(user.to_dict()), 200
+    return response
+
 @app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
@@ -79,7 +106,7 @@ def login():
                     'code': 'EMAIL_NOT_FOUND'
                 }
             }, 401
-            return make_response(error)
+            return jsonify(error)
             
         if not user.check_password(password):
             error = {
@@ -88,11 +115,13 @@ def login():
                     'code': 'WRONG_PASSWORD'
                 }
             }, 401
-            return make_response(error)
+            return jsonify(error)
         
         session['user_id'] = user.id
         
-        response = make_response(jsonify(user.to_dict()), 200)
+        print(f"User {email} logged in successfully. Session set with user_id: {user.id}")
+        
+        response = jsonify(user.to_dict()), 200
         return response
     
     

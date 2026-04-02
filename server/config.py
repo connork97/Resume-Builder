@@ -15,6 +15,8 @@ app = Flask(__name__)  # Main Flask app
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"  # Local DB file
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Disable extra tracking
 app.config["SECRET_KEY"] = "my-secret-key"
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.json.compact = False  # Pretty Print JSON in dev
 
 # * Database

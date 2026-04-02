@@ -6,11 +6,16 @@ import { setUser } from "./store/userSlice";
 import { BASE_URL } from "./config.js";
 
 import NavbarLayout from "./components/Layout/NavbarLayout";
+
 import Home from "./pages/Home/Home.jsx";
-import DemoEditor from './pages/Demo/DemoEditor.jsx';
-import ResumeEditor from './pages/ResumeEditor/ResumeEditor.jsx';
 import SignUp from "./pages/Auth/SignUp.jsx";
 import Login from "./pages/Auth/Login.jsx";
+import DemoEditor from './pages/Demo/DemoEditor.jsx';
+import ResumeEditor from './pages/ResumeEditor/ResumeEditor.jsx';
+
+import Account from "./pages/Account/Account.jsx";
+import UserResumes from "./pages/Account/accountPages/UserResumes.jsx";
+import AccountSettings from "./pages/Account/accountPages/AccountSettings.jsx";
 
 import { useDummyData } from "./utils/useDummyData";
 
@@ -61,7 +66,12 @@ const App = () => {
           <Route path='/signup' exact='true' element={<SignUp />} />
           <Route path='/login' exact='true' element={<Login />} />
         </Route>
-        
+
+
+        <Route path='/account' element={<Account />}>
+          <Route path='my-resumes' element={<UserResumes />} />
+          <Route path='settings' element={<AccountSettings />} />
+        </Route>
         {/* Routes without Navbar */}
         <Route path='/demo' element={<DemoEditor />} />
         <Route path='/resume' element={<ResumeEditor />} />

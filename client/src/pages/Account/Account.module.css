@@ -1,0 +1,24 @@
+.accountContainer {
+   height: 100%;
+   width: 100%;
+   display: flex;
+   flex-direction: row;
+}
+
+.accountOutlineWrapper {
+   color: white;
+   padding: 10vh 5vh 0 5vh;
+   /* padding-top: 15vh; */
+   /* padding-left: 5vh; */
+   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.accountOutlineRow {
+   display: flex;
+   flex-direction: row;
+   margin-bottom: 3vh;
+}
+
+.accountOutlineRowSpan {
+   /* cursor: pointer; */
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 
 import styles from './Navbar.module.css';
 
@@ -10,8 +10,6 @@ const Navbar = () => {
    const location = useLocation();
 
    const user = useSelector(state => state.user);
-
-   console.log(location.pathname)
 
    return (
       <div className={styles.navbarContainer}>
@@ -23,8 +21,8 @@ const Navbar = () => {
             {location.pathname === '/' || location.pathname === '/home' ? 'ActuallyFreeResume.com' : 'Home'}
          </Link>
          <div className={styles.navbarWrapper}>
-            {location.pathname !== '/login'
-               ?
+            {location.pathname !== '/login' && !user.id
+               &&
                <Link
                   to='/login'
                   exact='true'
@@ -32,9 +30,9 @@ const Navbar = () => {
                >
                   Login
                </Link>
-               : null}
-            {location.pathname !== '/signup'
-               ?
+            }
+            {location.pathname !== '/signup' && !user.id
+               &&
                <Link
                   to='/signup'
                   exact='true'
@@ -42,19 +40,16 @@ const Navbar = () => {
                >
                   Sign Up
                </Link>
-               : null
             }
             {
                user.id
-                  ?
-                  <Link
-                     to='/account'
-                     exact='true'
-                     className={styles.navbarLink}
-                  >
-                     Account
-                  </Link>
-                  : null
+               &&
+               <Link
+                  to='/account'
+                  className={styles.navbarLink}
+               >
+                  Account
+               </Link>
             }
          </div>
       </div>

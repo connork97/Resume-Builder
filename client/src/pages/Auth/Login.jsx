@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import styles from './Auth.module.css';
 
 const Login = () => {
+   const navigate = useNavigate();
 
    const BASE_URL = 'http://localhost:5555';
 
@@ -40,6 +43,7 @@ const Login = () => {
       } catch (error) {
          console.error('Error: ', error)
       }
+      navigate('/account');
    }
 
    return (

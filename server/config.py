@@ -13,14 +13,16 @@ app = Flask(__name__)  # Main Flask app
 
 # * Config
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"  # Local DB file
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False        # Disable extra tracking
-app.config["SECRET_KEY"] = "dev-secret-key"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Disable extra tracking
+app.config["SECRET_KEY"] = "my-secret-key"
 app.json.compact = False  # Pretty Print JSON in dev
 
 # * Database
-metadata = MetaData(naming_convention={
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-})
+metadata = MetaData(
+    naming_convention={
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    }
+)
 db = SQLAlchemy(metadata=metadata)
 db.init_app(app)
 
@@ -28,8 +30,11 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 # * CORS (allow frontend requests)
-CORS(app)
-
+CORS(
+    app,
+    supports_credentials=True,
+    origins=["http://localhost:5173"]
+)
 
 
 # ! Note to self, these are the terminal commands to create initial and followup migrations:

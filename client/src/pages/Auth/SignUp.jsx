@@ -43,7 +43,7 @@ const SignUp = () => {
          console.log('Sign Up User Data: ', responseData)
          // }
       } catch (error) {
-         console.error('Error caught!: ', error)
+         console.error('Error: ', error)
       }
    }
 

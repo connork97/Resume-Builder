@@ -19,7 +19,7 @@ def users():
         print("Received POST request for /users")
         form_data = request.get_json()
         print("Received form_data: ", form_data)
-        email = form_data.get('email') or ''
+        email = (form_data.get('email') or '').strip().lower()
         existing_email = User.query.filter_by(email=email).one_or_none()
         
         if existing_email:
@@ -63,6 +63,40 @@ def user(user_id):
         if not user:
             return make_response(jsonify({"error": "User not found"}), 404)
 
+@app.route('/login', methods=['POST'])
+def login():
+    if request.method == 'POST':
+        form_data = request.get_json() or {}
+        email = (form_data.get('email') or '').strip().lower()
+        password = form_data.get('password') or ''
+        
+        user = User.query.filter_by(email=email).one_or_none()
+        
+        if not user:
+            error = {
+                'error': {
+                    'message': f'Email of {email} not found.',
+                    'code': 'EMAIL_NOT_FOUND'
+                }
+            }, 401
+            return make_response(error)
+            
+        if not user.check_password(password):
+            error = {
+                'error': {
+                    'message': 'Password does not match email.',
+                    'code': 'WRONG_PASSWORD'
+                }
+            }, 401
+            return make_response(error)
+        
+        session['user_id'] = user.id
+        
+        response = make_response(jsonify(user.to_dict()), 200)
+        return response
+    
+    
+    
 
 @app.route("/resumes", methods=["GET", "POST"])
 def resumes():

@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import styles from './Auth.module.css';
 
 const Login = () => {
+
+   const BASE_URL = 'http://localhost:5555';
+
    const [userCredentials, setUserCredentials] = useState({
       email: '',
       password: ''
@@ -18,9 +21,33 @@ const Login = () => {
       }));
    };
 
+   const logUserIn = async (e) => {
+      e.preventDefault();
+      try {
+         const response = await fetch(`${BASE_URL}/login`, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(userCredentials),
+         });
+         const data = await response.json();
+         if (!response.ok) {
+            throw data.error;
+         }
+         console.log(`Welcome back`, data)
+      } catch (error) {
+         console.error('Error: ', error)
+      }
+   }
+
    return (
       <div className={styles.loginContainer}>
-         <form className={styles.loginForm}>
+         <form
+            className={styles.loginForm}
+            onSubmit={(e) => logUserIn(e)}
+         >
             <label
                htmlFor='email'
                className={styles.loginLabel}

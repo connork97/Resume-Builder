@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 
+import { BASE_URL } from '../../config.js';
+
 import ResumeEditor from '../ResumeEditor/ResumeEditor.jsx';
 
 const DemoEditor = () => {
-
-   const BASE_URL = 'http://localhost:5555';
 
    // const fetchDemoResume = async () => {
    //    try {

@@ -7,7 +7,7 @@ const UserResumeRow = ({ resume }) => {
    return (
       <div className={styles.userResumeRow}>
          <h2>{resume.title}</h2>
-         <p>Created on: {new Date(resume.createdAt).toLocaleDateString()}</p>
+         {/* <p>Created on: {new Date(resume.createdAt).toLocaleDateString()}</p> */}
          <div className={styles.userResumeRowButtons}>
             <button>View</button>
             <button>Edit</button>

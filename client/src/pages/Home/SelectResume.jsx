@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import styles from './SelectResume.module.css';
+import { BASE_URL } from '../../config.js';
+
 import UserResumesDropdown from './UserResumesDropdown.jsx';
 import { setUser } from '../../store/userSlice.js';
+import styles from './SelectResume.module.css';
 
 const SelectResume = () => {
-
-   const BASE_URL = "http://localhost:5555";
 
    const dispatch = useDispatch();
 

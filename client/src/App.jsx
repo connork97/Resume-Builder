@@ -74,7 +74,8 @@ const App = () => {
         </Route>
         {/* Routes without Navbar */}
         <Route path='/demo' element={<DemoEditor />} />
-        <Route path='/resume' element={<ResumeEditor />} />
+        {/* <Route path='/editor' exact='false' element={<ResumeEditor />} /> */}
+        <Route path='/editor/*' element={<ResumeEditor />} />
       </Routes>
     </BrowserRouter>
   );

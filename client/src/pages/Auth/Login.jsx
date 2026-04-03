@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../store/userSlice';
+import { BASE_URL } from '../../config.js';
 
 import styles from './Auth.module.css';
 
@@ -11,7 +12,6 @@ const Login = () => {
    const navigate = useNavigate();
    const dispatch = useDispatch();
 
-   const BASE_URL = 'http://localhost:5555';
 
    const [userCredentials, setUserCredentials] = useState({
       email: '',

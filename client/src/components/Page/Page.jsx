@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { updateSection } from "../../store/resumeSlice.js";
 
+import { BASE_URL } from "../../config.js";
+
 import Section from "../Section/Section.jsx";
 import Column from "./Column.jsx";
 import SelectResume from "../../pages/Home/SelectResume.jsx";
@@ -11,8 +13,6 @@ import SelectResume from "../../pages/Home/SelectResume.jsx";
 import styles from "./Page.module.css";
 
 const Page = ({ resumeId }) => {
-
-   const BASE_URL = 'http://localhost:5555';
 
    const user = useSelector((state) => state.user);
    const userResumeIds = user.resumes || [];

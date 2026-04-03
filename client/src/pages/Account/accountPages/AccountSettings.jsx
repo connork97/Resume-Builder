@@ -46,7 +46,7 @@ const AccountSettings = () => {
       e.preventDefault();
 
       try {
-         const response = await fetch(`${BASE_URL}/user/${user.id}`, {
+         const response = await fetch(`${BASE_URL}/users/${user.id}`, {
             method: 'PUT',
             headers: {
                'Content-Type': 'application/json',
@@ -69,6 +69,19 @@ const AccountSettings = () => {
          console.error(error);
          alert(error.message || 'Error updating account settings. Please try again.');
       }
+   };
+
+   const formattedDate = (dateString) => {
+      if (!dateString) return '';
+      const options = {
+         year: 'numeric',
+         month: 'long',
+         day: 'numeric',
+         hour: 'numeric',
+         minute: 'numeric',
+         second: 'numeric',
+      };
+      return new Date(dateString).toLocaleDateString(undefined, options);
    };
 
    return (
@@ -104,13 +117,13 @@ const AccountSettings = () => {
                onChange={changeUserFormData}
             />
             <span className={styles.accountTimeStampsSpan}>
-               Your account was created on {userFormData.createdAt}
+               Your account was created on {formattedDate(userFormData.createdAt)}
             </span>
             <span className={styles.accountTimeStampsSpan}>
-               Your account was last updated on {userFormData.updatedAt}.
+               Your account was last updated on {formattedDate(userFormData.updatedAt)}.
             </span>
             <button
-               className={styles.submitAccountSettingsButton}
+               className={styles.accountSubmitButton}
                type='submit'
             >
                Update Account

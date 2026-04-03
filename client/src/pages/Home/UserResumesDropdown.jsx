@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { setUser } from "../../store/userSlice.js";
 
+import { BASE_URL } from "../../config.js";
+
 import styles from './UserResumesDropdown.module.css';
 
 const UserResumesDropdown = () => {
-
-   const BASE_URL = "http://localhost:5555";
 
    const dispatch = useDispatch();
 

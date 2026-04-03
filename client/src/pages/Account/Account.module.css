@@ -68,8 +68,10 @@
    color: white;
 }
 
-.submitAccountSettingsButton {
+.accountSubmitButton {
+   min-width: 15rem;
    width: 30%;
+   margin-top: 3vh;
    padding: 1vh;
    border: 1px solid transparent;
    border-radius: 5vh;

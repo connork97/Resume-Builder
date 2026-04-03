@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 
+import { BASE_URL } from '../../config.js';
+
 import styles from './Auth.module.css';
 
 const SignUp = () => {
-
-   // const BASE_URL = 'http://localhost:5555';
-   const BASE_URL = "http://localhost:5555";
-
 
    const [newUser, setNewUser] = useState({
       firstName: '',

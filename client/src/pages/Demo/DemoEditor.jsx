@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { BASE_URL } from '../../config.js';
 
-import ResumeEditor from '../ResumeEditor/ResumeEditor.jsx';
+import ResumeEditor from '../Editor/ResumeEditor.jsx';
 
 const DemoEditor = () => {
 

@@ -6,9 +6,11 @@ from models import User, Resume, Column, Section, Subsection, Field
 
 from routes.user_routes import user_bp
 from routes.auth_routes import auth_bp
+from routes.resume_routes import resume_bp
 
 app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(resume_bp)
 
 @app.route("/")
 def home():

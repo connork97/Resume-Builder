@@ -11,7 +11,7 @@ import Home from "./pages/Home/Home.jsx";
 import SignUp from "./pages/Auth/SignUp.jsx";
 import Login from "./pages/Auth/Login.jsx";
 import DemoEditor from './pages/Demo/DemoEditor.jsx';
-import ResumeEditor from './pages/ResumeEditor/ResumeEditor.jsx';
+import ResumeEditor from './pages/Editor/ResumeEditor.jsx';
 
 import Account from "./pages/Account/Account.jsx";
 import UserResumes from "./pages/Account/accountPages/UserResumes.jsx";

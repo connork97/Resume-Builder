@@ -102,8 +102,8 @@ class Column(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     resume_id = db.Column(db.Integer, db.ForeignKey("resumes.id"), nullable=False)
-    width = db.Column(db.String, nullable=True)
     position = db.Column(db.Integer, nullable=False, default=0)
+    width = db.Column(db.String, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
 

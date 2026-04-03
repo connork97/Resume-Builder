@@ -28,10 +28,12 @@ def users():
         )
         
         new_user.set_password(form_data['password'])
+        session['user_id'] = new_user.id
         db.session.add(new_user)
         db.session.commit()
 
         print("SUCCESS. Created new user: ", new_user.to_dict())
+        print(f"Setting session['user_id'] to {new_user.id}")
         response = jsonify(new_user.to_dict()), 201
         return response
 
@@ -42,8 +44,8 @@ def users_by_id(user_id):
         print(f"Received GET request for /users/{user_id}")
         user = User.query.filter(User.id == user_id).one_or_none()
         if user:
-            print(f"SUCCESS. Found user: {user} and setting session[user_id] to {user.id}")
-            session['user_id'] = user.id
+            print(f"SUCCESS. Found user: {user} with id {user.id}")
+            # session['user_id'] = user.id
             user_dict = user.to_dict(
                 # condense_relationship_data=True
                 # exclude=["createdAt", "updatedAt"]

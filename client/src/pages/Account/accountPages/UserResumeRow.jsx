@@ -1,15 +1,25 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { setResumeId } from '../../../store/resumeSlice';
 
 import { BASE_URL } from '../../../config';
 
 import styles from '../Account.module.css';
 
 const UserResumeRow = ({ resume, fetchUserResumes }) => {
-   console.log('RESUME DATA', resume)
+
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
 
    const user = useSelector(state => state.user)
+
+   const handleEditResume = () => {
+      dispatch(setResumeId(resume.id));
+      navigate(`/editor/${resume.id}`);
+   }
 
    const handleDeleteResume = async () => {
       try {
@@ -26,7 +36,6 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
       catch (error) {
          alert(error);
       }
-
    };
 
    return (
@@ -34,7 +43,12 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
          <h2>{resume.title}</h2>
          {/* <p>Created on: {new Date(resume.createdAt).toLocaleDateString()}</p> */}
          <div className={styles.userResumeRowButtons}>
-            <button className={styles.editResumeButton}>Edit</button>
+            <button
+               className={styles.editResumeButton}
+               onClick={handleEditResume}
+            >
+               Edit
+            </button>
             <button
                className={styles.deleteResumeButton}
                onClick={handleDeleteResume}

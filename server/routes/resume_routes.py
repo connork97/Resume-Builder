@@ -95,7 +95,7 @@ def create_resume():
         return jsonify({"error": "Failed to create resume"}), 400
 
 
-@resume_bp.route("/<int:resume_id>", methods=["GET", "DELETE"])
+@resume_bp.route("/<int:resume_id>", methods=["GET"])
 def resume(resume_id):
     if request.method == "GET":
         print(f"Received GET request for /resumes/{resume_id}")
@@ -108,16 +108,30 @@ def resume(resume_id):
         response = jsonify(resume.to_dict()), 200
         return response
 
-    if request.method == "DELETE":
-        print(f"Received DELETE request for /resumes/{resume_id}")
-        resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
+    # if request.method == "DELETE":
+    #     print(f"Received DELETE request for /resumes/{resume_id}")
+    #     resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
 
-        if not resume:
-            response = jsonify({"error": "Resume not found"}), 404
-        elif resume:
-            db.session.delete(resume)
-            db.session.commit()
-            print(f"SUCCESS. Deleted resume: {resume.to_dict()}")
-            response = jsonify({"message": "Resume deleted successfully"}), 200
+    #     if not resume:
+    #         response = jsonify({"error": "Resume not found"}), 404
+    #     elif resume:
+    #         db.session.delete(resume)
+    #         db.session.commit()
+    #         print(f"SUCCESS. Deleted resume: {resume.to_dict()}")
+    #         response = jsonify({"message": "Resume deleted successfully"}), 200
 
-        return response
+    #     return response
+@resume_bp.route('/<int:resume_id>', methods=['DELETE'])
+def delete_resume(resume_id):
+    print(f"Received DELETE request for /resumes/{resume_id}")
+    resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
+
+    if not resume:
+        response = jsonify({"error": "Resume not found"}), 404
+    elif resume:
+        db.session.delete(resume)
+        db.session.commit()
+        print(f"SUCCESS. Deleted resume of id: {resume_id}")
+        response = jsonify({"code": "SUCCESSFUL DELETION", "message": f"Resume of id {resume_id} deleted successfully"}), 200
+
+    return response

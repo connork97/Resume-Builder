@@ -1,6 +1,5 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
-
-
+import { autoBatchEnhancer, createSlice, nanoid } from "@reduxjs/toolkit";
+import { current } from "immer";
 
 const addToState = (state, type, data, parentType = null) => {
   if (!state[type + 's'].byId[data.id]) state[type + 's'].byId[data.id] = data;
@@ -125,7 +124,6 @@ const createDefaultField = (state, type = 'default', subsectionId) => {
 
 const firstColumnId = nanoid();
 const initialState = {
-  id: null,
   columns: {
     byId: {
       [firstColumnId]: {
@@ -174,20 +172,9 @@ const initialState = {
 };
 
 const resumeSlice = createSlice({
-  name: 'resume',
+  name: "resume",
   initialState,
   reducers: {
-    setResumeId: (state, action) => {
-      console.log(action.payload)
-      const id = action.payload;
-      console.log('setting resume id to: ', id)
-      state.id = id;
-    },
-
-    setResume: (state, action) => {
-      const { data } = action.payload;
-      
-    },
 
     // * ------------ V
     // * ADD TO STATE V
@@ -406,6 +393,14 @@ const resumeSlice = createSlice({
     // * REORDERING V
     // * ---------- V
 
+    // reorder(state, childType, action, parent) {
+    //   const { childId, fromIndex, toIndex } = action.payload;
+    //   const childObj = state[childType + 's'].byId[childId];
+    //   const itemsArr = parent[childType + 'Ids'];
+    //   const [moved] = itemsArr.splice(fromIndex, 1);
+    //   itemsArr.splice(toIndex, 0, moved);
+    // },
+
     reorderSections(state, action) {
       const { sectionId, fromIndex, toIndex } = action.payload;
 
@@ -456,9 +451,6 @@ const resumeSlice = createSlice({
 });
 
 export const {
-
-  setResumeId,
-
   setActiveSectionId,
   setActiveEditorId,
   setActiveEditorSelection,

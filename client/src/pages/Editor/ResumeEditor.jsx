@@ -34,7 +34,9 @@ const ResumeEditor = ({ resumeId }) => {
          <Toolbar />
          {/* <Outline /> */}
          <Page resumeId={resumeId} />
-         {showNewResumeModal && <NewResumeModal onClose={() => setShowNewResumeModal(false)} />} {/* Placeholder for modal state management */}
+         {showNewResumeModal &&
+            <NewResumeModal onClose={() => setShowNewResumeModal(false)} />
+         } {/* Placeholder for modal state management */}
       </div>
    )
 };

@@ -12,10 +12,13 @@ import SelectResume from "../../pages/Home/SelectResume.jsx";
 
 import styles from "./Page.module.css";
 
-const Page = ({ resumeId }) => {
+const Page = () => {
 
    const user = useSelector((state) => state.user);
    const userResumeIds = user.resumes || [];
+
+   const resume = useSelector(state => state.resume);
+   const resumeId = resume.id;
 
    const [resumeToEdit, setResumeToEdit] = useState({});
 

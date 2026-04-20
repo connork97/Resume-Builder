@@ -80,3 +80,20 @@
    font-weight: bold;
    cursor: pointer;
 }
+
+.editResumeButton, .deleteResumeButton {
+   color: rgba(255, 255, 255, 1);
+   margin-left: 2vh;
+   padding: 1vh 2vh;
+   border: 1px solid transparent;
+   border-radius: 5vh;
+   cursor: pointer;
+}
+
+.editResumeButton {
+   background-color: rgba(0, 120, 255, 1);
+}
+
+.deleteResumeButton {
+   background-color: rgba(255, 55, 55, 1);
+}

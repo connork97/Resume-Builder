@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 import { BASE_URL } from '../../config';
+
+import { setResumeId } from '../../store/resumeSlice';
 
 import styles from './NewResumeModal.module.css';
 
 const NewResumeModal = ({ onClose }) => {
 
    const dispatch = useDispatch();
+   const navigate = useNavigate();
    const user = useSelector((state) => state.user);
 
    const [resumeInfo, setResumeInfo] = useState({
@@ -49,7 +54,6 @@ const NewResumeModal = ({ onClose }) => {
       if (confirm('Are you sure you want to create a new resume?')) {
          console.log('Creating resume with info:', resumeInfo);
          try {
-
             const response = await fetch(`${BASE_URL}/resumes`, {
                method: 'POST',
                headers: {
@@ -63,8 +67,10 @@ const NewResumeModal = ({ onClose }) => {
                throw new Error(data?.error || 'Failed to create resume');
             }
             console.log('Resume created successfully:', data);
-            // dispatch(addResume(data));
-            // onClose(); // Close the modal after creating the resume
+            dispatch(setResumeId(data.id));
+            onClose();
+            navigate(`/editor/${data.id}`);
+
          } catch (error) {
             console.error('Error creating resume:', error);
             alert('An error occurred while creating the resume. Please try again.');

@@ -29,7 +29,7 @@ def check_session():
         return error
     
     print(f"SUCCESS. Active session found for user: {user.email} (ID: {user.id})")
-    response = jsonify(user.to_dict()), 200
+    response = jsonify(user.to_dict(exclude=['resumes'])), 200
     return response
 
 @auth_bp.route('/login', methods=['POST'])

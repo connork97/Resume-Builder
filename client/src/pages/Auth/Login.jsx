@@ -48,6 +48,7 @@ const Login = () => {
          navigate('/account');
       } catch (error) {
          console.error('Error: ', error)
+         window.alert(error.code + '\n' + error.message)
       }
    }
 

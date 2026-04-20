@@ -1,19 +1,41 @@
-import React from 'react';
-
+import React, { useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+import { BASE_URL } from '../../../config.js';
 
 import UserResumeRow from './UserResumeRow.jsx';
 
 import styles from '../Account.module.css';
 
 const UserResumes = () => {
+   const user = useSelector(state => state.user);
    const navigate = useNavigate();
 
-   const user = useSelector(state => state.user);
+   const [userResumes, setUserResumes] = useState([]);
+
+   const fetchUserResumes = async (userId) => {
+      try {
+         const response = await fetch(`${BASE_URL}/users/${userId}`);
+         const data = await response.json();
+         if (!response.ok) {
+            throw new Error(data?.error || 'Unknown error fetching user data.')
+         }
+         setUserResumes(data.resumes);
+      } catch (error) {
+         alert(error);
+      }
+   }
+
+   useEffect(() => {
+      if (!user.id) return;
+      console.log(user.id)
+      fetchUserResumes(user.id);
+   }, [user.id])
+
 
    const renderResumes = () => {
-      if (!user.resumes || user.resumes.length === 0) {
+      if (!userResumes || userResumes.length === 0) {
          return (
             <>
                <p>You have not created any resumes yet.</p>
@@ -21,8 +43,8 @@ const UserResumes = () => {
          );
       }
       
-      return user.resumes.map(resume => (
-         <UserResumeRow key={resume.id} resume={resume} />
+      return userResumes.map(resume => (
+         <UserResumeRow key={resume.id} resume={resume} fetchUserResumes={fetchUserResumes} />
       ));
    }
    

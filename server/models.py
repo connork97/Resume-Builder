@@ -60,7 +60,7 @@ class User(db.Model):
         return user_dict
         
     def __repr__(self):
-        return f"<User {self.id}: {self.username}>"
+        return f"<User {self.id}>"
 
 class Resume(db.Model):
     __tablename__ = "resumes"

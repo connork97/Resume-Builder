@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setUser } from '../../store/userSlice';
+
 import { BASE_URL } from '../../config.js';
 
 import styles from './Auth.module.css';
 
 const SignUp = () => {
+
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
 
    const [newUser, setNewUser] = useState({
       firstName: '',
@@ -33,15 +40,15 @@ const SignUp = () => {
             },
             body: JSON.stringify(newUser),
          });
-         const responseData = await response.json();
+         const data = await response.json();
          if (!response.ok) {
-            throw responseData.error;
+            throw data.error;
          }
-         // if (responseData.ok) {
-         console.log('Sign Up User Data: ', responseData)
-         // }
+         dispatch(setUser(data));
+         navigate('/account');
       } catch (error) {
-         console.error('Error: ', error)
+         console.error('Error: ', error);
+         window.alert(error.code + '\n' + error.message);
       }
    }
 

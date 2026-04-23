@@ -7,6 +7,8 @@ import { setResumeId } from '../../../store/resumeSlice';
 
 import { BASE_URL } from '../../../config';
 
+import normalizeResumeFromApi from '../../../utils/normalizeResumeFromApi';
+
 import styles from '../Account.module.css';
 
 const UserResumeRow = ({ resume, fetchUserResumes }) => {

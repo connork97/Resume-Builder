@@ -1,140 +1,17 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 
-
-
-const addToState = (state, type, data, parentType = null) => {
-  if (!state[type + 's'].byId[data.id]) state[type + 's'].byId[data.id] = data;
-  if (!state[type + 's'].allIds.includes(data.id)) state[type + 's'].allIds.push(data.id);
-  if (parentType) {
-    const parentId = data[`${parentType}Id`];
-    state[parentType + 's'].byId[parentId][type + 'Ids'].push(data.id);
-  }
-}
-
-// * ---------------- V
-// * DEFAULT CREATORS V
-// * ---------------- V
-
-const createDefaultColumn = (state, width = null) => {
-  const column = {
-    id: nanoid(),
-    width: width,
-    sectionIds: [],
-  }
-
-  addToState(state, 'column', column);
-  return column;
-};
-
-// Default Data for Brand New Section
-const createDefaultSection = (state, type = 'defaultSection', columnId = null) => {
-  console.log('Creating section of type: ', type)
-
-  const sectionHeadingDict = {
-    header: "Header",
-    contact: "Contact",
-    skills: "Skills",
-    workHistory: "Work History",
-    education: "Education",
-    summary: "Summary",
-    defaultSection: "Default Section"
-  };
-
-  const section = {
-    id: nanoid(),
-    columnId: columnId ?? state.columns.allIds[0],
-    subsectionIds: [],
-    label: sectionHeadingDict[type],
-    type: type,
-    // layout: {
-    //   columnIndex: columnIndex,
-    // },
-    value: [
-      {
-        type: "heading",
-        children: [
-          {
-            text: sectionHeadingDict[type],
-          }
-        ]
-      }
-    ],
-    styling: {},
-  };
-
-  addToState(state, 'section', section, 'column');
-  return section;
-};
-
-// Default Subsection Fields (for Initial AND Additional Subsections)
-const createDefaultSubsection = (state, type = 'default', sectionId) => {
-  console.log('Creating subsection of type: ', type)
-
-  const subsection = {
-    id: nanoid(),
-    sectionId: sectionId,
-    fieldIds: [],
-    label: type,
-    type: type,
-    styling: {},
-  }
-
-  addToState(state, 'subsection', subsection, 'section');
-  return subsection;
-};
-
-// Helper function to create standardized fields regardless of section type
-const createDefaultField = (state, type = 'default', subsectionId) => {
-
-  const defaultTypesDict = {
-    header: ["Name", "Title"],
-    workHistory: ["Job Title", "Company", "Location", "Start/End Dates", "Description"],
-    education: ["School", "Degree", "Field of Study", "Location", "Start/End Dates", "Description"],
-    skills: ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"],
-    contact: ["Email", "Phone", "Location", "Website", "LinkedIn"],
-    summary: ["Summary"],
-    default: ["Field"]
-  };
-
-  const fields = defaultTypesDict[type]?.map((field) => ({
-    id: nanoid(),
-    subsectionId: subsectionId,
-    label: field,
-    value: [
-      {
-        type: "paragraph",
-        label: field,
-        children: [
-          {
-            text: "",
-          }
-        ]
-      }
-    ],
-    styling: {},
-  }));
-
-  fields?.forEach((field) => addToState(state, 'field', field, 'subsection'));
-
-  return fields;
-};
-
 // * ------------- V
 // * INITIAL STATE V
 // * ------------- V
 
-const firstColumnId = nanoid();
 const initialState = {
   id: null,
+  title: '',
+  userId: null,
+
   columns: {
-    byId: {
-      [firstColumnId]: {
-        id: firstColumnId,
-        width: null,
-        sectionIds: []
-      },
-    },
-    allIds: [firstColumnId]
+    byId: {},
+    allIds: []
   },
   sections: {
     byId: {},
@@ -177,6 +54,24 @@ const resumeSlice = createSlice({
   name: 'resume',
   initialState,
   reducers: {
+    loadResume(state, action) {
+      return {
+        ...initialState,
+        ...action.payload,
+        activeSectionId: null,
+        activeEditorId: null,
+        activeEditorSelection: null,
+      };
+    },
+    setResume: (state, action) => {
+      return {
+        ...initialState,
+        ...action.payload,
+        activeSectionId: null,
+        activeEditorId: null,
+        activeEditorSelection: null,
+      };
+    },
     setResumeId: (state, action) => {
       console.log(action.payload)
       const id = action.payload;
@@ -184,10 +79,6 @@ const resumeSlice = createSlice({
       state.id = id;
     },
 
-    setResume: (state, action) => {
-      const { data } = action.payload;
-      
-    },
 
     // * ------------ V
     // * ADD TO STATE V
@@ -458,6 +349,7 @@ const resumeSlice = createSlice({
 export const {
 
   setResumeId,
+  setResume,
 
   setActiveSectionId,
   setActiveEditorId,

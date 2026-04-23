@@ -1,5 +1,6 @@
 from models import Column, Field, Section, Subsection, db, Resume
 from copy import deepcopy
+
 DEFAULT_RESUME_STYLING = {
     "display": "flex",
     "fontSize": "12px",
@@ -19,6 +20,16 @@ DEFAULT_RESUME_LAYOUT = {
         "horizontal": "1rem",
         "vertical": "0.5rem",
     },
+}
+
+DEFAULT_SECTION_HEADERS = {
+    "header": 'Header',
+    "workHistory": 'Work History',
+    'education': 'Education',
+    'skills': 'Skills',
+    'contact': 'Contact',
+    'summary': 'Summary',
+    'default': 'New Section'
 }
 
 DEFAULT_FIELDS_DICT = {
@@ -54,6 +65,14 @@ def build_empty_slate_value(field_label):
         }
     ]
 
+def build_section_heading_slate_value(section_type):
+    return [
+        {
+            'type': 'heading',
+            'label': section_type,
+            'children': [{'text': DEFAULT_SECTION_HEADERS[section_type]}]
+        }
+    ]
 
 def build_resume_with_defaults(title, user_id, sections_data):
     new_resume = Resume(
@@ -80,6 +99,7 @@ def build_resume_with_defaults(title, user_id, sections_data):
             label=section_type,
             type=section_type,
             position=section_position,
+            value=build_section_heading_slate_value(section_type)
         )
         db.session.add(new_section)
         db.session.flush()

@@ -2,10 +2,11 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
-import { setAlignment } from "../../helpers/blocks.js";
+import { updateResumeStyling, updateSection } from '../../../store/resumeSlice.js';
 
-import ToolbarButton from "../Toolbar/shared/ToolbarButton.jsx";
+import { setAlignment } from "../../../helpers/blocks.js";
+
+import ToolbarButton from '../Toolbar/shared/ToolbarButton.jsx';
 
 const TextAlign = ({ editor, styling }) => {
 

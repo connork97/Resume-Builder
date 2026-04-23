@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { toggleList } from '../../helpers/blocks';
+import { toggleList } from '../../../helpers/blocks';
 
 import ToolbarButton from '../Toolbar/shared/ToolbarButton';
 

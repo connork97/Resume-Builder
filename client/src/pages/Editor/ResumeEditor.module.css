@@ -1,14 +1,26 @@
-.toolbarLinksWrapper {
+.homeButton,
+.saveResumeButton {
    position: fixed;
    display: flex;
-   height: 6vh;
-   width: 100%;
-   padding: 0 2.5vh;
-   justify-content: space-between;
+   width: auto;
    align-items: center;
-   top: 0;
-   z-index: 101;
+   z-index: 102;
    color: rgba(255, 255, 255, 1);
    font-size: 2.5vh;
    font-weight: 350;
+   padding: 0 2.5vh;
+}
+
+.homeButton {
+   height: 6vh;
+   top: 0;
+}
+
+.saveResumeButton {
+  height: 4vh;
+  top: 1vh;
+  right: 2vh;
+  border: 1px solid transparent;
+  border-radius: 5vh;
+  background-color: rgba(0, 120, 255, 1);
 }

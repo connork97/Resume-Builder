@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Node } from 'slate';
-import { setActiveEditorId, setActiveSectionId } from '../../store/resumeSlice.js';
+import { setActiveEditorId, setActiveSectionId } from '../../../store/resumeSlice.js';
 
 import ToolbarButton from "./shared/ToolbarButton.jsx";
 

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { addSection, addSubsection } from "../../store/resumeSlice";
+import { addSection, addSubsection } from '../../../store/resumeSlice';
 
-import { useDummyData } from "../../utils/useDummyData";
 
 import styles from './Toolbar.module.css';
 

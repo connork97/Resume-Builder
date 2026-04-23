@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addColumn, deleteColumn } from '../../store/resumeSlice.js';
+import { addColumn, deleteColumn } from '../../../store/resumeSlice.js';
 
 import ToolbarButton from "./shared/ToolbarButton.jsx";
 import ToolbarInput from "./shared/ToolbarInput.jsx";

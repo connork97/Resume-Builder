@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getActiveMark, setHighlightColor } from "../../helpers/marks.js";
+import { getActiveMark, setHighlightColor } from "../../../helpers/marks.js";
 
 import ToolbarDropdown from "../Toolbar/shared/ToolbarDropdown.jsx";
 

@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "./Toolbar.module.css";
-import { editorRegistry } from '../../helpers/editorRegistry.js';
+
 import { useSelector } from "react-redux";
 
+import { editorRegistry } from "../../../helpers/editorRegistry.js";
 
 import RichTextToolbar from "./RichTextToolbar.jsx";
 import AddSection from "./AddSection.jsx";

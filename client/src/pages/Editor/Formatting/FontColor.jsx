@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getActiveMark, setFontColor } from "../../helpers/marks.js";
-import { updateResumeStyling, updateSection } from "../../store/resumeSlice.js";
+import { getActiveMark, setFontColor } from "../../../helpers/marks.js";
+import { updateResumeStyling, updateSection } from "../../../store/resumeSlice.js";
 
 import ToolbarDropdown from "../Toolbar/shared/ToolbarDropdown.jsx";
 

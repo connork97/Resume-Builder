@@ -9,7 +9,7 @@ import { BASE_URL } from '../../config.js';
 
 import { setResume } from '../../store/resumeSlice.js';
 
-import Toolbar from '../../components/Toolbar/Toolbar.jsx';
+import Toolbar from './Toolbar/Toolbar.jsx';
 import Outline from '../../components/Outline/Outline.jsx';
 import Page from './Page/Page.jsx';
 import NewResumeModal from './NewResumeModal.jsx';
@@ -21,7 +21,7 @@ const ResumeEditor = () => {
    const location = useLocation();
    const dispatch = useDispatch();
    const { resumeId } = useParams();
-   
+
    const resume = useSelector(state => state.resume)
 
    const [showNewResumeModal, setShowNewResumeModal] = useState(false);
@@ -54,16 +54,20 @@ const ResumeEditor = () => {
 
    return (
       <div className={styles.resumeEditorContainer}>
-         <div className={styles.toolbarLinksWrapper}>
-            <Link to='/home' className={styles.homeButton}>Home</Link>
-            {/* <Link to='/home' className={styles.homeButton}>Account V</Link> */}
-         </div>
+         {/* <div className={styles.toolbarLinksWrapper}> */}
+         <Link to='/home' className={styles.homeButton}>Home</Link>
+         <button
+            className={styles.saveResumeButton}
+         >
+            Save Resume
+         </button>
+         {/* </div> */}
          <Toolbar />
          {/* <Outline /> */}
          <Page />
          {showNewResumeModal &&
             <NewResumeModal onClose={() => setShowNewResumeModal(false)} />
-         } {/* Placeholder for modal state management */}
+         }
       </div>
    )
 };

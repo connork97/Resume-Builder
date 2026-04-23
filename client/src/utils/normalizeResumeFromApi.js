@@ -2,7 +2,7 @@
 // * API TO FRONT END NORMALIZATION V
 // * ------------------------------ V
 
-import BackgroundColor from "../components/Formatting/BackgroundColor";
+import BackgroundColor from "../pages/Editor/Formatting/BackgroundColor";
 
 const normalizeResumeFromApi = (apiResume) => {
   console.log('API RESUME', apiResume)

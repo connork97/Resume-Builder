@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateResumeStyling, updateSection } from '../../store/resumeSlice.js';
-import { getActiveMark, setLineHeight } from "../../helpers/marks.js";
+import { updateResumeStyling, updateSection } from '../../../store/resumeSlice.js';
+import { getActiveMark, setLineHeight } from "../../../helpers/marks.js";
 
 import styles from '../Toolbar/RichTextToolbar.module.css';
 

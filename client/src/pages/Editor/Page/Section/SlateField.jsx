@@ -2,14 +2,14 @@ import React, {Fragment, useEffect, useMemo, useCallback } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, Editor, Transforms } from "slate";
 import { useDispatch } from "react-redux";
-import { updateField, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
+import { updateField, setActiveEditorId, setActiveEditorSelection } from "../../../../store/resumeSlice.js";
 
 import renderLeaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
-import { addListItem, indentList, outdentList } from "../../helpers/listBehavior.js";
+import { addListItem, indentList, outdentList } from "../../../../helpers/listBehavior.js";
 
-import { editorRegistry } from "../../helpers/editorRegistry.js";
+import { editorRegistry } from "../../../../helpers/editorRegistry.js";
 import { nanoid } from "@reduxjs/toolkit";
 
 const SlateField = ({ field, sectionId, subsectionId }) => {

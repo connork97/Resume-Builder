@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
+import { setActiveEditorId, setActiveEditorSelection, setActiveSectionId } from "../../../../store/resumeSlice.js";
+// import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection } from "../../../../../resumeSlice.js";
 
 import SlateHeading from "./SlateHeading.jsx";
 import styles from './Section.module.css';

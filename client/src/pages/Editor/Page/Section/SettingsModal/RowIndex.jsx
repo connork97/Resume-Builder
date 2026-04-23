@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateColumn } from '../../../store/resumeSlice.js';
+import { updateColumn } from '../../../../../store/resumeSlice.js';
+import ToolbarButton from '../../../../../components/Toolbar/shared/ToolbarButton.jsx';
 
-import ToolbarButton from "../../Toolbar/shared/ToolbarButton.jsx";
-
-import styles from '../../Toolbar/RichTextToolbar.module.css';
+import styles from '../../../../../components/Toolbar/RichTextToolbar.module.css';
 import SettingsModalInput from './SettingsModalInput.jsx';
 
 const RowIndex = ({ section, }) => {

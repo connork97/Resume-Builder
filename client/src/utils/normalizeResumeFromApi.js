@@ -39,23 +39,29 @@ const normalizeResumeFromApi = (apiResume) => {
     activeEditorSelection: null,
   };
 
-  const apiColumns = apiResume.columns;
+  const sortedColumns = [...(apiResume.columns ?? [])].sort(
+    (a, b) => a.position - b.position
+  );
 
-  apiColumns.forEach((column) => {
-    const apiSections = column.sections;
+  sortedColumns.forEach((column) => {
+    const sortedSections = [...(column.sections ?? [])].sort(
+      (a, b) => a.position - b.position
+    );
 
     normalizedResume.columns.byId[column.id] = {
       id: column.id,
       resumeId: column.resumeId,
       width: column.width ?? '100%',
       position: column.position ?? 0,
-      sectionIds: apiSections.map((section) => section.id)
+      sectionIds: sortedSections.map((section) => section.id),
     };
 
     normalizedResume.columns.allIds.push(column.id);
 
-    apiSections.forEach((section) => {
-      const apiSubsections = section.subsections;
+    sortedSections.forEach((section) => {
+      const sortedSubsections = [...(section.subsections ?? [])].sort(
+        (a, b) => a.position - b.position
+      );
 
       normalizedResume.sections.byId[section.id] = {
         id: section.id,
@@ -65,13 +71,15 @@ const normalizeResumeFromApi = (apiResume) => {
         position: section.position ?? 0,
         value: section.value ?? [],
         styling: section.styling ?? {},
-        subsectionIds: apiSubsections.map((subsection) => subsection.id)
-      }
+        subsectionIds: sortedSubsections.map((subsection) => subsection.id),
+      };
 
       normalizedResume.sections.allIds.push(section.id);
 
-      apiSubsections.forEach((subsection) => {
-        const apiFields = subsection.fields;
+      sortedSubsections.forEach((subsection) => {
+        const sortedFields = [...(subsection.fields ?? [])].sort(
+          (a, b) => a.position - b.position
+        );
 
         normalizedResume.subsections.byId[subsection.id] = {
           id: subsection.id,
@@ -80,12 +88,12 @@ const normalizeResumeFromApi = (apiResume) => {
           type: subsection.type ?? 'default',
           position: subsection.position ?? 0,
           styling: subsection.styling ?? {},
-          fieldIds: apiFields.map((field) => field.id),
+          fieldIds: sortedFields.map((field) => field.id),
         };
 
         normalizedResume.subsections.allIds.push(subsection.id);
 
-        apiFields.forEach((field) => {
+        sortedFields.forEach((field) => {
           normalizedResume.fields.byId[field.id] = {
             id: field.id,
             subsectionId: field.subsectionId,
@@ -96,33 +104,28 @@ const normalizeResumeFromApi = (apiResume) => {
           };
 
           normalizedResume.fields.allIds.push(field.id);
-        })
+        });
       });
     });
   });
-  // const sortedColumns = [...(apiResume.columns ?? [])].sort(
-  //   (a, b) => a.position - b.position
-  // );
+  
+  // const apiColumns = apiResume.columns;
 
-  // sortedColumns.forEach((column) => {
-  //   const sortedSections = [...(column.sections ?? [])].sort(
-  //     (a, b) => a.position - b.position
-  //   );
+  // apiColumns.forEach((column) => {
+  //   const apiSections = column.sections;
 
   //   normalizedResume.columns.byId[column.id] = {
   //     id: column.id,
   //     resumeId: column.resumeId,
   //     width: column.width ?? '100%',
   //     position: column.position ?? 0,
-  //     sectionIds: sortedSections.map((section) => section.id),
+  //     sectionIds: apiSections.map((section) => section.id)
   //   };
 
   //   normalizedResume.columns.allIds.push(column.id);
 
-  //   sortedSections.forEach((section) => {
-  //     const sortedSubsections = [...(section.subsections ?? [])].sort(
-  //       (a, b) => a.position - b.position
-  //     );
+  //   apiSections.forEach((section) => {
+  //     const apiSubsections = section.subsections;
 
   //     normalizedResume.sections.byId[section.id] = {
   //       id: section.id,
@@ -132,15 +135,13 @@ const normalizeResumeFromApi = (apiResume) => {
   //       position: section.position ?? 0,
   //       value: section.value ?? [],
   //       styling: section.styling ?? {},
-  //       subsectionIds: sortedSubsections.map((subsection) => subsection.id),
-  //     };
+  //       subsectionIds: apiSubsections.map((subsection) => subsection.id)
+  //     }
 
   //     normalizedResume.sections.allIds.push(section.id);
 
-  //     sortedSubsections.forEach((subsection) => {
-  //       const sortedFields = [...(subsection.fields ?? [])].sort(
-  //         (a, b) => a.position - b.position
-  //       );
+  //     apiSubsections.forEach((subsection) => {
+  //       const apiFields = subsection.fields;
 
   //       normalizedResume.subsections.byId[subsection.id] = {
   //         id: subsection.id,
@@ -149,12 +150,12 @@ const normalizeResumeFromApi = (apiResume) => {
   //         type: subsection.type ?? 'default',
   //         position: subsection.position ?? 0,
   //         styling: subsection.styling ?? {},
-  //         fieldIds: sortedFields.map((field) => field.id),
+  //         fieldIds: apiFields.map((field) => field.id),
   //       };
 
   //       normalizedResume.subsections.allIds.push(subsection.id);
 
-  //       sortedFields.forEach((field) => {
+  //       apiFields.forEach((field) => {
   //         normalizedResume.fields.byId[field.id] = {
   //           id: field.id,
   //           subsectionId: field.subsectionId,
@@ -165,7 +166,7 @@ const normalizeResumeFromApi = (apiResume) => {
   //         };
 
   //         normalizedResume.fields.allIds.push(field.id);
-  //       });
+  //       })
   //     });
   //   });
   // });

@@ -41,7 +41,7 @@ const App = () => {
       if (!response.ok) {
         throw data.error;
       }
-      console.log('Active session data:', data);
+      // console.log('Active session data:', data);
       dispatch(setUser(data));
     } catch (error) {
       console.error(error);
@@ -75,7 +75,8 @@ const App = () => {
         {/* Routes without Navbar */}
         <Route path='/demo' element={<DemoEditor />} />
         {/* <Route path='/editor' exact='false' element={<ResumeEditor />} /> */}
-        <Route path='/editor/*' element={<ResumeEditor />} />
+        <Route path='/editor/new' element={<ResumeEditor />} />
+        <Route path='/editor/:resumeId' element={<ResumeEditor />} />
       </Routes>
     </BrowserRouter>
   );

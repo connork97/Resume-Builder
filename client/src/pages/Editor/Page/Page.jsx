@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { setResumeId, updateSection, setResume } from "../../store/resumeSlice.js";
+import { setResumeId, updateSection, setResume } from "../../../store/resumeSlice.js";
 
-import { BASE_URL } from "../../config.js";
+import { BASE_URL } from "../../../config.js";
 
-import normalizeResumeFromApi from "../../utils/normalizeResumeFromApi.js";
+import normalizeResumeFromApi from "../../../utils/normalizeResumeFromApi.js";
 
-import Section from "../Section/Section.jsx";
+import Section from "./Section/Section.jsx";
 import Column from "./Column.jsx";
-import SelectResume from "../../pages/Home/SelectResume.jsx";
+import SelectResume from "../../Home/SelectResume.jsx";
 
 import styles from "./Page.module.css";
 
@@ -65,7 +65,8 @@ const Page = () => {
 
    return (
       <div className={styles.pageContainerDiv} style={{ ...resumeStyling }}>
-         <p>{resume.title}</p>
+         {renderedColumns}
+         {/* <p>{resume.title}</p> */}
       </div>
    )
 }

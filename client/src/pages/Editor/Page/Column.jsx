@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import Section from '../Section/Section.jsx';
+import Section from './Section/Section.jsx';
 
 import styles from './Page.module.css';
 

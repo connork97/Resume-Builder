@@ -2,12 +2,12 @@ import React, { useMemo, useCallback, useEffect, use } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor } from "slate";
 import { useDispatch } from "react-redux";
-import { updateSection, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
+import { updateSection, setActiveEditorId, setActiveEditorSelection } from "../../../../store/resumeSlice.js";
 
 import renderLeaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
-import { editorRegistry } from "../../helpers/editorRegistry.js";
+import { editorRegistry } from "../../../../helpers/editorRegistry.js";
 import { nanoid } from "@reduxjs/toolkit";
 
 const SlateHeading = ({ section }) => {

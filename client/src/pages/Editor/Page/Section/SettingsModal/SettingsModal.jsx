@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateSection, updateColumn } from "../../../store/resumeSlice.js";
+import { updateSection, updateColumn } from "../../../../../store/resumeSlice.js";
 
 import styles from './SettingsModal.module.css';
 
 import ColumnIndex from './ColumnIndex.jsx';
 import RowIndex from './RowIndex.jsx';
 import SettingsModalInput from './SettingsModalInput.jsx';
-import FontSize from '../../Formatting/FontSize.jsx';
-import FontColor from '../../Formatting/FontColor.jsx';
-import LineHeight from '../../Formatting/LineHeight.jsx';
-import TextAlign from '../../Formatting/TextAlign.jsx';
-import BackgroundColor from '../../Formatting/BackgroundColor.jsx';
+import FontSize from '../../../../../components/Formatting/FontSize.jsx';
+import FontColor from '../../../../../components/Formatting/FontColor.jsx';
+import LineHeight from '../../../../../components/Formatting/LineHeight.jsx';
+import TextAlign from '../../../../../components/Formatting/TextAlign.jsx';
+import BackgroundColor from '../../../../../components/Formatting/BackgroundColor.jsx';
 
 const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModalOpen }) => {
 

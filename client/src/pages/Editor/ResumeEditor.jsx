@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import normalizeResumeFromApi from '../../utils/normalizeResumeFromApi.js';
 
@@ -11,15 +11,17 @@ import { setResume } from '../../store/resumeSlice.js';
 
 import Toolbar from '../../components/Toolbar/Toolbar.jsx';
 import Outline from '../../components/Outline/Outline.jsx';
-import Page from '../../components/Page/Page.jsx';
+import Page from './Page/Page.jsx';
 import NewResumeModal from './NewResumeModal.jsx';
 
 import styles from './ResumeEditor.module.css';
 
-const ResumeEditor = ({ resumeId }) => {
+const ResumeEditor = () => {
 
    const location = useLocation();
    const dispatch = useDispatch();
+   const { resumeId } = useParams();
+   
    const resume = useSelector(state => state.resume)
 
    const [showNewResumeModal, setShowNewResumeModal] = useState(false);
@@ -47,9 +49,8 @@ const ResumeEditor = ({ resumeId }) => {
    }
 
    useEffect(() => {
-      console.log('resumeid', resume.id)
-      if (resume.id) fetchResumeById(resume.id);
-   }, [resume.id])
+      if (resumeId) fetchResumeById(resumeId);
+   }, [resumeId])
 
    return (
       <div className={styles.resumeEditorContainer}>
@@ -57,7 +58,7 @@ const ResumeEditor = ({ resumeId }) => {
             <Link to='/home' className={styles.homeButton}>Home</Link>
             {/* <Link to='/home' className={styles.homeButton}>Account V</Link> */}
          </div>
-         {/* <Toolbar /> */}
+         <Toolbar />
          {/* <Outline /> */}
          <Page />
          {showNewResumeModal &&

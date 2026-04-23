@@ -3,6 +3,7 @@
    position: fixed;
    display: flex;
    width: auto;
+   cursor: pointer;
    align-items: center;
    z-index: 102;
    color: rgba(255, 255, 255, 1);

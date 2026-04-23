@@ -52,12 +52,38 @@ const ResumeEditor = () => {
       if (resumeId) fetchResumeById(resumeId);
    }, [resumeId])
 
+   const saveResume = async () => {
+      try {
+         const response = await fetch(`${BASE_URL}/resumes/${resumeId}`, {
+            method: 'PUT',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(resume)
+         });
+
+         const data = response.json();
+
+         if (!response.ok) {
+            throw new Error(data.error || 'ERROR: Failed to update resume.');
+         }
+
+         console.log('Resume saved successfully: ', data);
+         alert('Resume Saved Successfully!');
+      } catch (error) {
+         console.error('Error saving resume: ', error);
+         alert(error.code + '\n' + error.message || 'Error saving resume.')
+      }
+   }
+
    return (
       <div className={styles.resumeEditorContainer}>
          {/* <div className={styles.toolbarLinksWrapper}> */}
          <Link to='/home' className={styles.homeButton}>Home</Link>
          <button
             className={styles.saveResumeButton}
+            onClick={saveResume}
          >
             Save Resume
          </button>

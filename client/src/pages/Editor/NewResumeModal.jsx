@@ -47,10 +47,10 @@ const NewResumeModal = ({ onClose }) => {
    };
 
    const handleCreateResume = async () => {
-      if (!resumeInfo.title) {
-         alert('Please enter a title for your resume.');
-         return;
-      }
+      // if (!resumeInfo.title) {
+      //    alert('Please enter a title for your resume.');
+      //    return;
+      // }
       if (confirm('Are you sure you want to create a new resume?')) {
          console.log('Creating resume with info:', resumeInfo);
          try {
@@ -64,7 +64,7 @@ const NewResumeModal = ({ onClose }) => {
             });
             const data = await response.json();
             if (!response.ok) {
-               throw new Error(data?.error || 'Failed to create resume');
+               throw data?.error;
             }
             console.log('Resume created successfully:', data);
             dispatch(setResumeId(data.id));
@@ -73,7 +73,7 @@ const NewResumeModal = ({ onClose }) => {
 
          } catch (error) {
             console.error('Error creating resume:', error);
-            alert('An error occurred while creating the resume. Please try again.');
+            alert(error.code + '\n' + error.message)
          }
       }
    };

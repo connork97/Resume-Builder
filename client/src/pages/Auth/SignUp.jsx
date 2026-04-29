@@ -33,7 +33,7 @@ const SignUp = () => {
    const createUser = async (e) => {
       e.preventDefault();
       try {
-         const response = await fetch(`${BASE_URL}/users`, {
+         const response = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',

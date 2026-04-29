@@ -22,10 +22,20 @@ def delete_section_from_resume(section_id):
          )
       
       resume = section_to_delete.column.resume
+      column_id = section_to_delete.column_id
+      deleted_position = section_to_delete.position
       
       db.session.delete(section_to_delete)
-      db.session.commit()
       
+      Section.query.filter(
+         Section.column_id == column_id,
+         Section.position > deleted_position
+      ).update(
+         {Section.position: Section.position - 1},
+         synchronize_session=False,
+      )
+      
+      db.session.commit()
       return jsonify(resume.to_dict()), 200
       
    except Exception as e:

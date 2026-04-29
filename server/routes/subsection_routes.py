@@ -22,8 +22,19 @@ def delete_subsection_from_resume(subsection_id):
          )
       
       resume = subsection_to_delete.section.column.resume
+      section_id = subsection_to_delete.section_id
+      deleted_position = subsection_to_delete.position
       
       db.session.delete(subsection_to_delete)
+      
+      Subsection.query.filter(
+         Subsection.section_id == section_id,
+         Subsection.position > deleted_position
+      ).update(
+         {Subsection.position: Subsection.position - 1},
+         synchronize_session=False,
+      )
+      
       db.session.commit()
       
       return jsonify(resume.to_dict()), 200

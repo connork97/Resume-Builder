@@ -8,11 +8,13 @@ from routes.user_routes import user_bp
 from routes.auth_routes import auth_bp
 from routes.resume_routes import resume_bp
 from routes.section_routes import section_bp
+from routes.subsection_routes import subsection_bp
 
 app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(resume_bp)
 app.register_blueprint(section_bp)
+app.register_blueprint(subsection_bp)
 
 @app.route("/")
 def home():

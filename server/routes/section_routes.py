@@ -8,7 +8,6 @@ from utils.responses import generate_error, generate_success
 
 section_bp = Blueprint("section", __name__, url_prefix="/sections")
 
-
 @section_bp.route('<int:section_id>', methods=['DELETE'])
 def delete_section_from_resume(section_id):
    print(f'Received DELETE request for section of ID {section_id}')

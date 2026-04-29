@@ -1,30 +1,37 @@
 import React, { useState } from "react";
+
+import { useSelector } from "react-redux";
+
 import {
   addSubsection,
   deleteSubsection,
   reorderSubsections,
   addField,
+  setResume,
 } from "@/store/resumeSlice";
 
 import styles from "./Outline.module.css";
+import { BASE_URL } from "@/config";
+import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi";
 
 const OutlineSection = ({
   dispatch,
   section,
+  sectionTitle,
   dragItem,
   setDragItem,
   renderFieldRow,
 }) => {
 
-  console.log('SECTION', section)
+  const subsections = useSelector(state => state.resume.subsections);
 
   // Collapse state for SUBSECTIONS
   const [collapsedSubsections, setCollapsedSubsections] = useState({});
 
-  const toggleSubsection = (subId) => {
+  const toggleSubsection = (subsectionId) => {
     setCollapsedSubsections((prev) => ({
       ...prev,
-      [subId]: !prev[subId],
+      [subsectionId]: !prev[subsectionId],
     }));
   };
 
@@ -36,13 +43,13 @@ const OutlineSection = ({
     dispatch(addField({ sectionId, subsectionId }));
   };
 
-  const handleOnDragStart = (e, subIndex, subId) => {
+  const handleOnDragStart = (e, subIndex, subsectionId) => {
     e.stopPropagation();
     if (dragItem) return;
     setDragItem({
       type: "subsection",
       sectionId: section.id,
-      subsectionId: sub.id,
+      subsectionId: subsectionId,
       index: subIndex,
     });
     e.dataTransfer.effectAllowed = "move";
@@ -66,77 +73,112 @@ const OutlineSection = ({
 
     setDragItem((prev) => ({ ...prev, index: subIndex }));
   }
+
+  const getSubsectionById = (subsectionId) => {
+    return subsections.byId[subsectionId];
+  }
+
+  const handleDeleteSubsection = async (subId, subIndex) => {
+    if (!confirm(`Are you sure you want to delete the ${sectionTitle} subsection at index ${subIndex}?`)) {
+      return;
+    }
+    try {
+      const response = await fetch(`${BASE_URL}/subsections/${subId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+      const data = await response.json();
+      if (!response.ok) {
+        throw data?.error;
+      }
+      const normalizedResume = normalizeResumeFromApi(data);
+      dispatch(setResume(normalizedResume));
+    } catch (error) {
+      console.error(error);
+      alert(
+        error?.code && error?.message
+          ? error.code + '\n' + error.message
+          : `An error occurred while trying to delete the ${sectionTitle} subsection at index ${subIndex}.`
+      )
+    }
+  }
+
   return (
     <>
-      {section.subsections?.map((sub, subIndex) => (
-        <div
-          key={sub.id}
-          className={`${styles.subsectionItem} ${styles.subsectionRow}`}
-          draggable={true}
-          onDragStart={(e) => {
-            handleOnDragStart(e, subIndex, sub.id)
-          }}
+      {section.subsectionIds?.map((subId, subIndex) => {
+        const subsection = getSubsectionById(subId);
+        return (
+          <div
+            key={subId}
+            className={`${styles.subsectionItem} ${styles.subsectionRow}`}
+            draggable={true}
+            onDragStart={(e) => {
+              handleOnDragStart(e, subIndex, subId)
+            }}
 
-          onDragOver={(e) => {
-            handleOnDragOver(e, subIndex)
+            onDragOver={(e) => {
+              handleOnDragOver(e, subIndex)
 
-          }}
-          onDragEnd={(e) => {
-            e.stopPropagation();
-            setDragItem(null);
-          }}
-          onDrop={(e) => {
-            e.stopPropagation();
-            setDragItem(null);
-          }}
-        >
-          <div className={styles.dragHandle}>⋮⋮
-            <span className={styles.subsectionHeaderSpan}>
-              {section.label} {subIndex + 1}
-            </span>
-
-            <button
-              className={styles.collapseButton}
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleSubsection(sub.id);
-              }}
-            >
-              {/* {collapsedSubsections[sub.id] ? "▼" : "▶"} */}
-              ▼
-            </button>
-          </div>
-
-          {!collapsedSubsections[sub.id] && (
-            <div className={styles.subsectionFields}>
-              {sub.fields?.map((field, fieldIndex) =>
-                renderFieldRow(section.id, sub.id, field, fieldIndex)
-              )}
+            }}
+            onDragEnd={(e) => {
+              e.stopPropagation();
+              setDragItem(null);
+            }}
+            onDrop={(e) => {
+              e.stopPropagation();
+              setDragItem(null);
+            }}
+          >
+            <div className={styles.dragHandle}>⋮⋮
+              <span className={styles.subsectionHeaderSpan}>
+                {sectionTitle} {subIndex + 1}
+              </span>
 
               <button
-                className={`${styles.addButton} ${styles.addFieldButton}`}
-                onClick={() => handleAddField(section.id, sub.id)}
+                className={styles.collapseButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleSubsection(subId);
+                }}
               >
-                + Add Field
+                {/* {collapsedSubsections[subsectionId] ? "▼" : "▶"} */}
+                ▼
               </button>
             </div>
-          )}
 
-          <button
-            className={styles.deleteButton}
-            onClick={() =>
-              dispatch(
-                deleteSubsection({
-                  sectionId: section.id,
-                  subsectionId: sub.id,
-                })
-              )
-            }
-          >
-            Delete {section.label} Subsection
-          </button>
-        </div>
-      ))}
+            {!collapsedSubsections[subId] && (
+              <div className={styles.subsectionFields}>
+                {subsection.fieldIds?.map((fieldId, fieldIndex) => {
+                  renderFieldRow(section.id, subId, fieldId, fieldIndex)
+                }
+                )}
+
+                <button
+                  className={`${styles.addButton} ${styles.addFieldButton}`}
+                  onClick={() => handleAddField(section.id, subId)}
+                >
+                  + Add Field
+                </button>
+              </div>
+            )}
+
+            <button
+              className={styles.deleteButton}
+              onClick={() => handleDeleteSubsection(subId, subIndex)}
+            // onClick={() =>
+            // dispatch(
+            //   deleteSubsection({
+            //     sectionId: section.id,
+            //     subsectionId: subsectionId,
+            //   })
+            // )
+            // }
+            >
+              Delete {sectionTitle} Subsection
+            </button>
+          </div>
+        )
+      })}
 
       <button
         className={styles.addButton}

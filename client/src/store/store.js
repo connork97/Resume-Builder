@@ -7,5 +7,8 @@ export const store = configureStore({
   reducer: {
     resume: resumeReducer,
     user: userReducer
+  },
+  devTools: {
+    maxAge: 25,
   }
 });

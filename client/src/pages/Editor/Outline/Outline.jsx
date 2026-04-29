@@ -9,6 +9,7 @@ import styles from "./Outline.module.css";
 import { BASE_URL } from "@/config.js";
 import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi.js";
 import { setResume } from "@/store/resumeSlice.js";
+import { Node } from "slate";
 
 const Outline = () => {
   const dispatch = useDispatch();
@@ -96,7 +97,8 @@ const Outline = () => {
 
   const handleDeleteSection = async (sectionId) => {
     const section = getSectionById(sectionId);
-    const sectionLabel = section?.label || 'this'; if (!confirm(`Are you sure you want to delete the entire ${sectionLabel} section?`)) {
+    const sectionTitle = getNodeString(section.value[0]);
+    const sectionLabel = sectionTitle || 'this'; if (!confirm(`Are you sure you want to delete the entire ${sectionTitle} section?`)) {
       return;
     }
     try {
@@ -120,6 +122,9 @@ const Outline = () => {
     }
   }
 
+  const getNodeString = (slateValue) => {
+    return Node.string(slateValue);
+  }
 
   return (
     <div
@@ -159,7 +164,7 @@ const Outline = () => {
                 <div className={styles.dragHandle}>⋮⋮</div>
 
                 <div className={styles.sectionTitle}>
-                  {getSectionById(sectionId).label}
+                  {getNodeString(getSectionById(sectionId).value[0])}  {/* Gets the plain text of the Slate Field Value */}
                 </div>
 
                 <button
@@ -175,6 +180,7 @@ const Outline = () => {
                   <OutlineSection
                     dispatch={dispatch}
                     section={sections.byId[sectionId]}
+                    sectionTitle={getNodeString(sections.byId[sectionId].value[0])}
                     dragItem={dragItem}
                     setDragItem={setDragItem}
                     renderFieldRow={renderFieldRow}

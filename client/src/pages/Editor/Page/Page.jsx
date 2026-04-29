@@ -33,8 +33,6 @@ const Page = () => {
       dispatch(updateSection({ sectionId, changes: { layout: { columnIndex: 0 } } }));
    }
 
-
-
    // Handle how many columns to render on the page based on resume layout settings.
    const renderedColumns = columns.allIds?.map((columnId) => {
       const column = columns.byId[columnId];
@@ -46,27 +44,11 @@ const Page = () => {
       return <Column key={column.id} column={column} />
    });
 
-   const renderColumns = (res) => {
-      console.log('RES', res)
-      // return res.columns.map((column) => {
-      //    console.log(column.id)
-      // })
-   }
-
-   useEffect(() => {
-      console.log(renderColumns(resume))
-
-   }, [resume])
-
    const pageContent = userResumeIds.length > 0
-   // ? renderedColumns
-   // ? <SelectResume />
-   // : <SelectResume />
 
    return (
       <div className={styles.pageContainerDiv} style={{ ...resumeStyling }}>
          {renderedColumns}
-         {/* <p>{resume.title}</p> */}
       </div>
    )
 }

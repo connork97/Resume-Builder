@@ -1,3 +1,14 @@
+.aboveToolbarRow {
+   position: fixed;
+   display: flex;
+   height: 6vh;
+   width: 100vw;
+   top: 0.25vh;
+   justify-content: center;
+   align-items: center;
+   z-index: 101;
+}
+
 .homeButton,
 .saveResumeButton {
    position: fixed;
@@ -5,7 +16,6 @@
    width: auto;
    cursor: pointer;
    align-items: center;
-   z-index: 102;
    color: rgba(255, 255, 255, 1);
    font-size: 2.5vh;
    font-weight: 350;
@@ -14,12 +24,20 @@
 
 .homeButton {
    height: 6vh;
-   top: 0;
+   left: 2vh;
+}
+
+.resumeTitle {
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 0.75vh 1.5vh;
+  border-radius: 1vh;
+  /* background-color: rgba(0, 120, 255, 1); */
+
 }
 
 .saveResumeButton {
   height: 4vh;
-  top: 1vh;
   right: 2vh;
   border: 1px solid transparent;
   border-radius: 5vh;

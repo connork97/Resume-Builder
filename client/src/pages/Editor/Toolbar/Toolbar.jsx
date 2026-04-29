@@ -16,10 +16,10 @@ const Toolbar = () => {
 
   return (
     <div className={styles.toolbarContainerDiv}>
-      <div className={styles.belowToolbarWrapper}>
+      {/* <div className={styles.belowToolbarWrapper}>
         <CurrentlyEditing editor={editor} />
         <AddSection />
-      </div>
+      </div> */}
       <RichTextToolbar editor={editor} />
     </div>
   );

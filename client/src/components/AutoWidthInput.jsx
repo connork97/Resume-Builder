@@ -18,7 +18,7 @@ const AutoWidthInput = ({ value, placeholder, styling, className, onChange }) =>
         ref={spanRef}
         style={{
           position: "absolute",
-          visibility: "hidden",
+          // visibility: "hidden",
           whiteSpace: "pre",
           font: "inherit",
           padding: "0",

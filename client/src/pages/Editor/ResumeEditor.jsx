@@ -7,7 +7,7 @@ import normalizeResumeFromApi from '../../utils/normalizeResumeFromApi.js';
 
 import { BASE_URL } from '../../config.js';
 
-import { setResume } from '../../store/resumeSlice.js';
+import { setResume, updateResumeTitle } from '../../store/resumeSlice.js';
 
 import Toolbar from './Toolbar/Toolbar.jsx';
 import Outline from '../../components/Outline/Outline.jsx';
@@ -15,6 +15,7 @@ import Page from './Page/Page.jsx';
 import NewResumeModal from './NewResumeModal.jsx';
 
 import styles from './ResumeEditor.module.css';
+import AutoWidthInput from '../../components/AutoWidthInput.jsx';
 
 const ResumeEditor = () => {
 
@@ -76,17 +77,45 @@ const ResumeEditor = () => {
       }
    }
 
+   const [resumeTitle, setResumeTitle] = useState(resume.title);
+
+   useEffect(() => {
+      // if (!resume) return;
+      setResumeTitle(resume.title);
+   }, [resume]);
+
+   const handleSetResumeTitle = (e) => {
+      const value = e.currentTarget.innerText.trim();
+
+      setResumeTitle(value);
+      dispatch(updateResumeTitle(value));
+   }
+
+   // useEffect(() => {
+   // dispatch(updateResumeTitle(resumeTitle));
+   // }, [resumeTitle])
+
    return (
       <div className={styles.resumeEditorContainer}>
          {/* <div className={styles.toolbarLinksWrapper}> */}
-         <Link to='/home' className={styles.homeButton}>Home</Link>
-         <button
-            className={styles.saveResumeButton}
-            onClick={saveResume}
-         >
-            Save Resume
-         </button>
-         {/* </div> */}
+         <div className={styles.aboveToolbarRow}>
+            <Link to='/home' className={styles.homeButton}>Home</Link>
+            {/* </div> */}
+            <div
+               className={styles.resumeTitle}
+               contentEditable
+               suppressContentEditableWarning
+               onBlur={handleSetResumeTitle}
+            >
+               {resumeTitle}
+            </div>
+            <button
+               className={styles.saveResumeButton}
+               onClick={saveResume}
+            >
+               Save Resume
+            </button>
+         </div>
          <Toolbar />
          {/* <Outline /> */}
          <Page />

@@ -12,11 +12,13 @@ import TextAlign from "../Formatting/TextAlign.jsx";
 import Lists from "../Formatting/Lists.jsx";
 import Marks from "../Formatting/Marks.jsx";
 import Columns from "./Columns.jsx";
+import CurrentlyEditing from "./CurrentlyEditing.jsx";
+import AddSection from "./AddSection.jsx";
 
 import styles from "./RichTextToolbar.module.css";
 
 const RichTextToolbar = ({ editor }) => {
-  
+
   const resumeStyling = useSelector((state) => state.resume.styling);
   const sections = useSelector((state) => state.resume.sections);
   const activeSectionId = useSelector(state => state.resume.activeSectionId);
@@ -33,7 +35,7 @@ const RichTextToolbar = ({ editor }) => {
 
   return (
 
-    <div className={styles.toolbarContainer}>
+    <div className={styles.richTextToolbarWrapper}>
       <LineHeight
         label="Line Height"
         editor={editor}
@@ -78,6 +80,10 @@ const RichTextToolbar = ({ editor }) => {
       <Lists editor={editor} />
 
       <Columns label="Columns" />
+      {/* <div className={styles.belowToolbarWrapper}> */}
+        <CurrentlyEditing editor={editor} />
+        <AddSection />
+      {/* </div> */}
 
     </div>
   );

@@ -275,6 +275,11 @@ const resumeSlice = createSlice({
       state.styling = { ...state.styling, ...action.payload };
     },
 
+    updateResumeTitle(state, action) {
+      console.log('current title', state.title, 'action payload', action.payload);
+      state.title = action.payload;
+    },
+
     updateResume(state, action) {
       const { key, changes } = action.payload;
       state.layout = { ...state[key], ...changes };
@@ -355,6 +360,7 @@ export const {
   setActiveEditorId,
   setActiveEditorSelection,
   updateResume,
+  updateResumeTitle,
   updateResumeStyling,
   addColumn,
   deleteColumn,

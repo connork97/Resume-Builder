@@ -1,7 +1,9 @@
-.toolbarContainer {
+.richTextToolbarWrapper {
   display: flex;
   gap: 0.5vh;
   padding: 0.5vh;
+  justify-content: center;
+  /* margin-left: 15vh; */
 }
 
 .toolbarLabelSpan {

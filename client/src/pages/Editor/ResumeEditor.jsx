@@ -43,7 +43,6 @@ const ResumeEditor = () => {
          }
          const resumeData = await response.json();
          const normalizedResume = normalizeResumeFromApi(resumeData);
-         console.log('NORMALIZED RESUME', normalizedResume)
          dispatch(setResume(normalizedResume));
       } catch (error) {
          console.error(`Error fetching resume of id ${resumeId}: `, error)

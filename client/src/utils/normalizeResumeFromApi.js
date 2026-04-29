@@ -5,7 +5,6 @@
 import BackgroundColor from "../pages/Editor/Formatting/BackgroundColor";
 
 const normalizeResumeFromApi = (apiResume) => {
-  console.log('API RESUME', apiResume)
   const normalizedResume = {
     id: apiResume.id ?? null,
     title: apiResume.title ?? '',

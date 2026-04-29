@@ -71,15 +71,15 @@ const Outline = () => {
   const renderFieldRow = (
     sectionId,
     subsectionId,
-    field,
+    fieldId,
     fieldIndex
   ) => {
     const isHeaderOrSummary = subsectionId === null;
 
     return (
       <FieldRow
-        key={field.id}
-        field={field}
+        key={fieldId}
+        fieldId={fieldId}
         fieldIndex={fieldIndex}
         sectionId={sectionId}
         subsectionId={subsectionId}

@@ -149,7 +149,7 @@ const OutlineSection = ({
             {!collapsedSubsections[subId] && (
               <div className={styles.subsectionFields}>
                 {subsection.fieldIds?.map((fieldId, fieldIndex) => {
-                  renderFieldRow(section.id, subId, fieldId, fieldIndex)
+                  return renderFieldRow(section.id, subId, fieldId, fieldIndex)
                 }
                 )}
 

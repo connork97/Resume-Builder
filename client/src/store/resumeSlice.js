@@ -64,7 +64,6 @@ const resumeSlice = createSlice({
       };
     },
     setResume: (state, action) => {
-      console.log('SET RESUME ACTION PAYLOAD: ', action.payload)
       return {
         ...initialState,
         ...action.payload,
@@ -74,9 +73,7 @@ const resumeSlice = createSlice({
       };
     },
     setResumeId: (state, action) => {
-      console.log(action.payload)
       const id = action.payload;
-      console.log('setting resume id to: ', id)
       state.id = id;
     },
 

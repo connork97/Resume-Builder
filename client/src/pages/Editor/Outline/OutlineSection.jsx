@@ -4,7 +4,7 @@ import {
   deleteSubsection,
   reorderSubsections,
   addField,
-} from "../../store/resumeSlice";
+} from "@/store/resumeSlice";
 
 import styles from "./Outline.module.css";
 
@@ -15,6 +15,8 @@ const OutlineSection = ({
   setDragItem,
   renderFieldRow,
 }) => {
+
+  console.log('SECTION', section)
 
   // Collapse state for SUBSECTIONS
   const [collapsedSubsections, setCollapsedSubsections] = useState({});

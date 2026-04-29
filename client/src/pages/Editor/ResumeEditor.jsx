@@ -3,19 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-import normalizeResumeFromApi from '../../utils/normalizeResumeFromApi.js';
+import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
 
-import { BASE_URL } from '../../config.js';
+import { BASE_URL } from '@/config.js';
 
-import { setResume, updateResumeTitle } from '../../store/resumeSlice.js';
+import { setResume, updateResumeTitle } from '@/store/resumeSlice.js';
 
 import Toolbar from './Toolbar/Toolbar.jsx';
-import Outline from '../../components/Outline/Outline.jsx';
+import Outline from './Outline/Outline.jsx';
 import Page from './Page/Page.jsx';
 import NewResumeModal from './NewResumeModal.jsx';
 
 import styles from './ResumeEditor.module.css';
-import AutoWidthInput from '../../components/AutoWidthInput.jsx';
+import AutoWidthInput from '@/components/AutoWidthInput.jsx';
 
 const ResumeEditor = () => {
 
@@ -118,7 +118,7 @@ const ResumeEditor = () => {
             </button>
          </div>
          <Toolbar />
-         {/* <Outline /> */}
+         <Outline />
          <Page />
          {showNewResumeModal &&
             <NewResumeModal onClose={() => setShowNewResumeModal(false)} />

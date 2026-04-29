@@ -45,7 +45,7 @@ const App = () => {
       dispatch(setUser(data));
     } catch (error) {
       console.error(error);
-      alert(error.code + '\n' + error.message || error)
+      // alert(error.code + '\n' + error.message || error)
     }
   };
 

@@ -269,3 +269,4 @@ def add_section_to_resume(resume_id):
             code='ERROR_ADDING_SECTION',
             message=f'An unknown error occurred when adding a section to resume of ID {resume_id}.'
         )
+        

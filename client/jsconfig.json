@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "ignoreDeprecations": "6.0"  // The baseUrl is deprecated and yelling at me, but this is only for VS Code autocomplete purposes anyway.  Vite Config handles the actual import syntax.
+  }
+}

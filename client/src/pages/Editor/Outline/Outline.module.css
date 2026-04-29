@@ -2,7 +2,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  margin-top: 6vh;
+  margin-top: 10vh;
   width: 42.5vh;
   height: 100vh;
   background: #1e1e1e;
@@ -227,23 +227,18 @@
 
 .hideOutlineButton, .showOutlineButton {
   position: fixed;
-  top: 9vh;
+  top: 11vh;
   width: 5vh;
   margin: auto;
   font-size: 2.25vh;
   justify-content: center;
   align-items: center;
-  /* width: 15vh; */
   padding: 0.2vh 0.6vh 0.5vh 0.5vh;
-  /* padding-top: 0.2vh; */
-  /* width: 2.5vh; */
-  /* height: 2.5vh; */
   background: #333;
   color: white;
   border: none;
   border-radius: 0.5vh;
   cursor: pointer;
-  /* scale: 1.25; */
   font-weight: bold;
   z-index: 100;
 }

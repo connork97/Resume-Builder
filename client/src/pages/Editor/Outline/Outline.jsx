@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { reorderSections, deleteSection, updateField } from "../../store/resumeSlice.js";
+import { reorderSections, deleteSection, updateField } from '@/store/resumeSlice.js';
 
 import OutlineSection from "./OutlineSection.jsx";
 import FieldRow from "./FieldRow.jsx";
 
 import styles from "./Outline.module.css";
+import { BASE_URL } from "@/config.js";
+import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi.js";
+import { setResume } from "@/store/resumeSlice.js";
 
 const Outline = () => {
   const dispatch = useDispatch();
-  const sections = useSelector((state) => state.resume.sections);
+  const resume = useSelector(state => state.resume);
+  const sections = resume.sections;
+  // const sections = useSelector((state) => state.resume.sections);
 
   const [outlineIsHidden, setOutlineIsHidden] = useState(true);
 
@@ -85,36 +90,66 @@ const Outline = () => {
     );
   };
 
+  const getSectionById = (sectionId) => {
+    return sections.byId[sectionId]
+  }
+
+  const handleDeleteSection = async (sectionId) => {
+    const section = getSectionById(sectionId);
+    const sectionLabel = section?.label || 'this'; if (!confirm(`Are you sure you want to delete the entire ${sectionLabel} section?`)) {
+      return;
+    }
+    try {
+      const response = await fetch(`${BASE_URL}/sections/${sectionId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+      const data = await response.json();
+      if (!response.ok) {
+        throw data?.error;
+      }
+      const normalizedResume = normalizeResumeFromApi(data);
+      dispatch(setResume(normalizedResume));
+    } catch (error) {
+      console.error(error);
+      alert(
+        error?.code && error?.message
+          ? `${error.code}\n${error.message}`
+          : `Error deleting ${sectionLabel} section.`
+      );
+    }
+  }
+
+
   return (
     <div
-      className={`${styles.outlineWrapper} ${
-        outlineIsHidden ? styles.hidden : styles.visible
-      }`}
+      className={`${styles.outlineWrapper} ${outlineIsHidden ? styles.hidden : styles.visible
+        }`}
     >
       <div className={styles.outlineContainer}>
         <div className={styles.outlineTitle}>Resume Outline</div>
-        
-          <button
-            className={
-              !outlineIsHidden
+
+        <button
+          className={
+            !outlineIsHidden
               ? styles.hideOutlineButton
               : styles.showOutlineButton
-            }
-            onClick={() => setOutlineIsHidden(!outlineIsHidden)}
-            >
-            {!outlineIsHidden ? "⟨⟨⟨" : "⟩⟩⟩"}
-          </button>
+          }
+          onClick={() => setOutlineIsHidden(!outlineIsHidden)}
+        >
+          {!outlineIsHidden ? "⟨⟨⟨" : "⟩⟩⟩"}
+        </button>
 
-        {!sections.length ? (
+        {!sections.allIds.length ? (
           <h2>No Sections to Display</h2>
         ) : (
-          sections.map((section, index) => (
+          sections.allIds.map((sectionId, index) => (
             <div
-              key={section.id}
+              key={sectionId}
               className={`${styles.sectionBlock} ${styles.sectionRow}`}
               draggable={true}
               onDragStart={(e) =>
-                handleSectionDragStart(e, index, section.id)
+                handleSectionDragStart(e, index, sectionId)
               }
               onDragOver={(e) => handleSectionDragOver(e, index)}
               onDragEnd={handleSectionDragEnd}
@@ -124,22 +159,22 @@ const Outline = () => {
                 <div className={styles.dragHandle}>⋮⋮</div>
 
                 <div className={styles.sectionTitle}>
-                  {section.label}
+                  {getSectionById(sectionId).label}
                 </div>
 
                 <button
                   className={styles.collapseButton}
-                  onClick={() => toggleSection(section.id)}
+                  onClick={() => toggleSection(sectionId)}
                 >
                   ▼
                 </button>
               </div>
 
-              {!collapsedSections[section.id] && (
+              {!collapsedSections[sectionId] && (
                 <div className={styles.sectionContent}>
                   <OutlineSection
                     dispatch={dispatch}
-                    section={section}
+                    section={sections.byId[sectionId]}
                     dragItem={dragItem}
                     setDragItem={setDragItem}
                     renderFieldRow={renderFieldRow}
@@ -147,7 +182,7 @@ const Outline = () => {
 
                   <button
                     className={styles.deleteSectionButton}
-                    onClick={() => dispatch(deleteSection(section.id))}
+                    onClick={() => handleDeleteSection(sectionId)}
                   >
                     Delete Section
                   </button>

@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Node } from 'slate';
 
-import { deleteField, reorderFields } from "../../store/resumeSlice";
+import { deleteField, reorderFields } from "@/store/resumeSlice";
 
 import styles from './Outline.module.css';
 

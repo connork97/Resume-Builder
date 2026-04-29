@@ -1,23 +1,28 @@
 import React, { useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { addSection, addSubsection } from '../../../store/resumeSlice';
+import { setResume, addSection, addSubsection } from '../../../store/resumeSlice';
 
 
 import styles from './Toolbar.module.css';
+import { BASE_URL } from '../../../config';
+import normalizeResumeFromApi from '../../../utils/normalizeResumeFromApi';
 
 const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
 
    const initialized = useRef(false);
+
    const dispatch = useDispatch();
+
+   const resume = useSelector(state => state.resume);
 
    useEffect(() => {
       if (initialized.current) return;
       initialized.current = true;
    }, []);
-   
+
    const sections = useSelector((state) => state.resume.sections);
-   
+
    const sectionOptions = [
       { type: "header", label: "Header" },
       { type: "contact", label: "Contact" },
@@ -27,22 +32,43 @@ const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
       { type: "summary", label: "Summary" }
    ];
 
-   
-   const handleAddSection = (type) => {
-      let existingSectionId = null;
-      sections.allIds.map((id) => {
-         if (sections.byId[id].type === type) {
-            existingSectionId = id;
+   const handleAddSection = async (type) => {
+      try {
+         const response = await fetch(`${BASE_URL}/resumes/${resume.id}/sections`, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ type }),
+         });
+         const data = await response.json();
+         if (!response.ok) {
+            throw data?.error;
          }
-      })
-      if (!existingSectionId) {
-         dispatch(addSection(type));
-      } else if (existingSectionId) {
-         dispatch(addSubsection({ sectionId: existingSectionId }))
+         const normalizedResume = normalizeResumeFromApi(data);
+         dispatch(setResume(normalizedResume));
+      } catch(error) {
+         console.error(error);
+         alert(error.code + '\n' + error.message || 'Error adding section.')
       }
       setAddSectionDropdownIsOpen(false);
    }
-   
+   // const handleAddSection = (type) => {
+   //    let existingSectionId = null;
+   //    sections.allIds.map((id) => {
+   //       if (sections.byId[id].type === type) {
+   //          existingSectionId = id;
+   //       }
+   //    })
+   //    if (!existingSectionId) {
+   //       dispatch(addSection(type));
+   //    } else if (existingSectionId) {
+   //       dispatch(addSubsection({ sectionId: existingSectionId }))
+   //    }
+   //    setAddSectionDropdownIsOpen(false);
+   // }
+
 
    return (
       <div className={styles.dropdownMenu}>

@@ -30,58 +30,39 @@ const Columns = ({ label }) => {
    const addColumn = async () => {
       // console.log(columns)
       try {
-         const response = await fetch(`${BASE_URL}/resumes/${resume.id}/add/column`, {
-            method: 'PUT',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            // credentials: 'include',
+         const response = await fetch(`${BASE_URL}/resumes/${resume.id}/columns`, {
+            method: 'POST',
+            credentials: 'include',
          });
          const data = await response.json();
          if (!response.ok) {
             throw data?.error;
          }
-         console.log('ADD COLUMN DATA: ', data);
          const normalizedResume = normalizeResumeFromApi(data);
          dispatch(setResume(normalizedResume));
       } catch(error) {
          console.error(error || 'Error adding column.');
-         alert(error.code + '\n' + error.message);
+         alert(error.code + '\n' + error.message || 'Error adding column.');
       }
    }
 
    const deleteColumn = async () => {
       // console.log(columns)
       try {
-         const response = await fetch(`${BASE_URL}/resumes/${resume.id}/delete/column`, {
+         const response = await fetch(`${BASE_URL}/resumes/${resume.id}/columns`, {
             method: 'DELETE',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            // credentials: 'include',
+            credentials: 'include',
          });
          const data = await response.json();
          if (!response.ok) {
             throw data?.error;
          }
-         console.log('ADD COLUMN DATA: ', data);
          const normalizedResume = normalizeResumeFromApi(data);
          dispatch(setResume(normalizedResume));
       } catch(error) {
          console.error(error || 'Error adding column.');
-         alert(error.code + '\n' + error.message);
+         alert(error.code + '\n' + error.message || 'Error deleting column.');
       }
-   }
-
-   const updateColumns = () => {
-      if (columnInputValue < 1) {
-         alert('You must have at least one column.');
-         return;
-      }
-      else if (columnInputValue == columns.allIds.length) {
-         return;
-      }
-
    }
 
    const columnInputLabel = columnInputValue == 1 ? 'Column': 'Columns'

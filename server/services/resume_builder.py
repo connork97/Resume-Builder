@@ -84,7 +84,11 @@ def build_resume_with_defaults(title, user_id, sections_data):
     db.session.add(new_resume)
     db.session.flush()
 
-    new_column = Column(resume_id=new_resume.id, position=0, width="100%")
+    new_column = Column(
+        resume_id=new_resume.id,
+        position=0,
+        width="100%"
+    )
     db.session.add(new_column)
     db.session.flush()
 

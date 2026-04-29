@@ -80,9 +80,11 @@ const RichTextToolbar = ({ editor }) => {
       <Lists editor={editor} />
 
       <Columns label="Columns" />
+      
       {/* <div className={styles.belowToolbarWrapper}> */}
-        <CurrentlyEditing editor={editor} />
-        <AddSection />
+      <CurrentlyEditing editor={editor} />
+
+      <AddSection />
       {/* </div> */}
 
     </div>

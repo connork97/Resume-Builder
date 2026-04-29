@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session
-from models import db, Resume
+from models import db, Resume, Column
 
 from services.resume_builder import build_resume_with_defaults
 from services.resume_updater import update_resume_with_form_data
@@ -97,3 +97,98 @@ def update_resume(resume_id):
             code="COULD_NOT_UPDATE_RESUME",
             message=f"Failed to update resume of ID {resume_id}.",
         )
+        
+@resume_bp.route('/<int:resume_id>/add/column', methods=['PUT'])
+def add_column(resume_id):
+    print(f'Received PUT request to add column to resume of ID {resume_id}.')
+    
+    resume=Resume.query.filter(Resume.id == resume_id).one_or_none()
+    if not resume:
+        return generate_error(
+            error_type='NOT_FOUND',
+            code='RESUME_NOT_FOUND',
+            message=f'Could not find resume of ID {resume_id} to add a column to.'
+        )
+    
+    column_count = len(resume.columns)
+    new_column_widths = str(100 / (column_count + 1)) + '%'
+    
+    new_column = Column(
+        resume_id = resume_id,
+        position = column_count,
+        width = new_column_widths
+    )
+    db.session.add(new_column)
+    
+    for column in resume.columns:
+        column.width = new_column_widths
+    
+    db.session.commit()
+    
+    return jsonify(resume.to_dict()), 200
+
+@resume_bp.route('/<int:resume_id>/delete/column', methods=['DELETE'])
+def delete_column(resume_id):
+    print(f'Received DELETE request for the last column of resume of ID {resume_id}.')
+    
+    resume=Resume.query.filter(Resume.id == resume_id).one_or_none()
+    if not resume:
+        return generate_error(
+            error_type='NOT_FOUND',
+            code='RESUME_NOT_FOUND',
+            message=f'Could not find resume of ID {resume_id} to add a column to.'
+        )
+    
+    second_to_last_column = (
+        Column.query
+        .filter_by(resume_id=resume_id)
+        .order_by(Column.position.desc())
+        .offset(1)
+        .first()
+    )
+    
+    if not second_to_last_column:
+        return generate_error(
+            error_type='FORBIDDEN',
+            code='NOT_ENOUGH_COLUMNS',
+            message='Resumes require at least one column.'
+        )
+        
+    column_to_delete = (
+        Column.query
+        .filter_by(resume_id=resume_id)
+        .order_by(Column.position.desc())
+        .first()
+    )
+    
+    if not column_to_delete:
+        return generate_error(
+            error_type='NOT_FOUND',
+            code='COLUMN_NOT_FOUND',
+            message=f'Column to delete not found.'
+        )
+        
+    for section in column_to_delete.sections:
+        try:
+            section.column_id = second_to_last_column.id
+        except Exception as e:
+            print (f'Error changing the column_id for section of ID {section.id}.  Undoing all changes.', e)
+            db.session.rollback()
+            return generate_error(
+                error_type='SERVER_ERROR',
+                code='COULD_NOT_COMPLETE_COLUMN_DELETION',
+                message='An unknown error occurred while relocating sections from the column to be deleted.'
+            )
+    
+    db.session.delete(column_to_delete)
+    db.session.flush()
+    
+    column_count = Column.query.filter_by(resume_id=resume.id).count()    
+    new_column_widths = str(100 / (column_count)) + '%'
+    
+    for column in resume.columns:
+        column.width = new_column_widths
+    
+    db.session.commit()
+    
+    return jsonify(resume.to_dict()), 200

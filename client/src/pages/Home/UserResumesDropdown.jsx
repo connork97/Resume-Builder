@@ -31,13 +31,13 @@ const UserResumesDropdown = () => {
                      }
                   )
                );
-               console.log(`Deleted resume with id ${resumeId}`);
             }
             else if (!response.ok) {
-               throw new Error('Failed to delete resume');
+               throw data?.error;
             }
          } catch (error) {
             console.error('Error deleting resume:', error);
+            alert(error.code + '\n' + error.message || 'Error deleting resume.');
          }
       }
    }

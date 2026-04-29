@@ -44,6 +44,9 @@ const AccountSettings = () => {
 
    const submitUserAccountSettings = async (e) => {
       e.preventDefault();
+      if (!confirm('Are you sure you want to save all changes?')) {
+         return;
+      };
 
       try {
          const response = await fetch(`${BASE_URL}/users/${user.id}`, {
@@ -56,18 +59,15 @@ const AccountSettings = () => {
          });
 
          const data = await response.json();
-         console.log(data);
 
          if (!response.ok) {
-            throw new Error(data?.error?.message || 'Error updating account settings.');
+            throw data?.error;
          }
-
-         console.log('Account settings updated successfully:', data);
          dispatch(updateUser(data));
          alert('Account settings updated successfully.');
       } catch (error) {
          console.error(error);
-         alert(error.message || 'Error updating account settings. Please try again.');
+         alert(error.code + '\n' + error.message || error);
       }
    };
 

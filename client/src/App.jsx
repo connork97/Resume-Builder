@@ -39,12 +39,13 @@ const App = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw data.error;
+        throw data?.error;
       }
       // console.log('Active session data:', data);
       dispatch(setUser(data));
     } catch (error) {
       console.error(error);
+      alert(error.code + '\n' + error.message || error)
     }
   };
 

@@ -45,10 +45,10 @@ def generate_error(error_type="SERVER_ERROR", code=None, message=None):
 
 def generate_success(success_type="OK", data=None, message=None, code=None, resource='Resource'):
     SUCCESS_DICT = {
-        "OK": {"status": 200, "message": "Request successful."},
-        "CREATE": {"status": 201, "message": f"{resource} created successfully."},
-        "UPDATE": {"status": 200, "message": f"{resource} updated successfully."},
-        "DELETE": {"status": 200, "message": f"{resource} deleted successfully."},
+        "OK": {"status": 200, 'code': 'SUCCESS', "message": "Request successful."},
+        "CREATE": {"status": 201, 'code': 'CREATED_SUCCESSFULLY', "message": f"{resource} created successfully."},
+        "UPDATE": {"status": 200, 'code': 'UPDATED_SUCCESSFULY', "message": f"{resource} updated successfully."},
+        "DELETE": {"status": 200, 'code': 'DELETED_SUCCESSFULY', "message": f"{resource} deleted successfully."},
     }
     success_def = SUCCESS_DICT.get(success_type, SUCCESS_DICT["OK"])
 
@@ -57,7 +57,7 @@ def generate_success(success_type="OK", data=None, message=None, code=None, reso
             {
                 "success": {
                     "type": success_type,
-                    "code": code or success_type,
+                    "code": code or success_def['code'],
                     "message": message or success_def["message"],
                 },
                 "data": data,

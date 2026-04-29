@@ -16,20 +16,26 @@ const AccountOutline = () => {
    const navigate = useNavigate();
 
    const logUserOut = async () => {
-      const response = await fetch(`${BASE_URL}/logout`, {
-         method: 'DELETE',
-         credentials: 'include',
-      });
-      
-      const data = await response.json();
-      if (!response.ok) {
-         alert('Error logging out. Please try again.');
-         throw new Error(data.error);
+      if (!confirm('Are you sure you want to log out?')) {
+         return;
       }
-      console.log(data);
-      dispatch(clearUser());
-      confirm('You have been logged out successfully.');
-      navigate('/home');
+      try {
+         const response = await fetch(`${BASE_URL}/logout`, {
+            method: 'DELETE',
+            credentials: 'include',
+         });
+         
+         const data = await response.json();
+         if (!response.ok) {
+            throw data?.error;
+         }
+         dispatch(clearUser());
+         confirm('You have been logged out successfully.');
+         navigate('/home');
+      } catch(error) {
+         console.error(error);
+         alert(error.code + '\n' + error.message || error);
+      }
    };
    return (
       <div className={styles.accountOutlineWrapper}>

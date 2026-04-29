@@ -33,15 +33,13 @@ const SelectResume = () => {
          });
 
          if (!response.ok) {
-            throw new Error('Failed to create resume');
+            throw data?.error;
          }
-
          const newResume = await response.json();
          dispatch(setUser({ ...user, resumes: [...user.resumes, newResume] }));
-         console.log('Created new resume:', newResume);
-
       } catch (error) {
          console.error('Error creating resume:', error);
+         alert(error.code + '\n' + error.message || error);
       }
    }
 

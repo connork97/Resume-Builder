@@ -30,13 +30,14 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
          })
          const data = await response.json();
          if (!response.ok) {
-            throw new Error(data?.error || 'Failed to delete resume');
+            throw data?.error;
          }
-         alert(data.code + '\n' + data.message)
+         alert(data?.success.code + '\n' + data?.success.message)
          fetchUserResumes(user.id);
       }
       catch (error) {
-         alert(error);
+         console.error(error);
+         alert(error.code + '\n' + error.message || error);
       }
    };
 

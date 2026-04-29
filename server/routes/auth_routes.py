@@ -11,18 +11,20 @@ def check_session():
     print(f"Received GET request for /checksession with session[user_id]: {user_id}")
     
     if not user_id:
-        error = jsonify({
-            'error': {
-                'message': 'No active session found.',
-                'code': 'NO_ACTIVE_SESSION'
-            }
-        }), 401
-        return error
+        return generate_error(
+            error_type='UNAUTHORIZED',
+            code='USER_NOT_LOGGED_IN',
+            message='No active session.  Please log in.'
+        )
     
     user = db.session.get(User, user_id)
     
     if not user:
-        return generate_error(error_type='UNAUTHORIZED', code='USER_NOT_LOGGED_IN', message='No active session.  Please log in.')
+        return generate_error(
+            error_type='NOT_FOUND',
+            code='USER_NOT_FOUND',
+            message=f'User of id {user_id} not found.'
+        )
     
     print(f"SUCCESS. Active session found for user: {user.email} (ID: {user.id})")
     response = jsonify(user.to_dict(exclude=['resumes'])), 200
@@ -63,7 +65,11 @@ def signup():
     except Exception as e:
         db.session.rollback()
         print("ERROR creating resume:", e)
-        return generate_error(error_type='SERVER_ERROR', code='BAD_SIGNUP', message='Could not create new user.')
+        return generate_error(
+            error_type='SERVER_ERROR',
+            code='BAD_SIGNUP',
+            message='Could not create new user.'
+        )
 
 @auth_bp.route('/login', methods=['POST'])
 def login():

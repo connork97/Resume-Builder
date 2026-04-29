@@ -41,14 +41,13 @@ const Login = () => {
          });
          const data = await response.json();
          if (!response.ok) {
-            throw data.error;
+            throw data?.error;
          }
-         console.log(`Welcome back`, data)
          dispatch(setUser(data));
          navigate('/account');
       } catch (error) {
          console.error('Error: ', error)
-         window.alert(error.code + '\n' + error.message)
+         alert(error.code + '\n' + error.message || error);         
       }
    }
 

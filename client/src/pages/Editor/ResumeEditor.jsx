@@ -38,13 +38,14 @@ const ResumeEditor = () => {
       try {
          const response = await fetch(`${BASE_URL}/resumes/${resumeId}`)
          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw data?.error;
          }
          const resumeData = await response.json();
          const normalizedResume = normalizeResumeFromApi(resumeData);
          dispatch(setResume(normalizedResume));
       } catch (error) {
          console.error(`Error fetching resume of id ${resumeId}: `, error)
+         alert(error.code + '\n' + error.message || error);
       }
    }
 
@@ -66,10 +67,8 @@ const ResumeEditor = () => {
          const data = response.json();
 
          if (!response.ok) {
-            throw new Error(data.error || 'ERROR: Failed to update resume.');
+            throw data?.error;
          }
-
-         console.log('Resume saved successfully: ', data);
          alert('Resume Saved Successfully!');
       } catch (error) {
          console.error('Error saving resume: ', error);

@@ -19,11 +19,12 @@ const UserResumes = () => {
          const response = await fetch(`${BASE_URL}/users/${userId}`);
          const data = await response.json();
          if (!response.ok) {
-            throw new Error(data?.error || 'Unknown error fetching user data.')
+            throw data?.error;
          }
          setUserResumes(data.resumes);
       } catch (error) {
-         alert(error);
+         console.error(error);
+         alert(error.code + '\n' + error.message || error);
       }
    }
 

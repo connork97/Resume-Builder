@@ -189,6 +189,10 @@ const resumeSlice = createSlice({
       const { id, changes } = action.payload;
       console.log("Updating column with ID:", id, "Changes:", changes);
       const column = state.columns.byId[id];
+      if (!column) {
+        console.error(`Column with ID ${id} not found.`);
+        return;
+      }
       if (column) {
         Object.assign(column, changes);
       }

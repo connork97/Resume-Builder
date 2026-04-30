@@ -19,7 +19,7 @@
    background: #333333;
 }
 
-.sectionRowLabel {
+.sectionLabelSpan {
   color: rgba(255, 255, 255, 1);
   font-size: 1.5vh;
 }

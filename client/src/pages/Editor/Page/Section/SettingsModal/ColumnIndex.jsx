@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateSection } from '../../../../../store/resumeSlice.js';
+import { updateColumn, updateSection } from '@/store/resumeSlice.js';
 
 import ToolbarButton from '../../../Toolbar/shared/ToolbarButton.jsx';
 
@@ -29,46 +29,90 @@ const ColumnIndex = ({ section, sectionColumnIndex }) => {
       }
    }, [section.columnId]);
 
-   const updateColumnIndex = (action) => {
+   const moveSectionLeftOrRight = (leftOrRight) => {
       let newColumnIndex;
 
-      if (action === 'increment') newColumnIndex = columnIndexInputValue + 1;
-      else if (action === 'decrement') newColumnIndex = columnIndexInputValue - 1;
-      else if (action === 'input') newColumnIndex = parseInt(columnIndexInputValue);
+      if (leftOrRight === 'right') newColumnIndex = columnIndexInputValue + 1;
+      else if (leftOrRight === 'left') newColumnIndex = columnIndexInputValue - 1;
+      // else if (leftOrRight === 'input') newColumnIndex = parseInt(columnIndexInputValue);
 
       if (newColumnIndex < 0 || newColumnIndex >= columns.allIds.length) {
-         window.alert(`Column index must be between 0 and ${columns.allIds.length - 1}.`);
+         alert(`Cannot move ${section.label} section any further ${leftOrRight}.`);
          return;
       }
 
+      const oldColumnId = section.columnId;
       const newColumnId = columns.allIds[newColumnIndex];
+
+      if (oldColumnId === newColumnId) return;
+
+      const oldColumn = columns.byId[oldColumnId];
+      const newColumn = columns.byId[newColumnId];
+
+      const oldSectionIds = oldColumn.sectionIds.filter(id => id !== section.id);
+
+      const newColumnSectionIdsSorted = newColumn.sectionIds
+         .map(id => sections.byId[id])
+         .filter(Boolean)
+         .sort((a, b) => a.position - b.position)
+         .map(section => section.id);
+
+      const insertIndex = newColumnSectionIdsSorted.findIndex(id => {
+         return sections.byId[id].position > section.position;
+      });
+
+      const newSectionIds = [...newColumnSectionIdsSorted];
+
+      if (insertIndex === -1) {
+         newSectionIds.push(section.id);
+      } else {
+         newSectionIds.splice(insertIndex, 0, section.id);
+      }
+
       dispatch(updateSection({
          sectionId: section.id,
          changes: {
-               columnId: newColumnId
-            }
+            columnId: newColumnId,
+         },
       }));
+
+      dispatch(updateColumn({
+         id: oldColumnId,
+         changes: {
+            sectionIds: oldSectionIds,
+         },
+      }));
+
+      dispatch(updateColumn({
+         id: newColumnId,
+         changes: {
+            sectionIds: newSectionIds,
+         },
+      }));
+
       setColumnIndexInputValue(newColumnIndex);
-      
-   }
+   };
 
    return (
       <div className={styles.toolBarButtonInputWrapper} style={{ justifySelf: 'end' }}>
-         <SettingsModalInput
+         {/* <SettingsModalInput
             name="columnIndexInput"
             label={`${section.label} Column Index`}
             value={columnIndexInputValue}
             handleSetInputValue={setColumnIndexInputValue}
-            handleSetValue={() => updateColumnIndex('input')}
-         />
-         <ToolbarButton
-            text="-"
-            command={() => updateColumnIndex('decrement')}
-         />
-         <ToolbarButton
-            text="+"
-            command={() => updateColumnIndex('increment')}
-         />
+            handleSetValue={() => moveSectionLeftOrRight('input')}
+         /> */}
+         <span className={styles.sectionLabelSpan}>Move {section.label} Section</span>
+         <div style={{ display: 'flex' }}>
+            <ToolbarButton
+               text="Left"
+               command={() => moveSectionLeftOrRight('left')}
+            />
+            <ToolbarButton
+               text="Right"
+               command={() => moveSectionLeftOrRight('right')}
+            />
+         </div>
       </div>
    )
 }

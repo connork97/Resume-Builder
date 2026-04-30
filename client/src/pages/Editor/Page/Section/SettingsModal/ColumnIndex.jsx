@@ -49,6 +49,7 @@ const ColumnIndex = ({ section, sectionColumnIndex }) => {
             }
       }));
       setColumnIndexInputValue(newColumnIndex);
+      
    }
 
    return (

@@ -197,6 +197,7 @@ const resumeSlice = createSlice({
     updateSection(state, action) {
       const { sectionId, changes } = action.payload;
       const section = state.sections.byId[sectionId];
+      console.log('SECTION FROM SLICE', action.payload)
       const columnId = section.columnId;
 
       if (!section) {

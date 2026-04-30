@@ -19,6 +19,11 @@
    background: #333333;
 }
 
+.sectionRowLabel {
+  color: rgba(255, 255, 255, 1);
+  font-size: 1.5vh;
+}
+
 .active {
   background: #333;
   color: white;

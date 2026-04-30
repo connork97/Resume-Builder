@@ -19,11 +19,6 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
   const fieldValueText = Node.string(field.value[0]);
   const placeholderFieldText = field.label;
 
-  useEffect(() => {
-    console.log('FIELD', field)
-
-  }, [])
-
   const handleDeleteField = async (fieldId) => {
     if (!confirm(`Are you sure you want to delete this field?`)) {
       return;
@@ -104,7 +99,7 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
       <p className={
         fieldValueText.length ? styles.subFieldText : styles.placeholderFieldText
       }>
-        {fieldValueText}
+        {fieldValueText || placeholderFieldText}
         {/* {fieldValueText.length ? fieldValueText : placeholderFieldText} */}
       </p>
       <button

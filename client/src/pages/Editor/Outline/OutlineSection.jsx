@@ -39,8 +39,26 @@ const OutlineSection = ({
     dispatch(addSubsection({ sectionId: section.id }));
   };
 
-  const handleAddField = (sectionId, subsectionId) => {
-    dispatch(addField({ sectionId, subsectionId }));
+  const handleAddField = async (subsectionId) => {
+    try {
+      const response = await fetch(`${BASE_URL}/fields/${subsectionId}`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+      const data = await response.json();
+      if (!response.ok) {
+        throw data?.error;
+      }
+      const normalizedResume = normalizeResumeFromApi(data);
+      dispatch(setResume(normalizedResume));
+    } catch (error) {
+      console.error(error);
+      alert(
+        error?.code && error?.message
+          ? error.code + '\n' + error.message
+          : `An error occurred while trying to add a field to subsection of ID ${subsectionId}.`
+      )
+    }
   };
 
   const handleOnDragStart = (e, subIndex, subsectionId) => {
@@ -155,7 +173,7 @@ const OutlineSection = ({
 
                 <button
                   className={`${styles.addButton} ${styles.addFieldButton}`}
-                  onClick={() => handleAddField(section.id, subId)}
+                  onClick={() => handleAddField(subId)}
                 >
                   + Add Field
                 </button>

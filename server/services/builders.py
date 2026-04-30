@@ -154,12 +154,12 @@ def add_subsection(section_id, section_type, position=0):
     return subsection
 
 
-def add_field(subsection_id, field_label, position=0):
+def add_field(subsection_id, label='New Field', position=0):
     field = Field(
         subsection_id=subsection_id,
-        label=field_label,
+        label=label,
         position=position,
-        value=build_empty_slate_value(field_label),
+        value=build_empty_slate_value(label),
     )
 
     db.session.add(field)

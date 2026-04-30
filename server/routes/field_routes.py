@@ -1,4 +1,7 @@
 from flask import Blueprint, request, jsonify, session
+from sqlalchemy import func
+import re
+
 from models import db, Resume, Column, Section, Subsection, Field
 
 from services.builders import build_resume_with_defaults, add_column, add_section, add_subsection, add_field, add_default_fields
@@ -8,7 +11,54 @@ from utils.responses import generate_error, generate_success
 
 field_bp = Blueprint("fields", __name__, url_prefix="/fields")
 
-@field_bp.route('<int:field_id>', methods=['DELETE'])
+@field_bp.route('/<int:subsection_id>', methods=['POST'])
+def add_field_to_resume(subsection_id):
+   print(f'Received POST request to add a field to subsection of ID {subsection_id}')
+   
+   try:
+      subsection = Subsection.query.get(subsection_id)
+      if not subsection:
+         return generate_error(
+            error_type='NOT_FOUND',
+            code='SUBSECTION_NOT_FOUND',
+            message=f'Could not find subsection of ID {subsection_id} to add a field to.'
+         )
+      
+      resume = subsection.section.column.resume
+      
+      max_position = (
+         db.session.query(func.max(Field.position))
+         .filter(Field.subsection_id == subsection_id)
+         .scalar()
+      )
+      if not max_position:
+         max_position = -1
+      
+      spaced_section_type = re.sub(r'(?<!^)(?=[A-Z])', ' ', subsection.section.type)
+      formatted_label = spaced_section_type[0].upper() + spaced_section_type[1:]
+         
+      add_field(
+         subsection_id = subsection_id,
+         label = f'{formatted_label} Field',
+         position = int(max_position) + 1
+      )
+      
+      db.session.commit()
+      
+      return jsonify(resume.to_dict()), 200
+   
+   except Exception as e:
+      db.session.rollback()
+      print('ERROR_ADDING_FIELD: ', e)
+      
+      return generate_error(
+         error_type='SERVER_ERROR',
+         code="ERROR_ADDING_FIELD",
+         message=f"Failed to add field to subsection of ID {subsection_id}.",
+      )
+      
+
+@field_bp.route('/<int:field_id>', methods=['DELETE'])
 def delete_field_from_resume(field_id):
    print(f'Recieved DELETE request for field of ID {field_id}.')
    

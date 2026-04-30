@@ -1,6 +1,8 @@
 from copy import deepcopy
 from models import Column, Field, Section, Subsection, db, Resume
 
+from utils.formatting import format_label
+
 DEFAULT_RESUME_STYLING = {
     "display": "flex",
     "fontSize": "12px",
@@ -56,11 +58,11 @@ DEFAULT_FIELDS_DICT = {
 }
 
 
-def build_empty_slate_value(field_label):
+def build_empty_slate_value(label):
     return [
         {
             "type": "paragraph",
-            "label": field_label,
+            "label": label,
             "children": [{"text": ""}],
         }
     ]
@@ -74,7 +76,7 @@ def build_section_heading_slate_value(section_type):
     return [
         {
             "type": "heading",
-            "label": section_type,
+            "label": format_label(section_type),
             "children": [{"text": heading}],
         }
     ]
@@ -110,7 +112,7 @@ def add_column(resume_id, position=0, width="100%"):
 def add_section(column_id, section_type, position=0):
     section = Section(
         column_id=column_id,
-        label=section_type,
+        label=format_label(section_type),
         type=section_type,
         position=position,
         value=build_section_heading_slate_value(section_type),
@@ -134,7 +136,7 @@ def add_section(column_id, section_type, position=0):
 def add_subsection(section_id, section_type, position=0):
     subsection = Subsection(
         section_id=section_id,
-        label=f"{section_type} Subsection",
+        label=f"{format_label(section_type)} Subsection",
         type=section_type,
         position=position,
     )
@@ -157,7 +159,7 @@ def add_subsection(section_id, section_type, position=0):
 def add_field(subsection_id, label='New Field', position=0):
     field = Field(
         subsection_id=subsection_id,
-        label=label,
+        label=format_label(label),
         position=position,
         value=build_empty_slate_value(label),
     )
@@ -174,10 +176,10 @@ def add_default_fields(subsection_id, section_type):
 
     fields = []
 
-    for idx, field_label in enumerate(default_fields):
+    for idx, label in enumerate(default_fields):
         field = add_field(
             subsection_id=subsection_id,
-            field_label=field_label,
+            label=label,
             position=idx,
         )
         fields.append(field)
@@ -200,21 +202,10 @@ def build_resume_with_defaults(title, user_id, sections_data):
         if not should_create:
             continue
 
-        section = add_section(
+        add_section(
             column_id=column.id,
             section_type=section_type,
             position=section_position,
-        )
-
-        subsection = add_subsection(
-            section_id=section.id,
-            section_type=section.type,
-            position=0,
-        )
-
-        add_default_fields(
-            subsection_id=subsection.id,
-            section_type=section.type,
         )
 
         section_position += 1

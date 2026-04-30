@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify, session
 from sqlalchemy import func
-import re
 
 from models import db, Resume, Column, Section, Subsection, Field
 
@@ -31,16 +30,16 @@ def add_field_to_resume(subsection_id):
          .filter(Field.subsection_id == subsection_id)
          .scalar()
       )
-      if not max_position:
-         max_position = -1
       
-      spaced_section_type = re.sub(r'(?<!^)(?=[A-Z])', ' ', subsection.section.type)
-      formatted_label = spaced_section_type[0].upper() + spaced_section_type[1:]
+      if max_position is not None:
+         position = max_position + 1
+      else:
+         position = 0
          
       add_field(
          subsection_id = subsection_id,
-         label = f'{formatted_label} Field',
-         position = int(max_position) + 1
+         label = f'{subsection.section.type} Field',
+         position = position
       )
       
       db.session.commit()

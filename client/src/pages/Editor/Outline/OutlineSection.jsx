@@ -35,8 +35,27 @@ const OutlineSection = ({
     }));
   };
 
-  const handleAddSubsection = () => {
-    dispatch(addSubsection({ sectionId: section.id }));
+  const handleAddSubsection = async () => {
+    try {
+
+      const response = await fetch(`${BASE_URL}/subsections/${section.id}`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+      const data = await response.json();
+      if (!response.ok) {
+        throw data?.error;
+      }
+      const normalizedResume = normalizeResumeFromApi(data);
+      dispatch(setResume(normalizedResume));
+    } catch(error) {
+      console.error(error);
+      alert(
+        error?.code && error?.message
+        ? error.code + '\n' + error.message
+        : `Error adding subsection to section of ID ${section.id}.`
+      )
+    }
   };
 
   const handleAddField = async (subsectionId) => {

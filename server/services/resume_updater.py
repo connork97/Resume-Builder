@@ -19,7 +19,7 @@ def update_resume_with_form_data(resume_id, data):
 
     if "layout" in data:
         resume.layout = data["layout"]
-        
+
     # * --------------
     # * Column updates
     # * --------------
@@ -63,7 +63,7 @@ def update_resume_with_form_data(resume_id, data):
 
         if "columnId" in section_data:
             section.column_id = section_data["columnId"]
-            
+
         if "showHeading" in section_data:
             section.show_heading = section_data["showHeading"]
 
@@ -95,8 +95,22 @@ def update_resume_with_form_data(resume_id, data):
     # * -------------
     # * Field updates
     # * -------------
-    
+
     fields_by_id = data.get("fields", {}).get("byId", {})
+    
+    incoming_field_ids = {int(field_id) for field_id in fields_by_id.keys()}
+    
+    existing_fields = (
+        Field.query.join(Subsection)
+        .join(Section)
+        .join(Column)
+        .filter(Column.resume_id == resume_id)
+        .all()
+    )
+
+    for field in existing_fields:
+        if field.id not in incoming_field_ids:
+            db.session.delete(field)
     for field_id, field_data in fields_by_id.items():
         field = Field.query.get(int(field_id))
         if not field:

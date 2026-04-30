@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { reorderSections, deleteSection, updateField } from '@/store/resumeSlice.js';
 
@@ -126,6 +126,17 @@ const Outline = () => {
     return Node.string(slateValue);
   }
 
+  useEffect(() => {
+    if (!sections.allIds.length) return;
+
+    const initial = {};
+    sections.allIds.forEach(id => {
+      initial[id] = true;
+    });
+
+    setCollapsedSections(initial);
+  }, [sections.allIds]);
+
   return (
     <div
       className={`${styles.outlineWrapper} ${outlineIsHidden ? styles.hidden : styles.visible
@@ -172,6 +183,10 @@ const Outline = () => {
                   onClick={() => toggleSection(sectionId)}
                 >
                   ▼
+                {/* {collapsedSections[sectionId] ? "▼" : "▲"} */}
+                  {/* ◀ */}
+                {/* {collapsedSections[sectionId] ? "▼" : "▶"} */}
+
                 </button>
               </div>
 

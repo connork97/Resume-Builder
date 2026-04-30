@@ -172,14 +172,15 @@ const resumeSlice = createSlice({
       delete state.fields.byId[fieldId];
       state.fields.allIds = state.fields.allIds.filter(id => id !== fieldId);
 
-      const section = state.sections.find((s) => s.id === sectionId);
-      if (!section) return;
+      // const section = state.sections.find((s) => s.id === sectionId);
+      // if (!section) return;
 
-      const subsection = section.subsections.find((s) => s.id === subsectionId);
+      const subsection = state.subsections.byId[subsectionId];
+      // const subsection = section.subsections.find((s) => s.id === subsectionId);
       if (!subsection) return;
 
       subsection.fieldIds = subsection.fieldIds.filter(id => id !== fieldId);
-      subsection.fields = subsection.fields.filter((f) => f.id !== fieldId);
+      // subsection.fields = subsection.fields.filter((f) => f.id !== fieldId);
     },
 
     // * ------------ V
@@ -247,6 +248,10 @@ const resumeSlice = createSlice({
       if (!section) {
         console.error(`Cannot update subsection. Section with ID ${subsection.sectionId} not found.`);
         return;
+      }
+
+      for (const key in changes) {
+        subsection[key] = changes[key];
       }
 
       // for (const key in changes) {

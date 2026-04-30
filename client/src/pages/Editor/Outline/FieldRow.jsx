@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Node } from 'slate';
 
-import { deleteField, reorderFields, setResume } from "@/store/resumeSlice";
+import { deleteField, reorderFields, setResume, updateSubsection } from "@/store/resumeSlice";
 
 import styles from './Outline.module.css';
 import { BASE_URL } from '@/config';
@@ -15,33 +15,39 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
   const dispatch = useDispatch();
 
   const field = useSelector(state => state.resume.fields.byId[fieldId]);
+  const subsection = useSelector(state => state.resume.subsections.byId[subsectionId]);
 
   const fieldValueText = Node.string(field.value[0]);
   const placeholderFieldText = field.label;
 
   const handleDeleteField = async (fieldId) => {
-    if (!confirm(`Are you sure you want to delete this field?`)) {
-      return;
-    }
-    try {
-      const response = await fetch(`${BASE_URL}/fields/${fieldId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw data?.error;
-      }
-      const normalizedResume = normalizeResumeFromApi(data);
-      dispatch(setResume(normalizedResume));
-    } catch(error) {
-      console.error(error);
-      alert(
-        error?.code && error?.message
-        ? error.code + '\n' + error.message
-        : `An error occurred while trying to delete field of ID ${fieldId}.`
-      )
-    }
+    dispatch(deleteField({
+      fieldId: fieldId,
+      subsectionId: subsection.id,
+
+    }))
+    // if (!confirm(`Are you sure you want to delete this field?`)) {
+    //   return;
+    // }
+    // try {
+    //   const response = await fetch(`${BASE_URL}/fields/${fieldId}`, {
+    //     method: 'DELETE',
+    //     credentials: 'include',
+    //   });
+    //   const data = await response.json();
+    //   if (!response.ok) {
+    //     throw data?.error;
+    //   }
+      // const normalizedResume = normalizeResumeFromApi(data);
+      // dispatch(setResume(normalizedResume));
+    // } catch(error) {
+    //   console.error(error);
+    //   alert(
+    //     error?.code && error?.message
+    //     ? error.code + '\n' + error.message
+    //     : `An error occurred while trying to delete field of ID ${fieldId}.`
+    //   )
+    // }
   }
 
   return (

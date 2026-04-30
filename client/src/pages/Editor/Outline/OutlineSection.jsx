@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useSelector } from "react-redux";
 
@@ -48,12 +48,12 @@ const OutlineSection = ({
       }
       const normalizedResume = normalizeResumeFromApi(data);
       dispatch(setResume(normalizedResume));
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       alert(
         error?.code && error?.message
-        ? error.code + '\n' + error.message
-        : `Error adding subsection to section of ID ${section.id}.`
+          ? error.code + '\n' + error.message
+          : `Error adding subsection to section of ID ${section.id}.`
       )
     }
   };
@@ -140,6 +140,22 @@ const OutlineSection = ({
     }
   }
 
+  useEffect(() => {
+    if (!section.subsectionIds?.length) return;
+
+    setCollapsedSubsections(prev => {
+      const updated = { ...prev };
+
+      section.subsectionIds.forEach(id => {
+        if (!(id in updated)) {
+          updated[id] = true; // collapsed by default
+        }
+      });
+
+      return updated;
+    });
+  }, [section.subsectionIds]);
+
   return (
     <>
       {section.subsectionIds?.map((subId, subIndex) => {
@@ -178,7 +194,7 @@ const OutlineSection = ({
                   toggleSubsection(subId);
                 }}
               >
-                {/* {collapsedSubsections[subsectionId] ? "▼" : "▶"} */}
+                {/* {collapsedSubsections[subId] ? "▼" : "▲"} */}
                 ▼
               </button>
             </div>

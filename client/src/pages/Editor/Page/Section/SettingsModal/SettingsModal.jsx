@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateSection, updateColumn } from "../../../../../store/resumeSlice.js";
+import { updateSection, updateColumn } from '@/store/resumeSlice.js';
 
 import styles from './SettingsModal.module.css';
 
@@ -44,9 +44,10 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
 
    useEffect(() => {
       if (sectionColumnIndex) {
-         setColumnIndexInputValue(sectionColumnIndex)};
+         setColumnIndexInputValue(sectionColumnIndex)
+      };
       if (column?.width) setColumnWidthInputValue(parseInt(column.width));
-         // setColumnWidthInputValue(parseInt(column?.width));
+      // setColumnWidthInputValue(parseInt(column?.width));
    }, [column.width, section.columnId]);
 
    const dispatchLayoutChanges = (layoutChanges) => {
@@ -73,7 +74,7 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
       if (rowsInputValue == 0) rowsValue = 'auto';
 
       let layoutChanges = {};
-      
+
       if (columnsValue == 1) {
          layoutChanges = {
             display: 'flex',
@@ -124,7 +125,7 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
          { component: FontColor, label: "Font Color" },
          { component: LineHeight, label: "Line Height" },
          { component: TextAlign, label: "Text Align", styling: { justifyContent: 'end' } },
-         { component: BackgroundColor, label: 'Background Color'},
+         { component: BackgroundColor, label: 'Background Color' },
       ];
 
       return componentsArr.map((Component, index) => (
@@ -140,6 +141,16 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
       ));
    }
 
+   const hideOrShowHeading = () => {
+      const newShowHeadingValue = !section.showHeading;
+      dispatch(updateSection({
+         sectionId: section.id,
+         changes: {
+            showHeading: newShowHeadingValue
+         }
+      }))
+   }
+
    return (
       <>
          <div
@@ -149,6 +160,21 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
          />
          <div className={styles.settingsModalContainerDiv}>
             <p className={styles.settingsModalSectionTitle}>Editing: {section.label}</p>
+            <div className={styles.headingCheckboxWrapperDiv}>
+               <label
+                  className={styles.headingCheckboxLabel}
+                  htmlFor='hideOrShowHeading'
+               >
+                  Show Section {section.label} Heading:
+               </label>
+                  <input
+                     id='hideOrShowHeading'
+                     className={styles.headingCheckboxInput}
+                     type='checkbox'
+                     checked={section.showHeading}
+                     onChange={() => hideOrShowHeading()}
+                  />
+            </div>
             <ColumnIndex
                section={section}
                sectionColumnIndex={sectionColumnIndex}

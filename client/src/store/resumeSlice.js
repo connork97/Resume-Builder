@@ -64,6 +64,7 @@ const resumeSlice = createSlice({
       };
     },
     setResume: (state, action) => {
+      console.log("Setting Resume: ", action.payload)
       return {
         ...initialState,
         ...action.payload,

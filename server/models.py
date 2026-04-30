@@ -138,8 +138,9 @@ class Section(db.Model):
     label = db.Column(db.String, nullable=True)
     type = db.Column(db.String, nullable=False, default="defaultSection")
     value = db.Column(db.JSON, nullable=False, default=list)
-    styling = db.Column(db.JSON, nullable=False, default=dict)
+    show_heading = db.Column(db.Boolean, nullable=False, default=True, server_default='1')
     position = db.Column(db.Integer, nullable=False, default=0)
+    styling = db.Column(db.JSON, nullable=False, default=dict)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
 
@@ -158,8 +159,9 @@ class Section(db.Model):
             "label": self.label,
             "type": self.type,
             "value": self.value,
-            "styling": self.styling,
+            "showHeading": self.show_heading,
             "position": self.position,
+            "styling": self.styling,
             "createdAt": self.created_at.isoformat() if self.created_at else None,
             "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
             "subsections": [subsection.to_dict() for subsection in self.subsections],

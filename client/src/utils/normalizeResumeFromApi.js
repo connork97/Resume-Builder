@@ -69,6 +69,7 @@ const normalizeResumeFromApi = (apiResume) => {
         type: section.type ?? 'defaultSection',
         position: section.position ?? 0,
         value: section.value ?? [],
+        showHeading: section.showHeading ?? true,
         styling: section.styling ?? {},
         subsectionIds: sortedSubsections.map((subsection) => subsection.id),
       };

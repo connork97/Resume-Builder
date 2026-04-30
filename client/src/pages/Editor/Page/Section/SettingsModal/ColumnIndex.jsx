@@ -102,7 +102,9 @@ const ColumnIndex = ({ section, sectionColumnIndex }) => {
             handleSetInputValue={setColumnIndexInputValue}
             handleSetValue={() => moveSectionLeftOrRight('input')}
          /> */}
-         <span className={styles.sectionLabelSpan}>Move {section.label} Section</span>
+         <span className={styles.sectionLabelSpan}>
+            Move {section.label} Section
+         </span>
          <div style={{ display: 'flex' }}>
             <ToolbarButton
                text="Left"

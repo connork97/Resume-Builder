@@ -19,7 +19,7 @@ const Section = ({ section, column }) => {
   const dispatch = useDispatch();
 
   const resumeLayout = useSelector(state => state.resume.layout);
-  const columns = useSelector(state => state.resume.columns);  
+  const columns = useSelector(state => state.resume.columns);
   const subsections = useSelector(state => state.resume.subsections);
 
   const sectionRef = useRef(null);
@@ -29,10 +29,10 @@ const Section = ({ section, column }) => {
   const [isFirstRow, setIsFirstRow] = useState(false);
   const [isLastRow, setIsLastRow] = useState(false);
   const [sectionPadding, setSectionPadding] = useState({
-      paddingLeft: '0',
-      paddingRight: '0',
-      paddingTop: '0',
-      paddingBottom: '0',
+    paddingLeft: '0',
+    paddingRight: '0',
+    paddingTop: '0',
+    paddingBottom: '0',
   });
 
   useEffect(() => {
@@ -141,11 +141,13 @@ const Section = ({ section, column }) => {
           column={column}
         />
       )}
-      <SlateHeading
-        key={section.id}
-        section={section}
-        id={section.id}
-      />
+      {section.showHeading !== false && (
+        <SlateHeading
+          key={section.id}
+          section={section}
+          id={section.id}
+        />
+      )}
       {renderedSubsections}
     </div>
   );

@@ -63,6 +63,9 @@ def update_resume_with_form_data(resume_id, data):
 
         if "columnId" in section_data:
             section.column_id = section_data["columnId"]
+            
+        if "showHeading" in section_data:
+            section.show_heading = section_data["showHeading"]
 
     # * ------------------
     # * Subsection updates

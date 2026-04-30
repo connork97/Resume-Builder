@@ -101,6 +101,21 @@
    cursor: pointer;
 }
 
+.headingCheckboxWrapperDiv {
+   display: flex;
+   justify-content: space-between;
+}
+
+.headingCheckboxInput {
+   /* margin-left: auto; */
+}
+
+.headingCheckboxLabel {
+   color: rgba(255, 255, 255, 1);
+   font-size: 1.5vh;
+   /* margin-right: auto; */
+}
+
 .active {
    background: #333;
    color: white;

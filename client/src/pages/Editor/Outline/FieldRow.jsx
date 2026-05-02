@@ -21,11 +21,7 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
   const placeholderFieldText = field.label;
 
   const handleDeleteField = async (fieldId) => {
-    dispatch(deleteField({
-      fieldId: fieldId,
-      subsectionId: subsection.id,
-
-    }))
+    dispatch(deleteField(fieldId))
     // if (!confirm(`Are you sure you want to delete this field?`)) {
     //   return;
     // }

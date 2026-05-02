@@ -25,6 +25,39 @@ def update_resume_with_form_data(resume_id, data):
     # * --------------
 
     columns_by_id = data.get("columns", {}).get("byId", {})
+    incoming_column_ids = {int(column_id) for column_id in columns_by_id.keys()}
+    existing_columns = Column.query.filter(Column.resume_id == resume_id).all()
+    last_available_column = (
+        Column.query.filter(
+            Column.resume_id == resume_id, Column.id.in_(incoming_column_ids)
+        )
+        .order_by(Column.position.desc())
+        .first()
+    )
+    
+    if not last_available_column:
+        raise ValueError("Cannot delete all columns from a resume.")
+    
+    new_column_width = 100 // len(columns_by_id) if columns_by_id else 100
+    new_column_width_percent = f"{new_column_width}%"
+
+    sections_by_id = data.get("sections", {}).get("byId", {})
+
+    for column in existing_columns:
+        if column.id not in incoming_column_ids:
+            for section in list(column.sections):
+                last_available_column.sections.append(section)
+                section.column_id = last_available_column.id
+
+                section_data = sections_by_id.get(str(section.id))
+                if section_data:
+                    section_data["columnId"] = last_available_column.id
+
+            db.session.flush()  # Ensure all changes are applied before deleting the column
+            db.session.delete(column)
+        elif column.id in incoming_column_ids:
+            columns_by_id[str(column.id)]["width"] = new_column_width_percent
+
     for column_id, column_data in columns_by_id.items():
         column = Column.query.get(int(column_id))
         if not column:
@@ -40,7 +73,16 @@ def update_resume_with_form_data(resume_id, data):
     # * Section updates
     # * ---------------
 
-    sections_by_id = data.get("sections", {}).get("byId", {})
+    # sections_by_id = data.get("sections", {}).get("byId", {})
+    incoming_section_ids = {int(section_id) for section_id in sections_by_id.keys()}
+    existing_sections = (
+        Section.query.join(Column).filter(Column.resume_id == resume_id).all()
+    )
+
+    for section in existing_sections:
+        if section.id not in incoming_section_ids:
+            db.session.delete(section)
+
     for section_id, section_data in sections_by_id.items():
         section = Section.query.get(int(section_id))
         if not section:
@@ -72,6 +114,20 @@ def update_resume_with_form_data(resume_id, data):
     # * ------------------
 
     subsections_by_id = data.get("subsections", {}).get("byId", {})
+
+    incoming_subsection_ids = {int(field_id) for field_id in subsections_by_id.keys()}
+
+    existing_subsections = (
+        Subsection.query.join(Section)
+        .join(Column)
+        .filter(Column.resume_id == resume_id)
+        .all()
+    )
+
+    for subsection in existing_subsections:
+        if subsection.id not in incoming_subsection_ids:
+            db.session.delete(subsection)
+
     for subsection_id, subsection_data in subsections_by_id.items():
         subsection = Subsection.query.get(int(subsection_id))
         if not subsection:
@@ -97,9 +153,9 @@ def update_resume_with_form_data(resume_id, data):
     # * -------------
 
     fields_by_id = data.get("fields", {}).get("byId", {})
-    
+
     incoming_field_ids = {int(field_id) for field_id in fields_by_id.keys()}
-    
+
     existing_fields = (
         Field.query.join(Subsection)
         .join(Section)

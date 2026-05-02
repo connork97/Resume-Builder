@@ -1,5 +1,94 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 
+const deleteColumnById = (state, columnId) => {
+  const allColumnIds = state.columns.allIds;
+
+  if (allColumnIds.length === 1) {
+    alert('Cannot delete the only remaining column.');
+    return;
+  }
+
+  const columnToDelete = state.columns.byId[columnId];
+
+  if (!columnToDelete) {
+    console.error(`Cannot delete column. Column with ID ${columnId} not found.`);
+    return;
+  }
+
+  const lastAvailableColumnId = state.columns.allIds.findLast(
+    (id) => id !== columnId
+  );
+
+  const lastAvailableColumn = state.columns.byId[lastAvailableColumnId];
+
+  if (!lastAvailableColumn) {
+    console.error('Cannot delete column. No destination column found.');
+    return;
+  }
+
+  columnToDelete.sectionIds.forEach((sectionId) => {
+    const sectionToMove = state.sections.byId[sectionId];
+
+    if (!sectionToMove) return;
+
+    lastAvailableColumn.sectionIds.push(sectionId);
+    sectionToMove.columnId = lastAvailableColumnId;
+  });
+
+  columnToDelete.sectionIds = [];
+
+  delete state.columns.byId[columnId];
+
+  state.columns.allIds = state.columns.allIds.filter((id) => id !== columnId);
+};
+
+const deleteSectionById = (state, sectionId) => {
+  const section = state.sections.byId[sectionId];
+  const column = state.columns.byId[section.columnId];
+  if (column) {
+    column.sectionIds = column.sectionIds.filter((id) => id !== sectionId);
+  }
+
+  section.subsectionIds.forEach((subsectionId) => {
+    deleteSubsectionById(state, subsectionId);
+  });
+
+  delete state.sections.byId[sectionId];
+  state.sections.allIds = state.sections.allIds.filter((id) => id !== sectionId);
+};
+
+const deleteSubsectionById = (state, subsectionId) => {
+  const subsection = state.subsections.byId[subsectionId];
+  const section = state.sections.byId[subsection.sectionId];
+  if (!section || !Array.isArray(section.subsections)) {
+    console.error(`Cannot delete subsection. Section with ID ${subsection.sectionId} not found or has invalid subsections array.`);
+    return;
+  }
+
+  // Remove subsection from section's subsectionIds array
+  section.subsectionIds = section.subsectionIds.filter((id) => id !== subsectionId);
+
+  // Delete all fields in the subsection
+  subsection.fieldIds.forEach((fieldId) => {
+    delete state.fields.byId[fieldId];
+    state.fields.allIds = state.fields.allIds.filter(id => id !== fieldId);
+  });
+
+  // Delete the subsection itself
+  delete state.subsections.byId[subsectionId];
+  state.subsections.allIds = state.subsections.allIds.filter(id => id !== subsectionId);
+};
+
+const deleteFieldById = (state, fieldId) => {
+  const field = state.fields.byId[fieldId];
+  const subsection = state.subsections.byId[field.subsectionId];
+  subsection.fieldIds = subsection.fieldIds.filter((id) => id !== field.id);
+
+  delete state.fields.byId[field.id];
+  state.fields.allIds = state.fields.allIds.filter(id => id !== field.id);
+};
+
+
 // * ------------- V
 // * INITIAL STATE V
 // * ------------- V
@@ -125,61 +214,81 @@ const resumeSlice = createSlice({
     // * ----------------- V
 
     deleteColumn(state, action) {
-      const { columnId } = action.payload;
-      const column = state.columns.byId[columnId];
-      if (!column) {
-        console.error(`Cannot delete column.  No column with ID of ${columnId} found.`);
-        return;
-      }
+      const id = action.payload;
+      deleteColumnById(state, id);
+      // const column = state.columns.byId[columnId];
+      // if (!column) {
+      //   console.error(`Cannot delete column.  No column with ID of ${columnId} found.`);
+      //   return;
+      // }
 
-      // Move sections in deleted column to last available column
-      column.sectionIds.forEach((sectionId) => {
-        const section = state.sections.byId[sectionId];
-        section.columnId = state.columns.allIds.findLast((id) => id !== columnId);
-      });
+      // // Move sections in deleted column to last available column
+      // column.sectionIds.forEach((sectionId) => {
+      //   const section = state.sections.byId[sectionId];
+      //   section.columnId = state.columns.allIds.findLast((id) => id !== columnId);
+      // });
 
-      delete state.columns.byId[columnId];
-      state.columns.allIds = state.columns.allIds.filter((id) => id !== columnId);
+      // delete state.columns.byId[columnId];
+      // state.columns.allIds = state.columns.allIds.filter((id) => id !== columnId);
     },
 
     deleteSection(state, action) {
-      const sectionId = action.payload;
-      const section = state.sections.find(s => s.id === sectionId);
-      if (!section) return;
+      const id = action.payload;
+      deleteSectionById(state, id);
 
-      state.sections = state.sections.filter((s) => s.id !== sectionId);
+      // const section = state.sections.find(s => s.id === sectionId);
+      // if (!section) return;
+      // const column = state.columns.byId[section.columnId];
+      // column.sectionIds.filter((id) => id !== sectionId);
+
+      // const subsectionIds = section.subsectionIds;
+
+      // for (const id in subsectionIds) {
+      //   const subsection = state.subsections.byId[id];
+
+      // }
+
+
+      // state.sections = state.sections.filter((s) => s.id !== sectionId);
     },
 
     deleteSubsection(state, action) {
-      const { sectionId, subsectionId } = action.payload;
-      const section = state.sections.find((s) => s.id === sectionId);
-      const subsection = section.subsections.find((s) => s.id === subsectionId);
+      const id = action.payload;
+      deleteSubsectionById(state, id);
 
-      if (!section || !Array.isArray(section.subsections) || !subsection) return;
+      // const section = state.sections.find((s) => s.id === sectionId);
+      // const subsection = section.subsections.find((s) => s.id === subsectionId);
 
-      subsection.fieldIds.forEach((fieldId) => {
-        delete state.fields.byId[fieldId];
-        state.fields.allIds = state.fields.allIds.filter((id) => id !== fieldId);
-      })
+      // if (!section || !Array.isArray(section.subsections) || !subsection) return;
 
-      section.subsections = section.subsections.filter(
-        (sub) => sub.id !== subsectionId
-      );
+      // subsection.fieldIds.forEach((fieldId) => {
+      //   delete state.fields.byId[fieldId];
+      //   state.fields.allIds = state.fields.allIds.filter((id) => id !== fieldId);
+      // })
+
+      // section.subsections = section.subsections.filter(
+      //   (sub) => sub.id !== subsectionId
+      // );
     },
 
     deleteField(state, action) {
-      const { fieldId, subsectionId, sectionId } = action.payload;
-      delete state.fields.byId[fieldId];
-      state.fields.allIds = state.fields.allIds.filter(id => id !== fieldId);
+      const id = action.payload;
+
+      // const field = state.fields.byId[fieldId];
+      deleteFieldById(state, id);
+
+      // const subsection = state.subsections.byId[field.subsectionId]
+      // delete state.fields.byId[fieldId];
+      // state.fields.allIds = state.fields.allIds.filter(id => id !== fieldId);
 
       // const section = state.sections.find((s) => s.id === sectionId);
       // if (!section) return;
 
-      const subsection = state.subsections.byId[subsectionId];
+      // const subsection = state.subsections.byId[subsectionId];
       // const subsection = section.subsections.find((s) => s.id === subsectionId);
-      if (!subsection) return;
+      // if (!subsection) return;
 
-      subsection.fieldIds = subsection.fieldIds.filter(id => id !== fieldId);
+      // subsection.fieldIds = subsection.fieldIds.filter(id => id !== fieldId);
       // subsection.fields = subsection.fields.filter((f) => f.id !== fieldId);
     },
 

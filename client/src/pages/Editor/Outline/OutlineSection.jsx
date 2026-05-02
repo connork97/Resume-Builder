@@ -119,25 +119,26 @@ const OutlineSection = ({
     if (!confirm(`Are you sure you want to delete the ${sectionTitle} subsection at index ${subIndex}?`)) {
       return;
     }
-    try {
-      const response = await fetch(`${BASE_URL}/subsections/${subId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      })
-      const data = await response.json();
-      if (!response.ok) {
-        throw data?.error;
-      }
-      const normalizedResume = normalizeResumeFromApi(data);
-      dispatch(setResume(normalizedResume));
-    } catch (error) {
-      console.error(error);
-      alert(
-        error?.code && error?.message
-          ? error.code + '\n' + error.message
-          : `An error occurred while trying to delete the ${sectionTitle} subsection at index ${subIndex}.`
-      )
-    }
+    dispatch(deleteSubsection(subId));
+    // try {
+      // const response = await fetch(`${BASE_URL}/subsections/${subId}`, {
+      //   method: 'DELETE',
+      //   credentials: 'include',
+      // })
+      // const data = await response.json();
+      // if (!response.ok) {
+      //   throw data?.error;
+      // }
+      // const normalizedResume = normalizeResumeFromApi(data);
+      // dispatch(setResume(normalizedResume));
+    // } catch (error) {
+      // console.error(error);
+      // alert(
+        // error?.code && error?.message
+          // ? error.code + '\n' + error.message
+          // : `An error occurred while trying to delete the ${sectionTitle} subsection at index ${subIndex}.`
+      // )
+    // }
   }
 
   useEffect(() => {

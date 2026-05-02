@@ -101,25 +101,26 @@ const Outline = () => {
     const sectionLabel = sectionTitle || 'this'; if (!confirm(`Are you sure you want to delete the entire ${sectionTitle} section?`)) {
       return;
     }
-    try {
-      const response = await fetch(`${BASE_URL}/sections/${sectionId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      })
-      const data = await response.json();
-      if (!response.ok) {
-        throw data?.error;
-      }
-      const normalizedResume = normalizeResumeFromApi(data);
-      dispatch(setResume(normalizedResume));
-    } catch (error) {
-      console.error(error);
-      alert(
-        error?.code && error?.message
-          ? `${error.code}\n${error.message}`
-          : `Error deleting ${sectionLabel} section.`
-      );
-    }
+    dispatch(deleteSection(sectionId));
+    // try {
+      // const response = await fetch(`${BASE_URL}/sections/${sectionId}`, {
+      //   method: 'DELETE',
+      //   credentials: 'include',
+      // })
+      // const data = await response.json();
+      // if (!response.ok) {
+      //   throw data?.error;
+      // }
+      // const normalizedResume = normalizeResumeFromApi(data);
+      // dispatch(setResume(normalizedResume));
+    // } catch (error) {
+      // console.error(error);
+      // alert(
+        // error?.code && error?.message
+          // ? `${error.code}\n${error.message}`
+          // : `Error deleting ${sectionLabel} section.`
+      // );
+    // }
   }
 
   const getNodeString = (slateValue) => {

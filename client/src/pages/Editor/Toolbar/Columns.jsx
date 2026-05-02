@@ -46,23 +46,25 @@ const Columns = ({ label }) => {
       }
    }
 
-   const deleteColumn = async () => {
+   const removeLastColumn = async () => {
       // console.log(columns)
-      try {
-         const response = await fetch(`${BASE_URL}/resumes/${resume.id}/columns`, {
-            method: 'DELETE',
-            credentials: 'include',
-         });
-         const data = await response.json();
-         if (!response.ok) {
-            throw data?.error;
-         }
-         const normalizedResume = normalizeResumeFromApi(data);
-         dispatch(setResume(normalizedResume));
-      } catch(error) {
-         console.error(error || 'Error adding column.');
-         alert(error.code + '\n' + error.message || 'Error deleting column.');
-      }
+      const lastColumnId = columns.allIds.at(-1);
+      dispatch(deleteColumn(lastColumnId));
+      // try {
+      //    const response = await fetch(`${BASE_URL}/resumes/${resume.id}/columns`, {
+      //       method: 'DELETE',
+      //       credentials: 'include',
+      //    });
+      //    const data = await response.json();
+      //    if (!response.ok) {
+      //       throw data?.error;
+      //    }
+      //    const normalizedResume = normalizeResumeFromApi(data);
+      //    dispatch(setResume(normalizedResume));
+      // } catch(error) {
+      //    console.error(error || 'Error adding column.');
+      //    alert(error.code + '\n' + error.message || 'Error deleting column.');
+      // }
    }
 
    const columnInputLabel = columnInputValue == 1 ? 'Column': 'Columns'
@@ -74,7 +76,7 @@ const Columns = ({ label }) => {
          </span>
          <ToolbarButton
             text="-"
-            command={() => deleteColumn()}
+            command={() => removeLastColumn()}
          />
          {/* <ToolbarInput
             value={columnInputValue}

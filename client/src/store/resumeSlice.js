@@ -384,7 +384,7 @@ const resumeSlice = createSlice({
       // }
     },
 
-    updateField(state, action) {
+    updateFieldValue(state, action) {
       const { fieldId, newValue } = action.payload;
       const field = state.fields.byId[fieldId];
       if (!field) {
@@ -533,7 +533,7 @@ export const {
   deleteSubsection,
   reorderSubsections,
   addField,
-  updateField,
+  updateFieldValue,
   swapFieldPositions,
   deleteField,
   reorderFields

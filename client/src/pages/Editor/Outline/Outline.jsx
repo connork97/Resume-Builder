@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { reorderSections, deleteSection, updateField } from '@/store/resumeSlice.js';
+import { reorderSections, deleteSection, updateFieldValue } from '@/store/resumeSlice.js';
 
 import OutlineSection from "./OutlineSection.jsx";
 import FieldRow from "./FieldRow.jsx";
@@ -57,16 +57,14 @@ const Outline = () => {
     setDragItem(null);
   };
 
-  const handleFieldChange = (sectionId, subsectionId, fieldId, value) => {
-    dispatch(
-      updateField({
-        sectionId,
-        subsectionId,
-        fieldId,
-        newValue: value,
-      })
-    );
-  };
+  // const handleFieldChange = (fieldId, value) => {
+  //   dispatch(
+  //     updateFieldValue({
+  //       fieldId,
+  //       newValue: value,
+  //     })
+  //   );
+  // };
 
   const renderFieldRow = (
     sectionId,
@@ -83,7 +81,7 @@ const Outline = () => {
         fieldIndex={fieldIndex}
         sectionId={sectionId}
         subsectionId={subsectionId}
-        handleFieldChange={handleFieldChange}
+        // handleFieldChange={handleFieldChange}
         isHeaderOrSummary={isHeaderOrSummary}
         dragItem={dragItem}
         setDragItem={setDragItem}

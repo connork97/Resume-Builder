@@ -63,7 +63,7 @@ def build_empty_slate_value(label):
         {
             "type": "paragraph",
             "label": label,
-            "children": [{"text": ""}],
+            "children": [{"text": "", "fontSizeOffset": 0}],
         }
     ]
 
@@ -77,7 +77,7 @@ def build_section_heading_slate_value(section_type):
         {
             "type": "heading",
             "label": format_label(section_type),
-            "children": [{"text": heading}],
+            "children": [{"text": heading, "fontSizeOffset": 2}],
         }
     ]
 

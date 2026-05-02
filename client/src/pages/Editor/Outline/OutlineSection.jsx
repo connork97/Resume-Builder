@@ -231,18 +231,22 @@ const moveSubsectionUpOrDown = (upOrDown, subsectionId, subsectionIndex) => {
             {/* <div className={styles.dragHandle}> */}
             <div className={styles.subsectionHeaderRowWrapper}>
               <div className={styles.upArrowDownArrowWrapper}>
+                {subIndex !== 0 &&
                 <span
-                  className={styles.upOrDownArrow}
-                  onClick={() => moveSubsectionUpOrDown('up', subId, subIndex)}
+                className={styles.upOrDownArrow}
+                onClick={() => moveSubsectionUpOrDown('up', subId, subIndex)}
                 >
                   ▲
                 </span>
+                }
+                {subIndex !== subsections.allIds.length - 1 &&
                 <span
-                  className={styles.upOrDownArrow}
-                  onClick={() => moveSubsectionUpOrDown('down', subId, subIndex)}
+                className={styles.upOrDownArrow}
+                onClick={() => moveSubsectionUpOrDown('down', subId, subIndex)}
                 >
                   ▼
                 </span>
+                }
               </div>
               {/* ⋮⋮ */}
               <span className={styles.subsectionHeaderSpan}>

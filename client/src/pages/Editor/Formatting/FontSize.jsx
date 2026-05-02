@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateResumeStyling, updateSection } from '../../../store/resumeSlice.js';
-import { getActiveMark, setFontSize } from "../../../helpers/marks.js";
+import { updateResumeStyling, updateSection } from '@/store/resumeSlice.js';
+import { getActiveMark, setFontSize, setFontSizeOffset } from "@/helpers/marks.js";
 
 import styles from '../Toolbar/RichTextToolbar.module.css';
 
@@ -45,19 +45,44 @@ const FontSize = ({ editor, selection, label }) => {
          setFontSizeInputValue(resumeFontSize);
       } else if (!editor && activeSectionId) {
          const section = sections.byId[activeSectionId];
-         let sectionFontSize = parseInt(section.styling.fontSize || resumeStyling.fontSize);
-         sectionFontSize = findFontSizeValue(sectionFontSize, newFontSize);
+         // let sectionFontSize = parseInt(section.styling.fontSize || resumeStyling.fontSize);
+         // sectionFontSize = findFontSizeValue(sectionFontSize, newFontSize);
+         const currentSectionFontSizeOffset = section.styling.fontSizeOffset ?? 0;
+         let newSectionFontSizeOffset = currentSectionFontSizeOffset;
+         if (newFontSize === 'increment') {
+            newSectionFontSizeOffset += 1;
+         } else if (newFontSize === 'decrement') {
+            newSectionFontSizeOffset -= 1;
+         }
          dispatch(updateSection({
             sectionId: activeSectionId,
-            changes: { styling: { fontSize: `${sectionFontSize}px` } }
+            changes: { styling: { fontSizeOffset: newSectionFontSizeOffset } }
+            // changes: { styling: { fontSize: `${sectionFontSize}px` } }
          }));
-         setFontSizeInputValue(sectionFontSize);
+         // if (value === undefined || value === null) return fallback;
+
+         const newSectionFontSize = Number(String(resumeStyling.fontSize).replace(/[^0-9.]/g, '')) + newSectionFontSizeOffset;
+
+         // return Number.isNaN(number) ? fallback : number;
+         setFontSizeInputValue(newSectionFontSize)
+         // setFontSizeInputValue(sectionFontSize);
       }
       else if (editor) {
-         let currentFontSize = getActiveMark(editor, 'fontSize') || parseInt(fontSizeInputValue);
-         currentFontSize = findFontSizeValue(currentFontSize, newFontSize);
-         setFontSize(editor, `${currentFontSize}`);
-         setFontSizeInputValue(currentFontSize);
+         const currentFontSizeOffset = getActiveMark(editor, 'fontSizeOffset');
+         let newFontSizeOffset = currentFontSizeOffset;
+         if (newFontSize === 'increment') {
+            newFontSizeOffset += 1;
+         } else if (newFontSize === 'decrement') {
+            newFontSizeOffset -= 1;
+         }
+
+         setFontSizeOffset(editor, newFontSizeOffset);
+         const newFontSizeInputValue = getActiveMark(editor, 'fontSize');
+         setFontSizeInputValue(newFontSizeInputValue);
+         // let currentFontSize = getActiveMark(editor, 'fontSize') || parseInt(fontSizeInputValue);
+         // currentFontSize = findFontSizeValue(currentFontSize, newFontSize);
+         // setFontSize(editor, `${currentFontSize}`);
+         // setFontSizeInputValue(currentFontSize);
       }
    }
 

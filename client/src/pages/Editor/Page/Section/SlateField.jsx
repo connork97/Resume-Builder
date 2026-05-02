@@ -2,7 +2,7 @@ import React, {Fragment, useEffect, useMemo, useCallback } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, Editor, Transforms } from "slate";
 import { useDispatch } from "react-redux";
-import { updateField, setActiveEditorId, setActiveEditorSelection } from "../../../../store/resumeSlice.js";
+import { updateFieldValue, setActiveEditorId, setActiveEditorSelection } from "../../../../store/resumeSlice.js";
 
 import renderLeaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
@@ -14,7 +14,8 @@ import { nanoid } from "@reduxjs/toolkit";
 
 const SlateField = ({ field, sectionId, subsectionId }) => {
   // Stable editor instance
-  const editorId = useMemo(() => nanoid(), []);
+  // const editorId = useMemo(() => nanoid(), []);
+  const editorId = useMemo(() => field.id, [])
   const editor = useMemo(() => withReact(createEditor()), []);
   const dispatch = useDispatch();
 
@@ -37,11 +38,9 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
     );
   }, []);
 
-  const handleUpdateField = (newValue) => {
+  const handleUpdateFieldValue = (newValue) => {
     dispatch(
-      updateField({
-        sectionId,
-        subsectionId,
+      updateFieldValue({
         fieldId: field.id,
         newValue,
       })
@@ -90,7 +89,7 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
       initialValue={field.value ?? null
       }
       onChange={(value) => {
-        handleUpdateField(value);
+        handleUpdateFieldValue(value);
         dispatch(setActiveEditorSelection(editor.children));
       }
 

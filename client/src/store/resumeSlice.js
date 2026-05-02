@@ -360,7 +360,17 @@ const resumeSlice = createSlice({
       }
 
       for (const key in changes) {
-        subsection[key] = changes[key];
+        if (key === "position") {
+          subsection.position = changes.position;
+
+          section.subsectionIds = section.subsectionIds
+            .map(id => state.subsections.byId[id])
+            .filter(Boolean)
+            .sort((a, b) => a.position - b.position)
+            .map(subsection => subsection.id);
+        } else {
+          subsection[key] = changes[key];
+        }
       }
 
       // for (const key in changes) {
@@ -387,6 +397,37 @@ const resumeSlice = createSlice({
         return;
       }
       field.value = newValue;
+    },
+
+    swapFieldPositions(state, action) {
+      const { fieldId, targetFieldId } = action.payload;
+
+      const field = state.fields.byId[fieldId];
+      const targetField = state.fields.byId[targetFieldId];
+
+      if (!field || !targetField) {
+        console.error("Swap failed: field not found.");
+        return;
+      }
+
+      const subsection = state.subsections.byId[field.subsectionId];
+
+      if (!subsection) {
+        console.error("Swap failed: subsection not found.");
+        return;
+      }
+
+      // Swap positions
+      const originalPosition = field.position;
+      field.position = targetField.position;
+      targetField.position = originalPosition;
+
+      // Re-sort fieldIds to reflect new order
+      subsection.fieldIds = subsection.fieldIds
+        .map(id => state.fields.byId[id])
+        .filter(Boolean)
+        .sort((a, b) => a.position - b.position)
+        .map(f => f.id);
     },
 
     updateResumeStyling(state, action) {
@@ -493,6 +534,7 @@ export const {
   reorderSubsections,
   addField,
   updateField,
+  swapFieldPositions,
   deleteField,
   reorderFields
 } = resumeSlice.actions;

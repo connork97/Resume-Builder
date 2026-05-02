@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Node } from 'slate';
 
-import { deleteField, reorderFields, setResume, updateSubsection } from "@/store/resumeSlice";
+import { deleteField, reorderFields, setResume, updateSubsection, swapFieldPositions } from "@/store/resumeSlice";
 
 import styles from './Outline.module.css';
 import { BASE_URL } from '@/config';
@@ -14,7 +14,8 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
 
   const dispatch = useDispatch();
 
-  const field = useSelector(state => state.resume.fields.byId[fieldId]);
+  const fields = useSelector(state => state.resume.fields);
+  const field = fields.byId[fieldId];
   const subsection = useSelector(state => state.resume.subsections.byId[subsectionId]);
 
   const fieldValueText = Node.string(field.value[0]);
@@ -34,8 +35,8 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
     //   if (!response.ok) {
     //     throw data?.error;
     //   }
-      // const normalizedResume = normalizeResumeFromApi(data);
-      // dispatch(setResume(normalizedResume));
+    // const normalizedResume = normalizeResumeFromApi(data);
+    // dispatch(setResume(normalizedResume));
     // } catch(error) {
     //   console.error(error);
     //   alert(
@@ -45,6 +46,28 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
     //   )
     // }
   }
+
+  const moveFieldUpOrDown = (upOrDown) => {
+    const fieldsInSubsection = subsection.fieldIds
+      .map(id => fields.byId[id])
+      .filter(Boolean)
+      .sort((a, b) => a.position - b.position);
+
+    const targetIndex =
+      upOrDown === "down" ? fieldIndex + 1 : fieldIndex - 1;
+
+    const fieldToSwapWith = fieldsInSubsection[targetIndex];
+
+    if (!fieldToSwapWith) {
+      alert(`You cannot move this field ${upOrDown} any further.`);
+      return;
+    }
+
+    dispatch(swapFieldPositions({
+      fieldId,
+      targetFieldId: fieldToSwapWith.id,
+    }));
+  };
 
   return (
     <div
@@ -97,7 +120,25 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
         setDragItem(null);
       }}
     >
-      <div className={styles.dragHandle}>⋮⋮</div>
+      {/* <div className={styles.dragHandle}>⋮⋮</div> */}
+      <div className={styles.upOrDownArrowWrapper}>
+        {fieldIndex !== 0 &&
+          <span
+            className={styles.upOrDownArrow}
+            onClick={() => moveFieldUpOrDown('up')}
+          >
+            ▲
+          </span>
+        }
+        {fieldIndex !== subsection.fieldIds.length - 1 &&
+          <span
+            className={styles.upOrDownArrow}
+            onClick={() => moveFieldUpOrDown('down')}
+          >
+            ▼
+          </span>
+        }
+      </div>
       <p className={
         fieldValueText.length ? styles.subFieldText : styles.placeholderFieldText
       }>
@@ -107,15 +148,15 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
       <button
         className={styles.deleteButton}
         onClick={() => handleDeleteField(fieldId)}
-        // onClick={() =>
-        //   dispatch(
-        //     deleteField({
-        //       sectionId,
-        //       subsectionId,
-        //       fieldId: field.id
-        //     })
-        //   )
-        // }
+      // onClick={() =>
+      //   dispatch(
+      //     deleteField({
+      //       sectionId,
+      //       subsectionId,
+      //       fieldId: field.id
+      //     })
+      //   )
+      // }
       >
         ✕
       </button>

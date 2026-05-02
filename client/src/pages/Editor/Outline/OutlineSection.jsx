@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import {
   addSubsection,
+  updateSubsection,
   deleteSubsection,
   reorderSubsections,
   addField,
@@ -121,23 +122,23 @@ const OutlineSection = ({
     }
     dispatch(deleteSubsection(subId));
     // try {
-      // const response = await fetch(`${BASE_URL}/subsections/${subId}`, {
-      //   method: 'DELETE',
-      //   credentials: 'include',
-      // })
-      // const data = await response.json();
-      // if (!response.ok) {
-      //   throw data?.error;
-      // }
-      // const normalizedResume = normalizeResumeFromApi(data);
-      // dispatch(setResume(normalizedResume));
+    // const response = await fetch(`${BASE_URL}/subsections/${subId}`, {
+    //   method: 'DELETE',
+    //   credentials: 'include',
+    // })
+    // const data = await response.json();
+    // if (!response.ok) {
+    //   throw data?.error;
+    // }
+    // const normalizedResume = normalizeResumeFromApi(data);
+    // dispatch(setResume(normalizedResume));
     // } catch (error) {
-      // console.error(error);
-      // alert(
-        // error?.code && error?.message
-          // ? error.code + '\n' + error.message
-          // : `An error occurred while trying to delete the ${sectionTitle} subsection at index ${subIndex}.`
-      // )
+    // console.error(error);
+    // alert(
+    // error?.code && error?.message
+    // ? error.code + '\n' + error.message
+    // : `An error occurred while trying to delete the ${sectionTitle} subsection at index ${subIndex}.`
+    // )
     // }
   }
 
@@ -156,6 +157,50 @@ const OutlineSection = ({
       return updated;
     });
   }, [section.subsectionIds]);
+
+const moveSubsectionUpOrDown = (upOrDown, subsectionId, subsectionIndex) => {
+  const currentSubsection = subsections.byId[subsectionId];
+
+  const subsectionsInSection = section.subsectionIds
+    .map(id => subsections.byId[id])
+    .filter(Boolean)
+    .sort((a, b) => a.position - b.position);
+
+  if (!currentSubsection) {
+    console.error(`Subsection ${subsectionId} not found.`);
+    return;
+  }
+
+  let targetIndex;
+
+  if (upOrDown === 'down') {
+    targetIndex = subsectionIndex + 1;
+  } else if (upOrDown === 'up') {
+    targetIndex = subsectionIndex - 1;
+  }
+
+  const subsectionToSwapWith = subsectionsInSection[targetIndex];
+
+  if (!subsectionToSwapWith) {
+    alert(`You cannot move this subsection ${upOrDown} any further.`);
+    return;
+  }
+
+  // Swap positions
+  dispatch(updateSubsection({
+    subsectionId: currentSubsection.id,
+    changes: {
+      position: subsectionToSwapWith.position,
+    },
+  }));
+
+  dispatch(updateSubsection({
+    subsectionId: subsectionToSwapWith.id,
+    changes: {
+      position: currentSubsection.position,
+    },
+  }));
+};
 
   return (
     <>
@@ -183,7 +228,23 @@ const OutlineSection = ({
               setDragItem(null);
             }}
           >
-            <div className={styles.dragHandle}>⋮⋮
+            {/* <div className={styles.dragHandle}> */}
+            <div className={styles.subsectionHeaderRowWrapper}>
+              <div className={styles.upArrowDownArrowWrapper}>
+                <span
+                  className={styles.upOrDownArrow}
+                  onClick={() => moveSubsectionUpOrDown('up', subId, subIndex)}
+                >
+                  ▲
+                </span>
+                <span
+                  className={styles.upOrDownArrow}
+                  onClick={() => moveSubsectionUpOrDown('down', subId, subIndex)}
+                >
+                  ▼
+                </span>
+              </div>
+              {/* ⋮⋮ */}
               <span className={styles.subsectionHeaderSpan}>
                 {sectionTitle} {subIndex + 1}
               </span>

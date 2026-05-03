@@ -1,0 +1,75 @@
+.signUpContainer, .loginContainer {
+   background-image: url('@/assets/backgrounds/signUpLoginBackground.png');
+   background-size: cover;
+   background-position-y: 30%;
+   /* background-position: center; */
+   /* background-repeat: no-repeat; */
+
+   position: absolute;
+   height: 100%;
+   width: 100%;
+   padding: 20vh 35vw;
+   font-size: 2vh;
+}
+
+.signUpForm, .loginForm {
+   display: flex;
+   flex-direction: column;
+   min-width: 40vh;
+   /* width: 100%; */
+   padding: 5vh;
+   background: rgba(255, 255, 255, 0.5);
+   border: 1px solid transparent;
+   border-radius: 2.5vh;
+}
+
+.signUpLabel, .signUpInput, .loginLabel, .loginInput {
+   padding: 0.5vh 1vh;
+}
+
+.signUpLabel, .loginLabel {
+   color: rgba(0, 0, 0, 0.75);
+   display: flex;
+   flex-direction: column;
+   margin: 0.75vh auto auto 5%;
+   width: 100%;
+}
+
+.signUpInput, .loginInput {
+   width: 90%;
+   margin-top: 0.5vh;
+   border: 1px solid transparent;
+   border-radius: 5vh;
+   background-color: rgba(255, 255, 255, 0.9);
+}
+
+.signUpInput:focus, .loginInput:focus {
+   outline: none;
+}
+
+.showPasswordLabel {
+   height: 0;
+   position: relative;
+   display: flex;
+   align-items: center;
+   bottom: 1vh;
+   left: 10vh;
+   font-size: 1.25vh;
+}
+
+.showPasswordCheckBox {
+   margin-right: 1vh;
+   height: 1.5vh;
+   width: 1.5vh;
+}
+
+.submitButton {
+   margin: 2.5vh auto auto auto;
+   width: fit-content;
+   padding: 1vh 3vh;
+   color: white;
+   background-color: rgba(0, 123, 255, 0.8);
+   border: 1px solid transparent;
+   border-radius: 5vh;
+   cursor: pointer;
+}

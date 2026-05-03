@@ -2,7 +2,7 @@
 // * API TO FRONT END NORMALIZATION V
 // * ------------------------------ V
 
-import BackgroundColor from "../pages/Editor/Formatting/BackgroundColor";
+import BackgroundColor from "../features/ResumeEditor/TextFormatting/BackgroundColor";
 
 const normalizeResumeFromApi = (apiResume) => {
   const normalizedResume = {

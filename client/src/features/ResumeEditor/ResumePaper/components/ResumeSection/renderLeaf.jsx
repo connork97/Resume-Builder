@@ -19,7 +19,7 @@ const renderLeaf = (props) => {
   const fieldEditorId = useSelector(state => state.resume.activeEditorId);
   const section = useSelector(state => state.resume.sections.byId[sectionId]);
 
-  console.log('PROPS FROM RENDER LEAF', props)
+  // console.log('PROPS FROM RENDER LEAF', props)
   const resumeFontSize = getPxNumber(resumeStyling.fontSize);
   const sectionFontSizeOffset = section ? section.styling.fontSizeOffset : 0;
   const leafFontSizeOffset = leaf.fontSizeOffset ?? 0;

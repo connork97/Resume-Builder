@@ -10,32 +10,23 @@ import { BASE_URL } from '@/config';
 import AccountOutlineRow from './AccountOutlineRow';
 
 import styles from './Account.module.css';
+import { logUserOutOfApi } from '@/services/userServices';
 
 const AccountOutline = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
 
-   const logUserOut = async () => {
+   const handleLogUserOut = async () => {
       if (!confirm('Are you sure you want to log out?')) {
          return;
       }
-      try {
-         const response = await fetch(`${BASE_URL}/logout`, {
-            method: 'DELETE',
-            credentials: 'include',
-         });
-         
-         const data = await response.json();
-         if (!response.ok) {
-            throw data?.error;
-         }
-         dispatch(clearUser());
-         confirm('You have been logged out successfully.');
-         navigate('/home');
-      } catch(error) {
-         console.error(error);
-         alert(error.code + '\n' + error.message || error);
+      const userIsLoggedOut = await logUserOutOfApi();
+      if (!userIsLoggedOut) {
+         return;
       }
+      dispatch(clearUser());
+      confirm('You have been logged out successfully.');
+      navigate('/home');
    };
    return (
       <div className={styles.accountOutlineWrapper}>
@@ -55,7 +46,7 @@ const AccountOutline = () => {
          <AccountOutlineRow
             text="Log Out"
             // linkTo="/home"
-            clickCommand={logUserOut}
+            clickCommand={handleLogUserOut}
          />
       </div>
    );

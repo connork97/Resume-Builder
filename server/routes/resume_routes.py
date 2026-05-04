@@ -127,173 +127,102 @@ def update_resume(resume_id):
         )
 
 
-@resume_bp.route("/<int:resume_id>/columns", methods=["POST"])
-def add_column(resume_id):
-    print(f"Received POST request to add column to resume of ID {resume_id}.")
+# @resume_bp.route("/<int:resume_id>/columns", methods=["POST"])
+# def add_column(resume_id):
+#     print(f"Received POST request to add column to resume of ID {resume_id}.")
 
-    try:
-        resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
-        if not resume:
-            return generate_error(
-                error_type="NOT_FOUND",
-                code="RESUME_NOT_FOUND",
-                message=f"Could not find resume of ID {resume_id} to add a column to.",
-            )
+#     try:
+#         resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
+#         if not resume:
+#             return generate_error(
+#                 error_type="NOT_FOUND",
+#                 code="RESUME_NOT_FOUND",
+#                 message=f"Could not find resume of ID {resume_id} to add a column to.",
+#             )
 
-        column_count = len(resume.columns)
-        new_column_widths = str(100 / (column_count + 1)) + "%"
+#         column_count = len(resume.columns)
+#         new_column_widths = str(100 / (column_count + 1)) + "%"
 
-        new_column = Column(
-            resume_id=resume_id, position=column_count, width=new_column_widths
-        )
-        db.session.add(new_column)
+#         new_column = Column(
+#             resume_id=resume_id, position=column_count, width=new_column_widths
+#         )
+#         db.session.add(new_column)
 
-        for column in resume.columns:
-            column.width = new_column_widths
+#         for column in resume.columns:
+#             column.width = new_column_widths
 
-        db.session.commit()
+#         db.session.commit()
 
-        return jsonify(resume.to_dict()), 201
+#         return jsonify(resume.to_dict()), 201
 
-    except Exception:
-        db.session.rollback()
-        raise
-
-
-@resume_bp.route("/<int:resume_id>/columns", methods=["DELETE"])
-def delete_column(resume_id):
-    print(f"Received DELETE request for the last column of resume of ID {resume_id}.")
-
-    resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
-    if not resume:
-        return generate_error(
-            error_type="NOT_FOUND",
-            code="RESUME_NOT_FOUND",
-            message=f"Could not find resume of ID {resume_id} to add a column to.",
-        )
-
-    second_to_last_column = (
-        Column.query.filter_by(resume_id=resume_id)
-        .order_by(Column.position.desc())
-        .offset(1)
-        .first()
-    )
-
-    if not second_to_last_column:
-        return generate_error(
-            error_type="FORBIDDEN",
-            code="INVALID_COLUMN_COUNT",
-            message="Resumes require at least one column.",
-        )
-
-    column_to_delete = (
-        Column.query.filter_by(resume_id=resume_id)
-        .order_by(Column.position.desc())
-        .first()
-    )
-
-    if not column_to_delete:
-        return generate_error(
-            error_type="NOT_FOUND",
-            code="COLUMN_NOT_FOUND",
-            message=f"Column to delete not found.",
-        )
-
-    for section in column_to_delete.sections:
-        try:
-            section.column_id = second_to_last_column.id
-        except Exception as e:
-            print(
-                f"Error changing the column_id for section of ID {section.id}.  Undoing all changes.",
-                e,
-            )
-            db.session.rollback()
-            return generate_error(
-                error_type="SERVER_ERROR",
-                code="ERROR_DELETING_COLUMN",
-                message="An unknown error occurred while relocating sections from the column to be deleted.",
-            )
-
-    db.session.delete(column_to_delete)
-    db.session.flush()
-
-    column_count = Column.query.filter_by(resume_id=resume.id).count()
-    new_column_widths = str(100 / (column_count)) + "%"
-
-    for column in resume.columns:
-        column.width = new_column_widths
-
-    db.session.commit()
-
-    return jsonify(resume.to_dict()), 200
+#     except Exception:
+#         db.session.rollback()
+#         raise
 
 
-@resume_bp.route("/<int:resume_id>/sections", methods=["POST"])
-def add_section_to_resume(resume_id):
-    form_data = request.get_json() or {}
+# @resume_bp.route("/<int:resume_id>/columns", methods=["DELETE"])
+# def delete_column(resume_id):
+#     print(f"Received DELETE request for the last column of resume of ID {resume_id}.")
 
-    try:
-        resume = Resume.query.filter_by(id=resume_id).one_or_none()
+#     resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
+#     if not resume:
+#         return generate_error(
+#             error_type="NOT_FOUND",
+#             code="RESUME_NOT_FOUND",
+#             message=f"Could not find resume of ID {resume_id} to add a column to.",
+#         )
 
-        if not resume:
-            return generate_error(
-                error_type="NOT_FOUND",
-                code="RESUME_NOT_FOUND",
-                message=f"Resume of ID {resume_id} not found.",
-            )
+#     second_to_last_column = (
+#         Column.query.filter_by(resume_id=resume_id)
+#         .order_by(Column.position.desc())
+#         .offset(1)
+#         .first()
+#     )
 
-        section_type = form_data.get("type")
+#     if not second_to_last_column:
+#         return generate_error(
+#             error_type="FORBIDDEN",
+#             code="INVALID_COLUMN_COUNT",
+#             message="Resumes require at least one column.",
+#         )
 
-        existing_section = (
-            db.session.query(Section)
-            .join(Column, Section.column_id == Column.id)
-            .filter(
-                Column.resume_id == resume_id,
-                Section.type == section_type,
-            )
-            .first()
-        )
+#     column_to_delete = (
+#         Column.query.filter_by(resume_id=resume_id)
+#         .order_by(Column.position.desc())
+#         .first()
+#     )
 
-        if existing_section:
-            new_subsection_position = len(existing_section.subsections)
+#     if not column_to_delete:
+#         return generate_error(
+#             error_type="NOT_FOUND",
+#             code="COLUMN_NOT_FOUND",
+#             message=f"Column to delete not found.",
+#         )
 
-            add_subsection(
-                section_id=existing_section.id,
-                section_type=existing_section.type,
-                position=new_subsection_position,
-            )
+#     for section in column_to_delete.sections:
+#         try:
+#             section.column_id = second_to_last_column.id
+#         except Exception as e:
+#             print(
+#                 f"Error changing the column_id for section of ID {section.id}.  Undoing all changes.",
+#                 e,
+#             )
+#             db.session.rollback()
+#             return generate_error(
+#                 error_type="SERVER_ERROR",
+#                 code="ERROR_DELETING_COLUMN",
+#                 message="An unknown error occurred while relocating sections from the column to be deleted.",
+#             )
 
-        else:
-            first_column = (
-                Column.query.filter_by(resume_id=resume_id)
-                .order_by(Column.position)
-                .first()
-            )
+#     db.session.delete(column_to_delete)
+#     db.session.flush()
 
-            if not first_column:
-                return generate_error(
-                    error_type="SERVER_ERROR",
-                    code="NO_COLUMNS_FOUND",
-                    message="Cannot add a section because this resume has no columns.",
-                )
+#     column_count = Column.query.filter_by(resume_id=resume.id).count()
+#     new_column_widths = str(100 / (column_count)) + "%"
 
-            new_section_position = len(first_column.sections)
+#     for column in resume.columns:
+#         column.width = new_column_widths
 
-            add_section(
-                column_id=first_column.id,
-                section_type=section_type,
-                position=new_section_position,
-            )
+#     db.session.commit()
 
-        db.session.commit()
-        return jsonify(resume.to_dict()), 201
-
-    except Exception as e:
-        db.session.rollback()
-        print("ERROR_ADDING_SECTION:", e)
-
-        return generate_error(
-            error_type="SERVER_ERROR",
-            code="ERROR_ADDING_SECTION",
-            message=f"An unknown error occurred when adding a section to resume of ID {resume_id}.",
-        )
+#     return jsonify(resume.to_dict()), 200

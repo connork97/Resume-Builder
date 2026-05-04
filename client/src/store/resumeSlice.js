@@ -60,7 +60,7 @@ const deleteSectionById = (state, sectionId) => {
 const deleteSubsectionById = (state, subsectionId) => {
   const subsection = state.subsections.byId[subsectionId];
   const section = state.sections.byId[subsection.sectionId];
-  if (!section || !Array.isArray(section.subsections)) {
+  if (!section || !Array.isArray(section.subsectionIds)) {
     console.error(`Cannot delete subsection. Section with ID ${subsection.sectionId} not found or has invalid subsections array.`);
     return;
   }

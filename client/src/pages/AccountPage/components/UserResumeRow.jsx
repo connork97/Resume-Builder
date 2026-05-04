@@ -10,6 +10,7 @@ import { BASE_URL } from '@/config';
 import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
 
 import styles from './Account.module.css';
+import { deleteResumeFromApi } from '@/services/resumeServices';
 
 const UserResumeRow = ({ resume, fetchUserResumes }) => {
 
@@ -24,21 +25,15 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
    }
 
    const handleDeleteResume = async () => {
-      try {
-         const response = await fetch(`${BASE_URL}/resumes/${resume.id}`, {
-            method: 'DELETE',
-         })
-         const data = await response.json();
-         if (!response.ok) {
-            throw data?.error;
-         }
-         alert(data?.success.code + '\n' + data?.success.message)
-         fetchUserResumes(user.id);
+      if (!confirm(`Are you sure you want to delete resume titled ${resume.title}?`)) {
+         return;
       }
-      catch (error) {
-         console.error(error);
-         alert(error.code + '\n' + error.message || error);
+      
+      const resumeIsDeleted = await deleteResumeFromApi(resume.id);
+      if (!resumeIsDeleted) {
+         return;
       }
+      fetchUserResumes(user.id);
    };
 
    return (

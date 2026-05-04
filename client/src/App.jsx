@@ -22,43 +22,24 @@ import AccountSettings from "./pages/AccountPage/components/AccountSettings.jsx"
 
 import { useDummyData } from "./utils/useDummyData";
 import ResumeEditorPage from "./pages/ResumeEditorPage/ResumeEditorPage";
+import { checkApi, checkSession } from "./services/sessionServices";
 
 const App = () => {
   const dispatch = useDispatch();
 
-  const checkAPI = async () => {
-    try {
-      const response = await fetch(BASE_URL);
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching API:", error);
-    }
-  };
-
-  const checkSession = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/checksession`, {
-        credentials: 'include',
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw data?.error;
-      }
-      // console.log('Active session data:', data);
-      dispatch(setUser(data));
-    } catch (error) {
-      console.error(error);
-      // alert(error.code + '\n' + error.message || error)
-    }
-  };
-
   useEffect(() => {
-    checkAPI();
-    checkSession();
+    const run = async () => {
+      const apiStatus = await checkApi();
+      console.log('API STATUS: ', apiStatus);
+
+      const sessionData = await checkSession();
+      if (sessionData !== null) {
+        dispatch(setUser(sessionData));
+      }
+    }
+    run();
   }, []);
 
-  // useDummyData();
 
   return (
     <BrowserRouter>

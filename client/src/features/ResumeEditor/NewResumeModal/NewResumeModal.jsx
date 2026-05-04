@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 
 import { BASE_URL } from '@/config';
 
 import { setResumeId } from '@/store/resumeSlice';
 
 import styles from './NewResumeModal.module.css';
+import { addResumeToApi } from '@/services/resumeServices';
 
 const NewResumeModal = ({ onClose }) => {
 
@@ -51,30 +52,20 @@ const NewResumeModal = ({ onClose }) => {
          alert('Please enter a title for your resume.');
          return;
       }
-      if (confirm('Are you sure you want to create a new resume?')) {
-         console.log('Creating resume with info:', resumeInfo);
-         try {
-            const response = await fetch(`${BASE_URL}/resumes`, {
-               method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json',
-               },
-               credentials: 'include',
-               body: JSON.stringify(resumeInfo),
-            });
-            const data = await response.json();
-            if (!response.ok) {
-               throw data?.error;
-            }
-            dispatch(setResumeId(data.id));
-            onClose();
-            navigate(`/editor/${data.id}`);
-
-         } catch (error) {
-            console.error('Error creating resume:', error);
-            alert(error.code + '\n' + error.message || error);
-         }
+      if (!confirm('Are you sure you want to create a new resume?')) {
+         return;
       }
+      console.log('Creating resume with info:', resumeInfo);
+
+      const normalizedResumeData = await addResumeToApi(resumeInfo);
+      if (!normalizedResumeData) {
+         return;
+      }
+
+      dispatch(setResumeId(normalizedResumeData.id));
+      onClose();
+      navigate(`/editor/${normalizedResumeData.id}`);
+
    };
 
    return (

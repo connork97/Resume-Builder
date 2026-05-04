@@ -7,6 +7,7 @@ import { setUser } from '@/store/userSlice';
 import { BASE_URL } from '@/config.js';
 
 import styles from './Auth.module.css';
+import { addUserToApi } from '@/services/userServices';
 
 const SignUp = () => {
 
@@ -32,24 +33,13 @@ const SignUp = () => {
 
    const createUser = async (e) => {
       e.preventDefault();
-      try {
-         const response = await fetch(`${BASE_URL}/signup`, {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newUser),
-         });
-         const data = await response.json();
-         if (!response.ok) {
-            throw data?.error;
-         }
-         dispatch(setUser(data));
-         navigate('/account');
-      } catch (error) {
-         console.error('Error: ', error);
-         alert(error.code + '\n' + error.message || error);
+      const newUserData = await addUserToApi(newUser);
+      if (!newUserData) {
+         return;
       }
+
+      dispatch(setUser(newUserData));
+      navigate('/account');
    }
 
    return (

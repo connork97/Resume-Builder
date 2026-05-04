@@ -7,6 +7,7 @@ import { BASE_URL } from '@/config.js';
 import UserResumeRow from './UserResumeRow.jsx';
 
 import styles from './Account.module.css';
+import { getUserResumesFromApi } from '@/services/userServices.js';
 
 const UserResumes = () => {
    const user = useSelector(state => state.user);
@@ -15,17 +16,11 @@ const UserResumes = () => {
    const [userResumes, setUserResumes] = useState([]);
 
    const fetchUserResumes = async (userId) => {
-      try {
-         const response = await fetch(`${BASE_URL}/users/${userId}`);
-         const data = await response.json();
-         if (!response.ok) {
-            throw data?.error;
-         }
-         setUserResumes(data.resumes);
-      } catch (error) {
-         console.error(error);
-         alert(error.code + '\n' + error.message || error);
+      const userData = await getUserResumesFromApi(userId);
+      if (!userData) {
+         return;
       }
+      setUserResumes(userData.resumes);
    }
 
    useEffect(() => {

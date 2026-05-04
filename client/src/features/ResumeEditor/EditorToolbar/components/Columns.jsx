@@ -11,6 +11,7 @@ import ToolbarInput from "./shared/ToolbarInput.jsx";
 
 import styles from './RichTextToolbar.module.css';
 import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi.js';
+import { addColumnToApi, deleteLastColumnFromApi,  } from '@/services/resumeServices.js';
 
 const Columns = ({ label }) => {
 
@@ -28,43 +29,27 @@ const Columns = ({ label }) => {
    }, [columns.allIds]);
 
    const addColumn = async () => {
-      // console.log(columns)
-      try {
-         const response = await fetch(`${BASE_URL}/resumes/${resume.id}/columns`, {
-            method: 'POST',
-            credentials: 'include',
-         });
-         const data = await response.json();
-         if (!response.ok) {
-            throw data?.error;
-         }
-         const normalizedResume = normalizeResumeFromApi(data);
-         dispatch(setResume(normalizedResume));
-      } catch(error) {
-         console.error(error || 'Error adding column.');
-         alert(error.code + '\n' + error.message || 'Error adding column.');
+      const updatedNormalizedResumeData = await addColumnToApi(resume.id);
+
+      if (!updatedNormalizedResumeData) {
+         return;
       }
+      dispatch(setResume(updatedNormalizedResumeData));
+
    }
 
    const removeLastColumn = async () => {
-      // console.log(columns)
+      const autoSave = false;
+
       const lastColumnId = columns.allIds.at(-1);
+
+      if (autoSave) {
+         const updatedNormalizedResumeData = await deleteLastColumnFromApi(resume.id);
+         if (!updatedNormalizedResumeData) {
+            return;
+         }
+      }
       dispatch(deleteColumn(lastColumnId));
-      // try {
-      //    const response = await fetch(`${BASE_URL}/resumes/${resume.id}/columns`, {
-      //       method: 'DELETE',
-      //       credentials: 'include',
-      //    });
-      //    const data = await response.json();
-      //    if (!response.ok) {
-      //       throw data?.error;
-      //    }
-      //    const normalizedResume = normalizeResumeFromApi(data);
-      //    dispatch(setResume(normalizedResume));
-      // } catch(error) {
-      //    console.error(error || 'Error adding column.');
-      //    alert(error.code + '\n' + error.message || 'Error deleting column.');
-      // }
    }
 
    const columnInputLabel = columnInputValue == 1 ? 'Column': 'Columns'

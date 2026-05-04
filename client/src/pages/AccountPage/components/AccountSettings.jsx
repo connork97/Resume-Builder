@@ -7,6 +7,7 @@ import { updateUser } from '@/store/userSlice';
 import { BASE_URL } from '@/config';
 
 import styles from './Account.module.css';
+import { updateUserApi } from '@/services/userServices';
 
 const AccountSettings = () => {
 
@@ -48,27 +49,12 @@ const AccountSettings = () => {
          return;
       };
 
-      try {
-         const response = await fetch(`${BASE_URL}/users/${user.id}`, {
-            method: 'PUT',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(userFormData),
-         });
-
-         const data = await response.json();
-
-         if (!response.ok) {
-            throw data?.error;
-         }
-         dispatch(updateUser(data));
-         alert('Account settings updated successfully.');
-      } catch (error) {
-         console.error(error);
-         alert(error.code + '\n' + error.message || error);
+      const updatedUserData = await updateUserApi(user.id, userFormData);
+      if (!updatedUserData) {
+         return;
       }
+      dispatch(updateUser(updatedUserData));
+      alert('Account updated successfully.')
    };
 
    const formattedDate = (dateString) => {

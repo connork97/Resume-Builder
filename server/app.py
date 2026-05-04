@@ -10,6 +10,7 @@ from routes.resume_routes import resume_bp
 from routes.section_routes import section_bp
 from routes.subsection_routes import subsection_bp
 from routes.field_routes import field_bp
+from routes.column_routes import column_bp
 
 app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp)
@@ -17,6 +18,7 @@ app.register_blueprint(resume_bp)
 app.register_blueprint(section_bp)
 app.register_blueprint(subsection_bp)
 app.register_blueprint(field_bp)
+app.register_blueprint(column_bp)
 
 @app.route("/")
 def home():

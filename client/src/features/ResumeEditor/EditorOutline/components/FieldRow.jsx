@@ -9,6 +9,7 @@ import { deleteField, reorderFields, setResume, updateSubsection, swapFieldPosit
 import styles from '../Outline.module.css';
 import { BASE_URL } from '@/config';
 import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
+import { deleteFieldFromApi } from '@/services/resumeServices';
 
 const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSummary, dragItem, setDragItem }) => {
 
@@ -22,29 +23,18 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
   const placeholderFieldText = field.label;
 
   const handleDeleteField = async (fieldId) => {
+    if (!confirm(`Are you sure you want to delete this field?`)) {
+      return;
+    }
+    const autoSave = false;
+
+    if (autoSave) {
+      const fieldIsDeleted = await deleteFieldFromApi(fieldId);
+      if (!fieldIsDeleted) {
+        return;
+      }
+    }
     dispatch(deleteField(fieldId))
-    // if (!confirm(`Are you sure you want to delete this field?`)) {
-    //   return;
-    // }
-    // try {
-    //   const response = await fetch(`${BASE_URL}/fields/${fieldId}`, {
-    //     method: 'DELETE',
-    //     credentials: 'include',
-    //   });
-    //   const data = await response.json();
-    //   if (!response.ok) {
-    //     throw data?.error;
-    //   }
-    // const normalizedResume = normalizeResumeFromApi(data);
-    // dispatch(setResume(normalizedResume));
-    // } catch(error) {
-    //   console.error(error);
-    //   alert(
-    //     error?.code && error?.message
-    //     ? error.code + '\n' + error.message
-    //     : `An error occurred while trying to delete field of ID ${fieldId}.`
-    //   )
-    // }
   }
 
   const moveFieldUpOrDown = (upOrDown) => {

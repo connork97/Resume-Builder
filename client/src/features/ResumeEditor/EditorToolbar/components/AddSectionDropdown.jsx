@@ -7,6 +7,7 @@ import { BASE_URL } from '@/config';
 import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
 
 import styles from '../Toolbar.module.css';
+import { addSectionToApi } from '@/services/resumeServices';
 
 const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
 
@@ -33,25 +34,13 @@ const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
    ];
 
    const handleAddSection = async (type) => {
-      try {
-         const response = await fetch(`${BASE_URL}/resumes/${resume.id}/sections`, {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify({ type }),
-         });
-         const data = await response.json();
-         if (!response.ok) {
-            throw data?.error;
-         }
-         const normalizedResume = normalizeResumeFromApi(data);
-         dispatch(setResume(normalizedResume));
-      } catch(error) {
-         console.error(error);
-         alert(error.code + '\n' + error.message || 'Error adding section.')
+      const updatedNormalizedResumeData = await addSectionToApi(resume.id, type);
+      if (!updatedNormalizedResumeData) {
+         return;
       }
+
+      dispatch(setResume(updatedNormalizedResumeData));
+      
       setAddSectionDropdownIsOpen(false);
    }
    // const handleAddSection = (type) => {

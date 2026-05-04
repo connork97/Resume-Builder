@@ -7,6 +7,7 @@ import { setUser } from '@/store/userSlice';
 import { BASE_URL } from '@/config.js';
 
 import styles from './Auth.module.css';
+import { logUserInApi } from '@/services/userServices';
 
 const Login = () => {
    const navigate = useNavigate();
@@ -30,25 +31,13 @@ const Login = () => {
 
    const logUserIn = async (e) => {
       e.preventDefault();
-      try {
-         const response = await fetch(`${BASE_URL}/login`, {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(userCredentials),
-         });
-         const data = await response.json();
-         if (!response.ok) {
-            throw data?.error;
-         }
-         dispatch(setUser(data));
-         navigate('/account');
-      } catch (error) {
-         console.error('Error: ', error)
-         alert(error.code + '\n' + error.message || error);         
+      const loggedInUserData = await logUserInApi(userCredentials);
+      if (!loggedInUserData) {
+         return;
       }
+
+      dispatch(setUser(loggedInUserData));
+      navigate('/account');
    }
 
    return (

@@ -16,6 +16,7 @@ import NewResumeModal from '@/features/ResumeEditor/NewResumeModal/NewResumeModa
 import styles from './ResumeEditor.module.css';
 import AutoWidthInput from '@/components/AutoWidthInput.jsx';
 import ResumePaper from '@/features/ResumeEditor/ResumePaper/ResumePaper.jsx';
+import { getResumeFromApi, saveResumeToApi } from '@/services/resumeServices';
 
 const ResumeEditor = () => {
 
@@ -36,18 +37,12 @@ const ResumeEditor = () => {
    }, [location.pathname]);
 
    const fetchResumeById = async (resumeId) => {
-      try {
-         const response = await fetch(`${BASE_URL}/resumes/${resumeId}`)
-         if (!response.ok) {
-            throw data?.error;
-         }
-         const resumeData = await response.json();
-         const normalizedResume = normalizeResumeFromApi(resumeData);
-         dispatch(setResume(normalizedResume));
-      } catch (error) {
-         console.error(`Error fetching resume of id ${resumeId}: `, error)
-         alert(error.code + '\n' + error.message || error);
+      const normalizedResumeData = await getResumeFromApi(resumeId);
+      if (!normalizedResumeData) {
+         return;
       }
+
+      dispatch(setResume(normalizedResumeData));
    }
 
    useEffect(() => {
@@ -55,26 +50,12 @@ const ResumeEditor = () => {
    }, [resumeId])
 
    const saveResume = async () => {
-      try {
-         const response = await fetch(`${BASE_URL}/resumes/${resumeId}`, {
-            method: 'PUT',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(resume)
-         });
-
-         const data = response.json();
-
-         if (!response.ok) {
-            throw data?.error;
-         }
-         alert('Resume Saved Successfully!');
-      } catch (error) {
-         console.error('Error saving resume: ', error);
-         alert(error.code + '\n' + error.message || 'Error saving resume.')
+      const resumeIsSaved = await saveResumeToApi(resume);
+      if (!resumeIsSaved) {
+         return;
       }
+
+      alert('Resume saved successfully!');
    }
 
    const [resumeTitle, setResumeTitle] = useState(resume.title);

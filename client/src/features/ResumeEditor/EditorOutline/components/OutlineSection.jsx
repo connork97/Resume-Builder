@@ -14,6 +14,7 @@ import {
 import styles from "../Outline.module.css";
 import { BASE_URL } from "@/config";
 import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi";
+import { addFieldToApi, addSubsectionToApi, deleteSubsectionFromApi } from "@/services/resumeServices";
 
 const OutlineSection = ({
   dispatch,
@@ -37,48 +38,24 @@ const OutlineSection = ({
   };
 
   const handleAddSubsection = async () => {
-    try {
 
-      const response = await fetch(`${BASE_URL}/subsections/${section.id}`, {
-        method: 'POST',
-        credentials: 'include'
-      })
-      const data = await response.json();
-      if (!response.ok) {
-        throw data?.error;
-      }
-      const normalizedResume = normalizeResumeFromApi(data);
-      dispatch(setResume(normalizedResume));
-    } catch (error) {
-      console.error(error);
-      alert(
-        error?.code && error?.message
-          ? error.code + '\n' + error.message
-          : `Error adding subsection to section of ID ${section.id}.`
-      )
+    const updatedNormalizedResumeData = await addSubsectionToApi(section.id);
+
+    if (!updatedNormalizedResumeData) {
+      return;
     }
+
+    dispatch(setResume(updatedNormalizedResumeData));
   };
 
   const handleAddField = async (subsectionId) => {
-    try {
-      const response = await fetch(`${BASE_URL}/fields/${subsectionId}`, {
-        method: 'POST',
-        credentials: 'include',
-      })
-      const data = await response.json();
-      if (!response.ok) {
-        throw data?.error;
-      }
-      const normalizedResume = normalizeResumeFromApi(data);
-      dispatch(setResume(normalizedResume));
-    } catch (error) {
-      console.error(error);
-      alert(
-        error?.code && error?.message
-          ? error.code + '\n' + error.message
-          : `An error occurred while trying to add a field to subsection of ID ${subsectionId}.`
-      )
+    const updatedNormalizedResumeData = await addFieldToApi(subsectionId);
+
+    if (!updatedNormalizedResumeData) {
+      return;
     }
+
+    dispatch(setResume(updatedNormalizedResumeData));
   };
 
   const handleOnDragStart = (e, subIndex, subsectionId) => {
@@ -120,26 +97,15 @@ const OutlineSection = ({
     if (!confirm(`Are you sure you want to delete the ${sectionTitle} subsection at index ${subIndex}?`)) {
       return;
     }
+    const autoSave = false;
+
+    if (autoSave) {
+      const subsectionIsDeleted = await deleteSubsectionFromApi(subId);
+      if (!subsectionIsDeleted) {
+        return;
+      }
+    }
     dispatch(deleteSubsection(subId));
-    // try {
-    // const response = await fetch(`${BASE_URL}/subsections/${subId}`, {
-    //   method: 'DELETE',
-    //   credentials: 'include',
-    // })
-    // const data = await response.json();
-    // if (!response.ok) {
-    //   throw data?.error;
-    // }
-    // const normalizedResume = normalizeResumeFromApi(data);
-    // dispatch(setResume(normalizedResume));
-    // } catch (error) {
-    // console.error(error);
-    // alert(
-    // error?.code && error?.message
-    // ? error.code + '\n' + error.message
-    // : `An error occurred while trying to delete the ${sectionTitle} subsection at index ${subIndex}.`
-    // )
-    // }
   }
 
   useEffect(() => {
@@ -158,49 +124,49 @@ const OutlineSection = ({
     });
   }, [section.subsectionIds]);
 
-const moveSubsectionUpOrDown = (upOrDown, subsectionId, subsectionIndex) => {
-  const currentSubsection = subsections.byId[subsectionId];
+  const moveSubsectionUpOrDown = (upOrDown, subsectionId, subsectionIndex) => {
+    const currentSubsection = subsections.byId[subsectionId];
 
-  const subsectionsInSection = section.subsectionIds
-    .map(id => subsections.byId[id])
-    .filter(Boolean)
-    .sort((a, b) => a.position - b.position);
+    const subsectionsInSection = section.subsectionIds
+      .map(id => subsections.byId[id])
+      .filter(Boolean)
+      .sort((a, b) => a.position - b.position);
 
-  if (!currentSubsection) {
-    console.error(`Subsection ${subsectionId} not found.`);
-    return;
-  }
+    if (!currentSubsection) {
+      console.error(`Subsection ${subsectionId} not found.`);
+      return;
+    }
 
-  let targetIndex;
+    let targetIndex;
 
-  if (upOrDown === 'down') {
-    targetIndex = subsectionIndex + 1;
-  } else if (upOrDown === 'up') {
-    targetIndex = subsectionIndex - 1;
-  }
+    if (upOrDown === 'down') {
+      targetIndex = subsectionIndex + 1;
+    } else if (upOrDown === 'up') {
+      targetIndex = subsectionIndex - 1;
+    }
 
-  const subsectionToSwapWith = subsectionsInSection[targetIndex];
+    const subsectionToSwapWith = subsectionsInSection[targetIndex];
 
-  if (!subsectionToSwapWith) {
-    alert(`You cannot move this subsection ${upOrDown} any further.`);
-    return;
-  }
+    if (!subsectionToSwapWith) {
+      alert(`You cannot move this subsection ${upOrDown} any further.`);
+      return;
+    }
 
-  // Swap positions
-  dispatch(updateSubsection({
-    subsectionId: currentSubsection.id,
-    changes: {
-      position: subsectionToSwapWith.position,
-    },
-  }));
+    // Swap positions
+    dispatch(updateSubsection({
+      subsectionId: currentSubsection.id,
+      changes: {
+        position: subsectionToSwapWith.position,
+      },
+    }));
 
-  dispatch(updateSubsection({
-    subsectionId: subsectionToSwapWith.id,
-    changes: {
-      position: currentSubsection.position,
-    },
-  }));
-};
+    dispatch(updateSubsection({
+      subsectionId: subsectionToSwapWith.id,
+      changes: {
+        position: currentSubsection.position,
+      },
+    }));
+  };
 
   return (
     <>
@@ -232,20 +198,20 @@ const moveSubsectionUpOrDown = (upOrDown, subsectionId, subsectionIndex) => {
             <div className={styles.subsectionHeaderRowWrapper}>
               <div className={styles.upArrowDownArrowWrapper}>
                 {subIndex !== 0 &&
-                <span
-                className={styles.upOrDownArrow}
-                onClick={() => moveSubsectionUpOrDown('up', subId, subIndex)}
-                >
-                  ▲
-                </span>
+                  <span
+                    className={styles.upOrDownArrow}
+                    onClick={() => moveSubsectionUpOrDown('up', subId, subIndex)}
+                  >
+                    ▲
+                  </span>
                 }
                 {subIndex !== subsections.allIds.length - 1 &&
-                <span
-                className={styles.upOrDownArrow}
-                onClick={() => moveSubsectionUpOrDown('down', subId, subIndex)}
-                >
-                  ▼
-                </span>
+                  <span
+                    className={styles.upOrDownArrow}
+                    onClick={() => moveSubsectionUpOrDown('down', subId, subIndex)}
+                  >
+                    ▼
+                  </span>
                 }
               </div>
               {/* ⋮⋮ */}

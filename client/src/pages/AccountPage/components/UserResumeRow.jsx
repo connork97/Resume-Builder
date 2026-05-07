@@ -4,13 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { setResumeId } from '@/store/resumeSlice';
-
-import { BASE_URL } from '@/config';
-
-import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
+import { deleteResumeFromApi } from '@/services/resumeServices';
 
 import styles from './Account.module.css';
-import { deleteResumeFromApi } from '@/services/resumeServices';
+import { formatDateTime } from '@/utils/formatDateTime';
 
 const UserResumeRow = ({ resume, fetchUserResumes }) => {
 
@@ -28,7 +25,7 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
       if (!confirm(`Are you sure you want to delete resume titled ${resume.title}?`)) {
          return;
       }
-      
+
       const resumeIsDeleted = await deleteResumeFromApi(resume.id);
       if (!resumeIsDeleted) {
          return;
@@ -36,10 +33,15 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
       fetchUserResumes(user.id);
    };
 
+
+
    return (
       <div className={styles.userResumeRow}>
-         <h2>{resume.title}</h2>
-         {/* <p>Created on: {new Date(resume.createdAt).toLocaleDateString()}</p> */}
+         <div className={styles.resumeInfoWrapper}>
+            <h2>{resume.title}</h2>
+            <p>Created On: {formatDateTime(resume.createdAt)}</p>
+            <p>Last Updated On: {formatDateTime(resume.updatedAt)}</p>
+         </div>
          <div className={styles.userResumeRowButtons}>
             <button
                className={styles.editResumeButton}
@@ -53,8 +55,8 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
             >
                Delete
             </button>
+            {/* Future implementation: Buttons for viewing, editing, and deleting the resume */}
          </div>
-         {/* Future implementation: Buttons for viewing, editing, and deleting the resume */}
       </div>
    );
 };

@@ -1,22 +1,48 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from config import db
 
+# * Helper function to serialize datetime objects in ISO 8601 format with 'Z' for UTC
+def serialize_datetime(dt):
+    if not dt:
+        return None
 
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+
+    return dt.isoformat(timespec="seconds").replace("+00:00", "Z")
+
+def id_column():
+    return db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+def created_at_column():
+    return db.Column(
+        db.DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+def updated_at_column():
+    return db.Column(
+        db.DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
 
 class User(db.Model):
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = id_column()
     first_name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=True)
     # username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
-    
+    created_at = created_at_column()
+    updated_at = updated_at_column()
+
     resumes = db.relationship(
         "Resume",
         backref="user",
@@ -40,15 +66,17 @@ class User(db.Model):
             "lastName": self.last_name,
             # "username": self.username,
             "email": self.email,
-            "createdAt": self.created_at.isoformat() if self.created_at else None,
-            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            "createdAt": serialize_datetime(self.created_at),
+            "updatedAt": serialize_datetime(self.updated_at),
+            # "createdAt": self.created_at.isoformat() if self.created_at else None,
+            # "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
         }
         
         if only:
             user_dict = {key: value for key, value in user_dict.items() if key in only}
             
         if condense_relationship_data:
-            user_dict["resumes"] = [{"id": resume.id, "title": resume.title} for resume in self.resumes]
+            user_dict["resumes"] = [{"id": resume.id, "title": resume.title, "createdAt": resume.created_at, "updatedAt": resume.updated_at} for resume in self.resumes]
         else:
             user_dict["resumes"] = [resume.to_dict() for resume in self.resumes]
         
@@ -65,13 +93,15 @@ class User(db.Model):
 class Resume(db.Model):
     __tablename__ = "resumes"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = id_column()
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     title = db.Column(db.String, nullable=False, default="Untitled Resume")
     styling = db.Column(db.JSON, nullable=False, default=dict)
     layout = db.Column(db.JSON, nullable=False, default=dict)
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
+    created_at = created_at_column()
+    updated_at = updated_at_column()
+    # created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
+    # updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
 
     columns = db.relationship(
         "Column",
@@ -80,6 +110,7 @@ class Resume(db.Model):
         lazy=True,
         order_by="Column.position",
     )
+
     
     def to_dict(self):
         return {
@@ -88,8 +119,8 @@ class Resume(db.Model):
             "title": self.title,
             "styling": self.styling,
             "layout": self.layout,
-            "createdAt": self.created_at.isoformat() if self.created_at else None,
-            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            "createdAt": serialize_datetime(self.created_at),
+            "updatedAt": serialize_datetime(self.updated_at),
             "columns": [column.to_dict() for column in self.columns],
         }
 
@@ -100,12 +131,12 @@ class Resume(db.Model):
 class Column(db.Model):
     __tablename__ = "columns"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = id_column()
     resume_id = db.Column(db.Integer, db.ForeignKey("resumes.id"), nullable=False)
     position = db.Column(db.Integer, nullable=False, default=0)
     width = db.Column(db.String, nullable=True)
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
+    created_at = created_at_column()
+    updated_at = updated_at_column()
 
     sections = db.relationship(
         "Section",
@@ -121,8 +152,10 @@ class Column(db.Model):
             "resumeId": self.resume_id,
             "width": self.width,
             "position": self.position,
-            "createdAt": self.created_at.isoformat() if self.created_at else None,
-            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            "createdAt": serialize_datetime(self.created_at),
+            "updatedAt": serialize_datetime(self.updated_at),
+            # "createdAt": self.created_at.isoformat() if self.created_at else None,
+            # "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
             "sections": [section.to_dict() for section in self.sections],
         }
 
@@ -133,7 +166,7 @@ class Column(db.Model):
 class Section(db.Model):
     __tablename__ = "sections"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = id_column()
     column_id = db.Column(db.Integer, db.ForeignKey("columns.id"), nullable=False)
     label = db.Column(db.String, nullable=True)
     type = db.Column(db.String, nullable=False, default="defaultSection")
@@ -141,8 +174,8 @@ class Section(db.Model):
     show_heading = db.Column(db.Boolean, nullable=False, default=True, server_default='1')
     position = db.Column(db.Integer, nullable=False, default=0)
     styling = db.Column(db.JSON, nullable=False, default=dict)
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
+    created_at = created_at_column()
+    updated_at = updated_at_column()
 
     subsections = db.relationship(
         "Subsection",
@@ -162,8 +195,10 @@ class Section(db.Model):
             "showHeading": self.show_heading,
             "position": self.position,
             "styling": self.styling,
-            "createdAt": self.created_at.isoformat() if self.created_at else None,
-            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            # "createdAt": self.created_at.isoformat() if self.created_at else None,
+            # "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            "createdAt": serialize_datetime(self.created_at),
+            "updatedAt": serialize_datetime(self.updated_at),
             "subsections": [subsection.to_dict() for subsection in self.subsections],
         }
 
@@ -174,14 +209,14 @@ class Section(db.Model):
 class Subsection(db.Model):
     __tablename__ = "subsections"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = id_column()
     section_id = db.Column(db.Integer, db.ForeignKey("sections.id"), nullable=False)
     label = db.Column(db.String, nullable=True)
     type = db.Column(db.String, nullable=False, default="default")
     styling = db.Column(db.JSON, nullable=False, default=dict)
     position = db.Column(db.Integer, nullable=False, default=0)
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
+    created_at = created_at_column()
+    updated_at = updated_at_column()
 
 
     fields = db.relationship(
@@ -200,8 +235,10 @@ class Subsection(db.Model):
             "type": self.type,
             "styling": self.styling,
             "position": self.position,
-            "createdAt": self.created_at.isoformat() if self.created_at else None,
-            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            "createdAt": serialize_datetime(self.created_at),
+            "updatedAt": serialize_datetime(self.updated_at),
+            # "createdAt": self.created_at.isoformat() if self.created_at else None,
+            # "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
             "fields": [field.to_dict() for field in self.fields],
         }
 
@@ -212,14 +249,14 @@ class Subsection(db.Model):
 class Field(db.Model):
     __tablename__ = "fields"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = id_column()
     subsection_id = db.Column(db.Integer, db.ForeignKey("subsections.id"), nullable=False)
     label = db.Column(db.String, nullable=True)
     value = db.Column(db.JSON, nullable=False, default=list)
     styling = db.Column(db.JSON, nullable=False, default=dict)
     position = db.Column(db.Integer, nullable=False, default=0)
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
+    created_at = created_at_column()
+    updated_at = updated_at_column()
 
     def to_dict(self):
         return {
@@ -229,8 +266,10 @@ class Field(db.Model):
             "value": self.value,
             "styling": self.styling,
             "position": self.position,
-            "createdAt": self.created_at.isoformat() if self.created_at else None,
-            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            "createdAt": serialize_datetime(self.created_at),
+            "updatedAt": serialize_datetime(self.updated_at),
+            # "createdAt": self.created_at.isoformat() if self.created_at else None,
+            # "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
         }
 
     def __repr__(self):

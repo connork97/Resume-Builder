@@ -7,8 +7,6 @@ import styles from './Account.module.css';
 
 const AccountOutlineRow = ({ styling, clickCommand, text, linkTo }) => {
 
-   const user = useSelector(state => state.user);
-
    return (
       <div className={styles.accountOutlineRow} style={styling}>
          <Link

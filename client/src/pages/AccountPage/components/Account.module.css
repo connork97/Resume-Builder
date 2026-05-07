@@ -1,6 +1,5 @@
 .accountContainer {
    color: white;
-
    height: 100%;
    width: 100%;
    display: flex;
@@ -10,8 +9,6 @@
 
 .accountOutlineWrapper {
    padding: 10vh 5vh 0 5vh;
-   /* padding-top: 15vh; */
-   /* padding-left: 5vh; */
    background-color: rgba(25, 25, 25, 1);
 }
 
@@ -30,6 +27,20 @@
    border-radius: 1.5vh;
 }
 
+.userResumeRowsWrapper {
+   display: flex;
+   height: 80%;
+   flex-direction: column;
+   margin-top: 3vh;
+   overflow-y: auto;
+   scrollbar-width: 0;
+   -ms-overflow-style: none;
+}
+
+.userResumeRowsWrapper::-webkit-scrollbar {
+   display: none;
+}
+
 .userResumeRow {
    display: flex;
    flex-direction: row;
@@ -39,10 +50,9 @@
    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.userResumeRowsWrapper {
+
+.createdAndUpdatedAtWrapper {
    display: flex;
-   flex-direction: column;
-   margin-top: 3vh;
 }
 
 .accountSettingsForm {

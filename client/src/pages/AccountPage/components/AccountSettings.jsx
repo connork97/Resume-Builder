@@ -8,6 +8,7 @@ import { BASE_URL } from '@/config';
 
 import styles from './Account.module.css';
 import { updateUserApi } from '@/services/userServices';
+import { formatDateTime } from '@/utils/formatDateTime';
 
 const AccountSettings = () => {
 
@@ -57,19 +58,6 @@ const AccountSettings = () => {
       alert('Account updated successfully.')
    };
 
-   const formattedDate = (dateString) => {
-      if (!dateString) return '';
-      const options = {
-         year: 'numeric',
-         month: 'long',
-         day: 'numeric',
-         hour: 'numeric',
-         minute: 'numeric',
-         second: 'numeric',
-      };
-      return new Date(dateString).toLocaleDateString(undefined, options);
-   };
-
    return (
       <>
          <h1>Account Settings</h1>
@@ -103,10 +91,10 @@ const AccountSettings = () => {
                onChange={changeUserFormData}
             />
             <span className={styles.accountTimeStampsSpan}>
-               Your account was created on {formattedDate(userFormData.createdAt)}
+               Your account was created on {formatDateTime(userFormData.createdAt)}
             </span>
             <span className={styles.accountTimeStampsSpan}>
-               Your account was last updated on {formattedDate(userFormData.updatedAt)}.
+               Your account was last updated on {formatDateTime(userFormData.updatedAt)}.
             </span>
             <button
                className={styles.accountSubmitButton}

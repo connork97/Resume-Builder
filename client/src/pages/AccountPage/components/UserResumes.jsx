@@ -49,13 +49,13 @@ const UserResumes = () => {
          <h1>My Resumes</h1>
          <div className={styles.userResumeRowsWrapper}>
             {renderResumes()}
+         </div>
             <button
                className={styles.accountSubmitButton}
                onClick={() => navigate('/editor/new')}
             >
                Create Resume
             </button>
-         </div>
       </>
    );
 };

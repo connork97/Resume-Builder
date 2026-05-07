@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import AccountOutline from './AccountOutline';
-import UserResumes from './UserResumes';
 
 import styles from './Account.module.css';
 

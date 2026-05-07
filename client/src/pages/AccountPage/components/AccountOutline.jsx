@@ -4,13 +4,11 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { clearUser } from '@/store/userSlice';
-
-import { BASE_URL } from '@/config';
+import { logUserOutOfApi } from '@/services/userServices';
 
 import AccountOutlineRow from './AccountOutlineRow';
 
 import styles from './Account.module.css';
-import { logUserOutOfApi } from '@/services/userServices';
 
 const AccountOutline = () => {
    const dispatch = useDispatch();
@@ -45,7 +43,6 @@ const AccountOutline = () => {
          />
          <AccountOutlineRow
             text="Log Out"
-            // linkTo="/home"
             clickCommand={handleLogUserOut}
          />
       </div>
@@ -53,10 +50,3 @@ const AccountOutline = () => {
 };
 
 export default AccountOutline;
-
-// Outline Header
-// Personal Information
-// My Resumes
-// Security
-// Account Settings
-// Log Out

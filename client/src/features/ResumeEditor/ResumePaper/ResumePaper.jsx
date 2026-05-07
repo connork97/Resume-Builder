@@ -8,11 +8,10 @@ import { BASE_URL } from "@/config.js";
 
 import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi.js";
 
-// import Section from "./Section/Section.jsx";
 import Column from "./components/Column.jsx";
-// import SelectResume from "../../../pages/HomePage/components/SelectResume.jsx";
 
 import styles from "./ResumePaper.module.css";
+import PaperPadding from "./components/PaperPadding.jsx";
 
 const ResumePaper = () => {
 
@@ -48,6 +47,7 @@ const ResumePaper = () => {
 
    return (
       <div className={styles.pageContainerDiv} style={{ ...resumeStyling }}>
+         <PaperPadding />
          {renderedColumns}
       </div>
    )

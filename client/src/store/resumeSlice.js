@@ -439,6 +439,11 @@ const resumeSlice = createSlice({
       state.title = action.payload;
     },
 
+    updateResumeLayout(state, action) {
+      const { changes } = action.payload;
+      state.layout = { ...state.layout, ...changes };
+    },
+
     updateResume(state, action) {
       const { key, changes } = action.payload;
       state.layout = { ...state[key], ...changes };
@@ -521,6 +526,7 @@ export const {
   updateResume,
   updateResumeTitle,
   updateResumeStyling,
+  updateResumeLayout,
   addColumn,
   deleteColumn,
   updateColumn,

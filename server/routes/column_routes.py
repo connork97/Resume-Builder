@@ -15,6 +15,32 @@ from utils.responses import generate_error, generate_success
 
 column_bp = Blueprint("column", __name__, url_prefix="/columns")
 
+def set_column_widths(resume_id):
+    columns = Column.query.filter_by(resume_id=resume_id).all()
+    
+    manual_width_columns = [
+        column for column in columns
+        if not column.auto_width
+    ]
+    auto_width_columns = [
+        column for column in columns
+        if column.auto_width
+    ]
+    
+    manual_width_total = sum(
+        float(column.width.strip("%"))
+        for column in manual_width_columns
+        if column.width
+    )
+    
+    remaining_width = max(0, 100 - manual_width_total)
+    new_auto_width = remaining_width / len(auto_width_columns) if auto_width_columns else 0
+    
+    for column in auto_width_columns:
+        column.width = f"{new_auto_width:.1f}%"
+    
+    return columns
+
 @column_bp.route("/<int:resume_id>", methods=["POST"])
 def add_column(resume_id):
     print(f"Received POST request to add column to resume of ID {resume_id}.")
@@ -29,15 +55,16 @@ def add_column(resume_id):
             )
 
         column_count = len(resume.columns)
-        new_column_widths = str(100 / (column_count + 1)) + "%"
-
+        
         new_column = Column(
-            resume_id=resume_id, position=column_count, width=new_column_widths
+            resume_id=resume_id,
+            position=column_count,
+            width=None
         )
         db.session.add(new_column)
-
-        for column in resume.columns:
-            column.width = new_column_widths
+        db.session.flush()
+        
+        set_column_widths(resume_id)
 
         db.session.commit()
 
@@ -105,12 +132,14 @@ def delete_last_column(resume_id):
             .order_by(Column.position.asc())
             .all()
         )
+        
+        set_column_widths(resume_id)
 
-        new_width = f"{100 / len(remaining_columns)}%"
+        # new_width = f"{100 / len(remaining_columns)}%"
 
         for index, column in enumerate(remaining_columns):
             column.position = index
-            column.width = new_width
+            # column.width = new_width
 
         db.session.commit()
 

@@ -135,6 +135,7 @@ class Column(db.Model):
     resume_id = db.Column(db.Integer, db.ForeignKey("resumes.id"), nullable=False)
     position = db.Column(db.Integer, nullable=False, default=0)
     width = db.Column(db.String, nullable=True)
+    auto_width = db.Column(db.Boolean, nullable=False, default=True, server_default='1')
     created_at = created_at_column()
     updated_at = updated_at_column()
 
@@ -151,6 +152,7 @@ class Column(db.Model):
             "id": self.id,
             "resumeId": self.resume_id,
             "width": self.width,
+            "autoWidth": self.auto_width,
             "position": self.position,
             "createdAt": serialize_datetime(self.created_at),
             "updatedAt": serialize_datetime(self.updated_at),

@@ -56,6 +56,7 @@ const PaperPadding = () => {
                Right
             </button>
          </div>
+         <div className={styles.paddingLeftMarker}></div>
          <div
             className={styles.paddingRightWrapper}
             style={{ paddingRight: padding.right }}

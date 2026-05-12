@@ -51,6 +51,7 @@ const normalizeResumeFromApi = (apiResume) => {
       id: column.id,
       resumeId: column.resumeId,
       width: column.width ?? '100%',
+      autoWidth: column.autoWidth ?? true,
       position: column.position ?? 0,
       sectionIds: sortedSections.map((section) => section.id),
     };

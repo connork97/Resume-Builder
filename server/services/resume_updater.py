@@ -1,5 +1,6 @@
 from models import db, Resume, Column, Section, Subsection, Field
 
+from services.updaters import update_column_widths
 
 def update_resume_with_form_data(resume_id, data):
     resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
@@ -38,8 +39,7 @@ def update_resume_with_form_data(resume_id, data):
     if not last_available_column:
         raise ValueError("Cannot delete all columns from a resume.")
     
-    new_column_width = 100 // len(columns_by_id) if columns_by_id else 100
-    new_column_width_percent = f"{new_column_width}%"
+    # update_column_widths(resume_id)
 
     sections_by_id = data.get("sections", {}).get("byId", {})
 
@@ -53,10 +53,8 @@ def update_resume_with_form_data(resume_id, data):
                 if section_data:
                     section_data["columnId"] = last_available_column.id
 
-            db.session.flush()  # Ensure all changes are applied before deleting the column
+            db.session.flush()
             db.session.delete(column)
-        elif column.id in incoming_column_ids:
-            columns_by_id[str(column.id)]["width"] = new_column_width_percent
 
     for column_id, column_data in columns_by_id.items():
         column = Column.query.get(int(column_id))
@@ -65,6 +63,9 @@ def update_resume_with_form_data(resume_id, data):
 
         if "width" in column_data:
             column.width = column_data["width"]
+        
+        if 'autoWidth' in column_data:
+            column.autoWidth = column_data['autoWidth']
 
         if "position" in column_data:
             column.position = column_data["position"]

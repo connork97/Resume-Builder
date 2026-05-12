@@ -88,6 +88,29 @@ const deleteFieldById = (state, fieldId) => {
   state.fields.allIds = state.fields.allIds.filter(id => id !== field.id);
 };
 
+const updateAutoColumnWidths = (state) => {
+  let remainingColumnWidth = 100;
+  let autoColumnsArr = [];
+  for (let columnId of state.columns.allIds) {
+    const column = state.columns.byId[columnId]
+    console.log('COLUMN', column)
+    if (column.autoWidth !== undefined) {
+
+      if (column.autoWidth === true) {
+        autoColumnsArr.push(columnId);
+      } else {
+      // } else if (column.autoWith === false) {
+        const columnWidth = parseFloat(column.width.replace('%', ''));
+        remainingColumnWidth -= columnWidth;
+      }
+    }
+  }
+  const updatedAutoWidthValue = String(remainingColumnWidth / autoColumnsArr.length) + '%'
+  for (let columnId of autoColumnsArr) {
+    const column = state.columns.byId[columnId];
+    column.width = updatedAutoWidthValue;
+  }
+};
 
 // * ------------- V
 // * INITIAL STATE V
@@ -307,6 +330,14 @@ const resumeSlice = createSlice({
       if (column) {
         Object.assign(column, changes);
       }
+
+      if (Object.keys(changes).includes("width" || "autoWidth")) {
+        updateAutoColumnWidths(state);
+      }
+      // console.log('CHANGES:', changes)
+      // if (changes.autoWidth !== undefined) {
+        // console.log(changes.autoWidth)
+      // }
     },
 
     updateSection(state, action) {

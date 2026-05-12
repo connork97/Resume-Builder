@@ -14,6 +14,7 @@ import FontColor from '../../../../TextFormatting/FontColor.jsx';
 import LineHeight from '../../../../TextFormatting/LineHeight.jsx';
 import TextAlign from '../../../../TextFormatting/TextAlign.jsx';
 import BackgroundColor from '../../../../TextFormatting/BackgroundColor.jsx';
+import ColumnSettings from './ColumnSettings';
 
 const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModalOpen }) => {
 
@@ -159,6 +160,7 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
             onClick={() => setIsSettingsModalOpen(false)}
          />
          <div className={styles.settingsModalContainerDiv}>
+            <ColumnSettings />
             <p className={styles.settingsModalSectionTitle}>Editing: {section.label}</p>
             <div className={styles.headingCheckboxWrapperDiv}>
                <label

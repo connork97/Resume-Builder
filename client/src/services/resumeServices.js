@@ -228,6 +228,7 @@ export const addResumeToApi = async (resumeData) => {
 
 export const saveResumeToApi = async (resume) => {
    try {
+      console.log('Resume being saved to api: ', resume)
       await fetchApi({
          endpoint: `/resumes/${resume.id}`,
          options: {

@@ -1,0 +1,40 @@
+.columnSettingsContainer {
+   display: flex;
+   flex-direction: column;
+   gap: 0.5rem;
+   color: white;
+}
+
+.columnSettingsRow {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 0.5rem;
+}
+
+.columnSettingsInput {
+   background-color: transparent;
+   border: 1px solid white;
+   border-radius: 4px;
+   padding: 0.25rem 0.5rem;
+   width: 50px;
+   margin-right: 15px;
+   text-align: center;
+}
+
+.columnSettingsSpan {
+   position: absolute;
+   right: 7.5px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

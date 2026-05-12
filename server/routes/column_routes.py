@@ -9,37 +9,17 @@ from services.builders import (
     add_field,
     add_default_fields,
 )
+
+from services.updaters import update_column_widths
+
 from services.resume_updater import update_resume_with_form_data
 
 from utils.responses import generate_error, generate_success
 
 column_bp = Blueprint("column", __name__, url_prefix="/columns")
 
-def set_column_widths(resume_id):
-    columns = Column.query.filter_by(resume_id=resume_id).all()
-    
-    manual_width_columns = [
-        column for column in columns
-        if not column.auto_width
-    ]
-    auto_width_columns = [
-        column for column in columns
-        if column.auto_width
-    ]
-    
-    manual_width_total = sum(
-        float(column.width.strip("%"))
-        for column in manual_width_columns
-        if column.width
-    )
-    
-    remaining_width = max(0, 100 - manual_width_total)
-    new_auto_width = remaining_width / len(auto_width_columns) if auto_width_columns else 0
-    
-    for column in auto_width_columns:
-        column.width = f"{new_auto_width:.1f}%"
-    
-    return columns
+
+# ** ROUTES ** #
 
 @column_bp.route("/<int:resume_id>", methods=["POST"])
 def add_column(resume_id):
@@ -64,7 +44,7 @@ def add_column(resume_id):
         db.session.add(new_column)
         db.session.flush()
         
-        set_column_widths(resume_id)
+        update_column_widths(resume_id)
 
         db.session.commit()
 
@@ -135,11 +115,8 @@ def delete_last_column(resume_id):
         
         set_column_widths(resume_id)
 
-        # new_width = f"{100 / len(remaining_columns)}%"
-
         for index, column in enumerate(remaining_columns):
             column.position = index
-            # column.width = new_width
 
         db.session.commit()
 
@@ -152,70 +129,58 @@ def delete_last_column(resume_id):
             error_type="SERVER_ERROR",
             code="ERROR_DELETING_COLUMN",
             message="An unknown error occurred while deleting the column.",
-        )   
-# @column_bp.route("/<int:resume_id>", methods=["DELETE"])
-# def delete_last_column(resume_id):
-#     print(f"Received DELETE request for the last column of resume of ID {resume_id}.")
+        )
+        
+        
+@column_bp.route("/<int:column_id>", methods=["PUT"])
+def update_column(column_id):
+    print(f"Received PUT request to update column of ID {column_id}.")
 
-#     resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
-#     if not resume:
-#         return generate_error(
-#             error_type="NOT_FOUND",
-#             code="RESUME_NOT_FOUND",
-#             message=f"Could not find resume of ID {resume_id} to add a column to.",
-#         )
+    try:
+        column = Column.query.filter_by(id=column_id).one_or_none()
+        if not column:
+            return generate_error(
+                error_type="NOT_FOUND",
+                code="COLUMN_NOT_FOUND",
+                message=f"Could not find column of ID {column_id}.",
+            )
 
-#     second_to_last_column = (
-#         Column.query.filter_by(resume_id=resume_id)
-#         .order_by(Column.position.desc())
-#         .offset(1)
-#         .first()
-#     )
+        data = request.get_json() or {}
+        if not data:
+            return generate_error(
+                error_type="BAD_REQUEST",
+                code="INVALID_DATA",
+                message="No data provided for column update.",
+            )
 
-#     if not second_to_last_column:
-#         return generate_error(
-#             error_type="FORBIDDEN",
-#             code="INVALID_COLUMN_COUNT",
-#             message="Resumes require at least one column.",
-#         )
+        new_width = data.get("width")
+        auto_width = data.get("autoWidth")
+        position = data.get("position")
 
-#     column_to_delete = (
-#         Column.query.filter_by(resume_id=resume_id)
-#         .order_by(Column.position.desc())
-#         .first()
-#     )
+        if new_width is not None:
+            column.width = new_width
+            column.auto_width = False
 
-#     if not column_to_delete:
-#         return generate_error(
-#             error_type="NOT_FOUND",
-#             code="COLUMN_NOT_FOUND",
-#             message=f"Column to delete not found.",
-#         )
+        if auto_width is not None:
+            column.auto_width = auto_width
 
-#     for section in column_to_delete.sections:
-#         try:
-#             section.column_id = second_to_last_column.id
-#         except Exception as e:
-#             print(
-#                 f"Error changing the column_id for section of ID {section.id}.  Undoing all changes.",
-#                 e,
-#             )
-#             db.session.rollback()
-#             return generate_error(
-#                 error_type="SERVER_ERROR",
-#                 code="ERROR_DELETING_COLUMN",
-#                 message="An unknown error occurred while relocating sections from the column to be deleted.",
-#             )
+            if auto_width:
+                column.width = None
 
-#     db.session.delete(column_to_delete)
-#     db.session.flush()
+        if position is not None:
+            column.position = position
 
-#     column_count = Column.query.filter_by(resume_id=resume.id).count()
-#     new_column_widths = str(100 / (column_count)) + "%"
+        set_column_widths(column.resume_id)
 
-#     for column in resume.columns:
-#         column.width = new_column_widths
+        db.session.commit()
 
-#     db.session.commit()
+        return jsonify(column.resume.to_dict()), 200
 
-#     return jsonify(resume.to_dict()), 200
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error updating column of ID {column_id}: ", e)
+        return generate_error(
+            error_type="SERVER_ERROR",
+            code="ERROR_UPDATING_COLUMN",
+            message="An unknown error occurred while updating the column.",
+        )

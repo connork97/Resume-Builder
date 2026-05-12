@@ -39,7 +39,6 @@ def update_resume_with_form_data(resume_id, data):
     if not last_available_column:
         raise ValueError("Cannot delete all columns from a resume.")
     
-    # update_column_widths(resume_id)
 
     sections_by_id = data.get("sections", {}).get("byId", {})
 
@@ -65,10 +64,15 @@ def update_resume_with_form_data(resume_id, data):
             column.width = column_data["width"]
         
         if 'autoWidth' in column_data:
-            column.autoWidth = column_data['autoWidth']
+            column.auto_width = column_data['autoWidth']
 
         if "position" in column_data:
             column.position = column_data["position"]
+            
+    db.session.flush()
+            
+    update_column_widths(resume_id)
+    
 
     # * ---------------
     # * Section updates

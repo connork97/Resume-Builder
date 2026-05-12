@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { updateColumn } from '@/store/resumeSlice.js';
@@ -18,6 +18,9 @@ const ColumnSettings = () => {
 
    const handleColumnWidthSubmit = (e) => {
       e.preventDefault();
+      if (columnWidthInputValue < 0) {
+         alert()
+      }
       const newColumnWidth = columnWidthInputValue + '%';
       dispatch(updateColumn({
          id: column.id,
@@ -29,8 +32,8 @@ const ColumnSettings = () => {
       setAutoWidthInputValue(false);
    }
 
-   const handleAutoWidthSubmit = (e) => {
-      e.preventDefault();
+   const handleAutoWidthSubmit = () => {
+      // e.preventDefault();
       dispatch(updateColumn({
          id: column.id,
          changes: {
@@ -38,6 +41,10 @@ const ColumnSettings = () => {
          }
       }));
    }
+
+   useEffect(() => {
+      handleAutoWidthSubmit();
+   }, [autoWidthInputValue])
 
    return (
       <div className={styles.columnSettingsContainer}>
@@ -51,6 +58,8 @@ const ColumnSettings = () => {
                id="columnWidthInput"
                className={styles.columnSettingsInput}
                type="number"
+               min='1'
+               max='100'
                step='0.1'
                value={columnWidthInputValue}
                onChange={(e) => setColumnWidthInputValue(e.target.value)}
@@ -68,6 +77,7 @@ const ColumnSettings = () => {
                type="checkbox"
                checked={autoWidthInputValue}
                onChange={(e) => setAutoWidthInputValue(e.target.checked)}
+               
             />
          </form>
       </div>

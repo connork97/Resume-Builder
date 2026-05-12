@@ -123,7 +123,8 @@ const initialState = {
 
   columns: {
     byId: {},
-    allIds: []
+    allIds: [],
+    totalWidth: 100
   },
   sections: {
     byId: {},
@@ -331,10 +332,11 @@ const resumeSlice = createSlice({
         Object.assign(column, changes);
       }
 
-      if (Object.keys(changes).includes("width" || "autoWidth")) {
+      console.log('CHANGES:', changes)
+      if (Object.keys(changes).includes("width") || Object.keys(changes).includes("autoWidth")) {
+        console.log('HAS KEYS')
         updateAutoColumnWidths(state);
       }
-      // console.log('CHANGES:', changes)
       // if (changes.autoWidth !== undefined) {
         // console.log(changes.autoWidth)
       // }

@@ -101,6 +101,9 @@ def update_resume_with_form_data(resume_id, data):
 
         if "value" in section_data:
             section.value = section_data["value"]
+            
+        if "layout" in section_data:
+            section.layout = section_data["layout"]
 
         if "styling" in section_data:
             section.styling = section_data["styling"]
@@ -144,6 +147,9 @@ def update_resume_with_form_data(resume_id, data):
         if "type" in subsection_data:
             subsection.type = subsection_data["type"]
 
+        if "layout" in subsection_data:
+            subsection.layout = subsection_data["layout"]
+            
         if "styling" in subsection_data:
             subsection.styling = subsection_data["styling"]
 
@@ -183,6 +189,9 @@ def update_resume_with_form_data(resume_id, data):
         if "value" in field_data:
             field.value = field_data["value"]
 
+        if "layout" in field_data:
+            field.layout = field_data["layout"]
+            
         if "styling" in field_data:
             field.styling = field_data["styling"]
 

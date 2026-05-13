@@ -32,6 +32,14 @@ DEFAULT_COLUMN_LAYOUT = {
         "right": "1rem",
     }
 }
+
+# DEFAULT_SECTION_LAYOUT = {
+#     'padding': {
+#         'top': '0.5rem',
+#         'bottom': '0.5rem',
+#     }
+# }
+
 DEFAULT_SECTION_HEADERS = {
     "header": "Header",
     "workHistory": "Work History",
@@ -124,6 +132,7 @@ def add_section(column_id, section_type, position=0):
         label=format_label(section_type),
         type=section_type,
         position=position,
+        # layout=deepcopy(DEFAULT_SECTION_LAYOUT),
         value=build_section_heading_slate_value(section_type),
     )
 
@@ -202,7 +211,7 @@ def build_resume_with_defaults(title, user_id, sections_data):
     column = add_column(
         resume_id=resume.id,
         position=0,
-        
+        layout=deepcopy(DEFAULT_COLUMN_LAYOUT)
         # width="100%",
     )
 
@@ -216,6 +225,7 @@ def build_resume_with_defaults(title, user_id, sections_data):
             column_id=column.id,
             section_type=section_type,
             position=section_position,
+            # layout=deepcopy(DEFAULT_SECTION_LAYOUT)
         )
 
         section_position += 1

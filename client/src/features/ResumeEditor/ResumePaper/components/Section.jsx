@@ -65,14 +65,26 @@ const Section = ({ section, column }) => {
     setSectionPadding((prevStyling) => {
       return {
         ...prevStyling,
-        paddingLeft: isFirstColumn ? resumeLayout.padding.left : resumeLayout.gap.horizontal,
-        paddingRight: isLastColumn ? resumeLayout.padding.right : resumeLayout.gap.horizontal,
-        paddingTop: isFirstRow ? resumeLayout.padding.top : resumeLayout.gap.vertical,
-        paddingBottom: isLastRow ? resumeLayout.padding.bottom : resumeLayout.gap.vertical,
-        flex: isLastRow ? '1' : 'none',
+        paddingLeft: isFirstColumn
+          ? resumeLayout.padding.left
+          : column?.layout?.padding?.left ?? resumeLayout.padding.left,
+        paddingRight: isLastColumn
+          ? resumeLayout.padding.right
+          : column?.layout?.padding?.right ?? resumeLayout.padding.right,
+        paddingTop: isFirstRow
+          ? section.layout?.padding?.top ?? resumeLayout.padding.top
+          // ? resumeLayout.padding.top
+          : section.layout?.padding?.top ?? column.layout.padding.top,
+        paddingBottom: isLastRow
+          ? section.layout?.padding?.bottom ?? resumeLayout.padding.bottom
+          // ? resumeLayout.padding.bottom
+          : section.layout?.padding?.bottom ?? column.layout.padding.top,
+        flex: isLastRow 
+          ? '1'
+          : 'none',
       }
     })
-  }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding]);
+  }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding, section.layout?.padding, column.layout.padding]);
 
   const renderedSubsections = section.subsectionIds?.map((subId) => {
     const subsection = subsections.byId[subId];
@@ -108,7 +120,14 @@ const Section = ({ section, column }) => {
       }}
       onClick={() => dispatch(setActiveSectionId(section.id))}
     >
-      <SectionPadding section={section} column={column} />
+      <SectionPadding
+        section={section}
+        column={column}
+        isFirstColumn={isFirstColumn}
+        isLastColumn={isLastColumn}
+        isFirstRow={isFirstRow}
+        isLastRow={isLastRow}
+      />
       <button
         className={styles.sectionSettingsButton}
       >

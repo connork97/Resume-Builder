@@ -301,6 +301,15 @@ const resumeSlice = createSlice({
       updateAutoColumnWidths(state);
     },
 
+    updateColumnPadding(state, action) {
+      const { id, padding } = action.payload;
+      const column = state.columns.byId[id];
+      column.layout.padding = {
+        ...column.layout.padding,
+        ...padding
+      }
+    },
+
     updateSection(state, action) {
       const { sectionId, changes } = action.payload;
       const section = state.sections.byId[sectionId];
@@ -335,6 +344,15 @@ const resumeSlice = createSlice({
         } else {
           section[key] = changes[key];
         }
+      }
+    },
+
+    updateSectionPadding(state, action) {
+      const {id, padding } = action.payload;
+      const section = state.sections.byId[id];
+      section.layout.padding = {
+        ...section.layout.padding,
+        ...padding
       }
     },
 
@@ -523,8 +541,10 @@ export const {
   deleteColumn,
   updateColumn,
   updateColumnWidth,
+  updateColumnPadding,
   addSection,
   updateSection,
+  updateSectionPadding,
   deleteSection,
   reorderSections,
   addSubsection,

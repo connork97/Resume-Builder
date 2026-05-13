@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { updateSection } from '@/store/resumeSlice.js';
 
 import ColumnIndex from './SectionColumnIndex.jsx';
 import RowIndex from './SectionRowIndex.jsx';
@@ -13,6 +15,8 @@ import LineHeight from '../../TextFormatting/LineHeight.jsx';
 import styles from '../SettingsModal.module.css';
 
 const SectionSettings = ({ setIsSettingsModalOpen }) => {
+
+   const dispatch = useDispatch();
 
    const section = useSelector(state => state.resume.sections.byId[state.resume.activeSectionId]);
    const column = useSelector(state => state.resume.columns.byId[section.columnId]);

@@ -74,11 +74,11 @@ const Section = ({ section, column }) => {
         paddingTop: isFirstRow
           ? section.layout?.padding?.top ?? resumeLayout.padding.top
           // ? resumeLayout.padding.top
-          : section.layout?.padding?.top ?? column.layout.padding.top,
+          : section?.layout?.padding?.top ?? column?.layout?.padding?.top,
         paddingBottom: isLastRow
           ? section.layout?.padding?.bottom ?? resumeLayout.padding.bottom
           // ? resumeLayout.padding.bottom
-          : section.layout?.padding?.bottom ?? column.layout.padding.top,
+          : section?.layout?.padding?.bottom ?? column?.layout?.padding?.top,
         flex: isLastRow 
           ? '1'
           : 'none',

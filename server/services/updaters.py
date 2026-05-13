@@ -7,20 +7,22 @@ from utils.formatting import format_label
 def update_column_widths(resume_id):
     columns = Column.query.filter_by(resume_id=resume_id).all()
 
+    def get_width(column):
+        layout = column.layout or {}
+        return layout.get("width", {})
+
     manual_width_columns = [
         column for column in columns
-        if not column.layout.get('width', {}).get('auto', True)
+        if not get_width(column).get("auto", True)
     ]
 
     auto_width_columns = [
         column for column in columns
-        if column.layout.get('width', {}).get('auto', True)
+        if get_width(column).get("auto", True)
     ]
 
     manual_width_total = sum(
-        float(
-            column.layout.get('width', {}).get('value', '0%').strip('%')
-        )
+        float(str(get_width(column).get("value", "0%")).strip("%"))
         for column in manual_width_columns
     )
 
@@ -33,6 +35,16 @@ def update_column_widths(resume_id):
     )
 
     for column in auto_width_columns:
-        column.layout['width']['value'] = f"{new_auto_width:.1f}%"
+        layout = column.layout or {}
+
+        layout.setdefault("width", {
+            "value": "100%",
+            "auto": True,
+        })
+
+        layout["width"]["value"] = f"{new_auto_width:.1f}%"
+        layout["width"]["auto"] = True
+
+        column.layout = layout
 
     return columns

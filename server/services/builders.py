@@ -1,6 +1,7 @@
 from copy import deepcopy
 from models import Column, Field, Section, Subsection, db, Resume
 
+from services.updaters import update_column_widths
 from utils.formatting import format_label
 
 DEFAULT_RESUME_STYLING = {
@@ -30,7 +31,11 @@ DEFAULT_COLUMN_LAYOUT = {
         "bottom": "0.5rem",
         "left": "1rem",
         "right": "1rem",
-    }
+    },
+    "width": {
+        "auto": True,
+        "value": "100%",
+    },
 }
 
 # DEFAULT_SECTION_LAYOUT = {
@@ -117,8 +122,9 @@ def add_column(resume_id, position=0):
         resume_id=resume_id,
         position=position,
         layout=deepcopy(DEFAULT_COLUMN_LAYOUT),
-        # width=width,
     )
+    
+    update_column_widths(resume_id)
 
     db.session.add(column)
     db.session.flush()
@@ -211,8 +217,6 @@ def build_resume_with_defaults(title, user_id, sections_data):
     column = add_column(
         resume_id=resume.id,
         position=0,
-        layout=deepcopy(DEFAULT_COLUMN_LAYOUT)
-        # width="100%",
     )
 
     section_position = 0

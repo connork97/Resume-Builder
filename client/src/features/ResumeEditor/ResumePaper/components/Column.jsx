@@ -22,7 +22,7 @@ const Column = ({ column }) => {
    let columnStyling = {
       flex: column?.layout?.width?.auto
          ? '1 1 0%'
-         : `0 0 ${column.layout.width.value}`,
+         : `0 0 ${column?.layout?.width?.value}`,
       // paddingLeft: column?.layout?.padding?.left ?? resumeLayout.padding.left,
       // paddingRight: column?.layout?.padding?.right ?? resumeLayout.padding.right,
    };

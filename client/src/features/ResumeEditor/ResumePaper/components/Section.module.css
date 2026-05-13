@@ -1,0 +1,77 @@
+.sectionContainerDiv {
+  position: relative;
+  height: min-content;
+}
+
+.sectionContainerDiv:hover {
+  outline: 1px solid rgba(0, 0, 0, 1);
+  outline-offset: -2px;
+  border-radius: 5px;
+  z-index: 100;
+}
+
+.sectionContainerDiv:hover .sectionSettingsButton {
+  opacity: 1;
+  transition: opacity 0.1s ease;
+}
+
+.sectionSettingsButton {
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.1s ease;
+  z-index: 20;
+}
+
+.sectionSettingsButtonIcon {
+  font-size: 24px;
+}
+
+/** SECTION PADDING **/
+
+.sectionPaddingContainer {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.sectionPaddingTopWrapper,
+.sectionPaddingBottomWrapper,
+.sectionPaddingLeftWrapper,
+.sectionPaddingRightWrapper {
+  position: absolute;
+  display: flex;
+}
+
+.sectionPaddingTopWrapper,
+.sectionPaddingBottomWrapper {
+  width: 100%;
+  justify-content: center;
+}
+
+.sectionPaddingLeftWrapper,
+.sectionPaddingRightWrapper {
+  top: 0;
+  height: 100%;
+  align-items: center;
+}
+
+.sectionPaddingTopWrapper {
+  top: 0;
+}
+
+.sectionPaddingBottomWrapper {
+  bottom: 0;
+}
+
+.sectionPaddingLeftWrapper {
+  left: 0;
+}
+
+.sectionPaddingRightWrapper {
+  right: 0;
+}

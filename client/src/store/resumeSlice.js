@@ -93,14 +93,14 @@ const updateAutoColumnWidths = (state) => {
   let autoColumnsArr = [];
   for (let columnId of state.columns.allIds) {
     const column = state.columns.byId[columnId]
-    console.log('COLUMN', column)
-    if (column.autoWidth !== undefined) {
+    if (column.layout.width.auto !== undefined) {
+      console.log('CHECKING')
 
-      if (column.autoWidth === true) {
+      if (column.layout.width.auto === true) {
         autoColumnsArr.push(columnId);
       } else {
-      // } else if (column.autoWith === false) {
-        const columnWidth = parseFloat(column.width.replace('%', ''));
+        // } else if (column.autoWith === false) {
+        const columnWidth = parseFloat(column.layout.width.value.replace('%', ''));
         remainingColumnWidth -= columnWidth;
       }
     }
@@ -108,7 +108,7 @@ const updateAutoColumnWidths = (state) => {
   const updatedAutoWidthValue = String(remainingColumnWidth / autoColumnsArr.length) + '%'
   for (let columnId of autoColumnsArr) {
     const column = state.columns.byId[columnId];
-    column.width = updatedAutoWidthValue;
+    column.layout.width.value = updatedAutoWidthValue;
   }
 };
 
@@ -240,80 +240,21 @@ const resumeSlice = createSlice({
     deleteColumn(state, action) {
       const id = action.payload;
       deleteColumnById(state, id);
-      // const column = state.columns.byId[columnId];
-      // if (!column) {
-      //   console.error(`Cannot delete column.  No column with ID of ${columnId} found.`);
-      //   return;
-      // }
-
-      // // Move sections in deleted column to last available column
-      // column.sectionIds.forEach((sectionId) => {
-      //   const section = state.sections.byId[sectionId];
-      //   section.columnId = state.columns.allIds.findLast((id) => id !== columnId);
-      // });
-
-      // delete state.columns.byId[columnId];
-      // state.columns.allIds = state.columns.allIds.filter((id) => id !== columnId);
     },
 
     deleteSection(state, action) {
       const id = action.payload;
       deleteSectionById(state, id);
-
-      // const section = state.sections.find(s => s.id === sectionId);
-      // if (!section) return;
-      // const column = state.columns.byId[section.columnId];
-      // column.sectionIds.filter((id) => id !== sectionId);
-
-      // const subsectionIds = section.subsectionIds;
-
-      // for (const id in subsectionIds) {
-      //   const subsection = state.subsections.byId[id];
-
-      // }
-
-
-      // state.sections = state.sections.filter((s) => s.id !== sectionId);
     },
 
     deleteSubsection(state, action) {
       const id = action.payload;
       deleteSubsectionById(state, id);
-
-      // const section = state.sections.find((s) => s.id === sectionId);
-      // const subsection = section.subsections.find((s) => s.id === subsectionId);
-
-      // if (!section || !Array.isArray(section.subsections) || !subsection) return;
-
-      // subsection.fieldIds.forEach((fieldId) => {
-      //   delete state.fields.byId[fieldId];
-      //   state.fields.allIds = state.fields.allIds.filter((id) => id !== fieldId);
-      // })
-
-      // section.subsections = section.subsections.filter(
-      //   (sub) => sub.id !== subsectionId
-      // );
     },
 
     deleteField(state, action) {
       const id = action.payload;
-
-      // const field = state.fields.byId[fieldId];
       deleteFieldById(state, id);
-
-      // const subsection = state.subsections.byId[field.subsectionId]
-      // delete state.fields.byId[fieldId];
-      // state.fields.allIds = state.fields.allIds.filter(id => id !== fieldId);
-
-      // const section = state.sections.find((s) => s.id === sectionId);
-      // if (!section) return;
-
-      // const subsection = state.subsections.byId[subsectionId];
-      // const subsection = section.subsections.find((s) => s.id === subsectionId);
-      // if (!subsection) return;
-
-      // subsection.fieldIds = subsection.fieldIds.filter(id => id !== fieldId);
-      // subsection.fields = subsection.fields.filter((f) => f.id !== fieldId);
     },
 
     // * ------------ V
@@ -332,14 +273,32 @@ const resumeSlice = createSlice({
         Object.assign(column, changes);
       }
 
-      console.log('CHANGES:', changes)
-      if (Object.keys(changes).includes("width") || Object.keys(changes).includes("autoWidth")) {
-        console.log('HAS KEYS')
-        updateAutoColumnWidths(state);
-      }
-      // if (changes.autoWidth !== undefined) {
-        // console.log(changes.autoWidth)
+      // console.log('CHANGES:', changes)
+      // if (Object.keys(changes).includes("width") || Object.keys(changes).includes("autoWidth")) {
+      // console.log('HAS KEYS')
+      // updateAutoColumnWidths(state);
       // }
+
+      // if (changes.autoWidth !== undefined) {
+      // console.log(changes.autoWidth)
+      // }
+    },
+
+    updateColumnWidth(state, action) {
+      const { id, value, auto } = action.payload;
+      const column = state.columns.byId[id];
+      if (!column) {
+        console.error(`Column with ID ${id} not found.`);
+        return;
+      }
+
+      column.layout ??= {};
+      column.layout.width ??= {};
+
+      if (value !== undefined) column.layout.width.value = value;
+      if (auto !== undefined) column.layout.width.auto = auto;
+
+      updateAutoColumnWidths(state);
     },
 
     updateSection(state, action) {
@@ -563,6 +522,7 @@ export const {
   addColumn,
   deleteColumn,
   updateColumn,
+  updateColumnWidth,
   addSection,
   updateSection,
   deleteSection,

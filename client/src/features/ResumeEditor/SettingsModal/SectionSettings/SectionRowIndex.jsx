@@ -6,7 +6,6 @@ import { updateColumn } from '@/store/resumeSlice.js';
 import ToolbarButton from '@/features/ResumeEditor/EditorToolbar/components/shared/ToolbarButton.jsx';
 
 import styles from '@/features/ResumeEditor/EditorToolbar/components/RichTextToolbar.module.css';
-import SettingsModalInput from './SettingsModalInput.jsx';
 import { updateSection } from '@/store/oldResumeSlice.js';
 
 const RowIndex = ({ section }) => {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
-import FieldRenderer from './FieldRenderer';
+import FieldRenderer from './Field';
 
 const SubsectionRenderer = ({ subsection }) => {
 

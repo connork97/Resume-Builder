@@ -24,6 +24,14 @@ DEFAULT_RESUME_LAYOUT = {
     },
 }
 
+DEFAULT_COLUMN_LAYOUT = {
+    "padding": {
+        "top": "0.5rem",
+        "bottom": "0.5rem",
+        "left": "1rem",
+        "right": "1rem",
+    }
+}
 DEFAULT_SECTION_HEADERS = {
     "header": "Header",
     "workHistory": "Work History",
@@ -96,11 +104,12 @@ def create_resume(title, user_id):
     return resume
 
 
-def add_column(resume_id, position=0, width="100%"):
+def add_column(resume_id, position=0):
     column = Column(
         resume_id=resume_id,
         position=position,
-        width=width,
+        layout=deepcopy(DEFAULT_COLUMN_LAYOUT),
+        # width=width,
     )
 
     db.session.add(column)
@@ -193,7 +202,8 @@ def build_resume_with_defaults(title, user_id, sections_data):
     column = add_column(
         resume_id=resume.id,
         position=0,
-        width="100%",
+        
+        # width="100%",
     )
 
     section_position = 0

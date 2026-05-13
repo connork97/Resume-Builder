@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import SlateField from './SlateField';
+import SlateField from '../../../Slate/SlateField';
 
 const FieldRenderer = ({ index, field, layout, parentLayoutDict }) => {
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { updateColumn } from '@/store/resumeSlice.js';
+import { updateColumnWidth } from '@/store/resumeSlice.js';
 
-import styles from './ColumnSettings.module.css';
+import styles from '../SettingsModal.module.css';
 
 const ColumnSettings = () => {
 
@@ -13,32 +13,28 @@ const ColumnSettings = () => {
    const section = useSelector(state => state.resume.sections.byId[activeSectionId]);
    const column = useSelector(state => state.resume.columns.byId[section.columnId]);
 
-   const [columnWidthInputValue, setColumnWidthInputValue] = useState(column.width.replace("%", "") || 'auto');
-   const [autoWidthInputValue, setAutoWidthInputValue] = useState(column.autoWidth || false);
+   const [columnWidthInputValue, setColumnWidthInputValue] = useState(column.layout.width.value.replace("%", "") || 'auto');
+   const [autoWidthInputValue, setAutoWidthInputValue] = useState(column.layout.width.auto || false);
 
    const handleColumnWidthSubmit = (e) => {
       e.preventDefault();
       if (columnWidthInputValue < 0) {
          alert()
       }
-      const newColumnWidth = columnWidthInputValue + '%';
-      dispatch(updateColumn({
+
+      dispatch(updateColumnWidth({
          id: column.id,
-         changes: {
-            width: newColumnWidth,
-            autoWidth: false,
-         }
+         value: columnWidthInputValue + '%',
+         auto: false,
       }));
       setAutoWidthInputValue(false);
    }
 
    const handleAutoWidthSubmit = () => {
       // e.preventDefault();
-      dispatch(updateColumn({
+      dispatch(updateColumnWidth({
          id: column.id,
-         changes: {
-            autoWidth: autoWidthInputValue,
-         }
+         auto: autoWidthInputValue,
       }));
    }
 
@@ -47,27 +43,33 @@ const ColumnSettings = () => {
    }, [autoWidthInputValue])
 
    return (
-      <div className={styles.columnSettingsContainer}>
-         <h2>Column {column.position + 1} Settings:</h2>
+      <div className={styles.settingsModalWrapper}>
+         <h2 className={styles.settingsModalHeader}>Column {column.position + 1} Settings:</h2>
          <form
-            className={styles.columnSettingsRow}
+            className={styles.settingsModalRow}
             onSubmit={handleColumnWidthSubmit}
          >
-            <label htmlFor="columnWidthInput">Width:</label>
-            <input
-               id="columnWidthInput"
-               className={styles.columnSettingsInput}
-               type="number"
-               min='1'
-               max='100'
-               step='0.1'
-               value={columnWidthInputValue}
-               onChange={(e) => setColumnWidthInputValue(e.target.value)}
-            />
+            <label
+               htmlFor="columnWidthInput"
+               className={styles.settingsModalLabel}
+            >
+               <span>Width:</span>
+
+               <input
+                  id="columnWidthInput"
+                  className={styles.settingsModalInput}
+                  type="number"
+                  min='1'
+                  max='100'
+                  step='0.1'
+                  value={columnWidthInputValue}
+                  onChange={(e) => setColumnWidthInputValue(e.target.value)}
+               />
+            </label>
             <span className={styles.columnSettingsSpan}>%</span>
          </form>
          <form
-            className={styles.columnSettingsRow}
+            className={styles.settingsModalRow}
             onSubmit={handleAutoWidthSubmit}
          >
             <label htmlFor="autoWidthInput">AutoWidth:</label>
@@ -77,7 +79,7 @@ const ColumnSettings = () => {
                type="checkbox"
                checked={autoWidthInputValue}
                onChange={(e) => setAutoWidthInputValue(e.target.checked)}
-               
+
             />
          </form>
       </div>

@@ -60,11 +60,11 @@ def update_resume_with_form_data(resume_id, data):
         if not column:
             continue
 
-        if "width" in column_data:
-            column.width = column_data["width"]
-        
-        if 'autoWidth' in column_data:
-            column.auto_width = column_data['autoWidth']
+        if "layout" in column_data:
+            column.layout = column_data["layout"]
+
+        # if 'autoWidth' in column_data:
+            # column.auto_width = column_data['autoWidth']
 
         if "position" in column_data:
             column.position = column_data["position"]

@@ -1,7 +1,9 @@
 const COLOR_KEYS = [
   "color",
-  "backgroundColor",
   "background",
+  "backgroundColor",
+  "highlight",
+  "highlightColor",
   "borderColor",
   "textColor",
   "fontColor"

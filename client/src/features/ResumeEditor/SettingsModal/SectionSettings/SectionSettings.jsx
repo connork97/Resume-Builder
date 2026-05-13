@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-import { useDispatch, useSelector } from 'react-redux';
+import ColumnIndex from './SectionColumnIndex.jsx';
+import RowIndex from './SectionRowIndex.jsx';
+import FontColor from '../../TextFormatting/FontColor.jsx';
+import TextAlign from '../../TextFormatting/TextAlign.jsx';
+import BackgroundColor from '../../TextFormatting/BackgroundColor.jsx';
 
-import { updateSection, updateColumn } from '@/store/resumeSlice.js';
+import FontSize from '../../TextFormatting/FontSize.jsx';
+import LineHeight from '../../TextFormatting/LineHeight.jsx';
 
-import styles from './SettingsModal.module.css';
+import styles from '../SettingsModal.module.css';
 
-import ColumnIndex from './ColumnIndex.jsx';
-import RowIndex from './RowIndex.jsx';
-import SettingsModalInput from './SettingsModalInput.jsx';
-import FontSize from '../../../../TextFormatting/FontSize.jsx';
-import FontColor from '../../../../TextFormatting/FontColor.jsx';
-import LineHeight from '../../../../TextFormatting/LineHeight.jsx';
-import TextAlign from '../../../../TextFormatting/TextAlign.jsx';
-import BackgroundColor from '../../../../TextFormatting/BackgroundColor.jsx';
-import ColumnSettings from './ColumnSettings';
+const SectionSettings = ({ setIsSettingsModalOpen }) => {
 
-const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModalOpen }) => {
-
-   const dispatch = useDispatch();
+   const section = useSelector(state => state.resume.sections.byId[state.resume.activeSectionId]);
+   const column = useSelector(state => state.resume.columns.byId[section.columnId]);
 
    const resumeStyling = useSelector(state => state.resume.styling);
    const sections = useSelector(state => state.resume.sections);
@@ -109,22 +106,21 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
       }
       dispatchLayoutChanges(layoutChanges);
    }
-
-   const settingModalInputArr = [
-      {
-         label: "Column Width",
-         value: columnWidthInputValue,
-         text: "%",
-         handleSetInputValue: setColumnWidthInputValue,
-         handleSetValue: handleSetColumnWidth
-      },
-   ];
+   const hideOrShowHeading = () => {
+      const newShowHeadingValue = !section.showHeading;
+      dispatch(updateSection({
+         sectionId: section.id,
+         changes: {
+            showHeading: newShowHeadingValue
+         }
+      }))
+   }
 
    const renderSettingsModalRows = () => {
       let componentsArr = [
          // { component: FontSize, label: "Font Size" },
          { component: FontColor, label: "Font Color" },
-         { component: LineHeight, label: "Line Height" },
+         // { component: LineHeight, label: "Line Height" },
          { component: TextAlign, label: "Text Align", styling: { justifyContent: 'end' } },
          { component: BackgroundColor, label: 'Background Color' },
       ];
@@ -142,64 +138,35 @@ const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModa
       ));
    }
 
-   const hideOrShowHeading = () => {
-      const newShowHeadingValue = !section.showHeading;
-      dispatch(updateSection({
-         sectionId: section.id,
-         changes: {
-            showHeading: newShowHeadingValue
-         }
-      }))
-   }
-
    return (
-      <>
-         <div
-            className={styles.settingsModalOverlayDiv}
-            styles={isSettingsModalOpen ? { display: 'block' } : { display: 'none' }}
-            onClick={() => setIsSettingsModalOpen(false)}
-         />
-         <div className={styles.settingsModalContainerDiv}>
-            <ColumnSettings />
-            <p className={styles.settingsModalSectionTitle}>Editing: {section.label}</p>
-            <div className={styles.headingCheckboxWrapperDiv}>
-               <label
-                  className={styles.headingCheckboxLabel}
-                  htmlFor='hideOrShowHeading'
-               >
-                  Show Section {section.label} Heading:
-               </label>
-                  <input
-                     id='hideOrShowHeading'
-                     className={styles.headingCheckboxInput}
-                     type='checkbox'
-                     checked={section.showHeading}
-                     onChange={() => hideOrShowHeading()}
-                  />
-            </div>
-            <ColumnIndex
-               section={section}
-               sectionColumnIndex={sectionColumnIndex}
+      <div className={styles.settingsModalWrapper}>
+         <h2 className={styles.settingsModalHeader}>{section.label} Settings:</h2>
+         <div className={styles.settingsModalRow}>
+            <label
+               className={styles.settingsModalLabel}
+               htmlFor='hideOrShowHeading'
+            >
+               Show Section {section.label} Heading:
+            </label>
+            <input
+               id='hideOrShowHeading'
+               className={styles.settingsModalCheckbox}
+               type='checkbox'
+               checked={section.showHeading}
+               onChange={() => hideOrShowHeading()}
             />
-            <RowIndex
-               section={section}
-            />
-            {settingModalInputArr.map((input) => (
-               <SettingsModalInput
-                  key={input.label}
-                  label={input.label}
-                  value={input.value}
-                  text={input.text}
-                  styling={input.styling}
-                  handleSetInputValue={input.handleSetInputValue}
-                  handleSetValue={input.handleSetValue}
-                  setIsSettingsModalOpen={setIsSettingsModalOpen}
-               />
-            ))}
-            {renderSettingsModalRows()}
          </div>
-      </>
-   );
+         <ColumnIndex
+            section={section}
+            sectionColumnIndex={sectionColumnIndex}
+         />
+         <RowIndex
+            section={section}
+         />
+
+         {renderSettingsModalRows()}
+      </div>
+   )
 }
 
-export default SettingsModal;
+export default SectionSettings;

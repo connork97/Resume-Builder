@@ -102,6 +102,7 @@ def update_resume(resume_id):
     print(f"Received PUT request for /resumes/{resume_id}")
 
     form_data = request.get_json() or {}
+    print('this is the route')
 
     try:
         updated_resume = update_resume_with_form_data(resume_id, form_data)

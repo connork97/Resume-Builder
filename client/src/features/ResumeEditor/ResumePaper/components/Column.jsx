@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import Section from './ResumeSection/Section.jsx';
+import Section from './Section.jsx';
 
 import styles from '../ResumePaper.module.css';
 
@@ -17,26 +17,13 @@ const Column = ({ column }) => {
          </div>
       );
    }
-   // If the column doesn't have a valid width, set it to a default value.
-   // let columnStyling = {width: '100%'};
-   const computTotalWidth = () => {
-      let totalWidth = 0;
-      columns.allIds.map((columnId) => {
-         const columnWidth = columns.byId[columnId].width;
-         if (!columnWidth) return
-         totalWidth += parseFloat(columnWidth);
-      })
-      return totalWidth;
-   }
-   
-   useEffect(() => {
-      computTotalWidth();
-   }, [columns])
 
    // If the column doesn't have a valid width, set it to a default value that splits remaining space evenly.
-   const columnStyling = {
-      flex: column?.width ? `0 0 ${column.width}` : '1 1 0',
-   }
+   let columnStyling = {
+      flex: column?.layout?.width?.auto
+         ? '1 1 0%'
+         : `0 0 ${column.layout.width.value}`,
+   };
 
    const renderedSections = column.sectionIds.map((sectionId) => {
       const section = sections.byId[sectionId];

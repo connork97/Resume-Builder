@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveEditorId, setActiveEditorSelection, setActiveSectionId } from "../../../../../store/resumeSlice.js";
+import { setActiveEditorId, setActiveEditorSelection, setActiveSectionId } from "../../../../store/resumeSlice.js";
 // import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection } from "../../../../../resumeSlice.js";
 
-import SlateHeading from "./SlateHeading.jsx";
+import SlateHeading from "../../../Slate/SlateHeading.jsx";
 import styles from './Section.module.css';
-import SettingsModal from "./SettingsModal/SettingsModal.jsx";
-import SubsectionRenderer from "./SubsectionRenderer.jsx";
+import SettingsModal from "../../SettingsModal/SettingsModal.jsx";
+import SubsectionRenderer from "./Subsection.jsx";
+import SectionPadding from "./SectionPadding.jsx";
 
 const Section = ({ section, column }) => {
   useEffect(() => {
@@ -97,16 +98,6 @@ const Section = ({ section, column }) => {
     setIsSettingsModalOpen(!isSettingsModalOpen);
   }
 
-
-  const pseudoContainerStyling = {
-    minHeight: (
-      (sectionRef.current && !isFirstRow && !isLastRow) ? sectionRef.current.clientHeight + 5 + 'px'
-        : (sectionRef.current && (isFirstRow || isLastRow)) ? 'calc(100% - 2.5rem)'
-          : 'calc(100% + 5px)'
-    ),
-    // height: (isFirstSection || isLastSection) && 'calc(100% - 1.5rem)',
-  };
-
   return (
     <div
       className={styles.sectionContainerDiv}
@@ -117,12 +108,7 @@ const Section = ({ section, column }) => {
       }}
       onClick={() => dispatch(setActiveSectionId(section.id))}
     >
-      <div
-        className={styles.sectionPseudoContainerDiv}
-        style={
-          pseudoContainerStyling
-        }
-      />
+      <SectionPadding section={section} column={column} />
       <button
         className={styles.sectionSettingsButton}
       >

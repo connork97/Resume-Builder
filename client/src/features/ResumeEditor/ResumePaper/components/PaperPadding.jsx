@@ -11,7 +11,6 @@ const PaperPadding = () => {
    const resume = useSelector(state => state.resume);
    const resumeLayout = resume.layout;
    const padding = resume.layout.padding;
-   console.log(padding)
 
    const changepadding = (e) => {
       const { name, value } = e.target;

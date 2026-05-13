@@ -39,7 +39,7 @@ def add_column(resume_id):
         new_column = Column(
             resume_id=resume_id,
             position=column_count,
-            width=None
+            # width=None
         )
         db.session.add(new_column)
         db.session.flush()
@@ -113,7 +113,7 @@ def delete_last_column(resume_id):
             .all()
         )
         
-        set_column_widths(resume_id)
+        update_column_widths(resume_id)
 
         for index, column in enumerate(remaining_columns):
             column.position = index
@@ -153,24 +153,27 @@ def update_column(column_id):
                 message="No data provided for column update.",
             )
 
-        new_width = data.get("width")
-        auto_width = data.get("autoWidth")
+        new_layout = data.get("layout")
+        # new_width = data.get("width")
+        # auto_width = data.get("autoWidth")
         position = data.get("position")
 
-        if new_width is not None:
-            column.width = new_width
-            column.auto_width = False
+        if new_layout is not None:
+            column.layout = new_layout
+        # if new_width is not None:
+            # column.width = new_width
+            # column.auto_width = False
 
-        if auto_width is not None:
-            column.auto_width = auto_width
+        # if auto_width is not None:
+            # column.auto_width = auto_width
 
-            if auto_width:
-                column.width = None
+            # if auto_width:
+                # column.width = None
 
         if position is not None:
             column.position = position
 
-        set_column_widths(column.resume_id)
+        update_column_widths(column.resume_id)
 
         db.session.commit()
 

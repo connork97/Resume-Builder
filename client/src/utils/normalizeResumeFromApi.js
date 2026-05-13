@@ -50,8 +50,9 @@ const normalizeResumeFromApi = (apiResume) => {
     normalizedResume.columns.byId[column.id] = {
       id: column.id,
       resumeId: column.resumeId,
-      width: column.width ?? '100%',
-      autoWidth: column.autoWidth ?? true,
+      // width: column.width ?? '100%',
+      // autoWidth: column.autoWidth ?? true,
+      layout: column.layout ?? {},
       position: column.position ?? 0,
       sectionIds: sortedSections.map((section) => section.id),
     };
@@ -71,6 +72,7 @@ const normalizeResumeFromApi = (apiResume) => {
         position: section.position ?? 0,
         value: section.value ?? [],
         showHeading: section.showHeading ?? true,
+        layout: section.layout ?? {},
         styling: section.styling ?? {},
         subsectionIds: sortedSubsections.map((subsection) => subsection.id),
       };
@@ -88,6 +90,7 @@ const normalizeResumeFromApi = (apiResume) => {
           label: subsection.label ?? '',
           type: subsection.type ?? 'default',
           position: subsection.position ?? 0,
+          layout: subsection.layout ?? {},
           styling: subsection.styling ?? {},
           fieldIds: sortedFields.map((field) => field.id),
         };
@@ -101,6 +104,7 @@ const normalizeResumeFromApi = (apiResume) => {
             label: field.label ?? '',
             position: field.position ?? 0,
             value: field.value ?? [],
+            layout: field.layout ?? {},
             styling: field.styling ?? {},
           };
 

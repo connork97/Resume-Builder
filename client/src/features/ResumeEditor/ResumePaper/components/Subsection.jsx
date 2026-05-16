@@ -4,15 +4,17 @@ import { useSelector } from 'react-redux';
 
 import Field from './Field';
 
+import styles from './Section.module.css';
+
 const SubsectionRenderer = ({ subsection }) => {
 
    const sectionLayout = useSelector(state => state.resume.sections.byId[subsection.sectionId].layout);
    const fields = useSelector((state) => state.resume.fields);
    const subsectionLayout = subsection.layout;
-   console.log(subsectionLayout, sectionLayout)
 
    const parentLayoutDict = {
       display: subsectionLayout?.display || sectionLayout?.display || 'flex',
+      flexWrap: 'wrap',
       flexDirection: subsectionLayout?.flexDirection || sectionLayout?.flexDirection || 'row',
       justifyContent: subsectionLayout?.justifyContent || sectionLayout?.justifyContent || 'space-between',
       justifySelf: subsectionLayout?.justifySelf,
@@ -26,6 +28,7 @@ const SubsectionRenderer = ({ subsection }) => {
       <div style={parentLayoutDict}>
          {subsection.fieldIds.map((fieldId, index) => {
             const field = fields.byId[fieldId];
+            // const break = field?.value.label === 'Description' ? 'break' : null;
             if (!field) return null;
             return (
                <Field

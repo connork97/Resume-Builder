@@ -99,3 +99,10 @@
   width: 25px;
   z-index: 100;
 }
+
+
+.flexBreak {
+  flex-basis: 100%;
+  width: 0;
+  height: 0;
+}

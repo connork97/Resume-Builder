@@ -267,3 +267,9 @@
 .hideOutlineButton {
   left: 35.5vh; 
 }
+
+.startNewRowWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10%;
+}

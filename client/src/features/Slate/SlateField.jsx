@@ -20,7 +20,6 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
   const subsectionFieldsArr = useSelector(state => state.resume.subsections.byId[field.subsectionId].fieldIds);
   const fieldPlainText = getNodeString(field);
   const fieldMinWidth = !fieldPlainText ? getMinWidth(field.label) : 'auto';
-  console.log(getMinWidth(field.label))
   
   const editorId = useMemo(() => field.id, [])
   const editor = useMemo(() => withReact(createEditor()), []);

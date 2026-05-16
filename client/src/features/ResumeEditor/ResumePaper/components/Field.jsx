@@ -8,16 +8,11 @@ import { getNodeString } from '@/helpers/getNodeString';
 const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
 
    const field = useSelector(state => state.resume.fields.byId[fieldId]);
+   const startNewRow = field?.label === 'Description' ? true : false;
 
-   console.log('FIELD', field)
 
    const plainText = getNodeString(field);
-   console.log('NODE STRING', plainText)
-   if (plainText) {
-      console.log('true')
-   } else if (!plainText) {
-      console.log('false')
-   }
+
 
    const fieldLayoutDict = {
       // width: '5rem',
@@ -27,14 +22,14 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
       textAlign: field?.textAlign,
       gridColumn: field?.label === 'Description' ? '1 / -1' : field?.gridColumn,
    }
-   
+
    const isGrid = layout?.display === 'grid';
 
-   useEffect(() => {
-      if (field?.label === 'Description') {
-         fieldLayoutDict.gridColumn = '1 / -1';
-      }
-   }, [field]);
+   // useEffect(() => {
+      // if (field?.label === 'Description') {
+         // fieldLayoutDict.gridColumn = '1 / -1';
+      // }
+   // }, [field]);
 
    const getColumnCount = (columns) => {
       if (!columns) return 0;
@@ -62,17 +57,22 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
       fieldLayoutDict.justifySelf = field.justifySelf ?? autoAlign;
    }
    return (
-         <SlateField
-            key={field.id}
-            field={field}
-            styling={{
-               ...field.styling,
-               ...fieldLayoutDict,
-            }}
-            sectionId={field.sectionId}
-            subsectionId={field.subsectionId}
-            layout={parentLayoutDict}
-         />
+      <React.Fragment>
+         {field.layout.startNewRow && (
+             <div style={{ flexBasis: '100%', width: 0, height: 0 }} />
+         )}
+      <SlateField
+         key={field.id}
+         field={field}
+         styling={{
+            ...field.styling,
+            ...fieldLayoutDict,
+         }}
+         sectionId={field.sectionId}
+         subsectionId={field.subsectionId}
+         layout={parentLayoutDict}
+      />
+      </React.Fragment>
    )
 }
 

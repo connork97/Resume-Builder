@@ -10,6 +10,7 @@ import styles from '../Outline.module.css';
 import { BASE_URL } from '@/config';
 import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
 import { deleteFieldFromApi } from '@/services/resumeServices';
+import { StartNewRow } from './StartNewRow';
 
 const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSummary, dragItem, setDragItem }) => {
 

@@ -428,6 +428,22 @@ const resumeSlice = createSlice({
       field.value = newValue;
     },
 
+    updateFieldLayout(state, action) {
+      const { id, changes } = action.payload;
+      const field = state.fields.byId[id];
+      console.log('FIELD BEFORE CHANGES: ', field)
+      console.log('FIELD LAYOUT CHANGES:', changes)
+      if (!field) {
+        console.error(`Cannot update field.  ID of ${id} not found.`);
+        return;
+      }
+      if (!field.layout) {
+        field.layout = {};
+      }
+      Object.assign(field.layout, changes);
+      console.log('FIELD AFTER CHANGES: ', field.layout)
+    },
+
     swapFieldPositions(state, action) {
       const { fieldId, targetFieldId } = action.payload;
 
@@ -574,6 +590,7 @@ export const {
   reorderSubsections,
   addField,
   updateFieldValue,
+  updateFieldLayout,
   swapFieldPositions,
   deleteField,
   reorderFields

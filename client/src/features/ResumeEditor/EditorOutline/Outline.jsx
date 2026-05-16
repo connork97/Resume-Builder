@@ -8,6 +8,7 @@ import FieldRow from "./components/FieldRow.jsx";
 import styles from "./Outline.module.css";
 import { Node } from "slate";
 import { deleteSectionFromApi } from "@/services/resumeServices.js";
+import { StartNewRow } from "./components/StartNewRow.jsx";
 
 const Outline = () => {
   const dispatch = useDispatch();
@@ -73,17 +74,20 @@ const Outline = () => {
     const isHeaderOrSummary = subsectionId === null;
 
     return (
-      <FieldRow
-        key={fieldId}
-        fieldId={fieldId}
-        fieldIndex={fieldIndex}
-        sectionId={sectionId}
-        subsectionId={subsectionId}
-        // handleFieldChange={handleFieldChange}
-        isHeaderOrSummary={isHeaderOrSummary}
-        dragItem={dragItem}
-        setDragItem={setDragItem}
-      />
+      <React.Fragment key={fieldId + fieldIndex}>
+        <FieldRow
+          key={fieldId}
+          fieldId={fieldId}
+          fieldIndex={fieldIndex}
+          sectionId={sectionId}
+          subsectionId={subsectionId}
+          // handleFieldChange={handleFieldChange}
+          isHeaderOrSummary={isHeaderOrSummary}
+          dragItem={dragItem}
+          setDragItem={setDragItem}
+        />
+        <StartNewRow fieldId={fieldId} />
+      </React.Fragment>
     );
   };
 
@@ -108,101 +112,101 @@ const Outline = () => {
       }
     }
     dispatch(deleteSection(sectionId));
-}
+  }
 
-const getNodeString = (slateValue) => {
-  return Node.string(slateValue);
-}
+  const getNodeString = (slateValue) => {
+    return Node.string(slateValue);
+  }
 
-useEffect(() => {
-  if (!sections.allIds.length) return;
+  useEffect(() => {
+    if (!sections.allIds.length) return;
 
-  const initial = {};
-  sections.allIds.forEach(id => {
-    initial[id] = true;
-  });
+    const initial = {};
+    sections.allIds.forEach(id => {
+      initial[id] = true;
+    });
 
-  setCollapsedSections(initial);
-}, [sections.allIds]);
+    setCollapsedSections(initial);
+  }, [sections.allIds]);
 
-return (
-  <div
-    className={`${styles.outlineWrapper} ${outlineIsHidden ? styles.hidden : styles.visible
-      }`}
-  >
-    <div className={styles.outlineContainer}>
-      <div className={styles.outlineTitle}>Resume Outline</div>
+  return (
+    <div
+      className={`${styles.outlineWrapper} ${outlineIsHidden ? styles.hidden : styles.visible
+        }`}
+    >
+      <div className={styles.outlineContainer}>
+        <div className={styles.outlineTitle}>Resume Outline</div>
 
-      <button
-        className={
-          !outlineIsHidden
-            ? styles.hideOutlineButton
-            : styles.showOutlineButton
-        }
-        onClick={() => setOutlineIsHidden(!outlineIsHidden)}
-      >
-        {!outlineIsHidden ? "⟨⟨⟨" : "⟩⟩⟩"}
-      </button>
+        <button
+          className={
+            !outlineIsHidden
+              ? styles.hideOutlineButton
+              : styles.showOutlineButton
+          }
+          onClick={() => setOutlineIsHidden(!outlineIsHidden)}
+        >
+          {!outlineIsHidden ? "⟨⟨⟨" : "⟩⟩⟩"}
+        </button>
 
-      {!sections.allIds.length ? (
-        <h2>No Sections to Display</h2>
-      ) : (
-        sections.allIds.map((sectionId, index) => (
-          <div
-            key={sectionId}
-            className={`${styles.sectionBlock} ${styles.sectionRow}`}
-            draggable={true}
-            onDragStart={(e) =>
-              handleSectionDragStart(e, index, sectionId)
-            }
-            onDragOver={(e) => handleSectionDragOver(e, index)}
-            onDragEnd={handleSectionDragEnd}
-            onDrop={() => setDragItem(null)}
-          >
-            <div className={styles.sectionHeader}>
-              <div className={styles.dragHandle}>⋮⋮</div>
+        {!sections.allIds.length ? (
+          <h2>No Sections to Display</h2>
+        ) : (
+          sections.allIds.map((sectionId, index) => (
+            <div
+              key={sectionId}
+              className={`${styles.sectionBlock} ${styles.sectionRow}`}
+              draggable={true}
+              onDragStart={(e) =>
+                handleSectionDragStart(e, index, sectionId)
+              }
+              onDragOver={(e) => handleSectionDragOver(e, index)}
+              onDragEnd={handleSectionDragEnd}
+              onDrop={() => setDragItem(null)}
+            >
+              <div className={styles.sectionHeader}>
+                <div className={styles.dragHandle}>⋮⋮</div>
 
-              <div className={styles.sectionTitle}>
-                {getNodeString(getSectionById(sectionId).value[0])}  {/* Gets the plain text of the Slate Field Value */}
-              </div>
-
-              <button
-                className={styles.collapseButton}
-                onClick={() => toggleSection(sectionId)}
-              >
-                ▼
-                {/* {collapsedSections[sectionId] ? "▼" : "▲"} */}
-                {/* ◀ */}
-                {/* {collapsedSections[sectionId] ? "▼" : "▶"} */}
-
-              </button>
-            </div>
-
-            {!collapsedSections[sectionId] && (
-              <div className={styles.sectionContent}>
-                <OutlineSection
-                  dispatch={dispatch}
-                  section={sections.byId[sectionId]}
-                  sectionTitle={getNodeString(sections.byId[sectionId].value[0])}
-                  dragItem={dragItem}
-                  setDragItem={setDragItem}
-                  renderFieldRow={renderFieldRow}
-                />
+                <div className={styles.sectionTitle}>
+                  {getNodeString(getSectionById(sectionId).value[0])}  {/* Gets the plain text of the Slate Field Value */}
+                </div>
 
                 <button
-                  className={styles.deleteSectionButton}
-                  onClick={() => handleDeleteSection(sectionId)}
+                  className={styles.collapseButton}
+                  onClick={() => toggleSection(sectionId)}
                 >
-                  Delete Section
+                  ▼
+                  {/* {collapsedSections[sectionId] ? "▼" : "▲"} */}
+                  {/* ◀ */}
+                  {/* {collapsedSections[sectionId] ? "▼" : "▶"} */}
+
                 </button>
               </div>
-            )}
-          </div>
-        ))
-      )}
+
+              {!collapsedSections[sectionId] && (
+                <div className={styles.sectionContent}>
+                  <OutlineSection
+                    dispatch={dispatch}
+                    section={sections.byId[sectionId]}
+                    sectionTitle={getNodeString(sections.byId[sectionId].value[0])}
+                    dragItem={dragItem}
+                    setDragItem={setDragItem}
+                    renderFieldRow={renderFieldRow}
+                  />
+
+                  <button
+                    className={styles.deleteSectionButton}
+                    onClick={() => handleDeleteSection(sectionId)}
+                  >
+                    Delete Section
+                  </button>
+                </div>
+              )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default Outline;

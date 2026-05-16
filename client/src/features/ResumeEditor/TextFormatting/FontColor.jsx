@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getActiveMark, setFontColor } from "../../../helpers/marks.js";
-import { updateResumeStyling, updateSection } from "../../../store/resumeSlice.js";
+import { updateResume, updateSection } from "@/store/resumeSlice.js";
 
 import ToolbarDropdown from "../EditorToolbar/components/shared/ToolbarDropdown.jsx";
 
@@ -24,13 +24,17 @@ const FontColor = ({ editor, selection }) => {
 
    const setNewFontColor = (newFontColor = currentEditorFontColor) => {
       if (!editor && !activeSectionId) {
-         dispatch(updateResumeStyling({ color: newFontColor }));
+         dispatch(updateResume({
+            key: 'styling',
+            changes: { 
+               color: newFontColor
+            }
+         }))
          setCurrentEditorFontColor(newFontColor);
-         console.log("Updating section font color", activeSectionId, newFontColor);
          return;
       } else if (!editor && activeSectionId) {
          dispatch(updateSection({
-            sectionId: activeSectionId,
+            id: activeSectionId,
             changes: { styling: { color: newFontColor } }
          }));
          setCurrentEditorFontColor(newFontColor);

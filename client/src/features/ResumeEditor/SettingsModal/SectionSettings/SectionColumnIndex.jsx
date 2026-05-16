@@ -69,7 +69,7 @@ const ColumnIndex = ({ section, sectionColumnIndex }) => {
       }
 
       dispatch(updateSection({
-         sectionId: section.id,
+         id: section.id,
          changes: {
             columnId: newColumnId,
          },

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateResumeStyling, updateSection } from '../../../store/resumeSlice.js';
+import { updateResume, updateSection } from '../../../store/resumeSlice.js';
 
 import ToolbarDropdown from '../EditorToolbar/components/shared/ToolbarDropdown.jsx';
 
@@ -13,11 +13,16 @@ const BackgroundColor = () => {
 
    const handleSetSectionBackgroundColor = (color) => {
       if (!activeSectionId) {
-         dispatch(updateResumeStyling({ backgroundColor: color }));
+         dispatch(updateResume({
+            key: 'styling',
+            changes: {
+               backgroundColor: color
+            }
+         }))
          return;
       }
       dispatch(updateSection({
-         sectionId: activeSectionId,
+         id: activeSectionId,
          changes: { styling: { backgroundColor: color } }
       }));
    };

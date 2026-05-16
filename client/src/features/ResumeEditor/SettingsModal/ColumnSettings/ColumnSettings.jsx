@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { updateColumnWidth } from '@/store/resumeSlice.js';
+import { updateColumn } from '@/store/resumeSlice.js';
 
 import styles from '../SettingsModal.module.css';
 
@@ -22,20 +22,32 @@ const ColumnSettings = () => {
          alert()
       }
 
-      dispatch(updateColumnWidth({
+      dispatch(updateColumn({
          id: column.id,
-         value: columnWidthInputValue + '%',
-         auto: false,
-      }));
+         changes: {
+            layout: {
+               width: {
+                  value: columnWidthInputValue + '%',
+                  auto: false,
+               }
+            }
+         }
+      }))
       setAutoWidthInputValue(false);
    }
 
    const handleAutoWidthSubmit = () => {
       // e.preventDefault();
-      dispatch(updateColumnWidth({
+      dispatch(updateColumn({
          id: column.id,
-         auto: autoWidthInputValue,
-      }));
+         changes: {
+            layout: {
+               width: {
+                  auto: autoWidthInputValue,
+               }
+            }
+         }
+      }))
    }
 
    useEffect(() => {

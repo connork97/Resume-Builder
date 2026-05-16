@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from '../ResumePaper.module.css';
-import { updateResumeLayout } from '@/store/resumeSlice';
+import { updateResume } from '@/store/resumeSlice';
 
 const PaperPadding = () => {
 
@@ -17,7 +17,8 @@ const PaperPadding = () => {
       const currentPaddingValue = parseFloat(padding[name]);
       const paddingValueAdjustment = Number(value);
 
-      dispatch(updateResumeLayout({
+      dispatch(updateResume({
+         key: 'layout',
          changes: {
             padding: {
                ...padding,
@@ -25,6 +26,7 @@ const PaperPadding = () => {
             }
          }
       }))
+
    }
 
    return (

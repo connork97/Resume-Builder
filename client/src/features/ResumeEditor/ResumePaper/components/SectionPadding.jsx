@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateColumnPadding, updateSectionPadding } from '@/store/resumeSlice.js';
+import { updateColumn, updateSection } from '@/store/resumeSlice.js';
 
 import styles from './Section.module.css';
 
@@ -22,9 +22,9 @@ const SectionPadding = ({ section, column, isFirstColumn, isLastColumn, isFirstR
 
    const handleSetPadding = (e) => {
       const { name, value } = e.target;
-      let currentPaddingValue = sectionPadding[name];
-      let parsedNewPaddingValue = parseFloat(currentPaddingValue.replace('rem', '')) + parseFloat(value)
-      let newPaddingValueToString = String(parsedNewPaddingValue.toFixed(1)) + 'rem'
+      const currentPaddingValue = sectionPadding[name];
+      const parsedNewPaddingValue = parseFloat(currentPaddingValue.replace('rem', '')) + parseFloat(value)
+      const newPaddingValueToString = String(parsedNewPaddingValue.toFixed(1)) + 'rem'
       console.log('CURRENT PADDING VALUE', newPaddingValueToString)
       if (parsedNewPaddingValue < 0) {
          alert('Padding cannot be negative for a section.')
@@ -32,18 +32,26 @@ const SectionPadding = ({ section, column, isFirstColumn, isLastColumn, isFirstR
       }
 
       if (name === 'top' || name === 'bottom') {
-         dispatch(updateSectionPadding({
+         dispatch(updateSection({
             id: section.id,
-            padding: {
-               [name]: newPaddingValueToString
+            changes: {
+               layout: {
+                  padding: {
+                     [name]: newPaddingValueToString
+                  }
+               }
             }
-         }));
+         }))
+
       } else if (name === 'left' || name === 'right') {
-         console.log('COLUMN', column)
-         dispatch(updateColumnPadding({
+         dispatch(updateColumn({
             id: column.id,
-            padding: {
-               [name]: newPaddingValueToString
+            changes: {
+               layout: {
+                  padding: {
+                     [name]: newPaddingValueToString,
+                  }
+               }
             }
          }))
       }

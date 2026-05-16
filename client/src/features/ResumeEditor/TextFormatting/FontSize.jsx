@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateResumeStyling, updateSection } from '@/store/resumeSlice.js';
+import { updateResume, updateSection } from '@/store/resumeSlice.js';
 import { getActiveMark, setFontSize, setFontSizeOffset } from "@/helpers/marks.js";
 
 import styles from '../EditorToolbar/components/RichTextToolbar.module.css';
@@ -41,7 +41,12 @@ const FontSize = ({ editor, selection, label }) => {
       if (!editor && !activeSectionId) {
          let resumeFontSize = parseInt(resumeStyling.fontSize);
          resumeFontSize = findFontSizeValue(resumeFontSize, newFontSize);
-         dispatch(updateResumeStyling({ fontSize: `${resumeFontSize}px` }));
+         dispatch(updateResume({
+            key: 'styling',
+            changes: {
+               fontSize: `${resumeFontSize}px`
+            }
+         }))
          setFontSizeInputValue(resumeFontSize);
       } else if (!editor && activeSectionId) {
          const section = sections.byId[activeSectionId];
@@ -55,7 +60,7 @@ const FontSize = ({ editor, selection, label }) => {
             newSectionFontSizeOffset -= 1;
          }
          dispatch(updateSection({
-            sectionId: activeSectionId,
+            id: activeSectionId,
             changes: { styling: { fontSizeOffset: newSectionFontSizeOffset } }
             // changes: { styling: { fontSize: `${sectionFontSize}px` } }
          }));

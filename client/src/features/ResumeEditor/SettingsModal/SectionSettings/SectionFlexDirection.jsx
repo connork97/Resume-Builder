@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateSectionFlex, updateSubsectionFlexDirection } from '@/store/resumeSlice.js';
+import { updateSection, updateSubsectionFlexDirection } from '@/store/resumeSlice.js';
 
 import ToolbarButton from '../../EditorToolbar/components/shared/ToolbarButton';
 import styles from '../SettingsModal.module.css';
@@ -14,10 +14,14 @@ const SectionFlexDirection = () => {
 
    const handleFlexDirectionChange = (e) => {
       const newFlexDirection = e.target.value;
-      dispatch(updateSectionFlex({
+      console.log('FLEX DIRECTION', newFlexDirection)
+      dispatch(updateSection({
          id: section.id,
          changes: {
-            flexDirection: newFlexDirection
+            layout: {
+               display: 'flex',
+               flexDirection: newFlexDirection,
+            }
          }
       }))
    };

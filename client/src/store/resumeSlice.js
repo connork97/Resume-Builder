@@ -261,99 +261,110 @@ const resumeSlice = createSlice({
     // * UPDATE STATE V
     // * ------------ V
 
+    updateResume(state, action) {
+      const { key, changes } = action.payload;
+
+      if (key === "title") {
+        state.title = changes;
+        return;
+      }
+
+      state[key] = {
+        ...state[key],
+        ...changes,
+      };
+    },
     updateColumn(state, action) {
       const { id, changes } = action.payload;
-      console.log("Updating column with ID:", id, "Changes:", changes);
+
       const column = state.columns.byId[id];
-      if (!column) {
-        console.error(`Column with ID ${id} not found.`);
-        return;
-      }
-      if (column) {
-        Object.assign(column, changes);
-      }
 
-      // console.log('CHANGES:', changes)
-      // if (Object.keys(changes).includes("width") || Object.keys(changes).includes("autoWidth")) {
-      // console.log('HAS KEYS')
-      // updateAutoColumnWidths(state);
-      // }
-
-      // if (changes.autoWidth !== undefined) {
-      // console.log(changes.autoWidth)
-      // }
-    },
-
-    updateColumnWidth(state, action) {
-      const { id, value, auto } = action.payload;
-      const column = state.columns.byId[id];
       if (!column) {
         console.error(`Column with ID ${id} not found.`);
         return;
       }
 
-      column.layout ??= {};
-      column.layout.width ??= {};
+      if (changes.layout) {
+        column.layout ??= {};
 
-      if (value !== undefined) column.layout.width.value = value;
-      if (auto !== undefined) column.layout.width.auto = auto;
+        if (changes.layout.width) {
+          column.layout.width = {
+            ...column.layout.width,
+            ...changes.layout.width,
+          };
 
-      updateAutoColumnWidths(state);
-    },
+          updateAutoColumnWidths(state);
+        }
 
-    updateColumnPadding(state, action) {
-      const { id, padding } = action.payload;
-      const column = state.columns.byId[id];
-      column.layout.padding = {
-        ...column.layout.padding,
-        ...padding
+        if (changes.layout.padding) {
+          column.layout.padding = {
+            ...column.layout.padding,
+            ...changes.layout.padding,
+          };
+        }
       }
-    },
 
+      Object.assign(column, {
+        ...changes,
+        layout: column.layout,
+      });
+    },
     updateSection(state, action) {
-      const { sectionId, changes } = action.payload;
-      const section = state.sections.byId[sectionId];
-      console.log('SECTION FROM SLICE', action.payload)
-      const columnId = section.columnId;
+      const { id, changes } = action.payload;
+
+      const section = state.sections.byId[id];
 
       if (!section) {
-        console.error(`Cannot update section. ID of ${sectionId} not found.`);
+        console.error(`Cannot update section. ID of ${id} not found.`);
         return;
       }
 
-      for (const key in changes) {
-        if (key === "styling") {
-          section.styling = { ...section.styling, ...changes.styling };
+      if (changes.columnId && changes.columnId !== section.columnId) {
+        const oldColumnId = section.columnId;
+        const newColumnId = changes.columnId;
+
+        const oldColumn = state.columns.byId[oldColumnId];
+        const newColumn = state.columns.byId[newColumnId];
+
+        if (oldColumn) {
+          oldColumn.sectionIds = oldColumn.sectionIds.filter(
+            (id) => id !== id
+          );
         }
-        // When updating section's columnId, also update the old AND new Columns' sectionIds
-        else if (key === 'columnId') {
-          const oldColumn = state.columns.byId[columnId];
-          const newColumnId = changes.columnId;
 
-          // Remove Section ID from Old Column's sectionIds Array
-          if (oldColumn) {
-            oldColumn.sectionIds = oldColumn.sectionIds.filter((id) => id !== sectionId);
-          }
-
-          // Add Section ID to New Column's sectionIds Array
-          const newColumn = state.columns.byId[newColumnId];
-          if (newColumn) {
-            newColumn.sectionIds.push(sectionId);
-          }
-          section[key] = changes[key];
-        } else {
-          section[key] = changes[key];
+        if (newColumn && !newColumn.sectionIds.includes(id)) {
+          newColumn.sectionIds.push(id);
         }
-      }
-    },
 
-    updateSectionPadding(state, action) {
-      const {id, padding } = action.payload;
-      const section = state.sections.byId[id];
-      section.layout.padding = {
-        ...section.layout.padding,
-        ...padding
+        section.columnId = newColumnId;
       }
+
+      if (changes.styling) {
+        section.styling = {
+          ...section.styling,
+          ...changes.styling,
+        };
+      }
+
+      if (changes.layout) {
+        section.layout ??= {};
+
+        section.layout = {
+          ...section.layout,
+          ...changes.layout,
+          padding: {
+            ...section.layout.padding,
+            ...changes.layout.padding,
+          },
+        };
+      }
+
+      Object.assign(section, {
+        ...changes,
+        columnId: section.columnId,
+        styling: section.styling,
+        layout: section.layout,
+      });
     },
 
     updateSubsection(state, action) {
@@ -392,15 +403,6 @@ const resumeSlice = createSlice({
       //     normalizedSubsection[key] = changes[key];
       //   }
       // }
-    },
-    updateSectionFlex(state, action) {
-      const { id, changes } = action.payload;
-      const section = state.sections.byId[id];
-      if (!section) {
-        console.error(`Cannot update section. ID of ${id} not found.`);
-        return;
-      }
-      Object.assign(section.layout, changes)
     },
 
     updateSubsectionFlexDirection(state, action) {
@@ -475,25 +477,6 @@ const resumeSlice = createSlice({
         .map(f => f.id);
     },
 
-    updateResumeStyling(state, action) {
-      state.styling = { ...state.styling, ...action.payload };
-    },
-
-    updateResumeTitle(state, action) {
-      console.log('current title', state.title, 'action payload', action.payload);
-      state.title = action.payload;
-    },
-
-    updateResumeLayout(state, action) {
-      const { changes } = action.payload;
-      state.layout = { ...state.layout, ...changes };
-    },
-
-    updateResume(state, action) {
-      const { key, changes } = action.payload;
-      state.layout = { ...state[key], ...changes };
-    },
-
     setActiveSectionId(state, action) {
       state.activeSectionId = action.payload;
     },
@@ -561,39 +544,36 @@ const resumeSlice = createSlice({
 });
 
 export const {
-
-  setResumeId,
-  setResume,
-
   setActiveSectionId,
   setActiveEditorId,
   setActiveEditorSelection,
+
+  setResumeId,
+  setResume,
   updateResume,
-  updateResumeTitle,
-  updateResumeStyling,
-  updateResumeLayout,
+
   addColumn,
   deleteColumn,
   updateColumn,
-  updateColumnWidth,
-  updateColumnPadding,
+
   addSection,
   updateSection,
-  updateSectionPadding,
-  updateSectionFlex,
   deleteSection,
   reorderSections,
+
   addSubsection,
   updateSubsection,
   updateSubsectionFlexDirection,
   deleteSubsection,
   reorderSubsections,
+
   addField,
+  deleteField,
   updateFieldValue,
   updateFieldLayout,
   swapFieldPositions,
-  deleteField,
   reorderFields
+
 } = resumeSlice.actions;
 
 export default resumeSlice.reducer;

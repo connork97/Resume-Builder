@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateSectionFlex, updateSubsectionFlexDirection } from '@/store/resumeSlice.js';
+import { updateSection, updateSubsectionFlexDirection } from '@/store/resumeSlice.js';
 
 import ToolbarButton from '../../EditorToolbar/components/shared/ToolbarButton';
 import styles from '../SettingsModal.module.css';
@@ -16,11 +16,13 @@ const SectionJustifyContent = () => {
    const handleJustifyContentChange = (e) => {
       console.log(e.target)
       const newJustifyContent = e.target.value;
-      dispatch(updateSectionFlex({
+      dispatch(updateSection({
          id: section.id,
          changes: {
-            display: 'flex',
-            justifyContent: newJustifyContent
+            layout: {
+               display: 'flex',
+               justifyContent: newJustifyContent
+            }
          }
       }))
    };

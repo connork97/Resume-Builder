@@ -38,7 +38,7 @@ const SlateHeading = ({ section }) => {
   const handleUpdateSection = (newValue) => {
     dispatch(
       updateSection({
-        sectionId: section.id,
+        id: section.id,
         changes: { value: newValue },
       })
     );

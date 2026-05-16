@@ -6,7 +6,7 @@ import { updateColumn } from '@/store/resumeSlice.js';
 import ToolbarButton from '@/features/ResumeEditor/EditorToolbar/components/shared/ToolbarButton.jsx';
 
 import styles from '@/features/ResumeEditor/EditorToolbar/components/RichTextToolbar.module.css';
-import { updateSection } from '@/store/oldResumeSlice.js';
+import { updateSection } from '@/store/resumeSlice.js';
 
 const RowIndex = ({ section }) => {
 
@@ -77,14 +77,14 @@ const RowIndex = ({ section }) => {
          return;
       }
       dispatch(updateSection({
-         sectionId: currentSection.id,
+         id: currentSection.id,
          changes: {
             position: sectionToSwapWith.position,
          },
       }));
 
       dispatch(updateSection({
-         sectionId: sectionToSwapWith.id,
+         id: sectionToSwapWith.id,
          changes: {
             position: currentSection.position,
          },

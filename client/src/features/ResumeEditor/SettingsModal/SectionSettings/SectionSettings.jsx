@@ -56,7 +56,7 @@ const SectionSettings = ({ setIsSettingsModalOpen }) => {
 
    const dispatchLayoutChanges = (layoutChanges) => {
       dispatch(updateSection({
-         sectionId: section.id,
+         id: section.id,
          changes: {
             layout: {
                ...section.layout,
@@ -115,7 +115,7 @@ const SectionSettings = ({ setIsSettingsModalOpen }) => {
    const hideOrShowHeading = () => {
       const newShowHeadingValue = !section.showHeading;
       dispatch(updateSection({
-         sectionId: section.id,
+         id: section.id,
          changes: {
             showHeading: newShowHeadingValue
          }

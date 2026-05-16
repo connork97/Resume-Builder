@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateResumeStyling, updateSection } from '../../../store/resumeSlice.js';
-import { getActiveMark, setLineHeight } from "../../../helpers/marks.js";
+import { updateResume } from '@/store/resumeSlice.js';
+import { getActiveMark, setLineHeight } from '@/helpers/marks.js';
 
 import styles from '../EditorToolbar/components/RichTextToolbar.module.css';
 
@@ -42,13 +42,18 @@ const LineHeight = ({ editor, selection, label }) => {
       if (!editor && !activeSectionId) {
          let resumeLineHeight = parseFloat(resumeStyling.lineHeight).toFixed(1);
          resumeLineHeight = findLineHeightValue(resumeLineHeight, newLineHeight);
-         dispatch(updateResumeStyling({ lineHeight: resumeLineHeight }));
+         dispatch(updateResume({
+            key: 'styling',
+            changes: {
+               lineHeight: resumeLineHeight
+            }
+         }))
          setLineHeightInputValue(resumeLineHeight);
       } else if (!editor && activeSectionId) {
          const section = sections.find(s => s.id === activeSectionId);
          let sectionLineHeight = parseFloat(section.styling.lineHeight || resumeStyling.lineHeight).toFixed(1);
          sectionLineHeight = findLineHeightValue(sectionLineHeight, newLineHeight);
-         dispatch(updateSection({
+         dispatch(id({
             sectionId: activeSectionId,
             changes: { styling: { lineHeight: sectionLineHeight } }
          }));

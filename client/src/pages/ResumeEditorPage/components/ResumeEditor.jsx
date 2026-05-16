@@ -7,7 +7,7 @@ import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
 
 import { BASE_URL } from '@/config.js';
 
-import { setResume, updateResumeTitle } from '@/store/resumeSlice.js';
+import { setResume, updateResume } from '@/store/resumeSlice.js';
 
 import Toolbar from '@/features/ResumeEditor/EditorToolbar/Toolbar.jsx';
 import Outline from '@/features/ResumeEditor/EditorOutline/Outline.jsx';
@@ -70,12 +70,11 @@ const ResumeEditor = () => {
       const value = e.currentTarget.innerText.trim();
 
       setResumeTitle(value);
-      dispatch(updateResumeTitle(value));
+      dispatch(updateResume({
+         key: 'title',
+         changes: value
+      }))
    }
-
-   // useEffect(() => {
-   // dispatch(updateResumeTitle(resumeTitle));
-   // }, [resumeTitle])
 
    const resumeRef = useRef(null);
 

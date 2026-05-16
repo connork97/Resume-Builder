@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -17,6 +17,7 @@ import styles from './ResumeEditor.module.css';
 import AutoWidthInput from '@/components/AutoWidthInput.jsx';
 import ResumePaper from '@/features/ResumeEditor/ResumePaper/ResumePaper.jsx';
 import { getResumeFromApi, saveResumeToApi } from '@/services/resumeServices';
+import { useReactToPrint } from 'react-to-print';
 
 const ResumeEditor = () => {
 
@@ -76,6 +77,38 @@ const ResumeEditor = () => {
    // dispatch(updateResumeTitle(resumeTitle));
    // }, [resumeTitle])
 
+   const resumeRef = useRef(null);
+
+   const [isPrinting, setIsPrinting] = useState(true);
+
+   const pageStyle = `
+      @page {
+         size: auto;
+         margin: 20mm;
+      }
+
+      @media print {
+         body {
+            -webkit-print-color-adjust: exact;
+         }
+      }
+      `;
+   const reactToPrint = useReactToPrint({
+      documentTitle: resume.title,
+      contentRef: resumeRef,
+      pageStyle: pageStyle,
+      onAfterPrint: () => {
+         setIsPrinting(true);
+      },
+   });
+
+   const handlePrint = () => {
+      setIsPrinting(false);
+
+      setTimeout(async () => {
+         reactToPrint();
+      }, 500);
+   };
    return (
       <div className={styles.resumeEditorContainer}>
          {/* <div className={styles.toolbarLinksWrapper}> */}
@@ -99,7 +132,21 @@ const ResumeEditor = () => {
          </div>
          <Toolbar />
          <Outline />
-         <ResumePaper />
+         <button
+            style={{
+               position: 'absolute',
+               // inset: '0',
+               top: '1.5vh',
+               right: '25vh',
+               height: '2rem',
+               width: '5rem',
+               zIndex: '999'
+            }}
+            onClick={handlePrint}
+         >
+            Print
+         </button>
+         <ResumePaper ref={resumeRef} isPrinting={isPrinting} />
          {showNewResumeModal &&
             <NewResumeModal onClose={() => setShowNewResumeModal(false)} />
          }

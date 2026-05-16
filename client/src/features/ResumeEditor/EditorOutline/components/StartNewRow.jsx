@@ -28,7 +28,9 @@ export const StartNewRow = ({fieldId}) => {
                type='checkbox'
                checked={startNewRow}
                onChange={handleSetStartNewRow}
-            />
+               style={{marginRight: '0.5rem'}}
+               />
+               Start New Row
          </label>
       </div>
    )

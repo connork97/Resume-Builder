@@ -15,7 +15,7 @@ const SubsectionRenderer = ({ subsection }) => {
    const parentLayoutDict = {
       display: subsectionLayout?.display || sectionLayout?.display || 'flex',
       flexWrap: 'wrap',
-      flexDirection: subsectionLayout?.flexDirection || sectionLayout?.flexDirection || 'row',
+      flexDirection: subsectionLayout?.flexDirection || sectionLayout?.flexDirection || 'column',
       justifyContent: subsectionLayout?.justifyContent || sectionLayout?.justifyContent || 'space-between',
       justifySelf: subsectionLayout?.justifySelf,
       gridTemplateColumns: subsectionLayout?.gridTemplateColumns,

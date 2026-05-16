@@ -1,16 +1,32 @@
-.pageContainerDiv {
+.printPageRef {
+  position: relative;
+  margin: auto;
+  height: 11in;
+  width: 8.5in;
+}
+
+.editingPageContainer,
+.printingPageContainer {
   position: relative;
   display: flex;
-  margin: 15vh auto 4vh auto;
-  height: 47.5rem;
-  width: auto;
+  /* height: 46rem; */
+  /* width: 33.45rem; */
+  /* overflow: hidden; */
+  margin: auto;
   word-break: break-word;
-  aspect-ratio: 8.5/11;
+  z-index: 999;
+  height: 100%;
+  width: 100%;
+  z-index: 999;
+}
 
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
-  /* max-height: 50rem; */
-  /* overflow-wrap: break-word; */
+.editingPageContainer {
+  scale: 0.7;
+  top: -5vh;
+}
+
+.printingPageContainer {
+  scale: 1.099;
 }
 
 .columnWrapperDiv {
@@ -28,42 +44,47 @@
   inset: 0;
   height: 100%;
   width: 100%;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .paddingButtonWrapper {
-   display: flex;
-   flex-direction: column;
-   color: black;
+  display: flex;
+  flex-direction: column;
+  color: black;
 }
 
 .paddingButton {
-   color: black;
+  color: black;
+  pointer-events: auto;
+
 }
 
 .paddingLeftWrapper,
 .paddingRightWrapper,
 .paddingTopWrapper,
 .paddingBottomWrapper {
-   position: absolute;
-   display: flex;
-   color: white;
+  position: absolute;
+  display: flex;
+  color: white;
 }
 
 .paddingLeftWrapper,
 .paddingRightWrapper {
-   top: -25px;
+  top: -25px;
 }
 
 .paddingLeftWrapper {
-   left: 0;
+  left: 0;
 }
 
 .paddingRightWrapper {
   right: 0;
 }
 
-.paddingTopWrapper, .paddingBottomWrapper {
-   left: -150px;
+.paddingTopWrapper,
+.paddingBottomWrapper {
+  left: -150px;
 }
 
 .paddingBottomWrapper {
@@ -74,8 +95,8 @@
 .paddingRightWrapper,
 .paddingTopWrapper,
 .paddingBottomWrapper {
-   position: absolute;
-   display: flex;
-   color: white;
-   z-index: 2;
+  position: absolute;
+  display: flex;
+  color: white;
+  z-index: 2;
 }

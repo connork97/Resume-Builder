@@ -1,11 +1,27 @@
 import React, { useEffect } from 'react';
 
-import SlateField from '../../../Slate/SlateField';
+import SlateField from '@/features/Slate/SlateField';
+import { useSelector } from 'react-redux';
 
-const FieldRenderer = ({ index, field, layout, parentLayoutDict }) => {
+import { getNodeString } from '@/helpers/getNodeString';
+
+const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
+
+   const field = useSelector(state => state.resume.fields.byId[fieldId]);
+
+   console.log('FIELD', field)
+
+   const plainText = getNodeString(field);
+   console.log('NODE STRING', plainText)
+   if (plainText) {
+      console.log('true')
+   } else if (!plainText) {
+      console.log('false')
+   }
 
    const fieldLayoutDict = {
-      width: field?.width ?? '100%',
+      // width: '5rem',
+      // width: field?.width || plainText ? 'auto' : '10rem',
       justifySelf: field?.justifySelf,
       alignSelf: field?.alignSelf,
       textAlign: field?.textAlign,
@@ -60,4 +76,4 @@ const FieldRenderer = ({ index, field, layout, parentLayoutDict }) => {
    )
 }
 
-export default FieldRenderer;
+export default Field;

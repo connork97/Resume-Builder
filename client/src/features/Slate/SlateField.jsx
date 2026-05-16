@@ -1,7 +1,7 @@
-import React, {Fragment, useEffect, useMemo, useCallback } from "react";
+import React, {Fragment, useEffect, useMemo, useCallback, useState } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, Editor, Transforms } from "slate";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateFieldValue, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
 
 import renderLeaf from "./renderLeaf.jsx";
@@ -11,10 +11,17 @@ import { addListItem, indentList, outdentList } from "../../helpers/listBehavior
 
 import { editorRegistry } from "../../helpers/editorRegistry.js";
 import { nanoid } from "@reduxjs/toolkit";
+import { getNodeString } from "@/helpers/getNodeString.js";
+import { getMinWidth } from "@/helpers/getMinWidth.js";
 
 const SlateField = ({ field, sectionId, subsectionId }) => {
   // Stable editor instance
   // const editorId = useMemo(() => nanoid(), []);
+  const subsectionFieldsArr = useSelector(state => state.resume.subsections.byId[field.subsectionId].fieldIds);
+  const fieldPlainText = getNodeString(field);
+  const fieldMinWidth = !fieldPlainText ? getMinWidth(field.label) : 'auto';
+  console.log(getMinWidth(field.label))
+  
   const editorId = useMemo(() => field.id, [])
   const editor = useMemo(() => withReact(createEditor()), []);
   const dispatch = useDispatch();
@@ -24,6 +31,7 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
     editorRegistry.set(editorId, editor);
     return () => editorRegistry.delete(editorId);
   }, [editorId, editor]);
+
 
   if (!field.value) return null;
 
@@ -86,8 +94,7 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
   return (
     <Slate
       editor={editor}
-      initialValue={field.value ?? null
-      }
+      initialValue={ field.value ?? null }
       onChange={(value) => {
         handleUpdateFieldValue(value);
         dispatch(setActiveEditorSelection(editor.children));
@@ -103,6 +110,7 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={field.label}
+        style={{minWidth: fieldMinWidth}}
       />
     </Slate>
   );

@@ -393,6 +393,25 @@ const resumeSlice = createSlice({
       //   }
       // }
     },
+    updateSectionFlexDirection(state, action) {
+      const { id, flexDirection } = action.payload;
+      const section = state.sections.byId[id];
+      if (!section) {
+        console.error(`Cannot update section. ID of ${id} not found.`);
+        return;
+      }
+      section.layout.flexDirection = flexDirection;
+    },
+    
+    updateSubsectionFlexDirection(state, action) {
+      const { id, flexDirection } = action.payload;
+      const subsection = state.subsections.byId[id];
+      if (!subsection) {
+        console.error(`Cannot update subsection. ID of ${id} not found.`);
+        return;
+      }
+      subsection.layout.flexDirection = flexDirection;
+    },
 
     updateFieldValue(state, action) {
       const { fieldId, newValue } = action.payload;
@@ -545,10 +564,12 @@ export const {
   addSection,
   updateSection,
   updateSectionPadding,
+  updateSectionFlexDirection,
   deleteSection,
   reorderSections,
   addSubsection,
   updateSubsection,
+  updateSubsectionFlexDirection,
   deleteSubsection,
   reorderSubsections,
   addField,

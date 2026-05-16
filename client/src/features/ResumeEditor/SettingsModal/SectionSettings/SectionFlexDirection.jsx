@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateSectionFlexDirection, updateSubsectionFlexDirection } from '@/store/resumeSlice.js';
+import { updateSectionFlex, updateSubsectionFlexDirection } from '@/store/resumeSlice.js';
 
 import ToolbarButton from '../../EditorToolbar/components/shared/ToolbarButton';
 import styles from '../SettingsModal.module.css';
@@ -11,18 +11,15 @@ const SectionFlexDirection = () => {
 
    const activeSectionId = useSelector(state => state.resume.activeSectionId);
    const section = useSelector(state => state.resume.sections.byId[activeSectionId]);
-   const subsectionIds = section.subsectionIds || [];
-   const subsections = useSelector(state => subsectionIds.map(id => state.resume.subsections.byId[id]));
 
    const handleFlexDirectionChange = (e) => {
       const newFlexDirection = e.target.value;
-      dispatch(updateSectionFlexDirection({
+      dispatch(updateSectionFlex({
          id: section.id,
-         flexDirection: newFlexDirection
+         changes: {
+            flexDirection: newFlexDirection
+         }
       }))
-      section.subsectionIds.forEach(subsectionId => {
-         dispatch(updateSubsectionFlexDirection({ id: section.id, flexDirection: newFlexDirection }));
-      });
    };
 
    return (
@@ -30,15 +27,15 @@ const SectionFlexDirection = () => {
          <label htmlFor="flex-direction-select">Section Flex Direction:</label>
          <ToolbarButton
             text="Row"
+            value='row'
             command={handleFlexDirectionChange}
          >
-            Row
          </ToolbarButton>
          <ToolbarButton
             text="Column"
+            value='column'
             command={handleFlexDirectionChange}
          >
-            Column
          </ToolbarButton>
       </div>
    );

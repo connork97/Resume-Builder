@@ -14,6 +14,7 @@ import LineHeight from '../../TextFormatting/LineHeight.jsx';
 
 import styles from '../SettingsModal.module.css';
 import SectionFlexDirection from './SectionFlexDirection.jsx';
+import SectionJustifyContent from './SectionJustifyContent.jsx';
 
 const SectionSettings = ({ setIsSettingsModalOpen }) => {
 
@@ -169,6 +170,7 @@ const SectionSettings = ({ setIsSettingsModalOpen }) => {
             section={section}
          />
          <SectionFlexDirection />
+         <SectionJustifyContent />
          {renderSettingsModalRows()}
       </div>
    )

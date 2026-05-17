@@ -58,60 +58,13 @@ a {
 
 ul, ol {
   padding-left: 1rem;
+  /* list-style: none; */
 }
 
-h2 {
-  /* font-size: inherit; */
+
+/** Slate Specfic Styling **/
+/* Moves bullets to top of list item for Slate Lists */
+[data-slate-editor="true"] li [data-slate-node="text"] {
+  display: inline;
+  vertical-align: top;
 }
-/* 
-@media print {
-  @page {
-    size: letter;
-    margin: 0;
-  }
-
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    width: 8.5in;
-    height: 11in;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-} */
-
-/* @media print {
-  @page {
-    size: letter;
-    margin: 0;
-  }
-
-  html,
-  body {
-    margin: 0 !important;
-    padding: 0 !important;
-    display: block !important;
-    height: auto !important;
-    width: auto !important;
-    overflow: hidden !important;
-    background: white !important;
-  }
-
-  #root {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: fit-content !important;
-    height: fit-content !important;
-    overflow: hidden !important;
-    background: white !important;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-} */

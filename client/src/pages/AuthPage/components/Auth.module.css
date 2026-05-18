@@ -1,75 +1,73 @@
-.signUpContainer, .loginContainer {
-   background-image: url('@/assets/backgrounds/signUpLoginBackground.png');
-   background-size: cover;
-   background-position-y: 30%;
-   /* background-position: center; */
-   /* background-repeat: no-repeat; */
+.authContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding-inline: var(--padding-x-main);
 
-   position: absolute;
-   height: 100%;
-   width: 100%;
-   padding: 20vh 35vw;
-   font-size: 2vh;
+  /* font-size: calc(var(--font-size-main) - 0.75rem); */
+
+  background-image: url("@/assets/backgrounds/signUpLoginBackground.png");
+  background-size: cover;
+  background-position-y: 30%;
 }
 
-.signUpForm, .loginForm {
+.authContent {
+  position: relative;
+  height: 35rem;
+  width: 80%;
+  margin: auto;
+
+  padding-top: calc(var(--height-navbar) + 7.5%);
+
+  font-size: 1.5rem;
+}
+
+.authForm {
+  position: relative;
+
+  height: clamp(5rem, auto, 100%);
+  width: clamp(1rem, 35rem, 100%);
+  margin: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 1rem 2rem;
+  gap: 1rem;
+
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid transparent;
+  border-radius: 2.5vh;
+}
+
+.authItemRow {
    display: flex;
    flex-direction: column;
-   min-width: 40vh;
-   /* width: 100%; */
-   padding: 5vh;
-   background: rgba(255, 255, 255, 0.5);
-   border: 1px solid transparent;
-   border-radius: 2.5vh;
+   gap: 0.5rem;
 }
 
-.signUpLabel, .signUpInput, .loginLabel, .loginInput {
-   padding: 0.5vh 1vh;
+.authInput {
+  border: 1px solid transparent;
+  border-radius: 5vh;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
-.signUpLabel, .loginLabel {
-   color: rgba(0, 0, 0, 0.75);
+.authInput:focus {
+  outline: none;
+}
+
+.showPasswordWrapper {
    display: flex;
-   flex-direction: column;
-   margin: 0.75vh auto auto 5%;
-   width: 100%;
-}
-
-.signUpInput, .loginInput {
-   width: 90%;
-   margin-top: 0.5vh;
-   border: 1px solid transparent;
-   border-radius: 5vh;
-   background-color: rgba(255, 255, 255, 0.9);
-}
-
-.signUpInput:focus, .loginInput:focus {
-   outline: none;
-}
-
-.showPasswordLabel {
-   height: 0;
-   position: relative;
-   display: flex;
-   align-items: center;
-   bottom: 1vh;
-   left: 10vh;
-   font-size: 1.25vh;
-}
-
-.showPasswordCheckBox {
-   margin-right: 1vh;
-   height: 1.5vh;
-   width: 1.5vh;
+   justify-content: space-between;
 }
 
 .submitButton {
-   margin: 2.5vh auto auto auto;
-   width: fit-content;
-   padding: 1vh 3vh;
-   color: white;
-   background-color: rgba(0, 123, 255, 0.8);
-   border: 1px solid transparent;
-   border-radius: 5vh;
-   cursor: pointer;
+  margin: 2.5vh auto auto auto;
+  width: fit-content;
+  padding: 1vh 3vh;
+  color: white;
+  background-color: rgba(0, 123, 255, 0.8);
+  border: 1px solid transparent;
+  border-radius: 5vh;
+  cursor: pointer;
 }

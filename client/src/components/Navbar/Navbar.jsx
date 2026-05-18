@@ -13,46 +13,48 @@ const Navbar = () => {
 
    return (
       <div className={styles.navbarContainer}>
-         <Link
-            to='/'
-            exact='true'
-            className={`${styles.navbarLink} ${styles.homeNavLink}`}
-         >
-            {location.pathname === '/' || location.pathname === '/home' ? 'ActuallyFreeResume.com' : 'Home'}
-         </Link>
+         <div className={styles.navbarContent}>
+            <Link
+               to='/'
+               exact='true'
+               className={`${styles.navbarLink} ${styles.homeNavLink}`}
+            >
+               {location.pathname === '/' || location.pathname === '/home' ? 'ActuallyFreeResume.com' : 'Home'}
+            </Link>
 
-         <div className={styles.navbarWrapper}>
-            {location.pathname !== '/login' && !user.id
+            <div className={styles.navbarGroup}>
+               {location.pathname !== '/login' && !user.id
+                  &&
+                  <Link
+                     to='/login'
+                     exact='true'
+                     className={styles.navbarLink}
+                  >
+                     Login
+                  </Link>
+               }
+               {location.pathname !== '/signup' && !user.id
+                  &&
+                  <Link
+                     to='/signup'
+                     exact='true'
+                     className={styles.navbarLink}
+                  >
+                     Sign Up
+                  </Link>
+               }
+            </div>
+            {
+               user.id
                &&
                <Link
-                  to='/login'
-                  exact='true'
+                  to='/account'
                   className={styles.navbarLink}
                >
-                  Login
-               </Link>
-            }
-            {location.pathname !== '/signup' && !user.id
-               &&
-               <Link
-                  to='/signup'
-                  exact='true'
-                  className={styles.navbarLink}
-               >
-                  Sign Up
+                  Account
                </Link>
             }
          </div>
-         {
-            user.id
-            &&
-            <Link
-               to='/account'
-               className={styles.navbarLink}
-            >
-               Account
-            </Link>
-         }
       </div>
    );
 };

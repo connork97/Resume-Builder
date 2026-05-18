@@ -1,16 +1,16 @@
 .navbarContainer {
-  min-height: var(--navbar-height);
-  height: auto;
+  min-height: var(--height-navbar);
+  /* height: auto; */
   width: 100%;
 
-  padding-inline: var(--navbar-padding-x);
+  /* padding-inline: var(--padding-x-navbar); */
 
   position: fixed;
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
+  justify-content: space-between; */
   align-items: center;
-  
-  font-size: var(--font-size-main);
+
+  font-size: var(--font-size-navbar);
 
   color: var(--color-main);
   background: linear-gradient(
@@ -22,7 +22,14 @@
   z-index: var(--z-navbar);
 }
 
-.navbarWrapper {
+.navbarContent {
+  width: var(--width-navbar);
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbarGroup {
   gap: 2.5rem;
   display: flex;
   justify-content: space-between;

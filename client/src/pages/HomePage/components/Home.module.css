@@ -2,7 +2,7 @@
   min-height: 100%;
   width: 100%;
   position: relative;
-  padding-inline: var(--main-padding-x);
+  /* padding-inline: var(--padding-x-main); */
   
   background-image: url("@/assets/backgrounds/resumeBuilderHeroImage.png");
   background-size: cover;
@@ -28,28 +28,25 @@
 }
 
 .homePageContent {
+  width: var(--width-main);
+  margin: auto;
   position: relative;
-  padding-top: calc(var(--navbar-height) + 10rem);
+  padding-top: calc(var(--height-navbar) + 10rem);
   font-weight: 300;
 }
 
-.welcomeDiv {
-  position: relative;
-}
-
-.welcomeH1, .welcomeH2, .tryDemoButton {
+.homeH2, .homeH3, .tryDemoButton {
   font-weight: inherit;
 }
 
-.welcomeH1 {
-  margin-bottom: 3rem;
+.homeH2 {
+  margin-bottom: 2rem;
 }
 
 
 .tryDemoButton {
-  /* position: relative; */
   display: inline-block;
-  margin-top: 5rem;
+  margin-top: 3rem;
   padding: 1.5rem 5rem;
   
   border: 1px solid rgba(255, 255, 255, 0.75);

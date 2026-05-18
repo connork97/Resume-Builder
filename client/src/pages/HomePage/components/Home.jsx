@@ -11,13 +11,11 @@ const Home = () => {
    return (
       <div className={styles.homePageContainer}>
          <div className={styles.homePageContent}>
-            <div className={styles.welcomeDiv}>
-               <h2 className={styles.welcomeH1}>Hi {user.firstName || 'there'}.</h2>
-               <h3 className={styles.welcomeH2}>Welcome to ActuallyFreeResume.com</h3>
-               <Link className={styles.tryDemoButton} to='/demo'>
-                  New here?&nbsp; Try out our demo!
-               </Link>
-            </div>
+            <h2 className={styles.homeH2}>Hi {user.firstName || 'there'}.</h2>
+            <h3 className={styles.homeH3}>Welcome to ActuallyFreeResume.com</h3>
+            <Link className={styles.tryDemoButton} to='/demo'>
+               New here?&nbsp; Try out our demo!
+            </Link>
          </div>
       </div>
    )

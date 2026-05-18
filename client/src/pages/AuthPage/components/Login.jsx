@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '@/store/userSlice';
-import { BASE_URL } from '@/config.js';
 
 import styles from './Auth.module.css';
 import { logUserInApi } from '@/services/userServices';
@@ -41,59 +40,66 @@ const Login = () => {
    }
 
    return (
-      <div className={styles.loginContainer}>
-         <form
-            className={styles.loginForm}
-            onSubmit={(e) => logUserIn(e)}
-         >
-            <label
-               htmlFor='email'
-               className={styles.loginLabel}
+      <div className={styles.authContainer}>
+         <div className={styles.authContent}>
+            <form
+               className={styles.authForm}
+               onSubmit={(e) => logUserIn(e)}
             >
-               Email:
-               <input
-                  id='email'
-                  type='email'
-                  name='email'
-                  className={styles.loginInput}
-                  value={userCredentials.email}
-                  onChange={(e) => changeUserCredentials(e)}
-               />
-            </label>
-            <label
-               htmlFor='password'
-               className={styles.loginLabel}
-            >
-               Password:
-               <label
-                  htmlFor='showPassword'
-                  className={styles.showPasswordLabel}
-               >
+               <div className={styles.authItemRow}>
+                  <label
+                     htmlFor='email'
+                     className={styles.authLabel}
+                  >
+                     Email:
+                  </label>
                   <input
-                     id='showPassword'
-                     type="checkbox"
-                     className={styles.showPasswordCheckBox}
-                     checked={showPassword}
-                     onChange={() => setShowPassword(prev => !prev)}
+                     id='email'
+                     type='email'
+                     name='email'
+                     className={styles.authInput}
+                     value={userCredentials.email}
+                     onChange={(e) => changeUserCredentials(e)}
                   />
-                  (Show Password)
-
-               </label>
-               <input
-                  id='password'
-                  type={showPassword ? 'text' : 'password'}
-                  name='password'
-                  className={styles.loginInput}
-                  value={userCredentials.password}
-                  onChange={(e) => changeUserCredentials(e)}
-               />
-            </label>
-            <button
-               className={styles.submitButton}
-            >
-               Log In
-            </button>
-         </form>
+               </div>
+               <div className={styles.authItemRow}>
+                  <div className={styles.showPasswordWrapper}>
+                     <label
+                        htmlFor='password'
+                        className={styles.authLabel}
+                     >
+                        Password:
+                     </label>
+                     <label
+                        htmlFor='showPassword'
+                        className={styles.showPasswordLabel}
+                     >
+                        <input
+                           id='showPassword'
+                           type="checkbox"
+                           className={styles.showPasswordCheckBox}
+                           checked={showPassword}
+                           onChange={() => setShowPassword(prev => !prev)}
+                        />
+                        (Show Password)
+                     </label>
+                  </div>
+                  <input
+                     id='password'
+                     type={showPassword ? 'text' : 'password'}
+                     name='password'
+                     className={styles.authInput}
+                     value={userCredentials.password}
+                     onChange={(e) => changeUserCredentials(e)}
+                  />
+               </div>
+               <button
+                  className={styles.submitButton}
+                  >
+                  Log In
+               </button>
+            </form>
+         </div>
       </div>
    );
 };

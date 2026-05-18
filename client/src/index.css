@@ -12,20 +12,22 @@
   /* ! ----------- ! */
   /** CSS VARIABLES **/
   /* ! ----------- ! */
-  
+
   /* Universal Variables */
   --background-main: rgba(46, 45, 45, 1);
   --font-main: system-ui, Avenir, Helvetica, Arial, sans-serif;
   --color-main: rgba(255, 255, 255, 1);
 
   /* --font-size-main: clamp(1rem, 2vw, 2rem); */
-  --font-size-main: var(--navbar-font-size);
-  --main-padding-x: clamp(1rem, 15vw, 25rem);
+  --font-size-main: var(--font-size-navbar);
+  --padding-x-main: clamp(1rem, 15vw, 25rem);
 
+  --width-main: 75%;
   /* Component Specific Variables */
-  --navbar-padding-x: var(--main-padding-x);
-  --navbar-font-size: clamp(1rem, 2vw, 2rem);
-  --navbar-height: clamp(1rem, 10dvh, 10rem);
+  --width-navbar: var(--width-main);
+  --padding-x-navbar: var(--padding-x-main);
+  --font-size-navbar: clamp(1rem, 2vw, 2rem);
+  --height-navbar: clamp(1rem, 10dvh, 10rem);
 
   /* Element Specific Variables */
   --list-padding-left-default: 1rem;
@@ -39,29 +41,29 @@
   /** END CSS VARIABLES **/
   /* ! ----------- ! */
 
-
   font-family: var(--font-main);
   font-size: 16px;
   background-color: var(--background-main);
-
 
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
 
 body {
   background-color: var(--background-main);
 }
-
 
 /** GLOBAL ELEMENT STYLING **/
 
@@ -80,11 +82,10 @@ a {
   text-decoration: none;
 }
 
-
 /** SLATE SPECIFIC STYLING **/
 
 /* Prevents Slate Editors from inheriting weird outlines */
-[data-slate-editor='true']:focus {
+[data-slate-editor="true"]:focus {
   outline: none;
 }
 

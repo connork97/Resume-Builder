@@ -45,7 +45,6 @@ const SignUp = () => {
    return (
       <div className={styles.authContainer}>
          <div className={styles.authContent}>
-
             <form
                className={styles.authForm}
                onSubmit={(e) => createUser(e)}
@@ -54,8 +53,9 @@ const SignUp = () => {
                   <label
                      htmlFor='firstName'
                      className={styles.authLabel}
-                  />
+                  >
                      First Name:
+                  </label>
                   <input
                      id='firstName'
                      type='text'

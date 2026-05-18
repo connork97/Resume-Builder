@@ -60,8 +60,8 @@ const AccountSettings = () => {
 
    return (
       <>
-         <h1>Account Settings</h1>
-         <p className={styles.userResumeRowsWrapper}>Here you can update your account information, change your password, and manage other account settings.</p>
+         <h1 className={styles.accountSettingsH1}>Account Settings</h1>
+         <p className={styles.accountSettingsH2}>Here you can update your account information, change your password, and manage other account settings.</p>
          <form
             className={styles.accountSettingsForm}
             onSubmit={(e) => submitUserAccountSettings(e)}

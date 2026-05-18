@@ -47,7 +47,7 @@
 .tryDemoButton {
   display: inline-block;
   margin-top: 3rem;
-  padding: 1.5rem 5rem;
+  padding: 1rem 3rem;
   
   border: 1px solid rgba(255, 255, 255, 0.75);
   border-radius: 5rem;

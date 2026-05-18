@@ -43,11 +43,11 @@ const App = () => {
           <Route path='/login' element={<AuthPage />} />
         </Route>
 
+          <Route path='/account' element={<AccountPage />}>
+            <Route path='my-resumes' element={<UserResumes />} />
+            <Route path='settings' element={<AccountSettings />} />
+          </Route>
 
-        <Route path='/account' element={<AccountPage />}>
-          <Route path='my-resumes' element={<UserResumes />} />
-          <Route path='settings' element={<AccountSettings />} />
-        </Route>
         <Route path='/editor' element={<ResumeEditorPage />} />
         <Route path='/editor/new' element={<ResumeEditorPage />} />
         <Route path='/editor/:resumeId' element={<ResumeEditorPage />} />

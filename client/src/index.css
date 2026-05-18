@@ -24,10 +24,10 @@
 
   --width-main: 75%;
   /* Component Specific Variables */
+  --height-navbar: clamp(1rem, 10dvh, 15rem);
   --width-navbar: var(--width-main);
   --padding-x-navbar: var(--padding-x-main);
   --font-size-navbar: clamp(1rem, 2vw, 2rem);
-  --height-navbar: clamp(1rem, 10dvh, 10rem);
 
   /* Element Specific Variables */
   --list-padding-left-default: 1rem;

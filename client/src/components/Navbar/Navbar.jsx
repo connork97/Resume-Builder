@@ -45,7 +45,7 @@ const Navbar = () => {
                }
             </div>
             {
-               user.id
+               user.id && location.pathname !== '/account'
                &&
                <Link
                   to='/account'

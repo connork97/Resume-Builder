@@ -1,13 +1,9 @@
 .navbarContainer {
-  min-height: var(--height-navbar);
-  /* height: auto; */
+  height: var(--height-navbar);
   width: 100%;
 
-  /* padding-inline: var(--padding-x-navbar); */
-
   position: fixed;
-  /* display: flex;
-  justify-content: space-between; */
+  display: flex;
   align-items: center;
 
   font-size: var(--font-size-navbar);
@@ -27,6 +23,8 @@
   margin: auto;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  vertical-align: middle;
 }
 
 .navbarGroup {

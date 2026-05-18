@@ -1,40 +1,98 @@
 .accountContainer {
-   color: white;
+   position: relative;
    height: 100%;
    width: 100%;
+
    display: flex;
-   flex-direction: row;
+   flex-direction: column;
+   
+   color: var(--color-main);
    background-color: rgba(0, 0, 0, 0.7);
 }
 
-.accountOutlineWrapper {
-   padding: 10vh 5vh 0 5vh;
-   background-color: rgba(25, 25, 25, 1);
-}
-
-.accountOutlineRow {
+.accountHome {
+   height: 20rem;
+   width: 100%;
+   margin: 9rem auto auto auto;
+   text-align: center;
    display: flex;
-   flex-direction: row;
-   margin-bottom: 3vh;
+   flex-direction: column;
+   gap: 5rem;
 }
 
-.accountContentWrapper {
-   width: 70%;
-   margin: 10vh auto;
-   padding: 5vh;
+.navLinksWrapper {
+   position: relative;
+   width: clamp(10rem, 80rem, var(--width-main));
+   margin: 1rem auto 0 auto;
+
+   font-size: 2rem;
+}
+
+.accountContent {
+   position: relative;
+   height: 50rem;
+   width: clamp(10rem, 80rem, var(--width-main));
+   margin: auto;
+}
+
+.accountInfoWrapper, .accountTab, .logoutTab {
    background-color: rgba(25, 25, 25, 1);
-   border: 1px solid transparent;
-   border-radius: 1.5vh;
+}
+
+.accountTabsWrapper {
+   display: flex;
+   gap: 1rem;
+}
+
+.accountTab, .logoutTab {
+   padding: 0.5em 1em;
+   position: relative;
+   top: 0.1em;
+   
+   font-size: 1.25rem;
+   border-top-left-radius: 0.5em;
+   border-top-right-radius: 0.5em;
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-bottom: none;
+   /* box-shadow: 0 0 2px rgba(255, 255, 255, 0.25); */
+}
+
+.logoutTab {
+   margin-left: auto;
+}
+
+.accountInfoWrapper .userResumesWrapper {
+   height: 45rem;
+   padding-bottom: 3rem;
+}
+
+.accountInfoWrapper {
+   min-height: 25rem;
+   padding: 2rem;
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-radius: 1.5rem;
+   border-top-left-radius: 0;
+   border-top-right-radius: 0;
+   /* box-shadow: 0 0 2px rgba(255, 255, 255, 0.5); */
 }
 
 .userResumeRowsWrapper {
    display: flex;
-   height: 80%;
+   min-height: 25rem;
+   max-height: 80%;
    flex-direction: column;
-   margin-top: 3vh;
+   margin-top: 2.5rem;
    overflow-y: auto;
    scrollbar-width: 0;
    -ms-overflow-style: none;
+}
+
+.userResumeRowsWrapper > :first-child {
+   padding-top: 0;
+}
+
+.userResumeRowsWrapper > :last-child {
+   border-bottom: none;
 }
 
 .userResumeRowsWrapper::-webkit-scrollbar {
@@ -46,26 +104,25 @@
    flex-direction: row;
    justify-content: space-between;
    align-items: center;
-   padding: 2vh 0;
+   padding: 2rem 0;
    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-
-.createdAndUpdatedAtWrapper {
-   display: flex;
+.accountSettingsH2 {
+   margin-top: 0.75em;
 }
 
 .accountSettingsForm {
    display: flex;
    flex-direction: column;
-   margin-top: 3vh;
-   gap: 2vh;
+   margin-top: 2.5em;
+   gap: 1em;
    width: 50%;
-   color: black;
 }
 
 .accountSettingsInput {
-   padding: 1vh;
+   color: black;
+   padding: 0.5em;
    border: 1px solid transparent;
    border-radius: 5vh;
 }
@@ -74,15 +131,12 @@
    outline: none;
 }
 
-.accountTimeStampsSpan {
-   color: white;
-}
-
 .accountSubmitButton {
    min-width: 15rem;
    width: 30%;
-   margin-top: 3vh;
-   padding: 1vh;
+   margin-top: 3rem;
+   /* margin-top: 3vh; */
+   padding: 1em;
    border: 1px solid transparent;
    border-radius: 5vh;
    background-color: rgba(0, 120, 255, 1);
@@ -93,8 +147,8 @@
 
 .editResumeButton, .deleteResumeButton {
    color: rgba(255, 255, 255, 1);
-   margin-left: 2vh;
-   padding: 1vh 2vh;
+   margin-left: 2rem;
+   padding: 0.75em 1.5em;
    border: 1px solid transparent;
    border-radius: 5vh;
    cursor: pointer;
@@ -106,4 +160,25 @@
 
 .deleteResumeButton {
    background-color: rgba(255, 55, 55, 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+.accountOutlineWrapper {
+   padding: 10vh 5vh 0 5vh;
+   background-color: rgba(25, 25, 25, 1);
+}
+
+.accountOutlineRow {
+   display: flex;
+   flex-direction: row;
+   margin-bottom: 3vh;
 }

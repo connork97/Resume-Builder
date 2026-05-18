@@ -45,7 +45,7 @@ const UserResumes = () => {
    }
    
    return (
-      <>
+      <div className={styles.userResumesWrapper}>
          <h1>My Resumes</h1>
          <div className={styles.userResumeRowsWrapper}>
             {renderResumes()}
@@ -56,7 +56,7 @@ const UserResumes = () => {
             >
                Create Resume
             </button>
-      </>
+      </div>
    );
 };
 

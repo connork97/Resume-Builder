@@ -4,7 +4,7 @@ const RenderElement = ({ element, attributes, children, type }) => {
    
    const stylingObj = {
       textAlign: element.textAlign,
-      // maxWidth: children.length + 'px'
+      paddingLeft: (type === 'unordered-list' || type === 'ordered-list') && "var(--list-padding-left-default)"
    }
 
    switch (type) {

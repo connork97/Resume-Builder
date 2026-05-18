@@ -38,9 +38,9 @@ const App = () => {
       <Routes>
         <Route element={<NavbarLayout />}>
           <Route path='/' element={<Navigate to='/home' replace />} />
-          <Route path="/home" exact='true' element={<HomePage />} />
-          <Route path='/signup' exact='true' element={<AuthPage />} />
-          <Route path='/login' exact='true' element={<AuthPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path='/signup' element={<AuthPage />} />
+          <Route path='/login' element={<AuthPage />} />
         </Route>
 
 
@@ -48,7 +48,7 @@ const App = () => {
           <Route path='my-resumes' element={<UserResumes />} />
           <Route path='settings' element={<AccountSettings />} />
         </Route>
-        <Route path='/editor' exact='false' element={<ResumeEditorPage />} />
+        <Route path='/editor' element={<ResumeEditorPage />} />
         <Route path='/editor/new' element={<ResumeEditorPage />} />
         <Route path='/editor/:resumeId' element={<ResumeEditorPage />} />
       </Routes>

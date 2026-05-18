@@ -1,13 +1,18 @@
 .homePageContainer {
-  position: absolute;
-  height: 100vh;
+  min-height: 100%;
   width: 100%;
-  padding-left: 30vh;
-  padding-right: 30vh;
+  position: relative;
+  padding-inline: var(--main-padding-x);
+  
   background-image: url("@/assets/backgrounds/resumeBuilderHeroImage.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  color: var(--color-main);
+  font-size: var(--font-size-main);
+
+  z-index: var(--z-base);
 }
 
 /* Overlay */
@@ -20,52 +25,37 @@
     rgba(15, 15, 15, 0.4),
     rgba(10, 10, 15, 0.6)
   );
-  z-index: 0;
 }
 
 .homePageContent {
   position: relative;
-  margin-top: 25vh;
-  /* margin: 25vh 30vh auto 30vh; */
-  color: rgba(255, 255, 255, 1);
+  padding-top: calc(var(--navbar-height) + 10rem);
   font-weight: 300;
-  z-index: 1;
 }
 
 .welcomeDiv {
-  margin-bottom: 5vh;
+  position: relative;
 }
 
-.welcomeH1, .welcomeH2, .welcomeP, .welcomeButton {
+.welcomeH1, .welcomeH2, .tryDemoButton {
   font-weight: inherit;
 }
 
 .welcomeH1 {
-  font-size: 5.5vh;
-  margin-bottom: 3.5vh;
-  /* margin-bottom: 2rem; */
+  margin-bottom: 3rem;
 }
 
-.welcomeH2 {
-  font-size: 4vh;
-}
 
-.tryUsDiv {
-  display: flex;
-  /* margin-top: 5vh; */
-  align-items: center;
-  font-size: 2.5vh;
-  font-weight: inherit;
-}
-
-.tryUsButton {
-  padding: 1.5vh 5vh;
+.tryDemoButton {
+  /* position: relative; */
+  display: inline-block;
+  margin-top: 5rem;
+  padding: 1.5rem 5rem;
+  
   border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 5vh;
+  border-radius: 5rem;
+  
   background: rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
 
-.tryUsP {
-  /* background: rgba(255, 255, 255, 0.05); */
+  cursor: pointer;
 }

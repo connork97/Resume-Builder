@@ -57,6 +57,7 @@
   align-items: center;
   /* background: rgba(150, 150, 150, 1); */
   /* outline: 1px solid rgba(255, 255, 255, 0.9); */
+  outline: 3px solid yellow;
   /* border-radius: 25px; */
   /* padding: 5px 10px; */
   max-width: max-content;

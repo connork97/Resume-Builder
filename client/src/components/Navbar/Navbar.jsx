@@ -20,6 +20,7 @@ const Navbar = () => {
          >
             {location.pathname === '/' || location.pathname === '/home' ? 'ActuallyFreeResume.com' : 'Home'}
          </Link>
+
          <div className={styles.navbarWrapper}>
             {location.pathname !== '/login' && !user.id
                &&
@@ -41,17 +42,17 @@ const Navbar = () => {
                   Sign Up
                </Link>
             }
-            {
-               user.id
-               &&
-               <Link
-                  to='/account'
-                  className={styles.navbarLink}
-               >
-                  Account
-               </Link>
-            }
          </div>
+         {
+            user.id
+            &&
+            <Link
+               to='/account'
+               className={styles.navbarLink}
+            >
+               Account
+            </Link>
+         }
       </div>
    );
 };

@@ -7,15 +7,42 @@
   padding: 0;
 }
 
-/* Root defaults */
+/** ROOT DEFAULT **/
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  /* line-height: 1.5; */
-  /* font-weight: 400; */
+  /* ! ----------- ! */
+  /** CSS VARIABLES **/
+  /* ! ----------- ! */
+  
+  /* Universal Variables */
+  --background-main: rgba(46, 45, 45, 1);
+  --font-main: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --color-main: rgba(255, 255, 255, 1);
 
-  /* color: #222; */
-  background-color: #2e2d2d;
+  /* --font-size-main: clamp(1rem, 2vw, 2rem); */
+  --font-size-main: var(--navbar-font-size);
+  --main-padding-x: clamp(1rem, 15vw, 25rem);
+
+  /* Component Specific Variables */
+  --navbar-padding-x: var(--main-padding-x);
+  --navbar-font-size: clamp(1rem, 2vw, 2rem);
+  --navbar-height: clamp(1rem, 10dvh, 10rem);
+
+  /* Element Specific Variables */
+  --list-padding-left-default: 1rem;
+
+  /** Z INDEX VALUES **/
+
+  --z-base: 0;
+  --z-navbar: 10;
+
+  /* ! ----------- ! */
+  /** END CSS VARIABLES **/
+  /* ! ----------- ! */
+
+
+  font-family: var(--font-main);
+  font-size: 16px;
+  background-color: var(--background-main);
 
 
   text-rendering: optimizeLegibility;
@@ -25,16 +52,18 @@
 
 html, body, #root {
   height: 100%;
-  margin: 0;
 }
 
-/* Body layout */
-body {
-  margin: 0;
-  /* min-height: 100vh; */
-  display: flex;
-  flex-direction: column;
+html, body {
+  overflow-x: hidden;
 }
+
+body {
+  background-color: var(--background-main);
+}
+
+
+/** GLOBAL ELEMENT STYLING **/
 
 /* Remove default button/input styles without breaking usability */
 button,
@@ -45,26 +74,21 @@ select {
   color: inherit;
 }
 
-/* Links (not required yet, but safe defaults) */
 a {
+  font: inherit;
   color: inherit;
   text-decoration: none;
 }
 
-/* Prevent contentEditable from inheriting weird outlines */
-[contenteditable]:focus {
+
+/** SLATE SPECIFIC STYLING **/
+
+/* Prevents Slate Editors from inheriting weird outlines */
+[data-slate-editor='true']:focus {
   outline: none;
 }
 
-ul, ol {
-  padding-left: 1rem;
-  /* list-style: none; */
-}
-
-
-/** Slate Specfic Styling **/
 /* Moves bullets to top of list item for Slate Lists */
 [data-slate-editor="true"] li [data-slate-node="text"] {
-  display: inline;
   vertical-align: top;
 }

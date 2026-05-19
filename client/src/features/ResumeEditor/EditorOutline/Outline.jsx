@@ -74,7 +74,7 @@ const Outline = () => {
     const isHeaderOrSummary = subsectionId === null;
 
     return (
-      <React.Fragment key={fieldId + fieldIndex}>
+      <React.Fragment key={fieldIndex}>
         <FieldRow
           key={fieldId}
           fieldId={fieldId}

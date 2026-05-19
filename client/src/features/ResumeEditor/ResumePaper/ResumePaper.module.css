@@ -144,27 +144,37 @@
 
 }
 
-.marginIndicatorLeft, .marginIndicatorRight {
+.resumeMarginIndicatorLeft, .resumeMarginIndicatorRight, .sectionMarginIndicatorLeft, .sectionMarginIndicatorRight {
   position: absolute;
   height: 100%;
   width: 0px;
   z-index: var(--z-sticky);
   /* border-bottom: 1px solid red; */
   width: 3px;
-  background: red;
   cursor: pointer;
 
 }
 
-.marginIndicatorLeft {
+.resumeMarginIndicatorLeft, .resumeMarginIndicatorRight {
+  background: red;
+}
+
+.sectionMarginIndicatorLeft, .sectionMarginIndicatorRight {
+  background: blue;
+}
+
+.resumeMarginIndicatorLeft {
   left: 0;
-  /* border-left: 1px solid red; */
-
-}
-.marginIndicatorLeft:hover {
 }
 
-.marginIndicatorRight {
+.resumeMarginIndicatorRight {
   right: 0;
+}
 
+.sectionMarginIndicatorLeft {
+  left: 0;
+}
+
+.sectionMarginIndicatorRight {
+  left: 0;
 }

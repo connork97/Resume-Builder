@@ -5,11 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateResume } from '@/store/resumeSlice.js';
 import { getActiveMark, setLineHeight } from '@/helpers/marks.js';
 
-import styles from '../EditorToolbar/components/RichTextToolbar.module.css';
+// import styles from '../EditorToolbar/components/RichTextToolbar.module.css';
+import styles from './TextFormatting.module.css';
 
 
 import ToolbarButton from "../EditorToolbar/components/shared/ToolbarButton.jsx";
 import ToolbarInput from "../EditorToolbar/components/shared/ToolbarInput.jsx";
+import TextFormatButton from './shared/TextFormatButton';
+import TextFormatInput from './shared/TextFormatInput';
 
 const LineHeight = ({ editor, selection, label }) => {
 
@@ -68,22 +71,24 @@ const LineHeight = ({ editor, selection, label }) => {
    }
 
    return (
-      <div className={styles.toolBarButtonInputWrapper}>
-         <span className={styles.toolbarLabelSpan}>{label}:</span>
-         <ToolbarButton
+      <div className={styles.toolbarFlexWrapper}>
+         <label className={styles.toolbarLabel}>{label}:</label>
+         <TextFormatButton
             text="-"
             command={() => setNewLineHeight('decrement')}
+            onClick={() => setNewLineHeight('decrement')}
          />
 
-         <ToolbarInput
+         <TextFormatInput
             value={lineHeightInputValue}
             handleSetFontSizeInputValue={setLineHeightInputValue}
             handleSetNewFontSize={setNewLineHeight}
          />
 
-         <ToolbarButton
+         <TextFormatButton
             text="+"
             command={() => setNewLineHeight('increment')}
+            onClick={() => setNewLineHeight('increment')}
          />
       </div>
    )

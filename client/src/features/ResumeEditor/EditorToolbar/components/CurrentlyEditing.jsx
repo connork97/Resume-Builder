@@ -4,17 +4,20 @@ import { Node } from 'slate';
 import { setActiveEditorId, setActiveSectionId } from '@/store/resumeSlice.js';
 
 import ToolbarButton from "./shared/ToolbarButton.jsx";
+import TextFormatButton from '../../TextFormatting/shared/TextFormatButton.jsx';
+import { editorRegistry } from '@/helpers/editorRegistry.js';
 
-const CurrentlyEditing = ({ editor }) => {
+const CurrentlyEditing = () => {
 
    const dispatch = useDispatch();
 
    const sections = useSelector(state => state.resume.sections);
    const activeSectionId = useSelector(state => state.resume.activeSectionId);
-
+   const activeEditorId = useSelector((state) => state.resume.activeEditorId);
+   const editor = editorRegistry.get(activeEditorId);
    const activeEditorText = editor ? Node.string(editor) : null;
    const activeEditorLabel = editor?.children[0].label;
-   
+
    const activeSection = sections.byId[activeSectionId];
    const activeSectionText = activeSection ? Node.string({ children: activeSection?.value ?? [] }) : null;
 
@@ -24,7 +27,8 @@ const CurrentlyEditing = ({ editor }) => {
       if (activeSectionText && activeEditorText && activeSectionText !== activeEditorText) {
          setCurrentlyEditingText(`${activeSectionText} > ${activeEditorLabel}`);
       } else if (activeEditorText) {
-         setCurrentlyEditingText(activeEditorText);
+         // setCurrentlyEditingText(activeEditorText);
+         setCurrentlyEditingText(activeEditorLabel);         
       } else if (activeSectionText) {
          setCurrentlyEditingText(activeSectionText);
       } else {
@@ -38,7 +42,7 @@ const CurrentlyEditing = ({ editor }) => {
       dispatch(setActiveSectionId(null));
    }
    return (
-      <ToolbarButton
+      <TextFormatButton
          text={`Currently Editing: ${currentlyEditingText}`}
          command={() => { clearToolbarSelection() }}
       />

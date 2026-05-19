@@ -6,7 +6,8 @@ import { BASE_URL } from '@/config.js';
 
 import UserResumeRow from './UserResumeRow.jsx';
 
-import styles from './Account.module.css';
+// import styles from './Account.module.css';
+import styles from './UserResumes.module.css';
 import { getUserResumesFromApi } from '@/services/userServices.js';
 
 const UserResumes = () => {

@@ -3,25 +3,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
-
-import { BASE_URL } from '@/config.js';
-
 import { setResume, updateResume } from '@/store/resumeSlice.js';
 
-import Toolbar from '@/features/ResumeEditor/EditorToolbar/Toolbar.jsx';
-import Outline from '@/features/ResumeEditor/EditorOutline/Outline.jsx';
-import NewResumeModal from '@/features/ResumeEditor/NewResumeModal/NewResumeModal.jsx';
-
-import styles from './ResumeEditor.module.css';
-import AutoWidthInput from '@/components/AutoWidthInput.jsx';
-import ResumePaper from '@/features/ResumeEditor/ResumePaper/ResumePaper.jsx';
 import { getResumeFromApi, saveResumeToApi } from '@/services/resumeServices';
 import { useReactToPrint } from 'react-to-print';
-import TopBar from '@/features/ResumeEditor/EditorToolbar/components/TopBar';
 
-const ResumeEditor = () => {
+import styles from './TopBar.module.css';
+import CurrentlyEditing from './CurrentlyEditing';
+import AddSection from './AddSection';
 
+const TopBar = () => {
    const location = useLocation();
    const dispatch = useDispatch();
    const { resumeId } = useParams();
@@ -109,45 +100,47 @@ const ResumeEditor = () => {
          reactToPrint();
       }, 500);
    };
+
    return (
-      <div className={styles.resumeEditorContainer}>
-         {/* <TopBar /> */}
-         {/* <div className={styles.aboveToolbarRow}>
-            <Link
+      <div className={styles.topBarContainer}>
+
+         <div className={styles.topBarRow}>
+            {/* <Link
                to='/home'
-               className={styles.homeButton}
+               className={styles.homeLink}
             >
                Home
-            </Link>
+            </Link> */}
             <div
-               className={styles.resumeTitle}
+               className={styles.topBarInput}
                contentEditable
                suppressContentEditableWarning
                onBlur={handleSetResumeTitle}
             >
                {resumeTitle}
             </div>
-            <button
-               className={styles.saveResumeButton}
-               onClick={saveResume}
-            >
-               Save Resume
-            </button>
-            <button
-               className={styles.printButton}
-               onClick={handlePrint}
-            >
-               Print
-            </button>
-         </div> */}
-         <Toolbar />
-         <Outline />
-         <ResumePaper ref={resumeRef} isPrinting={isPrinting} />
-         {showNewResumeModal &&
-            <NewResumeModal onClose={() => setShowNewResumeModal(false)} />
-         }
+            <div className={styles.topBarFlexWrapper}>
+               <CurrentlyEditing />
+               <AddSection />
+            </div>
+            <div className={styles.topBarFlexWrapper}>
+
+               <button
+                  className={styles.topBarButton}
+                  onClick={saveResume}
+               >
+                  Save Resume
+               </button>
+               <button
+                  className={styles.topBarButton}
+                  onClick={handlePrint}
+               >
+                  Print
+               </button>
+            </div>
+         </div>
       </div>
    )
-};
+}
 
-export default ResumeEditor;
+export default TopBar;

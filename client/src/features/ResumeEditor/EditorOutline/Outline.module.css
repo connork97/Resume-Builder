@@ -2,9 +2,9 @@
   position: fixed;
   left: 0;
   top: 0;
-  margin-top: 10vh;
+  margin-top: calc(var(--height-toolbar));
   width: 42.5vh;
-  height: 100vh;
+  height: 100%;
   background: #1e1e1e;
   color: #ffffff;
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);

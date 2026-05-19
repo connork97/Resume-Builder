@@ -1,13 +1,14 @@
 import React from "react";
-import styles from "./Toolbar.module.css";
-
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { editorRegistry } from "@/helpers/editorRegistry.js";
 
 import RichTextToolbar from "./components/RichTextToolbar.jsx";
+import TopBar from "./components/TopBar";
 // import AddSection from "./AddSection.jsx";
 // import CurrentlyEditing from "./CurrentlyEditing.jsx";
+import styles from "./Toolbar.module.css";
 
 const Toolbar = () => {
 
@@ -15,12 +16,18 @@ const Toolbar = () => {
   const editor = editorRegistry.get(activeEditorId);
 
   return (
-    <div className={styles.toolbarContainerDiv}>
-      {/* <div className={styles.belowToolbarWrapper}>
-        <CurrentlyEditing editor={editor} />
-        <AddSection />
-      </div> */}
-      <RichTextToolbar editor={editor} />
+    <div className={styles.toolbarContainer}>
+
+      <Link
+        to='/home'
+        className={styles.homeLink}
+      >
+        Home
+      </Link>
+      <div className={styles.toolbarContent}>
+        <TopBar />
+        <RichTextToolbar editor={editor} />
+      </div>
     </div>
   );
 };

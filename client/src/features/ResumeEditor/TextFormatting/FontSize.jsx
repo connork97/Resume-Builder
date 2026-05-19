@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateResume, updateSection } from '@/store/resumeSlice.js';
 import { getActiveMark, setFontSize, setFontSizeOffset } from "@/helpers/marks.js";
 
-import styles from '../EditorToolbar/components/RichTextToolbar.module.css';
 
-import ToolbarButton from "../EditorToolbar/components/shared/ToolbarButton.jsx";
-import ToolbarInput from "../EditorToolbar/components/shared/ToolbarInput.jsx";
+import TextFormatButton from './shared/TextFormatButton';
+import TextFormatInput from './shared/TextFormatInput';
+
+// import styles from '../EditorToolbar/components/RichTextToolbar.module.css';
+import styles from './TextFormatting.module.css';
 
 const FontSize = ({ editor, selection, label }) => {
 
@@ -92,20 +94,20 @@ const FontSize = ({ editor, selection, label }) => {
    }
 
    return (
-      <div className={styles.toolBarButtonInputWrapper}>
-         <span className={styles.toolbarLabelSpan}>{label}:</span>
-         <ToolbarButton
+      <div className={styles.toolbarFlexWrapper}>
+         <label className={styles.toolbarLabelSpan}>{label}:</label>
+         <TextFormatButton
             text="-"
             command={() => setNewFontSize('decrement')}
          />
 
-         <ToolbarInput
+         <TextFormatInput
             value={fontSizeInputValue}
             handleChange={setFontSizeInputValue}
             commitChange={setNewFontSize}
          />
 
-         <ToolbarButton
+         <TextFormatButton
             text="+"
             command={() => setNewFontSize('increment')}
          />

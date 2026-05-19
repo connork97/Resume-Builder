@@ -1,63 +1,24 @@
-.toolbarContainerDiv {
+.toolbarContainer {
   position: fixed;
-  top: 0;
+  height: var(--height-toolbar);
   width: 100%;
 
-  height: 10vh;
-  background: #1e1e1e;
-  color: rgba(255, 255, 255, 1);
+  color: var(--color-main);
+  background-color: var(--background-toolbar);
 
+  z-index: var(--z-sticky);
+}
+
+.toolbarContent {
   display: flex;
-  justify-content: center;
-  align-items: end;
-  /* padding: 0 1.5vh; */
+  flex-direction: column;
+  padding: 0 7.5vw;
 
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 100;
-  font-size: 1.5vh;
 }
 
-.belowToolbarWrapper {
-  width: 100%;
+.homeLink {
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10.5vh;
-  font-size: 2vh;
+  left: 1rem;
+  top: 1rem;
+  font-size: 2rem;
 }
-
-.addSectionButton {
-  background: #4a4a4a;
-  color: rgba(255, 255, 255, 1);
-  padding: 0.5vh 1vh;
-  border: 1px solid #3a3a3a;
-  border-radius: 0.5vh;
-  border: none;
-  font-size: inherit;
-  cursor: pointer;
-}
-
-.addSectionButton:hover {
-  background: #5a5a5a;
-}
-
-.dropdownMenu {
-  position: absolute;
-  margin-top: 6px;
-  background: #4a4a4a;
-  text-align: justify;
-  border-radius: 0.5vh;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  z-index: 999;
-}
-
-.dropdownItem {
-  padding: 0.5vh 1vh;
-  cursor: pointer;
-}
-
-.dropdownItem:hover {
-  background: #555;
-}
-

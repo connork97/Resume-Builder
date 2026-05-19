@@ -6,8 +6,10 @@ import { setResume, addSection, addSubsection } from '@/store/resumeSlice';
 import { BASE_URL } from '@/config';
 import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
 
-import styles from '../Toolbar.module.css';
 import { addSectionToApi } from '@/services/resumeServices';
+
+// import styles from '@/features/ResumeEditor/TextFormatting/TextFormatting.module.css';
+import styles from './TopBar.module.css';
 
 const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
 
@@ -40,7 +42,7 @@ const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
       }
 
       dispatch(setResume(updatedNormalizedResumeData));
-      
+
       setAddSectionDropdownIsOpen(false);
    }
    // const handleAddSection = (type) => {
@@ -60,16 +62,18 @@ const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
 
 
    return (
-      <div className={styles.dropdownMenu}>
-         {sectionOptions.map((option) => (
-            <div
-               key={option.type}
-               className={styles.dropdownItem}
-               onClick={() => handleAddSection(option.type)}
-            >
-               {option.label}
-            </div>
-         ))}
+      <div className={styles.dropdownContainer}>
+         <div className={styles.dropdownMenuWrapper}>
+            {sectionOptions.map((option) => (
+               <div
+                  key={option.type}
+                  className={styles.dropdownOption}
+                  onClick={() => handleAddSection(option.type)}
+               >
+                  {option.label}
+               </div>
+            ))}
+         </div>
       </div>
    )
 }

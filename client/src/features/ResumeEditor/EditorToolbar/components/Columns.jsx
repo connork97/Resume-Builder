@@ -9,9 +9,11 @@ import { addColumn, deleteColumn, setResume } from '@/store/resumeSlice.js';
 import ToolbarButton from "./shared/ToolbarButton.jsx";
 import ToolbarInput from "./shared/ToolbarInput.jsx";
 
-import styles from './RichTextToolbar.module.css';
+// import styles from './RichTextToolbar.module.css';
+import styles from '@/features/ResumeEditor/TextFormatting/TextFormatting.module.css';
 import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi.js';
 import { addColumnToApi, deleteLastColumnFromApi,  } from '@/services/resumeServices.js';
+import TextFormatButton from '../../TextFormatting/shared/TextFormatButton.jsx';
 
 const Columns = ({ label }) => {
 
@@ -55,11 +57,11 @@ const Columns = ({ label }) => {
    const columnInputLabel = columnInputValue == 1 ? 'Column': 'Columns'
 
    return (
-      <div className={styles.toolBarButtonInputWrapper}>
-         <span className={styles.toolbarLabelSpan}>
+      <div className={styles.toolbarFlexWrapper}>
+         <label className={styles.toolbarLabelSpan}>
             {columnInputValue + ' ' + columnInputLabel}:
-         </span>
-         <ToolbarButton
+         </label>
+         <TextFormatButton
             text="-"
             command={() => removeLastColumn()}
          />
@@ -69,7 +71,7 @@ const Columns = ({ label }) => {
             commitChange={() => updateColumns()}
             onBlur={() => updateColumns()}
          /> */}
-         <ToolbarButton
+         <TextFormatButton
             text="+"
             command={() => addColumn()}
          />

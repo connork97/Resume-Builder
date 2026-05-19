@@ -6,6 +6,7 @@ import { getActiveMark, setFontColor } from "../../../helpers/marks.js";
 import { updateResume, updateSection } from "@/store/resumeSlice.js";
 
 import ToolbarDropdown from "../EditorToolbar/components/shared/ToolbarDropdown.jsx";
+import ColorDropdown from "./shared/ColorDropdown.jsx";
 
 const FontColor = ({ editor, selection }) => {
 
@@ -46,9 +47,12 @@ const FontColor = ({ editor, selection }) => {
    }
 
    return (
-      <ToolbarDropdown
+      <ColorDropdown
          text="A"
-         styling={{ fontWeight: 'bold', boxShadow: `0 -0.35vh 0 ${currentEditorFontColor} inset` }}
+         editor={editor}
+         selection={selection}
+         currentEditorColor={currentEditorFontColor}
+         // styling={{ fontWeight: 'bold', boxShadow: `0 -0.35vh 0 ${currentEditorFontColor} inset` }}
          handleSetColor={setNewFontColor}
       />
    )

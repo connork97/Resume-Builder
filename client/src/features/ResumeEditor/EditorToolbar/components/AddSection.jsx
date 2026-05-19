@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import AddSectionDropdown from './AddSectionDropdown';
 
 import styles from "../Toolbar.module.css";
+import TextFormatButton from '../../TextFormatting/shared/TextFormatButton';
 
 const AddSection = () => {
    const [addSectionDropdownIsOpen, setAddSectionDropdownIsOpen] = useState(false);
@@ -21,12 +22,12 @@ const AddSection = () => {
 
    return (
       <div className={styles.addSectionWrapperDiv} ref={dropdownRef}>
-         <button
+         <TextFormatButton
             className={styles.addSectionButton}
             onClick={() => setAddSectionDropdownIsOpen((prev) => !prev)}
+            text='+ Add Section'
          >
-            + Add Section
-         </button>
+         </TextFormatButton>
          {addSectionDropdownIsOpen && (
             <AddSectionDropdown setAddSectionDropdownIsOpen={setAddSectionDropdownIsOpen} />
          )}

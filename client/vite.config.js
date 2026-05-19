@@ -10,4 +10,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    port: 5173,
+    host: 'localhost', // listens on 0.0.0.0, fixes Firefox localhost resolution
+  },
 });

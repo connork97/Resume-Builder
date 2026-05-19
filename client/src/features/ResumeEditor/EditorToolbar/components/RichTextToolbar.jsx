@@ -34,59 +34,61 @@ const RichTextToolbar = ({ editor }) => {
 
 
   return (
+    <div className={styles.richTextToolbarContainer}>
 
-    <div className={styles.richTextToolbarWrapper}>
-      <LineHeight
-        label="Line Height"
-        editor={editor}
-        selection={selection}
-        sections={sections}
-        activeSectionId={activeSectionId}
-        resumeStyling={resumeStyling}
-      />
+      <div className={styles.richTextToolbarWrapper}>
+        <LineHeight
+          label="Line Height"
+          editor={editor}
+          selection={selection}
+          sections={sections}
+          activeSectionId={activeSectionId}
+          resumeStyling={resumeStyling}
+        />
 
-      <FontColor
-        editor={editor}
-        selection={selection}
-        activeSectionId={activeSectionId}
-      />
+        <FontColor
+          editor={editor}
+          selection={selection}
+          activeSectionId={activeSectionId}
+        />
 
-      <HighlightColor
-        editor={editor}
-        selection={selection}
-        activeSectionId={activeSectionId}
-      />
+        <HighlightColor
+          editor={editor}
+          selection={selection}
+          activeSectionId={activeSectionId}
+        />
 
-      <BackgroundColor
-        activeSectionId={activeSectionId}
-      />
+        <BackgroundColor
+          activeSectionId={activeSectionId}
+        />
 
-      <FontSize
-        label="Font Size"
-        editor={editor}
-        selection={selection}
-        sections={sections}
-        activeSectionId={activeSectionId}
-        resumeStyling={resumeStyling}
-      />
+        <FontSize
+          label="Font Size"
+          editor={editor}
+          selection={selection}
+          sections={sections}
+          activeSectionId={activeSectionId}
+          resumeStyling={resumeStyling}
+        />
 
-      <Marks editor={editor} />
+        <Marks editor={editor} />
 
-      <TextAlign
-        editor={editor}
-        activeSectionId={activeSectionId}
-      />
+        <TextAlign
+          editor={editor}
+          activeSectionId={activeSectionId}
+        />
 
-      <Lists editor={editor} />
+        <Lists editor={editor} />
 
-      <Columns label="Columns" />
-      
-      {/* <div className={styles.belowToolbarWrapper}> */}
-      <CurrentlyEditing editor={editor} />
+        <Columns label="Columns" />
 
-      <AddSection />
-      {/* </div> */}
+        {/* <div className={styles.belowToolbarWrapper}> */}
+        {/* <CurrentlyEditing editor={editor} /> */}
 
+        {/* <AddSection /> */}
+        {/* </div> */}
+
+      </div>
     </div>
   );
 };

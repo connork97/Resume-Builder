@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { setResumeId } from '@/store/resumeSlice';
 import { deleteResumeFromApi } from '@/services/resumeServices';
 
-import styles from './Account.module.css';
+// import styles from './Account.module.css';
+import styles from './UserResumes.module.css';
 import { formatDateTime } from '@/utils/formatDateTime';
 
 const UserResumeRow = ({ resume, fetchUserResumes }) => {

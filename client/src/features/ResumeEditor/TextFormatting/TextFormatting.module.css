@@ -1,0 +1,119 @@
+.toolbarFlexWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-toolbar);
+}
+
+.textFormatButton, .textFormatInput {
+  background-color: var(--background-toolbar-button);
+  border: 1px solid var(--border-toolbar-button);
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+
+}
+
+.textFormatButton:hover, .textFormatInput:hover {
+  filter: brightness(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.textFormatButton {
+  cursor: pointer;
+}
+
+.textFormatInput {
+  text-align: center;
+  width: 5em;
+}
+
+
+
+
+
+
+
+
+.colorDropdownContainer {
+  position: relative;
+  z-index: var(--z-dropdown);
+  /* z-index: 999; */
+}
+
+.dropdownPanel {
+  position: absolute;
+  top: 125%;
+  left: 0;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 0.5vh;
+  padding: 0.75vh;
+  display: grid;
+  grid-template-columns: repeat(7, 2.5vh);
+  gap: 0.75vh;
+}
+
+.toolbarButton, .toolbarInput, .toolbarDropdownButton {
+   background: #2a2a2a;
+   color: white;
+   border: none;
+   font-size: inherit;
+   /* font-size: 1.5vh; */
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border: 1px solid #3a3a3a;
+   border-radius: 0.5vh;
+   padding: 0.5vh 1vh;
+}
+
+.toolbarInput {
+  text-align: center;
+  width: 5vh;
+}
+
+.colorSwatch {
+  width: 2.5vh;
+  height: 2.5vh;
+  border-radius: 0.5vh;
+  border: 1px solid #555;
+}
+
+.customColorButton {
+  grid-column: 1 / -1;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 32px;
+  box-sizing: border-box;
+
+  border: 1px solid #222;
+  border-radius: 6px;
+
+  background: #444;
+  color: white;
+
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.hiddenColorInput {
+  /* display: none; */
+  position: absolute;
+  inset: -10px;
+  top: 15px;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
+.toolbarButton, .toolbarDropdownContainer, .toolbarDropdownButton, .colorSwatch {
+   cursor: pointer;
+}
+
+.toolbarButton:hover, .toolbarDropdownContainer:hover, .toolbarDropdownOption:hover {
+   background: #333333;
+}

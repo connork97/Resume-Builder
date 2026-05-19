@@ -15,10 +15,12 @@
 
   /* Universal Variables */
   --background-main: rgba(46, 45, 45, 1);
+  --background-toolbar: rgba(30, 30, 30, 1);
+  --background-toolbar-button: var(--background-main);
+  --border-toolbar-button: rgba(58, 58, 58, 1);
   --font-main: system-ui, Avenir, Helvetica, Arial, sans-serif;
   --color-main: rgba(255, 255, 255, 1);
 
-  /* --font-size-main: clamp(1rem, 2vw, 2rem); */
   --font-size-main: var(--font-size-navbar);
   --padding-x-main: clamp(1rem, 15vw, 25rem);
 
@@ -29,13 +31,20 @@
   --padding-x-navbar: var(--padding-x-main);
   --font-size-navbar: clamp(1rem, 2vw, 2rem);
 
+  --height-toolbar: clamp(2rem, 5rem, 10rem);
+
+  --gap-toolbar: 0.5dvh;
+
+  --border-radius-main: 0.75rem;
   /* Element Specific Variables */
   --list-padding-left-default: 1rem;
 
   /** Z INDEX VALUES **/
 
   --z-base: 0;
-  --z-navbar: 10;
+  --z-navbar: 100;
+  --z-sticky: 100;
+  --z-dropdown: 500;
 
   /* ! ----------- ! */
   /** END CSS VARIABLES **/
@@ -74,6 +83,10 @@ textarea,
 select {
   font: inherit;
   color: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 a {

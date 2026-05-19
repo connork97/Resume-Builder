@@ -3,10 +3,11 @@ import React from 'react';
 import { getActiveMark, setHighlightColor } from "../../../helpers/marks.js";
 
 import ToolbarDropdown from "../EditorToolbar/components/shared/ToolbarDropdown.jsx";
+import ColorDropdown from './shared/ColorDropdown.jsx';
 
 const HighlightColor = ({ editor, selection }) => {
 
-  const [currentEditorHighlightColor, setCurrentEditorHighlightColor] = React.useState("rgba(255, 255, 255, 0.5)");
+  const [currentEditorHighlightColor, setCurrentEditorHighlightColor] = React.useState("rgba(255, 255, 255, 0.1)");
 
   React.useEffect(() => {
     if (!editor || !selection) return;
@@ -25,8 +26,11 @@ const HighlightColor = ({ editor, selection }) => {
   }
 
   return (
-    <ToolbarDropdown
+    <ColorDropdown
       text="HC"
+      editor={editor}
+      selection={selection}
+      currentEditorColor={currentEditorHighlightColor}
       handleSetColor={setNewHighlightColor}
     />
   )

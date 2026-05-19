@@ -1,21 +1,26 @@
+.resumeEditorContainer {
+   height: 100%;
+   width: 100%;
+   position: relative;
+}
+
 .aboveToolbarRow {
-   position: fixed;
-   display: flex;
    height: 6vh;
-   width: 100vw;
-   top: 0.25vh;
-   justify-content: center;
+   width: 100%;
+   position: fixed;
+
+   display: flex;
+   justify-content: space-evenly;
    align-items: center;
+
    z-index: 101;
 }
 
 .homeButton,
-.saveResumeButton {
-   position: fixed;
-   display: flex;
-   width: auto;
+.saveResumeButton,
+.printButton {
    cursor: pointer;
-   align-items: center;
+   /* align-items: center; */
    color: rgba(255, 255, 255, 1);
    font-size: 2.5vh;
    font-weight: 350;
@@ -23,8 +28,6 @@
 }
 
 .homeButton {
-   height: 6vh;
-   left: 2vh;
 }
 
 .resumeTitle {
@@ -36,7 +39,7 @@
 
 }
 
-.saveResumeButton {
+.saveResumeButton, .printButton {
   height: 4vh;
   right: 2vh;
   border: 1px solid transparent;

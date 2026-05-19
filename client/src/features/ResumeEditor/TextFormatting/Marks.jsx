@@ -3,26 +3,27 @@ import React from 'react';
 import { toggleMark } from '../../../helpers/marks.js';
 
 import ToolbarButton from '../EditorToolbar/components/shared/ToolbarButton.jsx';
+import TextFormatButton from './shared/TextFormatButton.jsx';
 
 const Marks = ({ editor }) => {
    return (
       <>
-         <ToolbarButton
+         <TextFormatButton
             text="B"
             styling={{ fontWeight: 'bold' }}
             command={() => editor && toggleMark(editor, "bold")}
          />
-         <ToolbarButton
+         <TextFormatButton
             text="I"
             styling={{ fontStyle: 'italic' }}
             command={() => editor && toggleMark(editor, "italic")}
          />
-         <ToolbarButton
+         <TextFormatButton
             text="U"
             styling={{ textDecoration: 'underline' }}
             command={() => editor && toggleMark(editor, "underline")}
          />
-         <ToolbarButton
+         <TextFormatButton
             text="S"
             styling={{ textDecoration: 'line-through' }}
             command={() => editor && toggleMark(editor, "strikeThrough")}

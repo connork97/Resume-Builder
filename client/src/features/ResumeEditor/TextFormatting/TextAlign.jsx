@@ -7,6 +7,9 @@ import { updateResume, updateSection } from '@/store/resumeSlice.js';
 import { setAlignment } from '@/helpers/blocks.js';
 
 import ToolbarButton from '../EditorToolbar/components/shared/ToolbarButton.jsx';
+import TextFormatButton from './shared/TextFormatButton.jsx';
+
+import styles from './TextFormatting.module.css';
 
 const TextAlign = ({ editor, styling }) => {
 
@@ -35,20 +38,20 @@ const TextAlign = ({ editor, styling }) => {
 
    return (
 
-      <div style={{...styling, display: 'flex', justifyContent: 'center', gap: '0.25rem'}}>
-         <ToolbarButton
+      <div className={styles.toolbarFlexWrapper}>
+         <TextFormatButton
             text="L"
             command={() => handleSetTextAlign(editor, 'left')}
          />
-         <ToolbarButton
+         <TextFormatButton
             text="C"
             command={() => handleSetTextAlign(editor, 'center')}
          />
-         <ToolbarButton
+         <TextFormatButton
             text="R"
             command={() => handleSetTextAlign(editor, 'right')}
          />
-         <ToolbarButton
+         <TextFormatButton
             text="J"
             command={() => handleSetTextAlign(editor, 'justify')}
          />

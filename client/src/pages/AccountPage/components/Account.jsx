@@ -67,7 +67,7 @@ const Account = () => {
                   </Link>
                </div>
             </div>
-            <div className={styles.accountInfoWrapper}>
+            <div className={styles.accountOutletWrapper}>
                {location.pathname === '/account' && (
                   <div className={styles.accountHome}>
                      <h1>Welcome back {user.firstName}.</h1>

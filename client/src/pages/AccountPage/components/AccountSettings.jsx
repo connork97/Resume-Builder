@@ -6,7 +6,8 @@ import { updateUser } from '@/store/userSlice';
 
 import { BASE_URL } from '@/config';
 
-import styles from './Account.module.css';
+// import styles from './Account.module.css';
+import styles from './AccountSettings.module.css';
 import { updateUserApi } from '@/services/userServices';
 import { formatDateTime } from '@/utils/formatDateTime';
 

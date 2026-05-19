@@ -140,8 +140,9 @@ const ResumeEditor = () => {
                Print
             </button>
          </div> */}
-         <Toolbar />
+         <Toolbar handlePrint={handlePrint} />
          <Outline />
+         {/* <ResumePaper /> */}
          <ResumePaper ref={resumeRef} isPrinting={isPrinting} />
          {showNewResumeModal &&
             <NewResumeModal onClose={() => setShowNewResumeModal(false)} />

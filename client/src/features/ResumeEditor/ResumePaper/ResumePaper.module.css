@@ -1,32 +1,35 @@
 .printPageRef {
   position: relative;
   margin: auto;
-  height: 11in;
-  width: 8.5in;
+  height: 7.7in;
+  width: 5.95in;
+  /* height: 11in; */
+  /* width: 8.5in; */
 }
 
 .editingPageContainer,
 .printingPageContainer {
   position: relative;
-  display: flex;
-  /* height: 46rem; */
-  /* width: 33.45rem; */
-  /* overflow: hidden; */
-  margin: auto;
-  word-break: break-word;
-  z-index: 999;
   height: 100%;
   width: 100%;
-  z-index: 1;
+  overflow: hidden;
+  margin: auto;
+
+  display: flex;
+  word-break: break-word;
+  
+  z-index: var(--z-main);
+  top: calc(var(--height-toolbar) + 5rem);
 }
 
 .editingPageContainer {
-  scale: 0.7;
-  top: -5vh;
+  /* scale: 0.7; */
 }
 
 .printingPageContainer {
-  scale: 1.099;
+  /* scale: 1.099; */
+  scale: 1.575;
+  transform: translateY(2.625vh);
 }
 
 .columnWrapperDiv {
@@ -99,4 +102,69 @@
   display: flex;
   color: white;
   z-index: 2;
+}
+
+
+
+.marginsContainer {
+  position: absolute;
+  top: calc(var(--height-toolbar));
+  width: 100%;
+  /* margin: auto; */
+  color: white;
+  z-index: var(--z-sticky);
+  
+}
+
+.marginTopWrapper {
+  position: relative;
+  height: 1rem;
+  width: 5.95in;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: grey;
+
+}
+
+.marginSpan {
+  /* position: absolute; */
+  font-size: 0.5rem;
+  width: 0px;
+  transform: translateX(-.15rem);
+  /* margin-right: 0.5rem; */
+  /* position: absolute; */
+  /* width: 0; */
+}
+
+.hiddenMarginSpan {
+  height: 0.25rem;
+  width: 0;
+  border-left: 0.1px solid rgba(0, 0, 0, 0.25)
+
+}
+
+.marginIndicatorLeft, .marginIndicatorRight {
+  position: absolute;
+  height: 100%;
+  width: 0px;
+  z-index: var(--z-sticky);
+  /* border-bottom: 1px solid red; */
+  width: 3px;
+  background: red;
+  cursor: pointer;
+
+}
+
+.marginIndicatorLeft {
+  left: 0;
+  /* border-left: 1px solid red; */
+
+}
+.marginIndicatorLeft:hover {
+}
+
+.marginIndicatorRight {
+  right: 0;
+
 }

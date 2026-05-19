@@ -42,7 +42,9 @@
   /** Z INDEX VALUES **/
 
   --z-base: 0;
+  --z-main: 99;
   --z-navbar: 100;
+  
   --z-sticky: 100;
   --z-dropdown: 500;
 

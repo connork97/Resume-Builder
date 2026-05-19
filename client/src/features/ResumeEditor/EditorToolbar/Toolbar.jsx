@@ -6,11 +6,11 @@ import { editorRegistry } from "@/helpers/editorRegistry.js";
 
 import RichTextToolbar from "./components/RichTextToolbar.jsx";
 import TopBar from "./components/TopBar";
-// import AddSection from "./AddSection.jsx";
-// import CurrentlyEditing from "./CurrentlyEditing.jsx";
-import styles from "./Toolbar.module.css";
 
-const Toolbar = () => {
+import styles from "./Toolbar.module.css";
+import { Margins } from "../ResumePaper/components/Margins.jsx";
+
+const Toolbar = ({ handlePrint }) => {
 
   const activeEditorId = useSelector((state) => state.resume.activeEditorId);
   const editor = editorRegistry.get(activeEditorId);
@@ -25,9 +25,10 @@ const Toolbar = () => {
         Home
       </Link>
       <div className={styles.toolbarContent}>
-        <TopBar />
+        <TopBar handlePrint={handlePrint} />
         <RichTextToolbar editor={editor} />
       </div>
+      <Margins />
     </div>
   );
 };

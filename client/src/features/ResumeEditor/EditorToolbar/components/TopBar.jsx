@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, forwardRef, useRef } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import { useReactToPrint } from 'react-to-print';
+
 
 import { setResume, updateResume } from '@/store/resumeSlice.js';
-
 import { getResumeFromApi, saveResumeToApi } from '@/services/resumeServices';
-import { useReactToPrint } from 'react-to-print';
 
 import styles from './TopBar.module.css';
 import CurrentlyEditing from './CurrentlyEditing';
 import AddSection from './AddSection';
 
-const TopBar = () => {
+// const TopBar = forwardRef(function TopBar({  }, ref) {
+const TopBar = ({ handlePrint }) => {
+
    const location = useLocation();
    const dispatch = useDispatch();
    const { resumeId } = useParams();
@@ -68,49 +70,44 @@ const TopBar = () => {
       }))
    }
 
-   const resumeRef = useRef(null);
+   // const resumeRef = ref;
 
-   const [isPrinting, setIsPrinting] = useState(true);
+   // const [isPrinting, setIsPrinting] = useState(true);
 
-   const pageStyle = `
-      @page {
-         size: auto;
-         margin: 20mm;
-      }
+   // const pageStyle = `
+   //    @page {
+   //       size: auto;
+   //       margin: 20mm;
+   //    }
 
-      @media print {
-         body {
-            -webkit-print-color-adjust: exact;
-         }
-      }
-      `;
-   const reactToPrint = useReactToPrint({
-      documentTitle: resume.title,
-      contentRef: resumeRef,
-      pageStyle: pageStyle,
-      onAfterPrint: () => {
-         setIsPrinting(true);
-      },
-   });
+   //    @media print {
+   //       body {
+   //          -webkit-print-color-adjust: exact;
+   //       }
+   //    }
+   //    `;
+   // const reactToPrint = useReactToPrint({
+   //    documentTitle: resume.title,
+   //    contentRef: resumeRef,
+   //    pageStyle: pageStyle,
+   //    onAfterPrint: () => {
+   //       setIsPrinting(false);
+   //    },
+   // });
 
-   const handlePrint = () => {
-      setIsPrinting(false);
+   // const handlePrint = () => {
+   //    // setIsPrinting(false);
+   //    setIsPrinting(true);
 
-      setTimeout(async () => {
-         reactToPrint();
-      }, 500);
-   };
+   //    setTimeout(async () => {
+   //       reactToPrint();
+   //    }, 500);
+   // };
 
    return (
       <div className={styles.topBarContainer}>
 
          <div className={styles.topBarRow}>
-            {/* <Link
-               to='/home'
-               className={styles.homeLink}
-            >
-               Home
-            </Link> */}
             <div
                className={styles.topBarInput}
                contentEditable
@@ -142,5 +139,6 @@ const TopBar = () => {
       </div>
    )
 }
+// )
 
 export default TopBar;

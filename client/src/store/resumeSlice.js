@@ -160,7 +160,8 @@ const initialState = {
   },
   activeSectionId: null,
   activeEditorId: null,
-  activeEditorSelection: null
+  activeEditorSelection: null,
+  resumeRef: null,
 };
 
 const resumeSlice = createSlice({
@@ -176,7 +177,7 @@ const resumeSlice = createSlice({
         activeEditorSelection: null,
       };
     },
-    setResume: (state, action) => {
+    setResume(state, action) {
       console.log("Setting Resume: ", action.payload)
       return {
         ...initialState,
@@ -186,11 +187,14 @@ const resumeSlice = createSlice({
         activeEditorSelection: null,
       };
     },
-    setResumeId: (state, action) => {
+    setResumeId(state, action) {
       const id = action.payload;
       state.id = id;
     },
 
+    setResumePrintRef(state, action) {
+      state.ref = action.payload;
+    },
 
     // * ------------ V
     // * ADD TO STATE V
@@ -551,6 +555,7 @@ export const {
   setResumeId,
   setResume,
   updateResume,
+  setResumePrintRef,
 
   addColumn,
   deleteColumn,

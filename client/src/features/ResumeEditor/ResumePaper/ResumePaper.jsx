@@ -39,7 +39,7 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
             {/* <Margins /> */}
             {/* <div ref={ref} style={{ ...resumeStyling}}> */}
             {renderedColumns}
-            {props.isPrinting ? <PaperPadding /> : null}
+            {/* {props.isPrinting ? <PaperPadding /> : null} */}
             {/* </div> */}
          </div>
       </div>

@@ -13,12 +13,14 @@ import Toolbar from '@/features/ResumeEditor/EditorToolbar/Toolbar.jsx';
 import Outline from '@/features/ResumeEditor/EditorOutline/Outline.jsx';
 import NewResumeModal from '@/features/ResumeEditor/NewResumeModal/NewResumeModal.jsx';
 
-import styles from './ResumeEditor.module.css';
 import AutoWidthInput from '@/components/AutoWidthInput.jsx';
 import ResumePaper from '@/features/ResumeEditor/ResumePaper/ResumePaper.jsx';
 import { getResumeFromApi, saveResumeToApi } from '@/services/resumeServices';
 import { useReactToPrint } from 'react-to-print';
 import TopBar from '@/features/ResumeEditor/EditorToolbar/components/TopBar';
+import { Margins } from '@/features/ResumeEditor/ResumePaper/components/Margins';
+
+import styles from './ResumeEditor.module.css';
 
 const ResumeEditor = () => {
 
@@ -144,6 +146,8 @@ const ResumeEditor = () => {
          <Outline />
          {/* <ResumePaper /> */}
          <ResumePaper ref={resumeRef} isPrinting={isPrinting} />
+         <Margins />
+
          {showNewResumeModal &&
             <NewResumeModal onClose={() => setShowNewResumeModal(false)} />
          }

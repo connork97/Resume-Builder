@@ -120,14 +120,14 @@ const Section = ({ section, column }) => {
       }}
       onClick={() => dispatch(setActiveSectionId(section.id))}
     >
-      <SectionPadding
+      {/* <SectionPadding
         section={section}
         column={column}
         isFirstColumn={isFirstColumn}
         isLastColumn={isLastColumn}
         isFirstRow={isFirstRow}
         isLastRow={isLastRow}
-      />
+      /> */}
       <button
         className={styles.sectionSettingsButton}
       >

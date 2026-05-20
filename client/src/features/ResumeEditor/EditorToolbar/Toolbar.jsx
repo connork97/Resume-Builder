@@ -28,7 +28,7 @@ const Toolbar = ({ handlePrint }) => {
         <TopBar handlePrint={handlePrint} />
         <RichTextToolbar editor={editor} />
       </div>
-      <Margins />
+      {/* <Margins /> */}
     </div>
   );
 };

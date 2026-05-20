@@ -104,37 +104,52 @@
   z-index: 2;
 }
 
-
+/* 
 
 .marginsContainer {
   position: absolute;
   top: calc(var(--height-toolbar));
+  height: 100%;
   width: 100%;
-  /* margin: auto; */
   color: white;
-  z-index: var(--z-sticky);
+  z-index: var(--z-base);
   
 }
 
-.marginTopWrapper {
-  position: relative;
+.topMarginRulerWrapper {
+  position: fixed;
   height: 1rem;
   width: 5.95in;
-  margin: auto;
   display: flex;
+  justify-content: space-between;
+  background-color: grey;
+
+  left: 49.5%;
+  transform: translateX(-49.65%);
+}
+
+.sideMarginRulerWrapper {
+  position: relative !important;
+  height: 7.7in;
+  width: 1rem;
+  margin: auto auto auto 15vw;
+  top: calc(var(--height-toolbar));
+
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
   background-color: grey;
 
 }
 
-.marginSpan {
-  /* position: absolute; */
+.topMarginRulerSpan {
   font-size: 0.5rem;
   width: 0px;
-  transform: translateX(-.15rem);
-  /* margin-right: 0.5rem; */
-  /* position: absolute; */
-  /* width: 0; */
+}
+
+.sideMarginRulerSpan {
+  font-size: 0.5rem;
+  height: 0px;
 }
 
 .hiddenMarginSpan {
@@ -149,7 +164,6 @@
   height: 100%;
   width: 0px;
   z-index: var(--z-sticky);
-  /* border-bottom: 1px solid red; */
   width: 3px;
   cursor: pointer;
 
@@ -177,4 +191,4 @@
 
 .sectionMarginIndicatorRight {
   left: 0;
-}
+} */

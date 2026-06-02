@@ -7,7 +7,7 @@
   z-index: var(--z-base);
 }
 
-.topMarginRulerWrapper {
+.marginRulerTopWrapper {
   position: fixed;
   height: 1rem;
   width: 5.95in;
@@ -19,12 +19,12 @@
   transform: translateX(-49.65%);
 }
 
-.sideMarginRulerWrapper {
+.marginRulerSideWrapper {
   position: relative !important;
   height: 7.7in;
   width: 1rem;
   margin: auto auto auto 15vw;
-  top: calc(var(--height-toolbar));
+  /* top: calc(var(--height-toolbar)); */
 
   display: flex;
   flex-direction: column;
@@ -61,7 +61,9 @@
 .resumeMarginIndicatorTop,
 .resumeMarginIndicatorBottom,
 .sectionMarginIndicatorLeft,
-.sectionMarginIndicatorRight {
+.sectionMarginIndicatorRight,
+.sectionMarginIndicatorTop,
+.sectionMarginIndicatorBottom {
    position: absolute;
    cursor: pointer;
 }
@@ -76,7 +78,10 @@
   width: 3px;
 }
 
-.resumeMarginIndicatorTop, .resumeMarginIndicatorBottom {
+.resumeMarginIndicatorTop,
+.resumeMarginIndicatorBottom,
+.sectionMarginIndicatorTop,
+.sectionMarginIndicatorBottom {
   width: 100%;
   height: 3px;
 }
@@ -105,8 +110,9 @@
   right: 0;
 }
 
-
-.resumeMarginIndicatorTop {
+.resumeMarginIndicatorTop,
+.sectionMarginIndicatorTop,
+.sectionMarginIndicatorBottom {
    top: 0;
 }
 

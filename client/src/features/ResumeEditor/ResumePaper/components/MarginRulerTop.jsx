@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 
-import styles from './Margins.module.css';
+import styles from './MarginRuler.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { setResume, updateColumn, updateResume } from '@/store/resumeSlice';
+import { setResume, updateColumn, updateResume, updateSection } from '@/store/resumeSlice';
 
-export const Margins = () => {
+const MarginRulerTop = ({ renderMarginRuler }) => {
 
    const dispatch = useDispatch()
-
-   const renderMarginLines = () => {
-      for (let i = 0; i <= 8.5; i += 0.5) {
-         return (
-            <span className={styles.marginSpan}>{i}</span>
-         )
-      }
-   }
 
    const resume = useSelector(state => state.resume);
    const resumePadding = resume?.layout?.padding;
@@ -29,6 +21,7 @@ export const Margins = () => {
 
    const isFirstColumn = column?.id === columns?.allIds[0];
    const isLastColumn = column?.id === columns?.allIds[columns.allIds.length - 1];
+
 
    const getColumnWidths = (includeCurrent = false) => {
       let priorColumnWidths = 0;
@@ -70,40 +63,6 @@ export const Margins = () => {
    }
 
 
-   const renderMarginRuler = (target, step, endsWith = [], position) => {
-      const count = target / step + 1;
-
-      console.log('POSITION:', position)
-
-      return (
-         Array.from(
-            { length: count }, (_, index) => {
-               const value = (index * step).toFixed(1);
-               const displayValue = endsWith.includes(value.at(-1))
-                  && value !== '0.0';
-               return (
-                  <span
-                     className={
-                        displayValue
-                           ? position === 'top'
-                              ? styles.topMarginRulerSpan : styles.sideMarginRulerSpan
-                           : position === 'top'
-                              ? styles.topHiddenMarginSpan : styles.sideHiddenMarginSpan
-                     }
-                     style={{ marginLeft: displayValue && '0.1rem' }}
-                     value={value}
-                  >
-                     {displayValue
-                        ? value.endsWith('.0')
-                           ? value.slice(0, -2)
-                           : value
-                        : null}
-                  </span>
-               )
-            }
-         )
-      );
-   }
 
 
    const [isEditing, setIsEditing] = useState(false);
@@ -114,7 +73,7 @@ export const Margins = () => {
    };
 
    const handleKeyDown = (e) => {
-      if (!isEditing) return;
+      if (!isEditing || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
 
       const { name, value } = e.currentTarget.dataset;
 
@@ -125,6 +84,8 @@ export const Margins = () => {
          paddingToParse = resumePadding;
       } else if (name === 'column') {
          paddingToParse = columnPadding;
+      } else if (name === 'section') {
+         paddingToParse = sectionPadding;
       }
 
       parsedOldPaddingVal = parseFloat(paddingToParse[value].replace('rem', '')).toFixed(1);
@@ -132,14 +93,8 @@ export const Margins = () => {
 
       let adjustmentValue = 0.1;
 
-      // Handles Top Margin Ruler
       if (e.key === "ArrowLeft" && value === 'left') adjustmentValue = -0.1;
       if (e.key === "ArrowRight" && value === 'right') adjustmentValue = -0.1;
-
-      // Handles Side Margin Ruler
-      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') e.preventDefault();
-      if (e.key === 'ArrowUp' && value === 'top') adjustmentValue = -0.1;
-      if (e.key === 'ArrowDown' && value === 'bottom') adjustmentValue = 0. - 1;
 
       newPaddingVal = parseFloat(newPaddingVal) + adjustmentValue;
       newPaddingVal = parseFloat(newPaddingVal).toFixed(1) + 'rem';
@@ -165,6 +120,17 @@ export const Margins = () => {
                }
             }
          }))
+      } else if (name === 'section') {
+         dispatch(updateSection({
+            id: section.id,
+            changes: {
+               layout: {
+                  padding: {
+                     [value]: newPaddingVal
+                  }
+               }
+            }
+         }))
       }
       if (e.key === "Enter") {
          setIsEditing(false);
@@ -176,11 +142,9 @@ export const Margins = () => {
       setIsEditing(false);
    };
 
-   // console.log('RESUME PADDING: ', resumePadding)
 
    return (
-      <div className={styles.marginsContainer}>
-         <div className={styles.topMarginRulerWrapper}>
+         <div className={styles.marginRulerTopWrapper}>
             <div
                data-name='resume'
                data-value='left'
@@ -227,31 +191,7 @@ export const Margins = () => {
             }
             {renderMarginRuler(8.5, 0.1, ['0'], 'top')}
          </div>
-         <div className={styles.sideMarginRulerWrapper}>
-            {renderMarginRuler(11, 0.1, ['0'], 'bottom')}
-            <div
-               data-name='resume'
-               data-value='top'
-               className={styles.resumeMarginIndicatorTop}
-               style={{ marginTop: resumePadding?.top }}
-               tabIndex={0}
-               onClick={handleClick}
-               onKeyDown={handleKeyDown}
-               onBlur={handleBlur}
-            />
-            {/* Bottom Padding Automatically fills the page currently */}
-            {/* <div
-               data-name='resume'
-               data-value='bottom'
-               className={styles.resumeMarginIndicatorBottom}
-               style={{ marginBottom: resumePadding?.bottom }}
-               tabIndex={0}
-               onClick={handleClick}
-               onKeyDown={handleKeyDown}
-               onBlur={handleBlur}
-            /> */}
-         </div>
-
-      </div>
    )
 }
+
+export default MarginRulerTop;

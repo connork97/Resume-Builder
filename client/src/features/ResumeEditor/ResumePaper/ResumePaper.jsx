@@ -6,7 +6,7 @@ import Column from "./components/Column.jsx";
 
 import styles from "./ResumePaper.module.css";
 import PaperPadding from "./components/PaperPadding.jsx";
-import { Margins } from "./components/Margins.jsx";
+import MarginRulerTop from "./components/MarginRulerTop.jsx";
 
 const ResumePaper = forwardRef(function ResumePaper(props, ref) {
    // const ResumePaper = (props) => {
@@ -36,7 +36,7 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
             style={{ ...resumeStyling }}
             // ref={ref}
          >
-            {/* <Margins /> */}
+            {/* <MarginRulerTop /> */}
             {/* <div ref={ref} style={{ ...resumeStyling}}> */}
             {renderedColumns}
             {/* {props.isPrinting ? <PaperPadding /> : null} */}

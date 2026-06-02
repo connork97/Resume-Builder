@@ -18,9 +18,10 @@ import ResumePaper from '@/features/ResumeEditor/ResumePaper/ResumePaper.jsx';
 import { getResumeFromApi, saveResumeToApi } from '@/services/resumeServices';
 import { useReactToPrint } from 'react-to-print';
 import TopBar from '@/features/ResumeEditor/EditorToolbar/components/TopBar';
-import { Margins } from '@/features/ResumeEditor/ResumePaper/components/Margins';
+import MarginRulerTop from '@/features/ResumeEditor/ResumePaper/components/MarginRulerTop';
 
 import styles from './ResumeEditor.module.css';
+import MarginRuler from '@/features/ResumeEditor/ResumePaper/components/MarginRuler';
 
 const ResumeEditor = () => {
 
@@ -146,7 +147,8 @@ const ResumeEditor = () => {
          <Outline />
          {/* <ResumePaper /> */}
          <ResumePaper ref={resumeRef} isPrinting={isPrinting} />
-         <Margins />
+         <MarginRuler />
+         {/* <MarginRulerTop /> */}
 
          {showNewResumeModal &&
             <NewResumeModal onClose={() => setShowNewResumeModal(false)} />

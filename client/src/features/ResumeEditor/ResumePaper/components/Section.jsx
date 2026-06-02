@@ -113,6 +113,7 @@ const Section = ({ section, column }) => {
   return (
     <div
       className={styles.sectionContainerDiv}
+      data-section-id={section.id}
       ref={sectionRef}
       style={{
         ...section.styling,

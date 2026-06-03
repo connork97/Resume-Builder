@@ -53,6 +53,7 @@ const normalizeResumeFromApi = (apiResume) => {
       // width: column.width ?? '100%',
       // autoWidth: column.autoWidth ?? true,
       layout: column.layout ?? {},
+      styling: column.styling ?? {},
       position: column.position ?? 0,
       sectionIds: sortedSections.map((section) => section.id),
     };

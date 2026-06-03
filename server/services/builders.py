@@ -163,6 +163,7 @@ def add_subsection(section_id, section_type, position=0):
         label=f"{format_label(section_type)} Subsection",
         type=section_type,
         position=position,
+        styling={'fontSizeOffset': 0},
     )
 
     db.session.add(subsection)
@@ -186,6 +187,7 @@ def add_field(subsection_id, label='New Field', position=0):
         label=format_label(label),
         position=position,
         value=build_empty_slate_value(label),
+        styling={'fontSizeOffset': 0},
     )
 
     db.session.add(field)

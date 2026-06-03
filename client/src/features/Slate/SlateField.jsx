@@ -1,38 +1,52 @@
-import React, {Fragment, useEffect, useMemo, useCallback, useState } from "react";
+import React, { useEffect, useMemo, useCallback } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, Editor, Transforms } from "slate";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFieldValue, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
 
-import renderLeaf from "./renderLeaf.jsx";
+import Leaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
 import { addListItem, indentList, outdentList } from "../../helpers/listBehavior.js";
 
 import { editorRegistry } from "../../helpers/editorRegistry.js";
-import { nanoid } from "@reduxjs/toolkit";
 import { getNodeString } from "@/helpers/getNodeString.js";
 import { getMinWidth } from "@/helpers/getMinWidth.js";
 
-const SlateField = ({ field, sectionId, subsectionId }) => {
+const SlateField = ({ field }) => {
   // Stable editor instance
-  // const editorId = useMemo(() => nanoid(), []);
-  const subsectionFieldsArr = useSelector(state => state.resume.subsections.byId[field.subsectionId].fieldIds);
   const fieldPlainText = getNodeString(field);
   const fieldMinWidth = !fieldPlainText ? getMinWidth(field.label) : 'auto';
-  
-  const editorId = useMemo(() => field.id, [])
+
+  const editorId = field.id;
   const editor = useMemo(() => withReact(createEditor()), []);
   const dispatch = useDispatch();
-
+  const resumeStyling = useSelector(state => state.resume.styling);
+  const subsection = useSelector(state => state.resume.subsections.byId[field.subsectionId]);
+  const section = useSelector(state => state.resume.sections.byId[subsection?.sectionId]);
+  const column = useSelector(state => state.resume.columns.byId[section?.columnId]);
+  const fieldStyling = field?.styling;
+  const columnStyling = column?.styling;
+  const sectionStyling = section?.styling;
+  const subsectionStyling = subsection?.styling;
 
   useEffect(() => {
     editorRegistry.set(editorId, editor);
     return () => editorRegistry.delete(editorId);
   }, [editorId, editor]);
 
-
-  if (!field.value) return null;
+  const renderLeaf = useCallback((props) => {
+    return (
+      <Leaf
+        {...props}
+        resumeStyling={resumeStyling}
+        columnStyling={columnStyling}
+        sectionStyling={sectionStyling}
+        subsectionStyling={subsectionStyling}
+        fieldStyling={fieldStyling}
+      />
+    );
+  }, [resumeStyling, columnStyling, sectionStyling, subsectionStyling, fieldStyling]);
 
   const renderElement = useCallback((props) => {
     return (
@@ -89,6 +103,8 @@ const SlateField = ({ field, sectionId, subsectionId }) => {
       return;
     }
   };
+
+  if (!field.value) return null;
 
   return (
     <Slate

@@ -1,7 +1,11 @@
+# ------
+# Global
+# ------
+
+/agents/
 # ----------------------------
 # Frontend (React / Vite / Node)
 # ----------------------------
-
 node_modules/
 client/node_modules/
 

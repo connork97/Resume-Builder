@@ -117,7 +117,7 @@ const Section = ({ section, column }) => {
       ref={sectionRef}
       style={{
         ...section.styling,
-        ...sectionPadding
+        ...sectionPadding,
       }}
       onClick={() => dispatch(setActiveSectionId(section.id))}
     >

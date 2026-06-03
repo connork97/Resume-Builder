@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 
@@ -21,17 +21,12 @@ const RichTextToolbar = ({ editor }) => {
 
   const resumeStyling = useSelector((state) => state.resume.styling);
   const sections = useSelector((state) => state.resume.sections);
+  const columns = useSelector((state) => state.resume.columns);
+  const fields = useSelector((state) => state.resume.fields);
+  const subsections = useSelector((state) => state.resume.subsections);
   const activeSectionId = useSelector(state => state.resume.activeSectionId);
+  const activeEditorId = useSelector(state => state.resume.activeEditorId);
   const selection = useSelector(state => state.resume.activeEditorSelection);
-
-  // useEffect(() => {
-  //   if (!editor || !selection) {
-  //     console.error('Editor is not ready.');
-  //     return;
-  //   }
-  //   console.log('Editor is ready.')
-  // }, [editor, selection])
-
 
   return (
     <div className={styles.richTextToolbarContainer}>
@@ -67,7 +62,11 @@ const RichTextToolbar = ({ editor }) => {
           editor={editor}
           selection={selection}
           sections={sections}
+          columns={columns}
+          fields={fields}
+          subsections={subsections}
           activeSectionId={activeSectionId}
+          activeEditorId={activeEditorId}
           resumeStyling={resumeStyling}
         />
 

@@ -1,10 +1,10 @@
-import React, { useMemo, useCallback, useEffect, use } from "react";
+import React, { useMemo, useCallback, useEffect } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor } from "slate";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateSection, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
 
-import renderLeaf from "./renderLeaf.jsx";
+import Leaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
 import { editorRegistry } from "../../helpers/editorRegistry.js";
@@ -12,9 +12,14 @@ import { nanoid } from "@reduxjs/toolkit";
 
 const SlateHeading = ({ section }) => {
   const dispatch = useDispatch();
+  const resumeStyling = useSelector(state => state.resume.styling);
+  const column = useSelector(state => state.resume.columns.byId[section.columnId]);
+  const sectionStyling = section?.styling;
+  const columnStyling = column?.styling;
 
   // Stable editor instance
-  const editorId = useMemo(() => nanoid(), []);
+  const editorId = useMemo(() => section?.id)
+  // const editorId = useMemo(() => nanoid(), []);
   const editor = useMemo(() => withReact(createEditor()), []);
 
   useEffect(() => {
@@ -22,7 +27,16 @@ const SlateHeading = ({ section }) => {
     return () => editorRegistry.delete(editorId);
   }, [editorId, editor]);
 
-  if (!section.value) return null;
+  const renderLeaf = useCallback((props) => {
+    return (
+      <Leaf
+        {...props}
+        resumeStyling={resumeStyling}
+        columnStyling={columnStyling}
+        sectionStyling={sectionStyling}
+      />
+    );
+  }, [resumeStyling, columnStyling, sectionStyling]);
 
   const renderElement = useCallback((props) => {
     return (
@@ -43,6 +57,8 @@ const SlateHeading = ({ section }) => {
       })
     );
   };
+
+  if (!section.value) return null;
 
   return (
     <Slate

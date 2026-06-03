@@ -7,7 +7,7 @@ const TextFormatButton = (props) => {
    return (
       <button
          className={styles.textFormatButton}
-         onClick={props.onClick}
+         onClick={props.onClick || props.command}
          style={props.styling}
          text={props.text || props.value}
          value={props.value}

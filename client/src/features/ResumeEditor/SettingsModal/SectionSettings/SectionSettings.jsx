@@ -124,7 +124,7 @@ const SectionSettings = ({ setIsSettingsModalOpen }) => {
 
    const renderSettingsModalRows = () => {
       let componentsArr = [
-         // { component: FontSize, label: "Font Size" },
+         { component: FontSize, label: "Font Size", props: { section, column } },
          { component: FontColor, label: "Font Color" },
          // { component: LineHeight, label: "Line Height" },
          { component: TextAlign, label: "Text Align", styling: { justifyContent: 'end' } },

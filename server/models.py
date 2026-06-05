@@ -37,7 +37,6 @@ class User(db.Model):
     id = id_column()
     first_name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=True)
-    # username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = created_at_column()
@@ -64,12 +63,9 @@ class User(db.Model):
             "id": self.id,
             "firstName": self.first_name,
             "lastName": self.last_name,
-            # "username": self.username,
             "email": self.email,
             "createdAt": serialize_datetime(self.created_at),
             "updatedAt": serialize_datetime(self.updated_at),
-            # "createdAt": self.created_at.isoformat() if self.created_at else None,
-            # "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
         }
         
         if only:
@@ -100,8 +96,6 @@ class Resume(db.Model):
     layout = db.Column(db.JSON, nullable=False, default=dict)
     created_at = created_at_column()
     updated_at = updated_at_column()
-    # created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
-    # updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now(), onupdate=db.func.now())
 
     columns = db.relationship(
         "Column",
@@ -134,6 +128,7 @@ class Column(db.Model):
     id = id_column()
     resume_id = db.Column(db.Integer, db.ForeignKey("resumes.id"), nullable=False)
     position = db.Column(db.Integer, nullable=False, default=0)
+    styling = db.Column(db.JSON, nullable=False, default=dict, server_default='{}')
     layout = db.Column(db.JSON, nullable=False, default=dict, server_default='{}')
     created_at = created_at_column()
     updated_at = updated_at_column()
@@ -150,14 +145,11 @@ class Column(db.Model):
         return {
             "id": self.id,
             "resumeId": self.resume_id,
-            # "width": self.width,
-            # "autoWidth": self.auto_width,
             "position": self.position,
+            "styling": self.styling,
             "layout": self.layout,
             "createdAt": serialize_datetime(self.created_at),
             "updatedAt": serialize_datetime(self.updated_at),
-            # "createdAt": self.created_at.isoformat() if self.created_at else None,
-            # "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
             "sections": [section.to_dict() for section in self.sections],
         }
 
@@ -175,8 +167,8 @@ class Section(db.Model):
     value = db.Column(db.JSON, nullable=False, default=list)
     show_heading = db.Column(db.Boolean, nullable=False, default=True, server_default='1')
     position = db.Column(db.Integer, nullable=False, default=0)
+    styling = db.Column(db.JSON, nullable=False, default=dict, server_default='{}')
     layout = db.Column(db.JSON, nullable=False, default=dict, server_default='{}')
-    styling = db.Column(db.JSON, nullable=False, default=dict)
     created_at = created_at_column()
     updated_at = updated_at_column()
 
@@ -197,10 +189,8 @@ class Section(db.Model):
             "value": self.value,
             "showHeading": self.show_heading,
             "position": self.position,
-            "layout": self.layout,
             "styling": self.styling,
-            # "createdAt": self.created_at.isoformat() if self.created_at else None,
-            # "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            "layout": self.layout,
             "createdAt": serialize_datetime(self.created_at),
             "updatedAt": serialize_datetime(self.updated_at),
             "subsections": [subsection.to_dict() for subsection in self.subsections],
@@ -217,8 +207,8 @@ class Subsection(db.Model):
     section_id = db.Column(db.Integer, db.ForeignKey("sections.id"), nullable=False)
     label = db.Column(db.String, nullable=True)
     type = db.Column(db.String, nullable=False, default="default")
+    styling = db.Column(db.JSON, nullable=False, default=dict, server_default='{}')
     layout = db.Column(db.JSON, nullable=False, default=dict, server_default='{}')
-    styling = db.Column(db.JSON, nullable=False, default=dict)
     position = db.Column(db.Integer, nullable=False, default=0)
     created_at = created_at_column()
     updated_at = updated_at_column()
@@ -238,8 +228,8 @@ class Subsection(db.Model):
             "sectionId": self.section_id,
             "label": self.label,
             "type": self.type,
-            "layout": self.layout,
             "styling": self.styling,
+            "layout": self.layout,
             "position": self.position,
             "createdAt": serialize_datetime(self.created_at),
             "updatedAt": serialize_datetime(self.updated_at),
@@ -259,8 +249,8 @@ class Field(db.Model):
     subsection_id = db.Column(db.Integer, db.ForeignKey("subsections.id"), nullable=False)
     label = db.Column(db.String, nullable=True)
     value = db.Column(db.JSON, nullable=False, default=list)
+    styling = db.Column(db.JSON, nullable=False, default=dict, server_default='{}')
     layout = db.Column(db.JSON, nullable=False, default=dict, server_default='{}')
-    styling = db.Column(db.JSON, nullable=False, default=dict)
     position = db.Column(db.Integer, nullable=False, default=0)
     created_at = created_at_column()
     updated_at = updated_at_column()
@@ -271,8 +261,8 @@ class Field(db.Model):
             "subsectionId": self.subsection_id,
             "label": self.label,
             "value": self.value,
-            "layout": self.layout,
             "styling": self.styling,
+            "layout": self.layout,
             "position": self.position,
             "createdAt": serialize_datetime(self.created_at),
             "updatedAt": serialize_datetime(self.updated_at),

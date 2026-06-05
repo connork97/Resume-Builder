@@ -3,6 +3,8 @@
 # ------
 
 /agents/
+/.agents/
+/.codex/
 # ----------------------------
 # Frontend (React / Vite / Node)
 # ----------------------------
@@ -53,7 +55,7 @@ instance/
 # ----------------------------
 # Editor / OS files
 # ----------------------------
-
+/.vscode/
 .vscode/*
 !.vscode/extensions.json
 .idea

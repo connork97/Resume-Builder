@@ -26,6 +26,8 @@ const SectionSettings = ({ setIsSettingsModalOpen }) => {
    const resumeStyling = useSelector(state => state.resume.styling);
    const sections = useSelector(state => state.resume.sections);
    const columns = useSelector(state => state.resume.columns);
+   const fields = useSelector(state => state.resume.fields);
+   const subsections = useSelector(state => state.resume.subsections);
    const activeSectionId = useSelector(state => state.resume.activeSectionId);
 
    const sectionColumnIndex = columns.allIds.indexOf(section.columnId);
@@ -126,7 +128,7 @@ const SectionSettings = ({ setIsSettingsModalOpen }) => {
       let componentsArr = [
          { component: FontSize, label: "Font Size", props: { section, column } },
          { component: FontColor, label: "Font Color" },
-         // { component: LineHeight, label: "Line Height" },
+         { component: LineHeight, label: "Line Height", props: { section, column } },
          { component: TextAlign, label: "Text Align", styling: { justifyContent: 'end' } },
          { component: BackgroundColor, label: 'Background Color' },
       ];
@@ -136,6 +138,9 @@ const SectionSettings = ({ setIsSettingsModalOpen }) => {
             <p className={styles.settingsModalLabel}>{Component.label}:</p>
             <Component.component
                sections={sections}
+               columns={columns}
+               fields={fields}
+               subsections={subsections}
                resumeStyling={resumeStyling}
                activeSectionId={activeSectionId}
                {...Component.props}

@@ -4,7 +4,7 @@ import { createEditor } from "slate";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSection, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
 
-import Leaf, { getCascadedFontSize } from "./renderLeaf.jsx";
+import Leaf, { getCascadedFontSize, getCascadedLineHeight } from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
 import { editorRegistry } from "../../helpers/editorRegistry.js";
@@ -17,6 +17,11 @@ const SlateHeading = ({ section }) => {
   const sectionStyling = section?.styling;
   const columnStyling = column?.styling;
   const inheritedFontSize = getCascadedFontSize({
+    resumeStyling,
+    columnStyling,
+    sectionStyling,
+  });
+  const inheritedLineHeight = getCascadedLineHeight({
     resumeStyling,
     columnStyling,
     sectionStyling,
@@ -81,7 +86,7 @@ const SlateHeading = ({ section }) => {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={section.label}
-        style={{ fontSize: `${inheritedFontSize}px` }}
+        style={{ fontSize: `${inheritedFontSize}px`, lineHeight: inheritedLineHeight }}
       />
     </Slate>
   );

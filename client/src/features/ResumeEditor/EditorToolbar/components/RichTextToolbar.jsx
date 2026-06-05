@@ -37,7 +37,11 @@ const RichTextToolbar = ({ editor }) => {
           editor={editor}
           selection={selection}
           sections={sections}
+          columns={columns}
+          fields={fields}
+          subsections={subsections}
           activeSectionId={activeSectionId}
+          activeEditorId={activeEditorId}
           resumeStyling={resumeStyling}
         />
 

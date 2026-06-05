@@ -8,6 +8,16 @@ export const getPxNumber = (value, fallback = 12) => {
   return Number.isNaN(number) ? fallback : number;
 };
 
+export const getNumber = (value, fallback) => {
+  if (value === undefined || value === null || value === '') return fallback;
+
+  const number = Number(value);
+
+  return Number.isNaN(number) ? fallback : number;
+};
+
+export const roundToTenth = (value) => Number(getNumber(value, 0).toFixed(1));
+
 export const getCascadedFontSize = ({
   resumeStyling,
   columnStyling = {},
@@ -26,8 +36,41 @@ export const getCascadedFontSize = ({
   return resumeFontSize + columnFontSizeOffset + sectionFontSizeOffset + subsectionFontSizeOffset + fieldFontSizeOffset + leafFontSizeOffset;
 };
 
+export const getCascadedLineHeight = ({
+  resumeStyling,
+  columnStyling = {},
+  sectionStyling = {},
+  subsectionStyling = {},
+  fieldStyling = {},
+  leafStyling = {},
+}) => {
+  const resumeLineHeight = getNumber(resumeStyling?.lineHeight, 1.2);
+  const columnLineHeightOffset = getNumber(columnStyling?.lineHeightOffset, 0);
+  const sectionLineHeightOffset = getNumber(sectionStyling?.lineHeightOffset, 0);
+  const subsectionLineHeightOffset = getNumber(subsectionStyling?.lineHeightOffset, 0);
+  const fieldLineHeightOffset = getNumber(fieldStyling?.lineHeightOffset, 0);
+  const leafLineHeightOffset = getNumber(leafStyling?.lineHeightOffset, 0);
+
+  return roundToTenth(
+    resumeLineHeight +
+    columnLineHeightOffset +
+    sectionLineHeightOffset +
+    subsectionLineHeightOffset +
+    fieldLineHeightOffset +
+    leafLineHeightOffset
+  );
+};
+
 const Leaf = ({ attributes, children, leaf, resumeStyling, columnStyling = {}, sectionStyling = {}, subsectionStyling = {}, fieldStyling = {} }) => {
   const fontSize = getCascadedFontSize({
+    resumeStyling,
+    columnStyling,
+    sectionStyling,
+    subsectionStyling,
+    fieldStyling,
+    leafStyling: leaf,
+  });
+  const lineHeight = getCascadedLineHeight({
     resumeStyling,
     columnStyling,
     sectionStyling,
@@ -39,7 +82,7 @@ const Leaf = ({ attributes, children, leaf, resumeStyling, columnStyling = {}, s
   const stylingObj = {
     display: 'inline-block',
     fontSize: `${fontSize}px`,
-    lineHeight: leaf.lineHeight,
+    lineHeight,
     color: leaf.color,
     backgroundColor: leaf.highlightColor,
   };

@@ -40,6 +40,9 @@ export const getActiveMark = (editor, mark) => {
       case ('lineHeight'):
         const parsedLineHeight = parseFloat(activeMark).toFixed(1);
         return parsedLineHeight ?? console.error("No active line height found.");
+      case ('lineHeightOffset'):
+        const parsedLineHeightOffset = parseFloat(activeMark).toFixed(1);
+        return parsedLineHeightOffset ?? console.error("No active line height offset found.");
       case ('color'):
         return activeMark ?? console.error("No active font color found.");
     }
@@ -55,6 +58,8 @@ export const getActiveMark = (editor, mark) => {
       case ('lineHeight'):
         const resumeLineHeight = getResumeStyling('lineHeight');
         return parseFloat(resumeLineHeight).toFixed(1);
+      case ('lineHeightOffset'):
+        return 0;
       default:
         return getResumeStyling(mark);
     }
@@ -80,6 +85,12 @@ export const setLineHeight = (editor, lineHeight) => {
   const parsedLineHeight = parseFloat(lineHeight).toFixed(1);
   Editor.addMark(editor, 'lineHeight', parsedLineHeight);
   console.log(`Line height set to ${parsedLineHeight}`);
+}
+
+export const setLineHeightOffset = (editor, lineHeightOffset) => {
+  const parsedLineHeightOffset = parseFloat(lineHeightOffset).toFixed(1);
+  Editor.addMark(editor, 'lineHeightOffset', parsedLineHeightOffset);
+  console.log(`Line height offset set to ${parsedLineHeightOffset}`);
 }
 
 export const setFontColor = (editor, fontColor) => {

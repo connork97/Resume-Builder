@@ -29,20 +29,20 @@ export const getActiveMark = (editor, mark) => {
   const marks = Editor.marks(editor);
   const activeMark = marks?.[mark];
   if (activeMark) {
+    let parsedMark;
     switch (mark) {
       case ('fontSize'):
-        const parsedActiveMark = parseInt(activeMark);
-        // return parsedActiveMark;
-        return parsedActiveMark ?? console.error("No active font size found.");
+        parsedMark = parseInt(activeMark)
+        return parsedMark ?? console.error("No active font size found.");
       case ('fontSizeOffset'):
-        const parsedFontSizeOffset = parseInt(activeMark);
-        return parsedFontSizeOffset ?? console.error("No active font size offset found.");
+        parsedMark = parseInt(activeMark)
+        return parsedMark ?? console.error("No active font size offset found.");
       case ('lineHeight'):
-        const parsedLineHeight = parseFloat(activeMark).toFixed(1);
-        return parsedLineHeight ?? console.error("No active line height found.");
+        parsedMark = parseFloat(activeMark).toFixed(1);
+        return parsedMark ?? console.error("No active line height found.");
       case ('lineHeightOffset'):
-        const parsedLineHeightOffset = parseFloat(activeMark).toFixed(1);
-        return parsedLineHeightOffset ?? console.error("No active line height offset found.");
+        parsedMark = parseFloat(activeMark).toFixed(1)
+        return parsedMark ?? console.error("No active line height offset found.");
       case ('color'):
         return activeMark ?? console.error("No active font color found.");
     }
@@ -56,8 +56,8 @@ export const getActiveMark = (editor, mark) => {
       case ('color'):
         return getResumeStyling('color');
       case ('lineHeight'):
-        const resumeLineHeight = getResumeStyling('lineHeight');
-        return parseFloat(resumeLineHeight).toFixed(1);
+        // const resumeLineHeight = getResumeStyling('lineHeight');
+        return parseFloat(getResumeStyling('lineHeight')).toFixed(1);
       case ('lineHeightOffset'):
         return 0;
       default:

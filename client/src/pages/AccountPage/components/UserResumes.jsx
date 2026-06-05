@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,19 +16,20 @@ const UserResumes = () => {
 
    const [userResumes, setUserResumes] = useState([]);
 
-   const fetchUserResumes = async (userId) => {
-      const userData = await getUserResumesFromApi(userId);
-      if (!userData) {
-         return;
-      }
-      setUserResumes(userData.resumes);
-   }
+   const fetchUserResumes = useCallback(
+      async (userId) => {
+         const userData = await getUserResumesFromApi(userId);
+         if (!userData) {
+            return;
+         }
+         setUserResumes(userData.resumes);
+      }, [])
 
    useEffect(() => {
       if (!user.id) return;
-      console.log(user.id)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchUserResumes(user.id);
-   }, [user.id])
+   }, [user.id, fetchUserResumes])
 
 
    const renderResumes = () => {
@@ -39,24 +40,24 @@ const UserResumes = () => {
             </>
          );
       }
-      
+
       return userResumes.map(resume => (
          <UserResumeRow key={resume.id} resume={resume} fetchUserResumes={fetchUserResumes} />
       ));
    }
-   
+
    return (
       <div className={styles.userResumesWrapper}>
          <h1>My Resumes</h1>
          <div className={styles.userResumeRowsWrapper}>
             {renderResumes()}
          </div>
-            <button
-               className={styles.accountSubmitButton}
-               onClick={() => navigate('/editor/new')}
-            >
-               Create Resume
-            </button>
+         <button
+            className={styles.accountSubmitButton}
+            onClick={() => navigate('/editor/new')}
+         >
+            Create Resume
+         </button>
       </div>
    );
 };

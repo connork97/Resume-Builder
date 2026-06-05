@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const deleteColumnById = (state, columnId) => {
   const allColumnIds = state.columns.allIds;
@@ -200,42 +200,42 @@ const resumeSlice = createSlice({
     // * ADD TO STATE V
     // * ------------ V
 
-    addColumn(state) {
-      createDefaultColumn(state);
-    },
+    // addColumn(state) {
+    //   createDefaultColumn(state);
+    // },
 
-    addSection(state, action) {
-      const type = action.payload;
-      const section = createDefaultSection(state, type);
-      if (!section) {
-        console.error(`Failed to create section of type ${type}.`);
-        return;
-      }
-      const subsection = createDefaultSubsection(state, type, section.id);
-      createDefaultField(state, type, subsection.id);
-      // return section;
-    },
+    // addSection(state, action) {
+    //   const type = action.payload;
+    //   const section = createDefaultSection(state, type);
+    //   if (!section) {
+    //     console.error(`Failed to create section of type ${type}.`);
+    //     return;
+    //   }
+    //   const subsection = createDefaultSubsection(state, type, section.id);
+    //   createDefaultField(state, type, subsection.id);
+    //   // return section;
+    // },
 
-    addSubsection(state, action) {
-      const { sectionId } = action.payload;
-      const section = state.sections.byId[sectionId];
-      if (!section) {
-        console.error(`Cannot add subsection.  No section with ID of ${sectionId} found.`);
-        return;
-      }
-      const subsection = createDefaultSubsection(state, section.type, sectionId);
-      createDefaultField(state, section.type, subsection.id);
-    },
+    // addSubsection(state, action) {
+    //   const { sectionId } = action.payload;
+    //   const section = state.sections.byId[sectionId];
+    //   if (!section) {
+    //     console.error(`Cannot add subsection.  No section with ID of ${sectionId} found.`);
+    //     return;
+    //   }
+    //   const subsection = createDefaultSubsection(state, section.type, sectionId);
+    //   createDefaultField(state, section.type, subsection.id);
+    // },
 
-    addField(state, action) {
-      const { subsectionId } = action.payload;
-      const subsection = state.subsections.byId[subsectionId];
-      if (!subsection) {
-        console.error(`Cannot add field.  No subsection with ID of ${subsectionId} found.`);
-        return;
-      }
-      createDefaultField(state, subsection.type, subsection.id);
-    },
+    // addField(state, action) {
+    //   const { subsectionId } = action.payload;
+    //   const subsection = state.subsections.byId[subsectionId];
+    //   if (!subsection) {
+    //     console.error(`Cannot add field.  No subsection with ID of ${subsectionId} found.`);
+    //     return;
+    //   }
+    //   createDefaultField(state, subsection.type, subsection.id);
+    // },
 
     // * ----------------- V
     // * DELETE FROM STATE V
@@ -557,22 +557,22 @@ export const {
   updateResume,
   setResumePrintRef,
 
-  addColumn,
+  // addColumn,
   deleteColumn,
   updateColumn,
 
-  addSection,
+  // addSection,
   updateSection,
   deleteSection,
   reorderSections,
 
-  addSubsection,
+  // addSubsection,
   updateSubsection,
   updateSubsectionFlexDirection,
   deleteSubsection,
   reorderSubsections,
 
-  addField,
+  // addField,
   deleteField,
   updateFieldValue,
   updateFieldLayout,

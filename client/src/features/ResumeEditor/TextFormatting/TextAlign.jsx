@@ -11,7 +11,7 @@ import TextFormatButton from './shared/TextFormatButton.jsx';
 
 import styles from './TextFormatting.module.css';
 
-const TextAlign = ({ editor, styling }) => {
+const TextAlign = ({ editor }) => {
 
    const dispatch = useDispatch();
    const activeSectionId = useSelector(state => state.resume.activeSectionId);

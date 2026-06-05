@@ -1,8 +1,7 @@
-import React, { useState, useEffect, forwardRef, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useLocation, useParams } from 'react-router-dom';
-import { useReactToPrint } from 'react-to-print';
+import { Link, useParams } from 'react-router-dom';
 
 
 import { setResume, updateResume } from '@/store/resumeSlice.js';
@@ -15,34 +14,24 @@ import AddSection from './AddSection';
 // const TopBar = forwardRef(function TopBar({  }, ref) {
 const TopBar = ({ handlePrint }) => {
 
-   const location = useLocation();
    const dispatch = useDispatch();
    const { resumeId } = useParams();
 
    const resume = useSelector(state => state.resume)
 
-   const [showNewResumeModal, setShowNewResumeModal] = useState(false);
-
-   useEffect(() => {
-      if (location.pathname === '/editor/new') {
-         setShowNewResumeModal(true);
-      } else {
-         setShowNewResumeModal(false);
-      }
-   }, [location.pathname]);
-
-   const fetchResumeById = async (resumeId) => {
+   const fetchResumeById = useCallback(
+      async (resumeId) => {
       const normalizedResumeData = await getResumeFromApi(resumeId);
       if (!normalizedResumeData) {
          return;
       }
 
       dispatch(setResume(normalizedResumeData));
-   }
+   }, [dispatch])
 
    useEffect(() => {
       if (resumeId) fetchResumeById(resumeId);
-   }, [resumeId])
+   }, [resumeId, fetchResumeById])
 
    const saveResume = async () => {
       const resumeIsSaved = await saveResumeToApi(resume);

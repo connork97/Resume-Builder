@@ -1,6 +1,5 @@
 import { fetchApi } from "@/lib/fetch";
 import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi";
-import { resume } from "react-dom/server";
 
 export const addFieldToApi = async (subsectionId) => {
    try {
@@ -169,11 +168,11 @@ export const deleteLastColumnFromApi = async (resumeId) => {
       return normalizedResume;
 
    } catch (error) {
-      console.error(`Error deleting column of ID ${columnId}: `, error)
+      console.error(`Error deleting last column from resume of ID ${resumeId}: `, error)
       alert(
          error?.code && error?.message
             ? error.code + '\n' + error.message
-            : `Error deleting column of ID ${columnId}.`
+            : `Error deleting last column from resume of ID ${resumeId}.`
       )
 
       return false;

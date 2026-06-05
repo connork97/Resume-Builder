@@ -1,17 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import SlateField from '@/features/Slate/SlateField';
 import { useSelector } from 'react-redux';
 
-import { getNodeString } from '@/helpers/getNodeString';
+// import { getNodeString } from '@/helpers/getNodeString';
 
 const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
 
    const field = useSelector(state => state.resume.fields.byId[fieldId]);
-   const startNewRow = field?.label === 'Description' ? true : false;
 
-
-   const plainText = getNodeString(field);
+   // const plainText = getNodeString(field);
 
 
    const fieldLayoutDict = {

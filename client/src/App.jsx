@@ -30,7 +30,7 @@ const App = () => {
       }
     }
     runSiteLaunch();
-  }, []);
+  }, [dispatch]);
 
 
   return (

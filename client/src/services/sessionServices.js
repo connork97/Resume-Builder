@@ -6,7 +6,7 @@ export const checkApi = async () => {
    } catch (error) {
       console.error('Error checking API:', error);
       if (!error?.code && !error?.message) {
-         error = { code: 'CONNECTION_ERROR', message: 'Could not connect to API.' }
+         return { code: 'CONNECTION_ERROR', message: 'Could not connect to API.' }
       }
       alert(error.code + '\n' + error.message);
       return error;

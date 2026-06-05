@@ -6,7 +6,7 @@ import styles from './SettingsModal.module.css';
 import ColumnSettings from './ColumnSettings/ColumnSettings';
 import SectionSettings from './SectionSettings/SectionSettings';
 
-const SettingsModal = ({ section, column, isSettingsModalOpen, setIsSettingsModalOpen }) => {
+const SettingsModal = ({ isSettingsModalOpen, setIsSettingsModalOpen }) => {
 
    return (
       <>

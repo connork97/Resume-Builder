@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { data, useNavigate } from 'react-router-dom';
-
-import { BASE_URL } from '@/config';
+import { useNavigate } from 'react-router-dom';
 
 import { setResumeId } from '@/store/resumeSlice';
 
 import styles from './NewResumeModal.module.css';
 import { addResumeToApi } from '@/services/resumeServices';
 
-const NewResumeModal = ({ onClose }) => {
+const NewResumeModal = () => {
 
    const dispatch = useDispatch();
    const navigate = useNavigate();
@@ -63,7 +61,6 @@ const NewResumeModal = ({ onClose }) => {
       }
 
       dispatch(setResumeId(normalizedResumeData.id));
-      onClose();
       navigate(`/editor/${normalizedResumeData.id}`);
 
    };
@@ -187,12 +184,6 @@ const NewResumeModal = ({ onClose }) => {
                   Create Resume
                </button>
             </div>
-            {/* <p>Choose a template to get started:</p>
-            <div className={styles.templateOptions}>
-               <button className={styles.templateButton}>Template 1</button>
-               <button className={styles.templateButton}>Template 2</button>
-               <button className={styles.templateButton}>Template 3</button>
-            </div> */}
          </div>
       </div>
    );

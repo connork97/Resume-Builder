@@ -84,7 +84,7 @@ const Section = ({ section, column }) => {
           : 'none',
       }
     })
-  }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding, section.layout?.padding, column.layout.padding]);
+  }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding, section.layout?.padding, column.layout.padding, section]);
 
   const renderedSubsections = section.subsectionIds?.map((subId) => {
     const subsection = subsections.byId[subId];
@@ -110,7 +110,6 @@ const Section = ({ section, column }) => {
     setIsSettingsModalOpen(!isSettingsModalOpen);
   }
 
-  console.log('SECTION STYLING CODEX CHECK: ', section.styling)
   return (
     <div
       className={styles.sectionContainerDiv}

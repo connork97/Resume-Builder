@@ -1,8 +1,8 @@
-import React, { act, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import styles from './MarginRuler.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { setResume, updateColumn, updateResume, updateSection } from '@/store/resumeSlice';
+import { updateResume, updateSection } from '@/store/resumeSlice';
 
 const MarginRulerSide = ({ renderMarginRuler }) => {
 

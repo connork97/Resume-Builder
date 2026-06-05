@@ -3,17 +3,14 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import {
-  addSubsection,
   updateSubsection,
   deleteSubsection,
   reorderSubsections,
-  addField,
   setResume,
 } from "@/store/resumeSlice";
 
 import styles from "../Outline.module.css";
 import { BASE_URL } from "@/config";
-import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi";
 import { addFieldToApi, addSubsectionToApi, deleteSubsectionFromApi } from "@/services/resumeServices";
 
 const OutlineSection = ({
@@ -250,14 +247,6 @@ const OutlineSection = ({
             <button
               className={styles.deleteButton}
               onClick={() => handleDeleteSubsection(subId, subIndex)}
-            // onClick={() =>
-            // dispatch(
-            //   deleteSubsection({
-            //     sectionId: section.id,
-            //     subsectionId: subsectionId,
-            //   })
-            // )
-            // }
             >
               Delete {sectionTitle} Subsection
             </button>

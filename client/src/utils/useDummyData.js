@@ -24,24 +24,8 @@ export const useDummyData = () => {
 
       initialized.current = true;
 
-      const resumeSampleDataArr = [
-         "Connor", "Kormos", "test@email.com", "(123)456-7890",
-         "Los Angeles, CA", "www.mywebsite.com", "test.linked.in",
-         "Job Title", "Company", "Los Angeles", "Jan 2026 - Present",
-         "Job description", "UCLA", "Bachelor of Science",
-         "Software Engineering", "Los Angeles, CA",
-         "Jan 2020 - Dec 2020", "School description",
-         "Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5",
-         "Summary text/description"
-      ];
-
-      let wordIndex = 0;
-      const getNextWord = () => {
-         return resumeSampleDataArr[wordIndex++ % resumeSampleDataArr.length];
-      }
-
       sectionOptions.forEach((option) => {
          dispatch(addSection(option.type));
       });
-   }, [])
+   }, [dispatch, sections.allIds.length])
 };

@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { setResume, addSection, addSubsection } from '@/store/resumeSlice';
+import { setResume } from '@/store/resumeSlice';
 
 import { BASE_URL } from '@/config';
-import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
 
 import { addSectionToApi } from '@/services/resumeServices';
 
@@ -23,8 +22,6 @@ const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
       if (initialized.current) return;
       initialized.current = true;
    }, []);
-
-   const sections = useSelector((state) => state.resume.sections);
 
    const sectionOptions = [
       { type: "header", label: "Header" },

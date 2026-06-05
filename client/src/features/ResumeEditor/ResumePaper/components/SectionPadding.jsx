@@ -6,7 +6,7 @@ import { updateColumn, updateSection } from '@/store/resumeSlice.js';
 
 import styles from './Section.module.css';
 
-const SectionPadding = ({ section, column, isFirstColumn, isLastColumn, isFirstRow, isLastRow }) => {
+const SectionPadding = ({ section, column, isFirstColumn, isLastColumn }) => {
 
    const dispatch = useDispatch();
 

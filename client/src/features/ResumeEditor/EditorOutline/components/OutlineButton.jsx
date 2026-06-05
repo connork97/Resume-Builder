@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from "../Outline.module.css";
 
-const OutlineButton = ({ className, clickCommand, state, setState, text }) => {
+const OutlineButton = ({ className, clickCommand, state }) => {
    return (
       <button
          className={className ? `${styles.outlineButton} ${className}` : styles.outlineButton}

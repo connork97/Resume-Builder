@@ -2,20 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { BASE_URL } from '@/config.js';
-
-import { addColumn, deleteColumn, setResume } from '@/store/resumeSlice.js';
-
-import ToolbarButton from "./shared/ToolbarButton.jsx";
-import ToolbarInput from "./shared/ToolbarInput.jsx";
+import { deleteColumn, setResume } from '@/store/resumeSlice.js';
 
 // import styles from './RichTextToolbar.module.css';
 import styles from '@/features/ResumeEditor/TextFormatting/TextFormatting.module.css';
-import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi.js';
 import { addColumnToApi, deleteLastColumnFromApi,  } from '@/services/resumeServices.js';
 import TextFormatButton from '../../TextFormatting/shared/TextFormatButton.jsx';
 
-const Columns = ({ label }) => {
+const Columns = () => {
 
    const dispatch = useDispatch();
 

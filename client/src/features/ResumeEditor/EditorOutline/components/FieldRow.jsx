@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Node } from 'slate';
 
-import { deleteField, reorderFields, setResume, updateSubsection, swapFieldPositions } from "@/store/resumeSlice";
+import { deleteField, reorderFields, swapFieldPositions } from "@/store/resumeSlice";
 
 import styles from '../Outline.module.css';
 import { BASE_URL } from '@/config';
-import normalizeResumeFromApi from '@/utils/normalizeResumeFromApi';
 import { deleteFieldFromApi } from '@/services/resumeServices';
 import { StartNewRow } from './StartNewRow';
 

@@ -26,7 +26,7 @@ const RowIndex = ({ section }) => {
          setRowIndexInputValue('?');
          console.error(`Invalid Section Row Index.  Column with ID ${section.columnId} not found in columns state.`);
       }
-   }, [section.columnId, column.sectionIds]);
+   }, [section.columnId, column.sectionIds, columns.byId, section.id]);
 
    const updateRowIndex = (action) => {
       let newRowIndex;

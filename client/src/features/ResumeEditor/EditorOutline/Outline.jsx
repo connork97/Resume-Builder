@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { reorderSections, deleteSection, updateFieldValue } from '@/store/resumeSlice.js';
+import { reorderSections, deleteSection } from '@/store/resumeSlice.js';
 
 import OutlineSection from "./components/OutlineSection.jsx";
 import FieldRow from "./components/FieldRow.jsx";
@@ -24,7 +24,7 @@ const Outline = () => {
   const toggleSection = (id) => {
     setCollapsedSections((prev) => ({
       ...prev,
-      [id]: !prev[id],
+      [id]: !(prev[id] ?? true),
     }));
   };
 
@@ -98,7 +98,6 @@ const Outline = () => {
   const handleDeleteSection = async (sectionId) => {
     const section = getSectionById(sectionId);
     const sectionTitle = getNodeString(section.value[0]);
-    const sectionLabel = sectionTitle || 'this';
     if (!confirm(`Are you sure you want to delete the entire ${sectionTitle} section?`)) {
       return;
     }
@@ -117,17 +116,6 @@ const Outline = () => {
   const getNodeString = (slateValue) => {
     return Node.string(slateValue);
   }
-
-  useEffect(() => {
-    if (!sections.allIds.length) return;
-
-    const initial = {};
-    sections.allIds.forEach(id => {
-      initial[id] = true;
-    });
-
-    setCollapsedSections(initial);
-  }, [sections.allIds]);
 
   return (
     <div
@@ -182,7 +170,7 @@ const Outline = () => {
                 </button>
               </div>
 
-              {!collapsedSections[sectionId] && (
+              {!(collapsedSections[sectionId] ?? true) && (
                 <div className={styles.sectionContent}>
                   <OutlineSection
                     dispatch={dispatch}

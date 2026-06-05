@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { updateResume, updateSection } from '@/store/resumeSlice.js';
 import { getActiveMark, setLineHeightOffset } from '@/helpers/marks.js';
-import { getCascadedLineHeight, getNumber, roundToTenth } from '@/features/Slate/renderLeaf.jsx';
+import { getCascadedLineHeight, getNumber, roundToTenth } from '@/helpers/leafHelpers.js';
 
 import TextFormatButton from './shared/TextFormatButton';
 import TextFormatInput from './shared/TextFormatInput';

@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { selectUsedResumeColors } from '@/utils/resumeColorSelectors';
 import { BASE_COLORS } from '@/lib/baseColors';
 
 import TextFormatButton from './TextFormatButton';
-import { getActiveMark } from '@/helpers/marks';
 
 import styles from "../TextFormatting.module.css";
 
-const ColorDropdown = ({ currentEditorColor, text, styling, handleSetColor }) => {
+const ColorDropdown = ({ currentEditorColor, text, handleSetColor }) => {
 
   const usedColors = useSelector(selectUsedResumeColors);
   // const colors = [

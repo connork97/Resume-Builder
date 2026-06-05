@@ -2,13 +2,13 @@ import React, { useMemo, useCallback, useEffect } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor } from "slate";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSection, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
+import { updateSection, setActiveEditorId, setActiveEditorSelection } from "@/store/resumeSlice.js";
 
-import Leaf, { getCascadedFontSize, getCascadedLineHeight } from "./renderLeaf.jsx";
+import Leaf from '@/features/Slate/renderLeaf.jsx';
+import { getCascadedFontSize, getCascadedLineHeight } from "@/helpers/leafHelpers.js";
 import RenderElement from "./RenderElement.jsx";
 
 import { editorRegistry } from "../../helpers/editorRegistry.js";
-import { nanoid } from "@reduxjs/toolkit";
 
 const SlateHeading = ({ section }) => {
   const dispatch = useDispatch();
@@ -28,8 +28,8 @@ const SlateHeading = ({ section }) => {
   });
 
   // Stable editor instance
-  const editorId = useMemo(() => section?.id)
-  // const editorId = useMemo(() => nanoid(), []);
+  // const editorId = useMemo(() => section?.id)
+  const editorId = section?.id;
   const editor = useMemo(() => withReact(createEditor()), []);
 
   useEffect(() => {

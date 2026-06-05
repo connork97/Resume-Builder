@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 
 import Field from './Field';
 
-import styles from './Section.module.css';
-
 const SubsectionRenderer = ({ subsection }) => {
 
    const sectionLayout = useSelector(state => state.resume.sections.byId[subsection.sectionId].layout);

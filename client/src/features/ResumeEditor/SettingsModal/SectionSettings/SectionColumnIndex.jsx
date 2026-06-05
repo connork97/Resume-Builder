@@ -9,14 +9,12 @@ import ToolbarButton from '@/features/ResumeEditor/EditorToolbar/components/shar
 
 import styles from '@/features/ResumeEditor/EditorToolbar/components/RichTextToolbar.module.css';
 
-const ColumnIndex = ({ section, sectionColumnIndex }) => {
+const ColumnIndex = ({ section }) => {
 
    const dispatch = useDispatch();
 
    const sections = useSelector(state => state.resume.sections);
    const columns = useSelector(state => state.resume.columns);
-   const resumeLayout = useSelector(state => state.resume.layout);
-
    const [columnIndexInputValue, setColumnIndexInputValue] = useState('');
 
    useEffect(() => {

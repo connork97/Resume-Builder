@@ -34,7 +34,7 @@ const CurrentlyEditing = () => {
       } else {
          setCurrentlyEditingText('Full Resume');
       }
-   }, [activeSectionText, activeEditorText])
+   }, [activeSectionText, activeEditorText, activeEditorLabel])
 
 
    const clearToolbarSelection = () => {

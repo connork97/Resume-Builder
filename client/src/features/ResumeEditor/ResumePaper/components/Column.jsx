@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Section from './Section.jsx';
 
@@ -8,7 +8,6 @@ import styles from '../ResumePaper.module.css';
 
 const Column = ({ column }) => {
    const sections = useSelector((state) => state.resume.sections);
-   const columns = useSelector((state) => state.resume.columns);
    if (!column.sectionIds) {
       console.error(`Column with ID ${column.id} is missing sectionIds.`);
       return (

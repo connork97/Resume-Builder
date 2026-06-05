@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateSection, updateSubsectionFlexDirection } from '@/store/resumeSlice.js';
+import { updateSection } from '@/store/resumeSlice.js';
 
 import ToolbarButton from '../../EditorToolbar/components/shared/ToolbarButton';
 import styles from '../SettingsModal.module.css';

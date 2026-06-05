@@ -4,7 +4,7 @@ import { createEditor, Editor, Transforms } from "slate";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFieldValue, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
 
-import Leaf, { getCascadedFontSize, getCascadedLineHeight } from "./renderLeaf.jsx";
+import Leaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
 import { addListItem, indentList, outdentList } from "../../helpers/listBehavior.js";
@@ -12,6 +12,7 @@ import { addListItem, indentList, outdentList } from "../../helpers/listBehavior
 import { editorRegistry } from "../../helpers/editorRegistry.js";
 import { getNodeString } from "@/helpers/getNodeString.js";
 import { getMinWidth } from "@/helpers/getMinWidth.js";
+import { getCascadedFontSize, getCascadedLineHeight } from "@/helpers/leafHelpers.js";
 
 const SlateField = ({ field }) => {
   // Stable editor instance

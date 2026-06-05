@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { updateUser } from '@/store/userSlice';
 
-import { BASE_URL } from '@/config';
-
 // import styles from './Account.module.css';
 import styles from './AccountSettings.module.css';
 import { updateUserApi } from '@/services/userServices';
@@ -22,8 +20,6 @@ const AccountSettings = () => {
       email: '',
       createdAt: '',
       updatedAt: '',
-      // password: '',
-      // confirmPassword: ''
    });
 
    useEffect(() => {
@@ -34,11 +30,9 @@ const AccountSettings = () => {
             email: user.email || '',
             createdAt: user.createdAt || '',
             updatedAt: user.updatedAt || '',
-            // password: '',
-            // confirmPassword: ''
          });
       }
-   }, [user]);
+   }, [user, setUserFormData]);
 
    const changeUserFormData = (e) => {
       const { name: field, value } = e.target;

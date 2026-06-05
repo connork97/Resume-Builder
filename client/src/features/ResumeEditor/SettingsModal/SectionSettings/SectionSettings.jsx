@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { updateSection } from '@/store/resumeSlice.js';
@@ -16,7 +16,7 @@ import styles from '../SettingsModal.module.css';
 import SectionFlexDirection from './SectionFlexDirection.jsx';
 import SectionJustifyContent from './SectionJustifyContent.jsx';
 
-const SectionSettings = ({ setIsSettingsModalOpen }) => {
+const SectionSettings = () => {
 
    const dispatch = useDispatch();
 
@@ -32,88 +32,88 @@ const SectionSettings = ({ setIsSettingsModalOpen }) => {
 
    const sectionColumnIndex = columns.allIds.indexOf(section.columnId);
 
-   const getColumnCount = (gridTemplateColumns) => {
-      const match = gridTemplateColumns.match(/repeat\((\d+),\s*1fr\)/);
-      return match ? parseInt(match[1], 10) : "auto";
-   };
+   // const getColumnCount = (gridTemplateColumns) => {
+   //    const match = gridTemplateColumns.match(/repeat\((\d+),\s*1fr\)/);
+   //    return match ? parseInt(match[1], 10) : "auto";
+   // };
 
-   const getRowCount = (gridTemplateRows) => {
-      const match = gridTemplateRows.match(/repeat\((\d+),\s*auto\)/);
-      return match ? parseInt(match[1], 10) : "auto";
-   }
+   // const getRowCount = (gridTemplateRows) => {
+   //    const match = gridTemplateRows.match(/repeat\((\d+),\s*auto\)/);
+   //    return match ? parseInt(match[1], 10) : "auto";
+   // }
 
-   const [columnWidthInputValue, setColumnWidthInputValue] = useState('auto');
+   // const [columnWidthInputValue, setColumnWidthInputValue] = useState('auto');
 
-   const [columnIndexInputValue, setColumnIndexInputValue] = useState(0);
-   const [columnsInputValue, setColumnsInputValue] = useState('');
-   const [rowsInputValue, setRowsInputValue] = useState("auto");
+   // const [columnIndexInputValue, setColumnIndexInputValue] = useState(0);
+   // // const [columnsInputValue, setColumnsInputValue] = useState('');
+   // // const [rowsInputValue, setRowsInputValue] = useState("auto");
 
-   useEffect(() => {
-      if (sectionColumnIndex) {
-         setColumnIndexInputValue(sectionColumnIndex)
-      };
-      if (column?.width) setColumnWidthInputValue(parseInt(column.width));
-      // setColumnWidthInputValue(parseInt(column?.width));
-   }, [column.width, section.columnId]);
+   // useEffect(() => {
+   //    if (sectionColumnIndex) {
+   //       setColumnIndexInputValue(sectionColumnIndex)
+   //    };
+   //    if (column?.width) setColumnWidthInputValue(parseInt(column.width));
+   //    // setColumnWidthInputValue(parseInt(column?.width));
+   // }, [column.width, section.columnId]);
 
-   const dispatchLayoutChanges = (layoutChanges) => {
-      dispatch(updateSection({
-         id: section.id,
-         changes: {
-            layout: {
-               ...section.layout,
-               ...layoutChanges
-            }
-         }
-      }))
-   }
+   // const dispatchLayoutChanges = (layoutChanges) => {
+   //    dispatch(updateSection({
+   //       id: section.id,
+   //       changes: {
+   //          layout: {
+   //             ...section.layout,
+   //             ...layoutChanges
+   //          }
+   //       }
+   //    }))
+   // }
 
-   const handleSetColumnWidth = () => {
-      const newColumnWidth = columnWidthInputValue + '%';
-      dispatch(updateColumn({ id: column.id, changes: { width: newColumnWidth } }));
-   }
+   // const handleSetColumnWidth = () => {
+   //    const newColumnWidth = columnWidthInputValue + '%';
+   //    dispatch(updateColumn({ id: column.id, changes: { width: newColumnWidth } }));
+   // }
 
-   const handleSetLayoutChanges = () => {
-      let columnsValue = columnsInputValue;
-      let rowsValue = rowsInputValue;
-      if (columnsInputValue == 0) columnsValue = 'auto';
-      if (rowsInputValue == 0) rowsValue = 'auto';
+   // const handleSetLayoutChanges = () => {
+   //    let columnsValue = columnsInputValue;
+   //    let rowsValue = rowsInputValue;
+   //    if (columnsInputValue == 0) columnsValue = 'auto';
+   //    if (rowsInputValue == 0) rowsValue = 'auto';
 
-      let layoutChanges = {};
+   //    let layoutChanges = {};
 
-      if (columnsValue == 1) {
-         layoutChanges = {
-            display: 'flex',
-            flexDirection: 'column',
-         };
-         setRowsInputValue('auto');
-      }
-      else if (columnsValue == 1 && (rowsValue == 1 || rowsValue == 'auto')) {
-         layoutChanges = {
-            display: 'flex',
-            flexDirection: 'row'
-         };
-      } else if (columnsValue == 1 && rowsValue > 1) {
-         layoutChanges = {
-            display: 'flex',
-            flexDirection: 'column'
-         };
-      }
-      else if (columnsValue > 1) {
-         layoutChanges = {
-            display: 'grid',
-            gridTemplateColumns: `repeat(${columnsValue}, 1fr)`,
-            gridTemplateRows: rowsValue > 1 ? `repeat(${rowsValue}, auto)` : 'auto',
-            alignItems: 'center'
-         };
-      } else if (columnsValue == 'auto') {
-         layoutChanges = {
-            display: 'flex',
-            justifyContent: 'space-evenly'
-         };
-      }
-      dispatchLayoutChanges(layoutChanges);
-   }
+   //    if (columnsValue == 1) {
+   //       layoutChanges = {
+   //          display: 'flex',
+   //          flexDirection: 'column',
+   //       };
+   //       setRowsInputValue('auto');
+   //    }
+   //    else if (columnsValue == 1 && (rowsValue == 1 || rowsValue == 'auto')) {
+   //       layoutChanges = {
+   //          display: 'flex',
+   //          flexDirection: 'row'
+   //       };
+   //    } else if (columnsValue == 1 && rowsValue > 1) {
+   //       layoutChanges = {
+   //          display: 'flex',
+   //          flexDirection: 'column'
+   //       };
+   //    }
+   //    else if (columnsValue > 1) {
+   //       layoutChanges = {
+   //          display: 'grid',
+   //          gridTemplateColumns: `repeat(${columnsValue}, 1fr)`,
+   //          gridTemplateRows: rowsValue > 1 ? `repeat(${rowsValue}, auto)` : 'auto',
+   //          alignItems: 'center'
+   //       };
+   //    } else if (columnsValue == 'auto') {
+   //       layoutChanges = {
+   //          display: 'flex',
+   //          justifyContent: 'space-evenly'
+   //       };
+   //    }
+   //    dispatchLayoutChanges(layoutChanges);
+   // }
    const hideOrShowHeading = () => {
       const newShowHeadingValue = !section.showHeading;
       dispatch(updateSection({

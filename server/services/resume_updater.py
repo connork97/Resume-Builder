@@ -60,6 +60,9 @@ def update_resume_with_form_data(resume_id, data):
         if not column:
             continue
 
+        if "styling" in column_data:
+            column.styling = column_data["styling"]
+            
         if "layout" in column_data:
             column.layout = column_data["layout"]
 
@@ -101,12 +104,12 @@ def update_resume_with_form_data(resume_id, data):
 
         if "value" in section_data:
             section.value = section_data["value"]
-            
-        if "layout" in section_data:
-            section.layout = section_data["layout"]
 
         if "styling" in section_data:
             section.styling = section_data["styling"]
+            
+        if "layout" in section_data:
+            section.layout = section_data["layout"]
 
         if "position" in section_data:
             section.position = section_data["position"]
@@ -146,12 +149,12 @@ def update_resume_with_form_data(resume_id, data):
 
         if "type" in subsection_data:
             subsection.type = subsection_data["type"]
-
-        if "layout" in subsection_data:
-            subsection.layout = subsection_data["layout"]
             
         if "styling" in subsection_data:
             subsection.styling = subsection_data["styling"]
+
+        if "layout" in subsection_data:
+            subsection.layout = subsection_data["layout"]
 
         if "position" in subsection_data:
             subsection.position = subsection_data["position"]
@@ -188,12 +191,12 @@ def update_resume_with_form_data(resume_id, data):
 
         if "value" in field_data:
             field.value = field_data["value"]
-
-        if "layout" in field_data:
-            field.layout = field_data["layout"]
             
         if "styling" in field_data:
             field.styling = field_data["styling"]
+
+        if "layout" in field_data:
+            field.layout = field_data["layout"]
 
         if "position" in field_data:
             field.position = field_data["position"]

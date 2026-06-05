@@ -42,7 +42,7 @@ const normalizeResumeFromApi = (apiResume) => {
     (a, b) => a.position - b.position
   );
 
-  sortedColumns.forEach((column) => {
+  sortedColumns.forEach((column) => {    
     const sortedSections = [...(column.sections ?? [])].sort(
       (a, b) => a.position - b.position
     );
@@ -50,10 +50,8 @@ const normalizeResumeFromApi = (apiResume) => {
     normalizedResume.columns.byId[column.id] = {
       id: column.id,
       resumeId: column.resumeId,
-      // width: column.width ?? '100%',
-      // autoWidth: column.autoWidth ?? true,
-      layout: column.layout ?? {},
       styling: column.styling ?? {},
+      layout: column.layout ?? {},
       position: column.position ?? 0,
       sectionIds: sortedSections.map((section) => section.id),
     };

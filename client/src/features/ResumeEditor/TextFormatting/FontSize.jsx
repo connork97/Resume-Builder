@@ -57,7 +57,7 @@ const FontSize = ({
       if (editor && selection && activeEditorId && fields) {
          const field = fields.byId[activeEditorId];
          if (field) {
-            // Look up the hierarchy: field → subsection → section → column
+            // Look up the hierarchy: field > subsection > section > column
             const subsection = subsections.byId[field.subsectionId];
             if (subsection) {
                const sectionData = reduxSections.byId[subsection.sectionId];

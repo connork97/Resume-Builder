@@ -153,22 +153,15 @@ def update_column(column_id):
                 message="No data provided for column update.",
             )
 
+        new_styling = data.get("styling")
         new_layout = data.get("layout")
-        # new_width = data.get("width")
-        # auto_width = data.get("autoWidth")
         position = data.get("position")
+
+        if new_styling is not None:
+            column.styling = new_styling
 
         if new_layout is not None:
             column.layout = new_layout
-        # if new_width is not None:
-            # column.width = new_width
-            # column.auto_width = False
-
-        # if auto_width is not None:
-            # column.auto_width = auto_width
-
-            # if auto_width:
-                # column.width = None
 
         if position is not None:
             column.position = position

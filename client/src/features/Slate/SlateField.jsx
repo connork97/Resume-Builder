@@ -4,7 +4,7 @@ import { createEditor, Editor, Transforms } from "slate";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFieldValue, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
 
-import Leaf from "./renderLeaf.jsx";
+import Leaf, { getCascadedFontSize } from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
 import { addListItem, indentList, outdentList } from "../../helpers/listBehavior.js";
@@ -29,6 +29,13 @@ const SlateField = ({ field }) => {
   const columnStyling = column?.styling;
   const sectionStyling = section?.styling;
   const subsectionStyling = subsection?.styling;
+  const inheritedFontSize = getCascadedFontSize({
+    resumeStyling,
+    columnStyling,
+    sectionStyling,
+    subsectionStyling,
+    fieldStyling,
+  });
 
   useEffect(() => {
     editorRegistry.set(editorId, editor);
@@ -125,7 +132,7 @@ const SlateField = ({ field }) => {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={field.label}
-        style={{minWidth: fieldMinWidth}}
+        style={{ minWidth: fieldMinWidth, fontSize: `${inheritedFontSize}px` }}
       />
     </Slate>
   );

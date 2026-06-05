@@ -1,6 +1,6 @@
 import React from 'react';
 
-const getPxNumber = (value, fallback = 12) => {
+export const getPxNumber = (value, fallback = 12) => {
   if (value === undefined || value === null) return fallback;
 
   const number = Number(String(value).replace(/[^0-9.]/g, ''));
@@ -8,15 +8,33 @@ const getPxNumber = (value, fallback = 12) => {
   return Number.isNaN(number) ? fallback : number;
 };
 
-const Leaf = ({ attributes, children, leaf, resumeStyling, columnStyling = {}, sectionStyling = {}, subsectionStyling = {}, fieldStyling = {} }) => {
+export const getCascadedFontSize = ({
+  resumeStyling,
+  columnStyling = {},
+  sectionStyling = {},
+  subsectionStyling = {},
+  fieldStyling = {},
+  leafStyling = {},
+}) => {
   const resumeFontSize = getPxNumber(resumeStyling?.fontSize);
   const columnFontSizeOffset = columnStyling?.fontSizeOffset ?? 0;
   const sectionFontSizeOffset = sectionStyling?.fontSizeOffset ?? 0;
   const subsectionFontSizeOffset = subsectionStyling?.fontSizeOffset ?? 0;
   const fieldFontSizeOffset = fieldStyling?.fontSizeOffset ?? 0;
-  const leafFontSizeOffset = leaf.fontSizeOffset ?? 0;
+  const leafFontSizeOffset = leafStyling?.fontSizeOffset ?? 0;
 
-  const fontSize = resumeFontSize + columnFontSizeOffset + sectionFontSizeOffset + subsectionFontSizeOffset + fieldFontSizeOffset + leafFontSizeOffset;
+  return resumeFontSize + columnFontSizeOffset + sectionFontSizeOffset + subsectionFontSizeOffset + fieldFontSizeOffset + leafFontSizeOffset;
+};
+
+const Leaf = ({ attributes, children, leaf, resumeStyling, columnStyling = {}, sectionStyling = {}, subsectionStyling = {}, fieldStyling = {} }) => {
+  const fontSize = getCascadedFontSize({
+    resumeStyling,
+    columnStyling,
+    sectionStyling,
+    subsectionStyling,
+    fieldStyling,
+    leafStyling: leaf,
+  });
 
   const stylingObj = {
     display: 'inline-block',

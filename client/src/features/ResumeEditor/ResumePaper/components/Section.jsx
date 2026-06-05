@@ -110,6 +110,7 @@ const Section = ({ section, column }) => {
     setIsSettingsModalOpen(!isSettingsModalOpen);
   }
 
+  console.log('SECTION STYLING CODEX CHECK: ', section.styling)
   return (
     <div
       className={styles.sectionContainerDiv}

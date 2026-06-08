@@ -24,7 +24,7 @@
   height: 7.7in;
   width: 1rem;
   margin: auto auto auto 15vw;
-  /* top: calc(var(--height-toolbar)); */
+  top: calc(var(--height-toolbar));
 
   display: flex;
   flex-direction: column;

@@ -3,9 +3,13 @@ import React from 'react';
 import styles from './MarginRuler.module.css';
 import MarginRulerTop from './MarginRulerTop';
 import MarginRulerSide from './MarginRulerSide';
+import { useDispatch } from 'react-redux';
+import { setActiveEditorId, setActiveEditorSelection, setActiveSectionId } from '@/store/resumeSlice';
 
 const MarginRuler = () => {
-   
+
+   const dispatch = useDispatch();
+
    const renderMarginRuler = (target, step, endsWith = [], position) => {
       const count = target / step + 1;
 
@@ -13,8 +17,8 @@ const MarginRuler = () => {
          Array.from(
             { length: count }, (_, index) => {
                const value = (index * step).toFixed(1);
-               const displayValue = endsWith.includes(value.at(-1))
-                  && value !== '0.0';
+               let displayValue = endsWith.includes(value.at(-1))
+                  && value != 0 && value != 11;
                return (
                   <span
                      className={
@@ -39,10 +43,28 @@ const MarginRuler = () => {
       );
    }
 
+   const handleEditorBlur = (e) => {
+      e.stopPropagation()
+      console.log('e.target', e.target.closest("[data-exit"))
+      // console.log(e.target)
+      if (e.target.closest("[data-exit]")) return;
+      console.log('blurring editorId, editorSelection, and activeSectionId')
+      dispatch(setActiveEditorId(null));
+      dispatch(setActiveEditorSelection(null))
+      dispatch(setActiveSectionId(null))
+   }
+
    return (
-      <div className={styles.marginsContainer}>
-         <MarginRulerTop renderMarginRuler={renderMarginRuler} />
-         <MarginRulerSide renderMarginRuler={renderMarginRuler} />
+      <div
+         className={styles.marginsContainer}
+         onClick={(e) => handleEditorBlur(e)}
+      >
+         <MarginRulerTop
+            renderMarginRuler={renderMarginRuler}
+         />
+         <MarginRulerSide
+            renderMarginRuler={renderMarginRuler}
+         />
       </div>
    )
 }

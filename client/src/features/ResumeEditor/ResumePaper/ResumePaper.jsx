@@ -5,8 +5,6 @@ import { useSelector } from "react-redux";
 import Column from "./components/Column.jsx";
 
 import styles from "./ResumePaper.module.css";
-import PaperPadding from "./components/PaperPadding.jsx";
-import MarginRulerTop from "./components/MarginRulerTop.jsx";
 
 const ResumePaper = forwardRef(function ResumePaper(props, ref) {
    // const ResumePaper = (props) => {
@@ -24,7 +22,6 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
 
       return <Column key={column.id} column={column} />
    });
-
    
    return (
       <div
@@ -34,13 +31,8 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
          <div
             className={`${props.isPrinting ? styles.editingPageContainer : styles.printingPageContainer}`}
             style={{ ...resumeStyling }}
-            // ref={ref}
          >
-            {/* <MarginRulerTop /> */}
-            {/* <div ref={ref} style={{ ...resumeStyling}}> */}
             {renderedColumns}
-            {/* {props.isPrinting ? <PaperPadding /> : null} */}
-            {/* </div> */}
          </div>
       </div>
    )

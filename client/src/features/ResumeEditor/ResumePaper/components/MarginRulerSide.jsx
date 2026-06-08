@@ -120,8 +120,11 @@ const MarginRulerSide = ({ renderMarginRuler }) => {
    }
 
    return (
-      <div className={styles.marginsContainer}>
-         <div className={styles.marginRulerSideWrapper}>
+      // <div className={styles.marginsContainer}>
+         <div
+            className={styles.marginRulerSideWrapper}
+            data-prevent-blur={true}
+         >
             {renderMarginRuler(11, 0.1, ['0'], 'bottom')}
             <div
                data-name='resume'
@@ -160,7 +163,7 @@ const MarginRulerSide = ({ renderMarginRuler }) => {
             }
          </div>
 
-      </div>
+      // </div>
    )
 }
 

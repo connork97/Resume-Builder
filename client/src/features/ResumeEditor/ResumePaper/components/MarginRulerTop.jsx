@@ -144,53 +144,56 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
 
 
    return (
-         <div className={styles.marginRulerTopWrapper}>
+      <div
+         className={styles.marginRulerTopWrapper}
+         data-prevent-blur={true}
+      >
+         <div
+            data-name='resume'
+            data-value='left'
+            className={styles.resumeMarginIndicatorLeft}
+            style={{ marginLeft: resumePadding.left }}
+            tabIndex={0}
+            onClick={handleClick}
+            onKeyDown={handleKeyDown}
+            onBlur={handleBlur}
+         />
+         <div
+            data-name='resume'
+            data-value='right'
+            className={styles.resumeMarginIndicatorRight}
+            style={{ marginRight: resumePadding.right }}
+            tabIndex={0}
+            onClick={handleClick}
+            onKeyDown={handleKeyDown}
+            onBlur={handleBlur}
+         />
+         {column && !isFirstColumn &&
             <div
-               data-name='resume'
+               data-name='column'
                data-value='left'
-               className={styles.resumeMarginIndicatorLeft}
-               style={{ marginLeft: resumePadding.left }}
+               className={styles.sectionMarginIndicatorLeft}
+               style={{ marginLeft: `calc(${getColumnWidths(false)}% + ${getSectionMargin('left')})` }}
                tabIndex={0}
                onClick={handleClick}
                onKeyDown={handleKeyDown}
                onBlur={handleBlur}
             />
+         }
+         {column && !isLastColumn &&
             <div
-               data-name='resume'
+               data-name='column'
                data-value='right'
-               className={styles.resumeMarginIndicatorRight}
-               style={{ marginRight: resumePadding.right }}
+               className={styles.sectionMarginIndicatorRight}
+               style={{ marginLeft: `calc(${column.layout.width.value} - ${column.layout.padding.right})` }}
                tabIndex={0}
                onClick={handleClick}
                onKeyDown={handleKeyDown}
                onBlur={handleBlur}
             />
-            {column && !isFirstColumn &&
-               <div
-                  data-name='column'
-                  data-value='left'
-                  className={styles.sectionMarginIndicatorLeft}
-                  style={{ marginLeft: `calc(${getColumnWidths(false)}% + ${getSectionMargin('left')})` }}
-                  tabIndex={0}
-                  onClick={handleClick}
-                  onKeyDown={handleKeyDown}
-                  onBlur={handleBlur}
-               />
-            }
-            {column && !isLastColumn &&
-               <div
-                  data-name='column'
-                  data-value='right'
-                  className={styles.sectionMarginIndicatorRight}
-                  style={{ marginLeft: `calc(${column.layout.width.value} - ${column.layout.padding.right})` }}
-                  tabIndex={0}
-                  onClick={handleClick}
-                  onKeyDown={handleKeyDown}
-                  onBlur={handleBlur}
-               />
-            }
-            {renderMarginRuler(8.5, 0.1, ['0'], 'top')}
-         </div>
+         }
+         {renderMarginRuler(8.5, 0.1, ['0'], 'top')}
+      </div>
    )
 }
 

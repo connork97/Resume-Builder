@@ -54,7 +54,8 @@ export const getActiveMark = (editor, mark) => {
       case('fontSizeOffset'):
         return 0;
       case ('color'):
-        return getResumeStyling('color');
+        return;
+        // return getResumeStyling('color');
       case ('lineHeight'):
         // const resumeLineHeight = getResumeStyling('lineHeight');
         return parseFloat(getResumeStyling('lineHeight')).toFixed(1);

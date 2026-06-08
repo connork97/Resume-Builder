@@ -21,6 +21,8 @@ const Leaf = ({ attributes, children, leaf, resumeStyling, columnStyling = {}, s
     leafStyling: leaf,
   });
 
+  const color = leaf?.color || fieldStyling?.color || subsectionStyling?.color || sectionStyling?.color || columnStyling?.color || resumeStyling?.color;
+
   const stylingObj = {
     display: 'inline-block',
     fontSize: `${fontSize}px`,

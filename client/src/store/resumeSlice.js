@@ -158,6 +158,7 @@ const initialState = {
       vertical: '0.5rem'
     }
   },
+  activeSectionIds: [],
   activeSectionId: null,
   activeEditorId: null,
   activeEditorSelection: null,
@@ -481,6 +482,23 @@ const resumeSlice = createSlice({
         .map(f => f.id);
     },
 
+    setActiveSectionIds(state, action) {
+      const id = action.payload;
+      const currentActiveSectionIds = state.activeSectionIds;
+
+      if (currentActiveSectionIds.includes(id)) {
+        state.activeSectionIds = currentActiveSectionIds.filter(
+          (activeId) => activeId != id
+        );
+      } else {
+        state.activeSectionIds.push(id);
+      }
+    },
+    
+    clearActiveSectionIds(state, action) {
+      state.activeSectionIds = [];
+    },
+
     setActiveSectionId(state, action) {
       state.activeSectionId = action.payload;
     },
@@ -549,6 +567,8 @@ const resumeSlice = createSlice({
 
 export const {
   setActiveSectionId,
+  setActiveSectionIds,
+  clearActiveSectionIds,
   setActiveEditorId,
   setActiveEditorSelection,
 

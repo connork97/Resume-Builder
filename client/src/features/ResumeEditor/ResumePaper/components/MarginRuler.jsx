@@ -4,7 +4,7 @@ import styles from './MarginRuler.module.css';
 import MarginRulerTop from './MarginRulerTop';
 import MarginRulerSide from './MarginRulerSide';
 import { useDispatch } from 'react-redux';
-import { setActiveEditorId, setActiveEditorSelection, setActiveSectionId } from '@/store/resumeSlice';
+import { clearActiveSectionIds, setActiveEditorId, setActiveEditorSelection, setActiveSectionId } from '@/store/resumeSlice';
 
 const MarginRuler = () => {
 
@@ -45,13 +45,12 @@ const MarginRuler = () => {
 
    const handleEditorBlur = (e) => {
       e.stopPropagation()
-      console.log('e.target', e.target.closest("[data-exit"))
-      // console.log(e.target)
-      if (e.target.closest("[data-exit]")) return;
-      console.log('blurring editorId, editorSelection, and activeSectionId')
+      const preventBlur = e.target.closest("[data-prevent-blur");
+      if (preventBlur) return;
       dispatch(setActiveEditorId(null));
       dispatch(setActiveEditorSelection(null))
       dispatch(setActiveSectionId(null))
+      dispatch(clearActiveSectionIds())
    }
 
    return (

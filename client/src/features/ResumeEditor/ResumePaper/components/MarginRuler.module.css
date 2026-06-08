@@ -23,7 +23,7 @@
   position: relative !important;
   height: 7.7in;
   width: 1rem;
-  margin: auto auto auto 15vw;
+  margin: auto auto auto 22.5vw;
   top: calc(var(--height-toolbar));
 
   display: flex;

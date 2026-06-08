@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveEditorId, setActiveEditorSelection, setActiveSectionId } from "../../../../store/resumeSlice.js";
+import { setActiveEditorId, setActiveEditorSelection, setActiveSectionId, setActiveSectionIds } from "../../../../store/resumeSlice.js";
 // import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection } from "../../../../../resumeSlice.js";
 
 import SlateHeading from "../../../Slate/SlateHeading.jsx";
@@ -8,6 +8,7 @@ import styles from './Section.module.css';
 import SettingsModal from "../../SettingsModal/SettingsModal.jsx";
 import SubsectionRenderer from "./Subsection.jsx";
 import SectionPadding from "./SectionPadding.jsx";
+import { getContrastingColor } from "@/utils/colorUtils.js";
 
 const Section = ({ section, column }) => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const Section = ({ section, column }) => {
 
   const resumeLayout = useSelector(state => state.resume.layout);
   const columns = useSelector(state => state.resume.columns);
+  const activeSectionIds = useSelector(state => state.resume.activeSectionIds);
   const subsections = useSelector(state => state.resume.subsections);
 
   const sectionRef = useRef(null);
@@ -110,16 +112,27 @@ const Section = ({ section, column }) => {
     setIsSettingsModalOpen(!isSettingsModalOpen);
   }
 
+  const handleSetActiveSection = (e) => {
+    if (e.ctrlKey) {
+      dispatch(setActiveSectionIds(section.id))
+    } else {
+      dispatch(setActiveSectionId(section.id));
+    }
+  }
+
+  const sectionIsActive = activeSectionIds.includes(section.id);
+
   return (
     <div
-      className={styles.sectionContainerDiv}
+      className={`${styles.sectionContainerDiv} ${sectionIsActive && styles.active}`}
       data-section-id={section.id}
       ref={sectionRef}
       style={{
         ...section.styling,
         ...sectionPadding,
+        outlineColor: section.styling?.color
       }}
-      onClick={() => dispatch(setActiveSectionId(section.id))}
+      onClick={handleSetActiveSection}
     >
       {/* <SectionPadding
         section={section}
@@ -134,7 +147,7 @@ const Section = ({ section, column }) => {
       >
         <span
           className={styles.sectionSettingsButtonIcon}
-          onClick={(e) => handleSettingsIconClick(e)}
+          onClick={handleSettingsIconClick}
         >
           ⚙️
         </span>

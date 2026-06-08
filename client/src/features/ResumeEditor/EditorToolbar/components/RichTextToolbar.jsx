@@ -48,7 +48,6 @@ const RichTextToolbar = ({ editor }) => {
         <FontColor
           editor={editor}
           selection={selection}
-          activeSectionId={activeSectionId}
         />
 
         <HighlightColor

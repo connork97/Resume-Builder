@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Node } from 'slate';
 import { setActiveEditorId, setActiveSectionId } from '@/store/resumeSlice.js';
 
-import ToolbarButton from "./shared/ToolbarButton.jsx";
 import TextFormatButton from '../../TextFormatting/shared/TextFormatButton.jsx';
 import { editorRegistry } from '@/helpers/editorRegistry.js';
 

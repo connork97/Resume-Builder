@@ -10,38 +10,70 @@ import ColorDropdown from "./shared/ColorDropdown.jsx";
 const FontColor = ({ editor, selection }) => {
 
    const dispatch = useDispatch();
-   const activeSectionId = useSelector(state => state.resume.activeSectionId);
 
-   const [currentEditorFontColor, setCurrentEditorFontColor] = useState('rgba(0, 0, 0, 1)');
+   const resume = useSelector(state => state.resume);
+
+   const activeEditorId = useSelector(state => state.resume.activeEditorId)
+   const activeSectionId = useSelector(state => state.resume.activeSectionId);
+   const activeSectionIds = useSelector(state => state.resume.activeSectionIds);
+
+   const activeField = useSelector(state => state.resume.fields.byId[activeEditorId])
+   const activeSubsection = useSelector(state => state.resume.subsections.byId[activeField?.subsectionId])
+   const activeSection = useSelector(state => state.resume.sections.byId[activeSectionId])
+   const activeColumn = useSelector(state => state.resume.columns.byId[activeSection?.columnId]);
+   // const activeSection = useSelector(state => state.resume.sections.byId[activeSectionId]);
+   // const activeSection = activeSectionIds[0]
+
+   // const activeEditor = 
+
+   const [currentFontColor, setCurrentFontColor] = useState('rgba(0, 0, 0, 1)');
 
    useEffect(() => {
       if (!editor || !selection) return;
+      console.log(getActiveMark(editor, 'color'))
+      console.log('selection', selection)
+      const editorFontColor = getActiveMark(editor, 'color');
+      const fieldFontColor = activeField?.styling?.color;
+      const subsectionFontColor = activeSubsection?.styling?.color;
+      const sectionFontColor = activeSection?.styling?.color;
+      const columnFontColor = activeColumn?.styling?.color;
+      const resumeFontColor = resume?.styling?.color;
 
-      const currentFontColor = getActiveMark(editor, 'color');
-      currentFontColor && setCurrentEditorFontColor(currentFontColor);
-   }, [editor, selection])
+      if (editorFontColor) setCurrentFontColor(editorFontColor);
+      else if (fieldFontColor) setCurrentFontColor(fieldFontColor);
+      else if (subsectionFontColor) setCurrentFontColor(subsectionFontColor);
+      else if (sectionFontColor) setCurrentFontColor(sectionFontColor);
+      else if (columnFontColor) setCurrentFontColor(columnFontColor);
+      else if (resumeFontColor) setCurrentFontColor(resumeFontColor);
+      else setCurrentFontColor('rgba(0, 0, 0, 0)');
 
-   const setNewFontColor = (newFontColor = currentEditorFontColor) => {
-      if (!editor && !activeSectionId) {
-         dispatch(updateResume({
-            key: 'styling',
-            changes: { 
-               color: newFontColor
-            }
-         }))
-         setCurrentEditorFontColor(newFontColor);
-         return;
-      } else if (!editor && activeSectionId) {
+
+   }, [editor, selection, activeEditorId, activeField, activeSubsection, activeSection, activeColumn])
+
+   const setNewFontColor = (newFontColor = currentFontColor) => {
+      if (activeSectionIds.length > 0) {
+         for (let sectionId of activeSectionIds) {
+            dispatch(updateSection({
+               id: sectionId,
+               changes: { styling: { color: newFontColor } }
+            }));
+         }
+      } if (activeSectionId && !editor) {
          dispatch(updateSection({
             id: activeSectionId,
             changes: { styling: { color: newFontColor } }
          }));
-         setCurrentEditorFontColor(newFontColor);
-         return;
-      } else if (editor) {
+      } if (editor) {
          setFontColor(editor, newFontColor);
-         setCurrentEditorFontColor(newFontColor);
+      } if (!editor && !activeSectionId && !(activeSectionIds.length > 0)) {
+         dispatch(updateResume({
+            key: 'styling',
+            changes: {
+               color: newFontColor
+            }
+         }))
       }
+      setCurrentFontColor(newFontColor);
    }
 
    return (
@@ -49,8 +81,7 @@ const FontColor = ({ editor, selection }) => {
          text="A"
          editor={editor}
          selection={selection}
-         currentEditorColor={currentEditorFontColor}
-         // styling={{ fontWeight: 'bold', boxShadow: `0 -0.35vh 0 ${currentEditorFontColor} inset` }}
+         currentEditorColor={currentFontColor}
          handleSetColor={setNewFontColor}
       />
    )

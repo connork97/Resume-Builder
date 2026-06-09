@@ -15,9 +15,22 @@ const TextAlign = ({ editor }) => {
 
    const dispatch = useDispatch();
    const activeSectionId = useSelector(state => state.resume.activeSectionId);
+   const activeSectionIds = useSelector(state => state.resume.activeSectionIds);
 
    const handleSetTextAlign = (editor, alignment) => {
-      if (!editor && !activeSectionId) {
+      if (activeSectionIds.length > 0) {
+         for (let sectionId of activeSectionIds) {
+            dispatch(updateSection({
+               id: sectionId,
+               changes: {
+                  styling: {
+                     textAlign: alignment
+                  }
+               }
+            }))
+         }
+      }
+      else if (!editor && !activeSectionId) {
          dispatch(updateResume({
             key: 'styling',
             changes: {

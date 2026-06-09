@@ -40,16 +40,20 @@ const FontSize = ({
       () => getNumericFontSize(resumeStyling.fontSize),
       [resumeStyling]
    );
+
    const effectiveSectionId = section?.id ?? activeSectionId;
+   
    const getSection = useCallback(
       () => section ?? reduxSections.byId[effectiveSectionId],
       [section, reduxSections, effectiveSectionId]
    );
+
    const getColumn = useCallback(() => {
       const sectionData = getSection();
       if (!sectionData) return null;
       return column ?? columns.byId[sectionData.columnId];
    }, [column, columns, getSection]);
+
    const getSectionTotalFontSize = useCallback((sectionData) => {
       if (!sectionData) return getResumeFontSize();
 

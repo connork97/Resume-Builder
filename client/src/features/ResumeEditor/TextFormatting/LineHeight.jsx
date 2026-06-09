@@ -128,11 +128,15 @@ const LineHeight = ({
       return roundToTenth(parseLineHeight(newLineHeight, currentValue));
    };
 
+   const activeSectionIds = useSelector(state => state.resume.adctiveSectionIds);
+
    const setNewLineHeight = (newLineHeight = lineHeightInputValue) => {
       const targetLineHeight = getTargetLineHeight(newLineHeight);
       if (targetLineHeight <= 0) return;
-
+      
       const sectionIdToUse = effectiveSectionId;
+
+
 
       if (editor && activeEditorId && fields) {
          const field = fields.byId[activeEditorId];
@@ -187,7 +191,7 @@ const LineHeight = ({
          }
       }
 
-      if (!editor && sectionIdToUse) {
+      if (!editor && sectionIdToUse && !(activeSectionIds.length > 0)) {
          const sectionData = getSection();
          if (!sectionData) return;
 

@@ -36,6 +36,7 @@ const LineHeight = ({
 
    const dispatch = useDispatch();
    const reduxSections = useSelector(state => state.resume.sections);
+   const activeSectionIds = useSelector(state => state.resume.activeSectionIds);
 
    const getResumeLineHeight = useCallback(
       () => roundToTenth(getNumber(resumeStyling?.lineHeight, 1.2)),
@@ -43,10 +44,12 @@ const LineHeight = ({
    );
 
    const effectiveSectionId = section?.id ?? activeSectionId;
+
    const getSection = useCallback(
       () => section ?? reduxSections.byId[effectiveSectionId],
       [section, reduxSections, effectiveSectionId]
    );
+   
    const getColumn = useCallback(() => {
       const sectionData = getSection();
       if (!sectionData) return null;
@@ -128,15 +131,42 @@ const LineHeight = ({
       return roundToTenth(parseLineHeight(newLineHeight, currentValue));
    };
 
-   const activeSectionIds = useSelector(state => state.resume.adctiveSectionIds);
-
    const setNewLineHeight = (newLineHeight = lineHeightInputValue) => {
       const targetLineHeight = getTargetLineHeight(newLineHeight);
       if (targetLineHeight <= 0) return;
       
       const sectionIdToUse = effectiveSectionId;
 
+      if (activeSectionIds.length > 0) {
+         activeSectionIds.forEach((sectionId) => {
+            const sectionData = reduxSections.byId[sectionId];
+            if (!sectionData) return;
 
+            const columnData = columns.byId[sectionData.columnId];
+            const currentSectionLineHeightOffset = getNumber(sectionData?.styling?.lineHeightOffset, 0);
+            let newSectionLineHeightOffset = currentSectionLineHeightOffset;
+
+            if (newLineHeight === 'increment') {
+               newSectionLineHeightOffset = roundToTenth(currentSectionLineHeightOffset + LINE_HEIGHT_STEP);
+            } else if (newLineHeight === 'decrement') {
+               newSectionLineHeightOffset = roundToTenth(currentSectionLineHeightOffset - LINE_HEIGHT_STEP);
+            } else {
+               const inheritedLineHeight = getCascadedLineHeight({
+                  resumeStyling,
+                  columnStyling: columnData?.styling,
+               });
+               newSectionLineHeightOffset = roundToTenth(targetLineHeight - inheritedLineHeight);
+            }
+
+            dispatch(updateSection({
+               id: sectionId,
+               changes: { styling: { lineHeightOffset: newSectionLineHeightOffset } }
+            }));
+         });
+
+         setLineHeightInputValue(targetLineHeight);
+         return;
+      }
 
       if (editor && activeEditorId && fields) {
          const field = fields.byId[activeEditorId];

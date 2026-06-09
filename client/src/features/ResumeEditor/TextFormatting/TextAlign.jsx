@@ -6,7 +6,6 @@ import { updateResume, updateSection } from '@/store/resumeSlice.js';
 
 import { setAlignment } from '@/helpers/blocks.js';
 
-import ToolbarButton from '../EditorToolbar/components/shared/ToolbarButton.jsx';
 import TextFormatButton from './shared/TextFormatButton.jsx';
 
 import styles from './TextFormatting.module.css';

@@ -31,7 +31,8 @@ const SectionJustifyContent = () => {
       <div className={styles.settingsModalRow}>
          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label htmlFor="justifyContentOptions">Section Justify Content:</label>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            {/* <div style={{ display: 'flex', flexDirection: 'row' }}> */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '5px'}}>
                <ToolbarButton
                   text="Start"
                   value='start'

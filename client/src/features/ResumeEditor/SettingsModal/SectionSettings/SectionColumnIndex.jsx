@@ -91,7 +91,8 @@ const ColumnIndex = ({ section }) => {
    };
 
    return (
-      <div className={styles.toolBarButtonInputWrapper} style={{ justifySelf: 'end' }}>
+      // <div className={styles.toolBarButtonInputWrapper} style={{ justifySelf: 'end' }}>
+      <div className={styles.toolBarButtonInputWrapper}>
          {/* <SettingsModalInput
             name="columnIndexInput"
             label={`${section.label} Column Index`}
@@ -99,10 +100,10 @@ const ColumnIndex = ({ section }) => {
             handleSetInputValue={setColumnIndexInputValue}
             handleSetValue={() => moveSectionLeftOrRight('input')}
          /> */}
-         <span className={styles.sectionLabelSpan}>
+         {/* <span className={styles.sectionLabelSpan}>
             Move {section.label} Section
-         </span>
-         <div style={{ display: 'flex' }}>
+         </span> */}
+         <div style={{ display: 'flex', gap: '1em' }}>
             <ToolbarButton
                text="Left"
                command={() => moveSectionLeftOrRight('left')}

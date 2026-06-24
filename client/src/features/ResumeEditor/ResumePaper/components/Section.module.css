@@ -3,11 +3,14 @@
   height: min-content;
 }
 
-.sectionContainerDiv:hover, .active {
-  opacity: 0.8;
+.sectionContainerDiv:hover, .activeSectionContainer {
   outline: 1px solid;
   outline-offset: -2px;
   border-radius: 2.5px;
+}
+
+.sectionContentWrapper:hover {
+  opacity: 0.8;
 }
 
 .sectionContainerDiv:hover .sectionSettingsButton {

@@ -49,7 +49,7 @@ const LineHeight = ({
       () => section ?? reduxSections.byId[effectiveSectionId],
       [section, reduxSections, effectiveSectionId]
    );
-   
+
    const getColumn = useCallback(() => {
       const sectionData = getSection();
       if (!sectionData) return null;
@@ -137,6 +137,7 @@ const LineHeight = ({
       
       const sectionIdToUse = effectiveSectionId;
 
+      // Case 1:  Sections are Selected
       if (activeSectionIds.length > 0) {
          activeSectionIds.forEach((sectionId) => {
             const sectionData = reduxSections.byId[sectionId];
@@ -168,6 +169,7 @@ const LineHeight = ({
          return;
       }
 
+      // Case:  A Slate Field is Selected
       if (editor && activeEditorId && fields) {
          const field = fields.byId[activeEditorId];
          if (field) {
@@ -198,6 +200,7 @@ const LineHeight = ({
          }
       }
 
+      // Case:  Section Heading is Selected
       if (editor && activeEditorId && !fields?.byId?.[activeEditorId]) {
          const headingSection = reduxSections.byId[activeEditorId];
          if (headingSection) {
@@ -221,6 +224,7 @@ const LineHeight = ({
          }
       }
 
+      // Case: One Section is Selected (likely from the section settings modal)
       if (!editor && sectionIdToUse && !(activeSectionIds.length > 0)) {
          const sectionData = getSection();
          if (!sectionData) return;
@@ -249,7 +253,7 @@ const LineHeight = ({
 
    return (
       <div className={styles.toolbarFlexWrapper}>
-         <label className={styles.toolbarLabel}>{label}:</label>
+         <label className={styles.toolbarLabel}>{label}</label>
          <TextFormatButton
             text="-"
             command={() => setNewLineHeight('decrement')}

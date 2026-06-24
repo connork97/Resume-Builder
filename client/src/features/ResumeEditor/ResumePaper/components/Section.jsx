@@ -81,7 +81,7 @@ const Section = ({ section, column }) => {
           ? section.layout?.padding?.bottom ?? resumeLayout.padding.bottom
           // ? resumeLayout.padding.bottom
           : section?.layout?.padding?.bottom ?? column?.layout?.padding?.top,
-        flex: isLastRow 
+        flex: isLastRow
           ? '1'
           : 'none',
       }
@@ -124,7 +124,8 @@ const Section = ({ section, column }) => {
 
   return (
     <div
-      className={`${styles.sectionContainerDiv} ${sectionIsActive && styles.active}`}
+      // className={styles.sectionContainerDiv}
+      className={`${styles.sectionContainerDiv} ${sectionIsActive && styles.activeSectionContainer}`}
       data-section-id={section.id}
       ref={sectionRef}
       style={{
@@ -142,16 +143,37 @@ const Section = ({ section, column }) => {
         isFirstRow={isFirstRow}
         isLastRow={isLastRow}
       /> */}
-      <button
-        className={styles.sectionSettingsButton}
+      <div
+        className={`${styles.sectionContentWrapper} ${sectionIsActive && styles.active}`}
+        style={{
+          // ...section.styling,
+          // ...sectionPadding,
+          // outlineColor: section.styling?.color
+        }}
+      data-section-id={section.id}
+      ref={sectionRef}
+
       >
-        <span
-          className={styles.sectionSettingsButtonIcon}
-          onClick={handleSettingsIconClick}
+
+        <button
+          className={styles.sectionSettingsButton}
         >
-          ⚙️
-        </span>
-      </button>
+          <span
+            className={styles.sectionSettingsButtonIcon}
+            onClick={handleSettingsIconClick}
+          >
+            ⚙️
+          </span>
+        </button>
+        {section.showHeading !== false && (
+          <SlateHeading
+            key={section.id}
+            section={section}
+            id={section.id}
+          />
+        )}
+        {renderedSubsections}
+      </div>
       {isSettingsModalOpen && (
         <SettingsModal
           section={section}
@@ -160,14 +182,6 @@ const Section = ({ section, column }) => {
           column={column}
         />
       )}
-      {section.showHeading !== false && (
-        <SlateHeading
-          key={section.id}
-          section={section}
-          id={section.id}
-        />
-      )}
-      {renderedSubsections}
     </div>
   );
 };

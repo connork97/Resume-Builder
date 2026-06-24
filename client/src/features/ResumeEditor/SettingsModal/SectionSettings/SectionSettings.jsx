@@ -126,20 +126,21 @@ const SectionSettings = () => {
 
    const renderSettingsModalRows = () => {
       let componentsArr = [
-         { component: FontSize, label: "Font Size", props: { section, column } },
-         { component: FontColor, label: "Font Color" },
-         { component: LineHeight, label: "Line Height", props: { section, column } },
-         { component: TextAlign, label: "Text Align", styling: { justifyContent: 'end' } },
-         { component: BackgroundColor, label: 'Background Color' },
+         { component: FontSize, label: "Font Size:", props: { section, column } },
+         { component: LineHeight, label: "Line Height:", props: { section, column } },
+         { component: TextAlign, label: "Text Align:", styling: { justifyContent: 'end' } },
+         { component: FontColor, label: "Font Color:" },
+         { component: BackgroundColor, label: 'Background Color:' },
       ];
 
       return componentsArr.map((Component, index) => (
          <div className={styles.settingsModalRow} key={index}>
-            <p className={styles.settingsModalLabel}>{Component.label}:</p>
+            <p className={styles.settingsModalLabel}>{Component.label}</p>
             <Component.component
                sections={sections}
                columns={columns}
                fields={fields}
+               // label={Component.label}
                subsections={subsections}
                resumeStyling={resumeStyling}
                activeSectionId={activeSectionId}
@@ -167,12 +168,12 @@ const SectionSettings = () => {
                onChange={() => hideOrShowHeading()}
             />
          </div>
+         <RowIndex
+            section={section}
+         />
          <ColumnIndex
             section={section}
             sectionColumnIndex={sectionColumnIndex}
-         />
-         <RowIndex
-            section={section}
          />
          <SectionFlexDirection />
          <SectionJustifyContent />

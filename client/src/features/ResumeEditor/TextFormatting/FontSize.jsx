@@ -272,7 +272,7 @@ const FontSize = ({
 
    return (
       <div className={styles.toolbarFlexWrapper}>
-         <label className={styles.toolbarLabelSpan}>{label}:</label>
+         <label className={styles.toolbarLabelSpan}>{label}</label>
          <TextFormatButton
             text="-"
             command={() => setNewFontSize('decrement')}

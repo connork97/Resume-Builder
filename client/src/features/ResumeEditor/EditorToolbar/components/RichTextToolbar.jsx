@@ -33,7 +33,7 @@ const RichTextToolbar = ({ editor }) => {
 
       <div className={styles.richTextToolbarWrapper}>
         <LineHeight
-          label="Line Height"
+          label="Line Height:"
           editor={editor}
           selection={selection}
           sections={sections}
@@ -61,7 +61,7 @@ const RichTextToolbar = ({ editor }) => {
         />
 
         <FontSize
-          label="Font Size"
+          label="Font Size:"
           editor={editor}
           selection={selection}
           sections={sections}
@@ -82,7 +82,7 @@ const RichTextToolbar = ({ editor }) => {
 
         <Lists editor={editor} />
 
-        <Columns label="Columns" />
+        <Columns label="Columns:" />
 
         {/* <div className={styles.belowToolbarWrapper}> */}
         {/* <CurrentlyEditing editor={editor} /> */}

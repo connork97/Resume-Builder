@@ -106,9 +106,9 @@ const RowIndex = ({ section }) => {
             handleSetValue={() => updateRowIndex('input')}
          /> */}
          <span className={styles.sectionLabelSpan}>
-            Move {section.label} Section
+            Move {section.label} Section:
          </span>
-         <div style={{ display: 'flex' }}>
+         <div style={{ display: 'flex', gap: '1.4em', marginBottom: '0.25em', marginTop: '0.25em' }}>
             <ToolbarButton
                style={{ justifySelf: 'end' }}
                text="Up"

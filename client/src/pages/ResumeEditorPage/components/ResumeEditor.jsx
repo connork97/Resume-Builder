@@ -42,7 +42,7 @@ const ResumeEditor = () => {
 
    const resumeRef = useRef(null);
 
-   const [isPrinting, setIsPrinting] = useState(true);
+   const [isPrinting, setIsPrinting] = useState(false);
 
    const pageStyle = `
       @page {
@@ -61,12 +61,22 @@ const ResumeEditor = () => {
       contentRef: resumeRef,
       pageStyle: pageStyle,
       onAfterPrint: () => {
-         setIsPrinting(true);
+         setIsPrinting(false);
       },
    });
 
+
+   // const handlePrint = () => {
+      // setIsPrinting(true);
+      // reactToPrint()
+   // }
+   // const handlePrint = useReactToPrint({
+      // contentRef: resumeRef
+   // })
+
    const handlePrint = () => {
-      setIsPrinting(false);
+
+      setIsPrinting(true);
 
       setTimeout(async () => {
          reactToPrint();

@@ -16,7 +16,7 @@ const Outline = () => {
   const sections = resume.sections;
   // const sections = useSelector((state) => state.resume.sections);
 
-  const [outlineIsHidden, setOutlineIsHidden] = useState(true);
+  const [showOutline, setShowOutline] = useState(true);
 
   // Collapse state for SECTIONS
   const [collapsedSections, setCollapsedSections] = useState({});
@@ -119,7 +119,7 @@ const Outline = () => {
 
   return (
     <div
-      className={`${styles.outlineWrapper} ${outlineIsHidden ? styles.hidden : styles.visible
+      className={`${styles.outlineWrapper} ${showOutline ? styles.visible : styles.hidden
         }`}
     >
       <div className={styles.outlineContainer}>
@@ -127,13 +127,13 @@ const Outline = () => {
 
         <button
           className={
-            !outlineIsHidden
+            showOutline
               ? styles.hideOutlineButton
               : styles.showOutlineButton
           }
-          onClick={() => setOutlineIsHidden(!outlineIsHidden)}
+          onClick={() => setShowOutline(!showOutline)}
         >
-          {!outlineIsHidden ? "⟨⟨⟨" : "⟩⟩⟩"}
+          {showOutline ? "⟨⟨⟨" : "⟩⟩⟩"}
         </button>
 
         {!sections.allIds.length ? (

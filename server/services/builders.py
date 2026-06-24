@@ -52,6 +52,7 @@ DEFAULT_SECTION_HEADERS = {
     "skills": "Skills",
     "contact": "Contact",
     "summary": "Summary",
+    "projects": "Projects",
     "default": "New Section",
 }
 
@@ -75,6 +76,7 @@ DEFAULT_FIELDS_DICT = {
     "skills": ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5"],
     "contact": ["Email", "Phone", "Location", "Website", "LinkedIn"],
     "summary": ["Summary"],
+    "projects": ["Project Title", "Company/School", "Link", "Dates", "Description"],
     "default": ["Field"],
 }
 

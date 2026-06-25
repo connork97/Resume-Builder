@@ -9,18 +9,23 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
    const dispatch = useDispatch()
 
    const resume = useSelector(state => state.resume);
-   const resumePadding = resume?.layout?.padding;
+   const resumePadding = resume?.layout?.padding ?? {};
 
    const activeSectionId = useSelector(state => state.resume.activeSectionId);
    const section = useSelector(state => state.resume.sections.byId[activeSectionId]);
-   const sectionPadding = section?.layout?.padding;
+   const sectionPadding = section?.layout?.padding ?? {};
 
    const columns = useSelector(state => state.resume.columns);
    const column = useSelector(state => state.resume.columns.byId[section?.columnId]);
-   const columnPadding = column?.layout?.padding;
+   const columnPadding = column?.layout?.padding ?? {};
 
    const isFirstColumn = column?.id === columns?.allIds[0];
    const isLastColumn = column?.id === columns?.allIds[columns.allIds.length - 1];
+
+   const parseRemValue = (value) => {
+      const parsedValue = parseFloat(String(value ?? '0rem').replace('rem', ''));
+      return Number.isNaN(parsedValue) ? 0 : parsedValue;
+   };
 
 
    const getColumnWidths = (includeCurrent = false) => {
@@ -48,18 +53,10 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
 
    const getSectionMargin = (name) => {
 
-      let parsedColumnPadding = 0;
-      let parsedSectionPadding = 0;
+      const parsedColumnPadding = parseRemValue(columnPadding?.[name]);
+      const parsedSectionPadding = parseRemValue(sectionPadding?.[name]);
 
-      if (columnPadding[name]) {
-         parsedColumnPadding = parseFloat(columnPadding[name].replace('rem', '')).toFixed(1);
-      }
-      if (sectionPadding[name]) {
-         parsedSectionPadding = parseFloat(sectionPadding[name].replace('rem', '')).toFixed(1);
-      }
-
-      const totalPadding = parsedColumnPadding + parsedSectionPadding + 'rem';
-      return totalPadding;
+      return `${(parsedColumnPadding + parsedSectionPadding).toFixed(1)}rem`;
    }
 
 
@@ -88,7 +85,7 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
          paddingToParse = sectionPadding;
       }
 
-      parsedOldPaddingVal = parseFloat(paddingToParse[value].replace('rem', '')).toFixed(1);
+      parsedOldPaddingVal = parseRemValue(paddingToParse?.[value]).toFixed(1);
       let newPaddingVal = parsedOldPaddingVal;
 
       let adjustmentValue = 0.1;
@@ -152,7 +149,7 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
             data-name='resume'
             data-value='left'
             className={styles.resumeMarginIndicatorLeft}
-            style={{ marginLeft: resumePadding.left }}
+            style={{ marginLeft: resumePadding.left ?? '0rem' }}
             tabIndex={0}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
@@ -162,7 +159,7 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
             data-name='resume'
             data-value='right'
             className={styles.resumeMarginIndicatorRight}
-            style={{ marginRight: resumePadding.right }}
+            style={{ marginRight: resumePadding.right ?? '0rem' }}
             tabIndex={0}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
@@ -185,7 +182,7 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
                data-name='column'
                data-value='right'
                className={styles.sectionMarginIndicatorRight}
-               style={{ marginLeft: `calc(${column.layout.width.value} - ${column.layout.padding.right})` }}
+               style={{ marginLeft: `calc(${column.layout?.width?.value ?? '0%'} - ${columnPadding.right ?? '0rem'})` }}
                tabIndex={0}
                onClick={handleClick}
                onKeyDown={handleKeyDown}

@@ -16,6 +16,7 @@ import CurrentlyEditing from "./CurrentlyEditing.jsx";
 import AddSection from "./AddSection.jsx";
 
 import styles from "./RichTextToolbar.module.css";
+import Gap from "./Gap.jsx";
 
 const RichTextToolbar = ({ editor }) => {
 
@@ -83,6 +84,10 @@ const RichTextToolbar = ({ editor }) => {
         <Lists editor={editor} />
 
         <Columns label="Columns:" />
+
+        <Gap label="Section Gap:" gapType='vertical' />
+
+        <Gap label="Column Gap:" gapType='horizontal' />
 
         {/* <div className={styles.belowToolbarWrapper}> */}
         {/* <CurrentlyEditing editor={editor} /> */}

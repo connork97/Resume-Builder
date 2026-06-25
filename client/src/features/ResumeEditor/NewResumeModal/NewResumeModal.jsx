@@ -72,7 +72,7 @@ const NewResumeModal = () => {
     "workHistory",
     "education",
     "projects",
-   //  "other"
+    "custom"
   ];
   const resumeOptions = resumeOptionsArr.map((option, index) => {
     let splitOption = option.replace(

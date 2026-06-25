@@ -29,7 +29,9 @@ const AddSectionDropdown = ({ setAddSectionDropdownIsOpen }) => {
       { type: "workHistory", label: "Work History" },
       { type: "education", label: "Education" },
       { type: "skills", label: "Skills" },
-      { type: "summary", label: "Summary" }
+      { type: "summary", label: "Summary" },
+      { type: "projects", label: 'Projects' },
+      { type: 'custom', label: 'Custom' }
    ];
 
    const handleAddSection = async (type) => {

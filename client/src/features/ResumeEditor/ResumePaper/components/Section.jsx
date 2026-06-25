@@ -75,18 +75,18 @@ const Section = ({ section, column }) => {
           : column?.layout?.padding?.right ?? resumeLayout.padding.right,
         paddingTop: isFirstRow
           ? section.layout?.padding?.top ?? resumeLayout.padding.top
-          // ? resumeLayout.padding.top
-          : section?.layout?.padding?.top ?? column?.layout?.padding?.top,
+          : resumeLayout?.gap?.vertical,
+          // : section?.layout?.padding?.top ?? column?.layout?.padding?.top,
         paddingBottom: isLastRow
           ? section.layout?.padding?.bottom ?? resumeLayout.padding.bottom
-          // ? resumeLayout.padding.bottom
-          : section?.layout?.padding?.bottom ?? column?.layout?.padding?.top,
+          : resumeLayout?.gap?.vertical,
+          // : section?.layout?.padding?.bottom ?? column?.layout?.padding?.top,
         flex: isLastRow
           ? '1'
           : 'none',
       }
     })
-  }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding, section.layout?.padding, column.layout.padding, section]);
+  }, [isFirstColumn, isLastColumn, isFirstRow, isLastRow, resumeLayout.padding, resumeLayout.gap, section.layout?.padding, column.layout.padding, section]);
 
   const renderedSubsections = section.subsectionIds?.map((subId) => {
     const subsection = subsections.byId[subId];

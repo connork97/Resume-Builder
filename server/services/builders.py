@@ -53,6 +53,7 @@ DEFAULT_SECTION_HEADERS = {
     "contact": "Contact",
     "summary": "Summary",
     "projects": "Projects",
+    "custom": "Custom Section",
     "default": "New Section",
 }
 
@@ -77,6 +78,7 @@ DEFAULT_FIELDS_DICT = {
     "contact": ["Email", "Phone", "Location", "Website", "LinkedIn"],
     "summary": ["Summary"],
     "projects": ["Project Title", "Company/School", "Link", "Dates", "Description"],
+    "custom": ["Custom Field"],
     "default": ["Field"],
 }
 

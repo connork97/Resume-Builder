@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextFormatButton from "./shared/TextFormatButton";
 import { FaRegSmile } from "react-icons/fa";
 
-import { iconsArr } from "@/lib/iconLibrary";
+import { ICON_GROUPS } from "@/lib/iconLibrary";
 
 import styles from "./TextFormatting.module.css";
 import { setIcon } from "@/helpers/marks";
@@ -12,17 +12,31 @@ const Icons = ({ editor }) => {
 
   const addIcon = (iconId) => {
     setIcon(editor, iconId);
+    setShowIcons(false);
   };
 
-  const iconsToRender = iconsArr.map(({ id, Icon }) => {
-    return (
-      React.createElement(Icon, {
+  const clearIcon = () => {
+    setIcon(editor, null);
+    setShowIcons(false);
+  };
+
+  const iconGroupsToRender = ICON_GROUPS.map(({ label, icons }) => {
+    const iconsToRender = Object.entries(icons).map(([id, Icon]) => {
+      return React.createElement(Icon, {
         key: id,
-        style: { cursor: "pointer" },
+        style: { cursor: 'pointer' },
         onClick: () => addIcon(id),
-      })
+      });
+    });
+
+    return (
+      <div key={label} className={styles.iconDropdownGroup}>
+        <p className={styles.iconDropdownLabel}>{label}</p>
+        <div className={styles.iconDropdownWrapper}>{iconsToRender}</div>
+      </div>
     );
   });
+
   return (
     <div>
       <TextFormatButton
@@ -31,10 +45,10 @@ const Icons = ({ editor }) => {
       />
       {showIcons && (
         <div className={styles.iconDropdownContainer}>
-          <div className={styles.iconDropdownWrapper}>{iconsToRender}</div>
+          {iconGroupsToRender}
           <TextFormatButton
             text="Clear"
-            command={() => setIcon(editor, null)}
+            command={clearIcon}
           />
         </div>
       )}

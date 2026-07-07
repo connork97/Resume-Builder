@@ -124,6 +124,8 @@
   position: absolute;
   margin-top: 1rem;
   padding: 1rem;
+  max-height: 50vh;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
@@ -134,8 +136,21 @@
   background: var(--background-toolbar);
 }
 
+.iconDropdownGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.iconDropdownLabel {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .iconDropdownWrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 0.75rem;
 }

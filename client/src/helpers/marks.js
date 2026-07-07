@@ -118,3 +118,12 @@ export const setLink = (editor, link) => {
   Editor.addMark(editor, 'italic', true);
   Editor.addMark(editor, 'underline', true);
 }
+
+export const setIcon = (editor, icon) => {
+  if (!icon) {
+    Editor.removeMark(editor, 'icon');
+    return;
+  }
+
+  Editor.addMark(editor, 'icon', icon);
+}

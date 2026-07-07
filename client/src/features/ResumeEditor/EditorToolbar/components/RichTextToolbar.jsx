@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 
-
 import LineHeight from '@/features/ResumeEditor/TextFormatting/LineHeight.jsx';
 import FontSize from '@/features/ResumeEditor/TextFormatting/FontSize.jsx';
 import FontColor from "@/features/ResumeEditor/TextFormatting/FontColor.jsx";
@@ -12,14 +11,11 @@ import TextAlign from "@/features/ResumeEditor/TextFormatting/TextAlign.jsx";
 import Lists from "@/features/ResumeEditor/TextFormatting/Lists.jsx";
 import Marks from "@/features/ResumeEditor/TextFormatting/Marks.jsx";
 import Columns from "./Columns.jsx";
-import CurrentlyEditing from "./CurrentlyEditing.jsx";
-import AddSection from "./AddSection.jsx";
 
 import styles from "./RichTextToolbar.module.css";
 import Gap from "./Gap.jsx";
-import TextFormatButton from "../../TextFormatting/shared/TextFormatButton.jsx";
-import { setLink } from "@/helpers/marks.js";
-import Links from "./Links.jsx";
+import Links from "../../TextFormatting/Links.jsx";
+import Icons from "../../TextFormatting/Icons.jsx";
 
 const RichTextToolbar = ({ editor }) => {
 
@@ -87,6 +83,8 @@ const RichTextToolbar = ({ editor }) => {
         <Lists editor={editor} />
 
         <Links editor={editor} />
+
+        <Icons editor={editor} />
 
         <Columns label="Columns:" />
 

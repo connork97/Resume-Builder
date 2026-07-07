@@ -4,7 +4,8 @@
   gap: var(--gap-toolbar);
 }
 
-.textFormatButton, .textFormatInput {
+.textFormatButton,
+.textFormatInput {
   background-color: var(--background-toolbar-button);
   border: 1px solid var(--border-toolbar-button);
   border-radius: 0.25em;
@@ -12,7 +13,8 @@
   width: auto;
 }
 
-.textFormatButton:hover, .textFormatInput:hover {
+.textFormatButton:hover,
+.textFormatInput:hover {
   filter: brightness(1.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -25,13 +27,6 @@
   text-align: center;
   width: 5em;
 }
-
-
-
-
-
-
-
 
 .colorDropdownContainer {
   position: relative;
@@ -52,18 +47,20 @@
   gap: 0.75vh;
 }
 
-.toolbarButton, .toolbarInput, .toolbarDropdownButton {
-   background: #2a2a2a;
-   color: white;
-   border: none;
-   font-size: inherit;
-   /* font-size: 1.5vh; */
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   border: 1px solid #3a3a3a;
-   border-radius: 0.5vh;
-   padding: 0.5vh 1vh;
+.toolbarButton,
+.toolbarInput,
+.toolbarDropdownButton {
+  background: #2a2a2a;
+  color: white;
+  border: none;
+  font-size: inherit;
+  /* font-size: 1.5vh; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #3a3a3a;
+  border-radius: 0.5vh;
+  padding: 0.5vh 1vh;
 }
 
 .toolbarInput {
@@ -110,10 +107,35 @@
   width: 100%;
   cursor: pointer;
 }
-.toolbarButton, .toolbarDropdownContainer, .toolbarDropdownButton, .colorSwatch {
-   cursor: pointer;
+.toolbarButton,
+.toolbarDropdownContainer,
+.toolbarDropdownButton,
+.colorSwatch {
+  cursor: pointer;
 }
 
-.toolbarButton:hover, .toolbarDropdownContainer:hover, .toolbarDropdownOption:hover {
-   background: #333333;
+.toolbarButton:hover,
+.toolbarDropdownContainer:hover,
+.toolbarDropdownOption:hover {
+  background: #333333;
+}
+
+.iconDropdownContainer {
+  position: absolute;
+  margin-top: 1rem;
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 7.5px;
+  background: var(--background-toolbar);
+}
+
+.iconDropdownWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
 }

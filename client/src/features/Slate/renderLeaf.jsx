@@ -49,6 +49,14 @@ const Leaf = ({ attributes, children, leaf, resumeStyling, columnStyling = {}, s
     styledChildren = <s>{styledChildren}</s>;
   }
 
+  if (leaf.link) {
+    console.log(leaf.link)
+    stylingObj.cursor = 'pointer'
+    styledChildren = <a target="_blank" href={leaf.link} style={{cursor: 'pointer'}}>{styledChildren}</a>
+    // rel="noopener noreferrer" 
+    // styledChildren = <Link to={leaf.link} styles={{cursor: 'pointer'}}>{styledChildren}</Link>
+  }
+
   return <span {...attributes} style={stylingObj}>{styledChildren}</span>;
 };
 

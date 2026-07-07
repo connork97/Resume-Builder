@@ -1,8 +1,10 @@
 .printPageRef {
   position: relative;
   margin: auto;
-  height: 7.7in;
-  width: 5.95in;
+  height: var(--height-editor-page);
+  width: var(--width-editor-page);
+  /* height: 7.7in; */
+  /* width: 5.95in; */
   /* height: 11in; */
   /* width: 8.5in; */
 }
@@ -36,7 +38,7 @@
   min-width: 0;
 }
 
-.pageEndMarker {
+.endPageMarker {
   position: absolute;
   bottom: 0;
   left: 0;

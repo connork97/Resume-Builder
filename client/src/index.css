@@ -27,11 +27,15 @@
   --width-main: 75%;
   /* Component Specific Variables */
   --height-navbar: clamp(1rem, 10dvh, 15rem);
-  --width-navbar: var(--width-main);
-  --padding-x-navbar: var(--padding-x-main);
-  --font-size-navbar: clamp(1rem, 2vw, 2rem);
-
   --height-toolbar: clamp(2rem, 5rem, 10rem);
+  --height-editor-page: 7.7in;
+
+  --width-editor-page: 5.95in;
+  --width-navbar: var(--width-main);
+
+  --padding-x-navbar: var(--padding-x-main);
+
+  --font-size-navbar: clamp(1rem, 2vw, 2rem);
 
   --gap-toolbar: 0.5dvh;
 

@@ -104,3 +104,17 @@ export const setHighlightColor = (editor, highlightColor) => {
   Editor.addMark(editor, 'highlightColor', transparentHighlightColor);
   console.log(`Font highlightColor set to ${transparentHighlightColor}`);
 }
+
+export const setLink = (editor, link) => {
+  if (!link) {
+    Editor.removeMark(editor, 'link')
+    Editor.removeMark(editor, 'bold')
+    Editor.removeMark(editor, 'italic')
+    Editor.removeMark(editor, 'underline')
+    return;
+  }
+  Editor.addMark(editor, 'link', link);
+  Editor.addMark(editor, 'bold', true);
+  Editor.addMark(editor, 'italic', true);
+  Editor.addMark(editor, 'underline', true);
+}

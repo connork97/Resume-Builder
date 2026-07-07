@@ -17,6 +17,9 @@ import AddSection from "./AddSection.jsx";
 
 import styles from "./RichTextToolbar.module.css";
 import Gap from "./Gap.jsx";
+import TextFormatButton from "../../TextFormatting/shared/TextFormatButton.jsx";
+import { setLink } from "@/helpers/marks.js";
+import Links from "./Links.jsx";
 
 const RichTextToolbar = ({ editor }) => {
 
@@ -82,6 +85,8 @@ const RichTextToolbar = ({ editor }) => {
         />
 
         <Lists editor={editor} />
+
+        <Links editor={editor} />
 
         <Columns label="Columns:" />
 

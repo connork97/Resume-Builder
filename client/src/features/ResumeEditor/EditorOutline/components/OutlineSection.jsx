@@ -174,14 +174,8 @@ const OutlineSection = ({
             key={subId}
             className={`${styles.subsectionItem} ${styles.subsectionRow}`}
             draggable={true}
-            onDragStart={(e) => {
-              handleOnDragStart(e, subIndex, subId)
-            }}
-
-            onDragOver={(e) => {
-              handleOnDragOver(e, subIndex)
-
-            }}
+            onDragStart={(e) => handleOnDragStart(e, subIndex, subId)}
+            onDragOver={(e) => handleOnDragOver(e, subIndex)}
             onDragEnd={(e) => {
               e.stopPropagation();
               setDragItem(null);

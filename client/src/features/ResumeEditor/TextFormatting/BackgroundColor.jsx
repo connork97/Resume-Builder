@@ -14,14 +14,15 @@ const BackgroundColor = () => {
    const sectionBackgroundColor = useSelector(state => state.resume.sections.byId[activeSectionId]?.styling?.backgroundColor);
 
    const handleSetSectionBackgroundColor = (color) => {
-      if (activeSectionIds) {
+      console.log('setting background color', color)
+      if (activeSectionIds.length) {
          for (let sectionId of activeSectionIds) {
             dispatch(updateSection({
                id: sectionId,
                changes: { styling: { backgroundColor: color } }
             }));
          }
-      } else if (!activeSectionIds && !activeSectionId) {
+      } else if (!activeSectionIds.length > 0 && !activeSectionId) {
          dispatch(updateResume({
             key: 'styling',
             changes: {
@@ -29,9 +30,9 @@ const BackgroundColor = () => {
             }
          }))
          return;
-      } else if (!activeSectionIds && activeSectionId) {
+      } else if (!activeSectionIds.length && activeSectionId) {
          dispatch(updateSection({
-            id: sectionId,
+            id: activeSectionId,
             changes: { styling: { backgroundColor: color } }
          }));
       }

@@ -61,7 +61,7 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
         id="editorPage"
       >
         {resumeColumns}
-        <EndPageMarker />
+        <EndPageMarker pageRef={editorRef} />
       </div>
     </div>
   );

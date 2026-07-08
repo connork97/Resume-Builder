@@ -35,7 +35,7 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
 
       for (const columnId of columns.allIds) {
          if (String(columnId) === String(column.id) && !includeCurrent) {
-            console.log('prior column widths: ', priorColumnWidths)
+            // console.log('prior column widths: ', priorColumnWidths)
 
             return priorColumnWidths;
          }
@@ -45,7 +45,7 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
 
          priorColumnWidths += parsedColumnWidth;
       }
-      console.log('prior column widths: ', priorColumnWidths)
+      // console.log('prior column widths: ', priorColumnWidths)
 
       return priorColumnWidths;
 

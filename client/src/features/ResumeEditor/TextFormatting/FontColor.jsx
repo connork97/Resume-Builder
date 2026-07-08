@@ -30,8 +30,8 @@ const FontColor = ({ editor, selection }) => {
 
    useEffect(() => {
       if (!editor || !selection) return;
-      console.log(getActiveMark(editor, 'color'))
-      console.log('selection', selection)
+      // console.log(getActiveMark(editor, 'color'))
+      // console.log('selection', selection)
       const editorFontColor = getActiveMark(editor, 'color');
       const fieldFontColor = activeField?.styling?.color;
       const subsectionFontColor = activeSubsection?.styling?.color;

@@ -1,54 +1,92 @@
 import React, { useEffect, useState } from "react";
 
 import styles from "../ResumePaper.module.css";
-import { useSelector } from "react-redux";
 
-const EndPageMarker = () => {
+const EndPageMarker = ({ pageRef }) => {
   const [showEndPageMarker, setShowEndPageMarker] = useState(false);
 
-  const reduxColumns = useSelector((state) => state.resume.columns);
-  const reduxSections = useSelector((state) => state.resume.sections);
-
-  const getSectionRect = (sectionId) => {
-    const element = document.querySelector(`[data-section-id="${sectionId}"]`);
-
-    if (!element) return null;
-
-    return element.getBoundingClientRect();
-  };
-
   useEffect(() => {
-    reduxColumns.allIds.forEach((columnId) => {
-      let columnSectionHeightTotal = 0;
+    const page = pageRef?.current;
 
-      const columnById = reduxColumns.byId[columnId];
-      columnById.sectionIds.forEach((sectionId) => {
-        columnSectionHeightTotal += getSectionRect(sectionId).height;
+    if (!page) return;
+
+    let animationFrameId = null;
+    const observedElements = new Set();
+
+    const getColumns = () => {
+      return Array.from(page.querySelectorAll(`.${styles.columnWrapperDiv}`));
+    };
+
+    const getColumnContentHeight = (column) => {
+      return Array.from(column.children).reduce((totalHeight, childElement) => {
+        return totalHeight + childElement.getBoundingClientRect().height;
+      }, 0);
+    };
+
+    const checkPageLength = () => {
+      const pageIsTooLong = getColumns().some((column) => (
+        getColumnContentHeight(column) > column.getBoundingClientRect().height + 1
+      ));
+
+      setShowEndPageMarker((previousValue) => (
+        previousValue === pageIsTooLong ? previousValue : pageIsTooLong
+      ));
+    };
+
+    const scheduleMeasure = () => {
+      if (animationFrameId) return;
+
+      animationFrameId = requestAnimationFrame(() => {
+        animationFrameId = null;
+        checkPageLength();
       });
-      console.log(columnSectionHeightTotal);
-      if (columnSectionHeightTotal > 739.3) {
-        setShowEndPageMarker(true);
-        return;
-      }
-      setShowEndPageMarker(false);
+    };
+
+    const resizeObserver = typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver(scheduleMeasure)
+      : null;
+
+    const observeElementSize = (element) => {
+      if (!resizeObserver || observedElements.has(element)) return;
+
+      resizeObserver.observe(element);
+      observedElements.add(element);
+    };
+
+    const observeColumnSizes = () => {
+      getColumns().forEach((column) => {
+        observeElementSize(column);
+        Array.from(column.children).forEach(observeElementSize);
+      });
+    };
+
+    const mutationObserver = new MutationObserver(() => {
+      observeColumnSizes();
+      scheduleMeasure();
     });
-  }, [reduxColumns, reduxSections]);
 
-  //   column.sectionIds?.forEach((sectionId) => {
-  //     let sectionRect = getSectionRect(sectionId);
-  //     columnSectionHeightTotal += sectionRect?.height;
-  // console.log(sectionRect.height)
-  // console.log(739.2 - columnSectionHeightTotal)
-  //   });
-  // if (columnSectionHeightTotal <= 739.2) setSectionsExceedPageHeight(false);
-  //     if (columnSectionHeightTotal > 739.2) setSectionsExceedPageHeight(true);
-  //     else setSectionsExceedPageHeight(false)
+    mutationObserver.observe(page, {
+      attributes: true,
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
 
-  if (!showEndPageMarker) {
-    return;
-  } else {
-    return <div className={styles.endPageMarker}>Page is to long</div>;
-  }
+    observeColumnSizes();
+    window.addEventListener("resize", scheduleMeasure);
+    scheduleMeasure();
+
+    return () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      resizeObserver?.disconnect();
+      mutationObserver.disconnect();
+      window.removeEventListener("resize", scheduleMeasure);
+    };
+  }, [pageRef]);
+
+  if (!showEndPageMarker) return null;
+
+  return <div className={styles.endPageMarker}>Page is to long</div>;
 };
 
 export default EndPageMarker;

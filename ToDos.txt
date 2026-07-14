@@ -1,0 +1,49 @@
+!--------!
+   BUGS
+!--------!
+
+BIGGER BUGS:
+
+-Section Gap and Column Gap are broken
+   -Likely need an offset value to act as a base for individual section/column gaps
+
+-Several styling changes to individual words/strings results in line break
+   -Likely due to a new Slate Field/Leaf being created
+   -For Line Height, potentially reflecting the new line height on all other strings in the field could fix it, TBD
+
+SMALL BUGS:
+
+-"School" name in education doesn't show up in outline
+   -Uses the placeholder instead
+-Text Alignment on Placeholder Text becomes odd when aligned center or right
+
+
+!------------!
+   FEATURES
+!------------!
+
+MAIN FEATURES:
+
+-Multi Page Resume
+
+
+BIGGER FEATURES:
+
+-Reset of Styling, Layout, etc Accross the Board
+   -Ex: Reset individualized margin/padding to defaults
+   -Useful for cases of when small changes add up and become unmanageable
+   -Likely a dropdown with checkboxes for font size, margin/padding, etc etc
+   -Potentially show which sections, fields, etc are NOT default to even more clearly allow resets
+
+-Borders
+
+
+SMALL FEATURES:
+
+-Resume.updated_at should update when content within changes
+   -Currently only changes when created, the title changes, or other directly related information
+
+-Adding an "active" indicator for toolbar settings already in use
+   -Ex: When the active selection is already bolded, the toolbar should indicate that, such as slightly highlighting the Bold button
+
+

@@ -74,12 +74,15 @@ const Section = ({ section, column }) => {
           ? resumeLayout.padding.right
           : column?.layout?.padding?.right ?? resumeLayout.padding.right,
         paddingTop: isFirstRow
-          ? section.layout?.padding?.top ?? resumeLayout.padding.top
-          : resumeLayout?.gap?.vertical,
+          ? resumeLayout?.padding?.top
+          // ? resumeLayout?.gap?.vertical
+          : section.layout?.padding?.top ?? resumeLayout.padding.top,
           // : section?.layout?.padding?.top ?? column?.layout?.padding?.top,
-        paddingBottom: isLastRow
-          ? section.layout?.padding?.bottom ?? resumeLayout.padding.bottom
-          : resumeLayout?.gap?.vertical,
+          paddingBottom: !isLastRow && (section?.layout?.padding?.bottom ?? resumeLayout.padding.bottom),
+        // paddingBottom: isLastRow
+        // // ? resumeLayout?.gap?.vertical
+        // ? null
+        // : section.layout?.padding?.bottom ?? resumeLayout.padding.bottom,
           // : section?.layout?.padding?.bottom ?? column?.layout?.padding?.top,
         flex: isLastRow
           ? '1'

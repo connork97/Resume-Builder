@@ -30,6 +30,8 @@ const MarginRulerSide = ({ renderMarginRuler }) => {
       if (!isEditing || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) return;
       e.preventDefault()
 
+      console.log('keydown continued')
+
       const { name, value } = e.currentTarget.dataset;
 
       let parsedOldPaddingVal;
@@ -40,6 +42,9 @@ const MarginRulerSide = ({ renderMarginRuler }) => {
       }  else if (name === 'section') {
          paddingToParse = sectionPadding;
       }
+
+      console.log(paddingToParse)
+      console.log(section.layout)
 
       const parsedPaddingVal = parseFloat(paddingToParse?.[value]);
       const defaultPaddingVal = parseFloat(resume?.layout?.gap?.vertical);

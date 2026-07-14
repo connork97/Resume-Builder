@@ -45,6 +45,8 @@ export const getActiveMark = (editor, mark) => {
         return parsedMark ?? console.error("No active line height offset found.");
       case ('color'):
         return activeMark ?? console.error("No active font color found.");
+      case ('link'):
+        return activeMark ?? null
     }
   }
   if (!activeMark) {

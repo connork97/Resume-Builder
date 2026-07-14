@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 
 import styles from "../TextFormatting.module.css";
 
-const TextFormatInput = ({ value, handleChange, commitChange, placeholder, styling }) => {
+const TextFormatInput = ({
+//   Icon,
+  value,
+  handleChange,
+  commitChange,
+  placeholder,
+  styling,
+}) => {
 
-   return (
+
+  return (
+    <>
       <input
-         onKeyDown={(e) => e.key === 'Enter' ? commitChange() : null}
-         className={styles.textFormatInput}
-         style={styling}
-         value={value}
-         onChange={(e) => handleChange(e.target.value)}
-         placeholder={placeholder || ''}
-      >
-      </input>
-   );
-}
+        onKeyDown={(e) => (e.key === "Enter" ? commitChange() : null)}
+        className={styles.textFormatInput}
+        style={{...styling}}
+      //   style={{...styling, width: `${!styling.width && '3rem'}`}}
+        value={value}
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder={placeholder || ""}
+      ></input>
+      {/* <Icon /> */}
+    </>
+  );
+};
 
 export default TextFormatInput;

@@ -5,7 +5,8 @@
 }
 
 .textFormatButton,
-.textFormatInput {
+.textFormatInput,
+.textFormatDropdownSelect {
   background-color: var(--background-toolbar-button);
   border: 1px solid var(--border-toolbar-button);
   border-radius: 0.25em;
@@ -130,7 +131,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  
+
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 7.5px;
   background: var(--background-toolbar);
@@ -153,4 +154,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 0.75rem;
+}
+
+.textFormatDropdownContainer {
+  position: relative;
+  z-index: var(--z-dropdown);
 }

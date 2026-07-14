@@ -4,8 +4,6 @@
 
 BIGGER BUGS:
 
--Section Gap and Column Gap are broken
-   -Likely need an offset value to act as a base for individual section/column gaps
 
 -Several styling changes to individual words/strings results in line break
    -Likely due to a new Slate Field/Leaf being created
@@ -23,6 +21,12 @@ SMALL BUGS:
 
 -Having three or more columns messes with the margin ruler indicators
 
+-Dropdowns don't lose focus/disappear when clicked out of
+   -Sometimes intentional, typically not
+
+-Autofilling the link input from preexisting links takes two tries to work initially after page load
+   -Then works fine.  Likely some issue regarding page mount timeline
+
 
 
 !------------!
@@ -30,6 +34,8 @@ SMALL BUGS:
 !------------!
 
 MAIN FEATURES:
+
+-Undo/Redo
 
 -Multi Page Resume
 
@@ -62,6 +68,8 @@ SMALL FEATURES:
 -Adding an "active" indicator for toolbar settings already in use
    -Ex: When the active selection is already bolded, the toolbar should indicate that, such as slightly highlighting the Bold button
 
--Make Line Height a Dropdown, with a nice icon to indicate its purpose
+-Make Line Height look nicer, with a nice icon to indicate its purpose
 
 -Make Font Size look nicer, removing label, potentially adding a dropdown for common font size values
+
+-Add Link Icon and toggle input in toolbar for links

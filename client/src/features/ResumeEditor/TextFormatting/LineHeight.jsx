@@ -10,6 +10,7 @@ import TextFormatButton from './shared/TextFormatButton';
 import TextFormatInput from './shared/TextFormatInput';
 
 import styles from './TextFormatting.module.css';
+import { MdFormatLineSpacing } from 'react-icons/md';
 
 /* eslint-disable react-hooks/set-state-in-effect */
 
@@ -253,17 +254,23 @@ const LineHeight = ({
 
    return (
       <div className={styles.toolbarFlexWrapper}>
-         <label className={styles.toolbarLabel}>{label}</label>
+         {/* <label className={styles.toolbarLabel}>{label}</label> */}
          <TextFormatButton
             text="-"
             command={() => setNewLineHeight('decrement')}
          />
-
-         <TextFormatInput
+         <TextFormatButton
+            icon={<MdFormatLineSpacing style={{scale: '1.1', marginTop: '0.2em', marginRight: '0.25em'}} />}
+            text={lineHeightInputValue}
+         />
+         {/* <TextFormatInput
+            icon={<MdFormatLineSpacing />}
+            // text={lineHeightInputValue}
+            styling={{width: '3rem'}}
             value={lineHeightInputValue}
             handleChange={setLineHeightInputValue}
             commitChange={() => setNewLineHeight(lineHeightInputValue)}
-         />
+         /> */}
 
          <TextFormatButton
             text="+"

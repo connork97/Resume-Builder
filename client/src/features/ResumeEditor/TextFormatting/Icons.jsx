@@ -40,7 +40,7 @@ const Icons = ({ editor }) => {
   return (
     <div>
       <TextFormatButton
-        text={<FaRegSmile />}
+        text={<FaRegSmile style={{height: '1.25rem'}} />}
         command={() => setShowIcons(!showIcons)}
       />
       {showIcons && (

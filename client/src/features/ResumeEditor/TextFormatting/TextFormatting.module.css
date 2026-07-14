@@ -158,5 +158,8 @@
 
 .textFormatDropdownContainer {
   position: relative;
+
+  padding: 0.5em 0.25em;
+
   z-index: var(--z-dropdown);
 }

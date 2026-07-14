@@ -6,19 +6,24 @@ import ToolbarButton from '../EditorToolbar/components/shared/ToolbarButton';
 import TextFormatButton from './shared/TextFormatButton';
 
 import styles from './TextFormatting.module.css';
+import { MdFormatListBulleted, MdFormatListNumbered } from 'react-icons/md';
 
 const Lists = ({ editor }) => {
   return (
     <div className={styles.toolbarFlexWrapper}>
-      <TextFormatButton
-        text="•"
-        command={() => editor && toggleList(editor, "unordered-list")}
-      />
+      <button
+        className={styles.textFormatButton}
+        onClick={() => editor && toggleList(editor, "unordered-list")}
+      >
+        <MdFormatListBulleted style={{position: 'relative', top: '0.1em'}} />
+        </button>
 
-      <TextFormatButton
-        text="1."
-        command={() => editor && toggleList(editor, "ordered-list")}
-      />
+      <button
+        className={styles.textFormatButton}
+        onClick={() => editor && toggleList(editor, "ordered-list")}
+      >
+        <MdFormatListNumbered style={{position: 'relative', top: '0.1em'}} />
+      </button>
     </div>
   )
 }

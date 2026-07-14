@@ -9,6 +9,7 @@ import SettingsModal from "../../SettingsModal/SettingsModal.jsx";
 import SubsectionRenderer from "./Subsection.jsx";
 import SectionPadding from "./SectionPadding.jsx";
 import { getContrastingColor } from "@/utils/colorUtils.js";
+import { parseRemValue } from "@/utils/formatters.js";
 
 const Section = ({ section, column }) => {
   useEffect(() => {
@@ -65,20 +66,40 @@ const Section = ({ section, column }) => {
 
   useEffect(() => {
     setSectionPadding((prevStyling) => {
+      const parsedSectionPadding = {
+        top: parseRemValue(section?.layout?.padding?.top) ?? 0,
+        bottom: parseRemValue(section?.layout?.padding?.bottom) ?? 0,
+        left: parseRemValue(column?.layout?.padding?.left) ?? 0,
+        right: parseRemValue(column?.layout?.padding?.right) ?? 0,         
+      }
+      
+      const parsedResumeGap = {
+        vertical: parseRemValue(resumeLayout?.gap?.vertical) ?? 0,
+        horizontal: parseRemValue(resumeLayout?.gap?.horizontal) ?? 0,
+      }
+      
+      const sectionPaddingTop = parseRemValue(section.layout?.padding?.top) + parseRemValue(resumeLayout.gap?.vertical) + 'rem';
+      const sectionPaddingBottom = parseRemValue(section.layout?.padding?.bottom) + parseRemValue(resumeLayout.gap?.vertical) + 'rem';
       return {
         ...prevStyling,
         paddingLeft: isFirstColumn
           ? resumeLayout.padding.left
-          : column?.layout?.padding?.left ?? resumeLayout.padding.left,
+          : `${parsedSectionPadding.left + parsedResumeGap.horizontal}rem`,
+          // : column?.layout?.padding?.left ?? resumeLayout.padding.left,
         paddingRight: isLastColumn
           ? resumeLayout.padding.right
-          : column?.layout?.padding?.right ?? resumeLayout.padding.right,
+          : `${parsedSectionPadding.right + parsedResumeGap.horizontal}rem`,
+          // : column?.layout?.padding?.right ?? resumeLayout.padding.right,
         paddingTop: isFirstRow
           ? resumeLayout?.padding?.top
           // ? resumeLayout?.gap?.vertical
-          : section.layout?.padding?.top ?? resumeLayout.padding.top,
+          : `${parsedSectionPadding.top + parsedResumeGap.vertical}rem`,
+          // : sectionPaddingTop,
+          // : section.layout?.padding?.top ?? resumeLayout.padding.top,
           // : section?.layout?.padding?.top ?? column?.layout?.padding?.top,
-          paddingBottom: !isLastRow && (section?.layout?.padding?.bottom ?? resumeLayout.padding.bottom),
+          paddingBottom: !isLastRow && `${parsedSectionPadding.bottom + parsedResumeGap.vertical}rem`,
+          // paddingBottom: sectionPaddingBottom,
+          // paddingBottom: !isLastRow && (section?.layout?.padding?.bottom ?? resumeLayout.padding.bottom),
         // paddingBottom: isLastRow
         // // ? resumeLayout?.gap?.vertical
         // ? null

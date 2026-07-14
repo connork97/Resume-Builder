@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styles from './MarginRuler.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateColumn, updateResume, updateSection } from '@/store/resumeSlice';
+import { parseRemValue } from '@/utils/formatters';
 
 const MarginRulerTop = ({ renderMarginRuler }) => {
 
@@ -22,33 +23,20 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
    const isFirstColumn = column?.id === columns?.allIds[0];
    const isLastColumn = column?.id === columns?.allIds[columns.allIds.length - 1];
 
-   const parseRemValue = (value) => {
-      const parsedValue = parseFloat(String(value ?? '0rem').replace('rem', ''));
-      return Number.isNaN(parsedValue) ? 0 : parsedValue;
-   };
-
-
    const getColumnWidths = (includeCurrent = false) => {
       let priorColumnWidths = 0;
       if (!column || !columns?.allIds) return 0;
 
-
       for (const columnId of columns.allIds) {
          if (String(columnId) === String(column.id) && !includeCurrent) {
-            // console.log('prior column widths: ', priorColumnWidths)
-
             return priorColumnWidths;
          }
-
          const widthValue = columns.byId[columnId]?.layout?.width?.value || "0%";
          const parsedColumnWidth = parseFloat(widthValue.replace("%", ""));
-
          priorColumnWidths += parsedColumnWidth;
       }
-      // console.log('prior column widths: ', priorColumnWidths)
 
       return priorColumnWidths;
-
    };
 
    const getSectionMargin = (name) => {
@@ -58,9 +46,6 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
 
       return `${(parsedColumnPadding + parsedSectionPadding).toFixed(1)}rem`;
    }
-
-
-
 
    const [isEditing, setIsEditing] = useState(false);
 
@@ -89,6 +74,7 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
       let newPaddingVal = parsedOldPaddingVal;
 
       let adjustmentValue = 0.1;
+      
 
       if (e.key === "ArrowLeft" && value === 'left') adjustmentValue = -0.1;
       if (e.key === "ArrowRight" && value === 'right') adjustmentValue = -0.1;

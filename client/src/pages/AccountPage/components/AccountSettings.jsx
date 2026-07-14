@@ -7,7 +7,7 @@ import { updateUser } from '@/store/userSlice';
 // import styles from './Account.module.css';
 import styles from './AccountSettings.module.css';
 import { updateUserApi } from '@/services/userServices';
-import { formatDateTime } from '@/utils/formatDateTime';
+import { formatDateTime } from '@/utils/formatters';
 
 const AccountSettings = () => {
 

@@ -15,3 +15,8 @@ export const formatDateTime = (dateTimeValue) => {
     hour12: true,
   }).format(date);
 };
+
+export const parseRemValue = (value) => {
+      const parsedValue = parseFloat(String(value ?? '0rem').replace('rem', ''));
+      return Number.isNaN(parsedValue) ? 0 : parsedValue;
+   };

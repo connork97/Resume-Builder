@@ -8,7 +8,7 @@ import { deleteResumeFromApi } from '@/services/resumeServices';
 
 // import styles from './Account.module.css';
 import styles from './UserResumes.module.css';
-import { formatDateTime } from '@/utils/formatDateTime';
+import { formatDateTime } from '@/utils/formatters';
 
 const UserResumeRow = ({ resume, fetchUserResumes }) => {
 

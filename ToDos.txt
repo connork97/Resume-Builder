@@ -15,7 +15,14 @@ SMALL BUGS:
 
 -"School" name in education doesn't show up in outline
    -Uses the placeholder instead
+
 -Text Alignment on Placeholder Text becomes odd when aligned center or right
+
+-Resume Gap and Column Padding can be Negative values
+   -Should combine both values to ensure the total remains 0 or greater
+
+-Having three or more columns messes with the margin ruler indicators
+
 
 
 !------------!
@@ -37,6 +44,15 @@ BIGGER FEATURES:
 
 -Borders
 
+-Drag and Drop Reorganization
+   -First, for sections
+      -Swap column and position values
+   -Second, for subsections
+      -Swap position values
+   -Third, for fields
+      -Swap position values
+      -Potentially need to swap other styling values as well
+
 
 SMALL FEATURES:
 
@@ -46,4 +62,6 @@ SMALL FEATURES:
 -Adding an "active" indicator for toolbar settings already in use
    -Ex: When the active selection is already bolded, the toolbar should indicate that, such as slightly highlighting the Bold button
 
+-Make Line Height a Dropdown, with a nice icon to indicate its purpose
 
+-Make Font Size look nicer, removing label, potentially adding a dropdown for common font size values

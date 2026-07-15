@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateResume, updateSection } from '../../../store/resumeSlice.js';
 
 import ColorDropdown from './shared/ColorDropdown.jsx';
+import { BiSolidColorFill } from 'react-icons/bi';
 
 const BackgroundColor = () => {
 
@@ -40,7 +41,8 @@ const BackgroundColor = () => {
 
    return (
       <ColorDropdown
-         text="BC"
+         text={<BiSolidColorFill />}
+         // text="BC"
          currentEditorColor={sectionBackgroundColor}
          handleSetColor={handleSetSectionBackgroundColor}
       />

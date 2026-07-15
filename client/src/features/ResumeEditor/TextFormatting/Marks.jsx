@@ -1,35 +1,40 @@
-import React from 'react';
+import React from "react";
 
-import { toggleMark } from '../../../helpers/marks.js';
-
-import ToolbarButton from '../EditorToolbar/components/shared/ToolbarButton.jsx';
-import TextFormatButton from './shared/TextFormatButton.jsx';
+import { toggleMark } from "../../../helpers/marks.js";
 
 const Marks = ({ editor }) => {
-   return (
-      <>
-         <TextFormatButton
-            text="B"
-            styling={{ fontWeight: 'bold' }}
-            command={() => editor && toggleMark(editor, "bold")}
-         />
-         <TextFormatButton
-            text="I"
-            styling={{ fontStyle: 'italic' }}
-            command={() => editor && toggleMark(editor, "italic")}
-         />
-         <TextFormatButton
-            text="U"
-            styling={{ textDecoration: 'underline' }}
-            command={() => editor && toggleMark(editor, "underline")}
-         />
-         <TextFormatButton
-            text="S"
-            styling={{ textDecoration: 'line-through' }}
-            command={() => editor && toggleMark(editor, "strikeThrough")}
-         />
-      </>
-   )
-}
+  return (
+    <>
+      <button
+        className="buttonMain"
+        style={{ fontWeight: "bold" }}
+        onClick={() => editor && toggleMark(editor, "bold")}
+      >
+        B
+      </button>
+      <button
+        className="buttonMain"
+        style={{ fontStyle: "italic" }}
+        onClick={() => editor && toggleMark(editor, "italic")}
+      >
+        I
+      </button>
+      <button
+        className="buttonMain"
+        style={{ textDecoration: "underline" }}
+        onClick={() => editor && toggleMark(editor, "underline")}
+      >
+        U
+      </button>
+      <button
+        className="buttonMain"
+        style={{ textDecoration: "line-through" }}
+        onClick={() => editor && toggleMark(editor, "strikeThrough")}
+      >
+        S
+      </button>
+    </>
+  );
+};
 
 export default Marks;

@@ -147,7 +147,8 @@ const TextAlign = ({ editor }) => {
     <div className={styles.toolbarFlexWrapper}>
 
       <button
-        className={styles.textFormatButton}
+        className='buttonMain'
+        // className={styles.textFormatButton}
         onClick={() => handleDropdownClick()}
         // onClick={() => handleSetTextAlign(editor, "left")}
         >

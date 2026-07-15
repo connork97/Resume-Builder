@@ -124,7 +124,7 @@
 
 .iconDropdownContainer {
   position: absolute;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   padding: 1rem;
   max-height: 50vh;
   overflow-y: auto;
@@ -134,7 +134,8 @@
   gap: 1rem;
 
   border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 7.5px;
+  border-top: none;
+  border-radius: 0 0 var(--border-radius-main) var(--border-radius-main);
   background: var(--background-toolbar);
 }
 
@@ -156,7 +157,19 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 0.75rem;
 }
+.linkDropdownContainer {
+  position: absolute;
 
+  margin-top: 6rem;
+  display: flex;
+
+  padding: 1rem;
+
+  border: var(--border-main);
+  border-top: none;
+  border-radius: 0 0 var(--border-radius-main) var(--border-radius-main);
+  background: var(--background-toolbar);
+}
 .textFormatDropdownContainer {
   position: relative;
 

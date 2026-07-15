@@ -11,19 +11,22 @@ const Gap = ({ label, gapType }) => {
 
   const updateResumeGap = (incrementOrDecrement) => {
     const parsedCurrentGap = parseFloat(resumeGap[gapType]);
-    const updatedGap = parseFloat(parsedCurrentGap + (incrementOrDecrement == "increment" ? 0.1 : -0.1)).toFixed(1) + "rem";
+    const updatedGap =
+      parseFloat(
+        parsedCurrentGap + (incrementOrDecrement == "increment" ? 0.1 : -0.1),
+      ).toFixed(1) + "rem";
     if (parseFloat(updatedGap).toFixed(1) < 0) {
-     alert('Gap may not be a negative value.');
-     return;
+      alert("Gap may not be a negative value.");
+      return;
     }
     dispatch(
       updateResume({
         key: "layout",
         changes: {
           gap: {
-               // horizontal: '1rem',
-               // vertical: '0.5rem'
-          ...resumeGap,
+            // horizontal: '1rem',
+            // vertical: '0.5rem'
+            ...resumeGap,
             [gapType]: updatedGap,
           },
         },
@@ -33,28 +36,30 @@ const Gap = ({ label, gapType }) => {
 
   return (
     <div className={styles.toolbarFlexWrapper}>
-
-      <TextFormatButton text="-" command={() => updateResumeGap("decrement")} />
-        <button className={styles.textFormatButton}>
-
-        {gapType === 'horizontal' && 
-        <>
-        <RxColumnSpacing style={{position: 'relative', top: '0.1em'}} /> {resumeGap[gapType]}
-        </>
-        }
-        {gapType === 'vertical' && 
-        <>
-        <RxRowSpacing style={{position: 'relative', top: '0.1em'}} /> {resumeGap[gapType]}
-        </>
-        }
-        </button>
+      <button className='buttonMain' onClick={() => updateResumeGap('decrement')}>-</button>
+      {/* <button className={styles.textFormatButton}> */}
+      <button className='buttonMain'>
+        {gapType === "horizontal" && (
+          <>
+            <RxColumnSpacing style={{ position: "relative", top: "0.1em" }} />{" "}
+            {resumeGap[gapType]}
+          </>
+        )}
+        {gapType === "vertical" && (
+          <>
+            <RxRowSpacing style={{ position: "relative", top: "0.1em" }} />{" "}
+            {resumeGap[gapType]}
+          </>
+        )}
+      </button>
       {/* <ToolbarInput
             value={columnInputValue}
             handleChange={setColumnInputValue}
             commitChange={() => updateColumns()}
             onBlur={() => updateColumns()}
             /> */}
-      <TextFormatButton text="+" command={() => updateResumeGap("increment")} />
+      <button className='buttonMain' onClick={() => updateResumeGap('increment')}>+</button>
+      {/* <TextFormatButton text="+" command={() => updateResumeGap("increment")} /> */}
     </div>
   );
 };

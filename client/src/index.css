@@ -16,10 +16,18 @@
   /* Universal Variables */
   --background-main: rgba(46, 45, 45, 1);
   --background-toolbar: rgba(30, 30, 30, 1);
-  --background-toolbar-button: var(--background-main);
-  --border-toolbar-button: rgba(58, 58, 58, 1);
+  --background-toolbar-button: rgba(42, 42, 42, 1);
+  --background-button-main: var(--background-main);
+
+  --border-main: 1px solid rgba(255, 255, 255, 0.25);
+  --border-toolbar-button: 1px solid rgba(58, 58, 58, 1);
+  --border-button-main: 1px solid rgba(58, 58, 58, 1);
+  --border-radius-main: 0.25rem;
+  /* --border-radius-main: 0.75rem; */
+  --border-radius-button-main: 0.25rem;
   --font-main: system-ui, Avenir, Helvetica, Arial, sans-serif;
   --color-main: rgba(255, 255, 255, 1);
+  --color-main-white: rgba(255, 255, 255, 1);
 
   --font-size-main: var(--font-size-navbar);
   --padding-x-main: clamp(1rem, 15vw, 25rem);
@@ -39,7 +47,6 @@
 
   --gap-toolbar: 0.5dvh;
 
-  --border-radius-main: 0.75rem;
   /* Element Specific Variables */
   --list-padding-left-default: 1rem;
 
@@ -99,6 +106,60 @@ a {
   font: inherit;
   color: inherit;
   text-decoration: none;
+}
+
+/** COMMONLY USED STYLING CLASSES **/
+/* .buttonMain {
+  position: relative;
+
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  line-height: 1;
+  font-size: 1.25rem;
+    color: var(--color-main-white);
+  background: var(--background-button-main);
+  border: var(--border-button-main);
+  border-radius: var(--border-radius-button-main);
+} */
+.buttonMain {
+  position: relative;
+  height: 2rem;
+  width: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 2rem;
+
+  text-align: center;
+  padding: 0.5rem;
+  
+  color: var(--color-main-white);
+  background: var(--background-button-main);
+  border: var(--border-button-main);
+  border-radius: var(--border-radius-button-main); 
+}
+
+.inputMain {
+  height: 2rem;
+  width: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: var(--border-button-main);
+  border-radius: var(--border-radius-button-main);
+
+  background: var(--background-main);
 }
 
 /** SLATE SPECIFIC STYLING **/

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import TextFormatButton from "./shared/TextFormatButton";
 import { getActiveMark, setLink } from "@/helpers/marks";
-import TextFormatInput from "./shared/TextFormatInput";
 import styles from "./TextFormatting.module.css";
 import { FaLink } from "react-icons/fa6";
 
@@ -34,46 +32,56 @@ const Links = ({ editor }) => {
   const handleRemoveLink = () => {
     setLink(editor, false);
     setLinkText("");
-    setShowLinkInput(false)
-  }
+    setShowLinkInput(false);
+  };
 
   const getLink = () => {
-    // try {
-      const currentLink = getActiveMark(editor, 'link');
-      if (currentLink) setLinkText(currentLink)
-      else setLinkText("")
-    // }
-    // catch {setLinkText("")}
-  }
+    const currentLink = getActiveMark(editor, "link");
+    if (currentLink) setLinkText(currentLink);
+    else setLinkText("");
+  };
 
   const handleLinkIconClick = () => {
     getLink();
     setShowLinkInput(!showLinkInput);
-  }
+  };
 
   useEffect(() => {
     if (!editor) return;
-    getLink()
-  }, [editor])
+    getLink();
+  }, [editor]);
 
   return (
     <div className={styles.toolbarFlexWrapper}>
-      <TextFormatButton
-        icon={<FaLink style={{ height: "1.25rem" }} />}
-        command={handleLinkIconClick}
-      />
+      <button className="buttonMain" onClick={handleLinkIconClick}>
+        <FaLink />
+      </button>
       {showLinkInput && (
-        <div style={{position: 'absolute', top: '5rem', display: 'flex', transform: 'translateX(-35%)'}}>
-          <TextFormatInput
+        <div className={styles.linkDropdownContainer}>
+          {/* <div
+            style={{
+              position: "absolute",
+              top: "5rem",
+              display: "flex",
+              transform: "translateX(-35%)",
+            }}
+          > */}
+          <input
+            className="inputMain"
             value={linkText}
             placeholder="Your Link Here"
-            handleChange={setLinkText}
-            commitChange={handleCommitLink}
-            styling={{ width: "15rem", backgroundColor: 'var(--background-toolbar)' }}
+            onChange={(e) => setLinkText(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleCommitLink}
+            style={{ width: "20rem" }}
           />
-          <TextFormatButton text="+" command={handleCommitLink} styling={{backgroundColor: 'var(--background-toolbar)'}} />
+            <button className="buttonMain" style={{margin: 'auto 0.5rem'}} onClick={handleCommitLink}>
+              +
+            </button>
 
-          <TextFormatButton text="-" command={handleRemoveLink} styling={{backgroundColor: 'var(--background-toolbar)'}} />
+            <button className="buttonMain" onClick={handleRemoveLink}>
+              -
+            </button>
+          {/* </div> */}
         </div>
       )}
     </div>

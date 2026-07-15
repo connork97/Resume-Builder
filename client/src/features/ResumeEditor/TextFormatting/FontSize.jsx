@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 import { updateResume, updateSection } from '@/store/resumeSlice.js';
 import { getActiveMark, setFontSizeOffset } from "@/helpers/marks.js";
 
-import TextFormatButton from './shared/TextFormatButton';
 import TextFormatInput from './shared/TextFormatInput';
 
-// import styles from '../EditorToolbar/components/RichTextToolbar.module.css';
 import styles from './TextFormatting.module.css';
+import AutoWidthInput from '@/components/AutoWidthInput';
 
 /* eslint-disable react-hooks/set-state-in-effect */
 
@@ -272,23 +270,18 @@ const FontSize = ({
 
    return (
       <div className={styles.toolbarFlexWrapper}>
-         {/* <label className={styles.toolbarLabelSpan}>{label}</label> */}
-         <TextFormatButton
-            text="-"
-            command={() => setNewFontSize('decrement')}
-         />
-
-         <TextFormatInput
+         <button className='buttonMain' onClick={() => setNewFontSize('decrement')}>-</button>
+         <input
+            className='inputMain'
+            type='number'
+            step='any'
+            inputMode='decimal'
             value={fontSizeInputValue}
-            handleChange={setFontSizeInputValue}
-            commitChange={() => setNewFontSize(fontSizeInputValue)}
-            styling={{width: '3.5rem'}}
-         />
-
-         <TextFormatButton
-            text="+"
-            command={() => setNewFontSize('increment')}
-         />
+            onChange={(e) => setFontSizeInputValue(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && setNewFontSize(fontSizeInputValue)}
+            style={{width: '3rem'}}
+            />
+         <button className='buttonMain' onClick={() => setNewFontSize('increment')}>+</button>
       </div>
    )
 }

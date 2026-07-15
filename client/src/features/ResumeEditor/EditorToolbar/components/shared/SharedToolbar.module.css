@@ -79,5 +79,5 @@
 }
 
 .toolbarButton:hover, .toolbarDropdownContainer:hover, .toolbarDropdownOption:hover {
-   background: #333333;
+   /* background: var(--background-toolbar-button); */
 }

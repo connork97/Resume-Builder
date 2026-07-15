@@ -4,6 +4,8 @@ import { getActiveMark, setHighlightColor } from "../../../helpers/marks.js";
 
 import ToolbarDropdown from "../EditorToolbar/components/shared/ToolbarDropdown.jsx";
 import ColorDropdown from './shared/ColorDropdown.jsx';
+import { PiHighlighterDuotone, PiHighlighterFill } from 'react-icons/pi';
+import { FaHighlighter } from 'react-icons/fa';
 
 const HighlightColor = ({ editor, selection }) => {
 
@@ -27,7 +29,9 @@ const HighlightColor = ({ editor, selection }) => {
 
   return (
     <ColorDropdown
-      text="HC"
+      text={<FaHighlighter />}
+      styling={{height: '5rem'}}
+      // text="HC"
       editor={editor}
       selection={selection}
       currentEditorColor={currentEditorHighlightColor}

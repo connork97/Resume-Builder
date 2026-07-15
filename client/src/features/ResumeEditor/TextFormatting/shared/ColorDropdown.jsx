@@ -44,14 +44,8 @@ const ColorDropdown = ({ currentEditorColor, text, handleSetColor }) => {
 
   return (
     <div className={styles.colorDropdownContainer}>
-      <TextFormatButton
-        className={styles.colorDropdownButton}
-        // style={styling}
-        style={textFormatButtonStyling}
-        styling={textFormatButtonStyling}
-        onClick={() => setOpen(o => !o)}
-        text={text}
-      />
+      <button className='buttonMain' style={{...textFormatButtonStyling}} onClick={() => setOpen(o => !o)}>{text}</button>
+
 
       {open && (
         <div className={styles.dropdownPanel}>

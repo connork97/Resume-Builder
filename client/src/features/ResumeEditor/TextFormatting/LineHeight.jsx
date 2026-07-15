@@ -255,14 +255,9 @@ const LineHeight = ({
    return (
       <div className={styles.toolbarFlexWrapper}>
          {/* <label className={styles.toolbarLabel}>{label}</label> */}
-         <TextFormatButton
-            text="-"
-            command={() => setNewLineHeight('decrement')}
-         />
-         <TextFormatButton
-            icon={<MdFormatLineSpacing style={{scale: '1.1', marginTop: '0.2em', marginRight: '0.25em'}} />}
-            text={lineHeightInputValue}
-         />
+         <button className='buttonMain' onClick={() => setNewLineHeight('decrement')}>-</button>
+         <button className='buttonMain'><MdFormatLineSpacing style={{scale: '1.1', marginRight: '0.25rem'}} />{lineHeightInputValue}</button>
+         
          {/* <TextFormatInput
             icon={<MdFormatLineSpacing />}
             // text={lineHeightInputValue}
@@ -271,11 +266,7 @@ const LineHeight = ({
             handleChange={setLineHeightInputValue}
             commitChange={() => setNewLineHeight(lineHeightInputValue)}
          /> */}
-
-         <TextFormatButton
-            text="+"
-            command={() => setNewLineHeight('increment')}
-         />
+         <button className='buttonMain' onClick={() => setNewLineHeight('increment')}>+</button>
       </div>
    );
 };

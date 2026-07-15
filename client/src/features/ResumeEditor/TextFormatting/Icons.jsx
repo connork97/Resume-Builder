@@ -4,8 +4,9 @@ import { FaRegSmile } from "react-icons/fa";
 
 import { ICON_GROUPS } from "@/lib/iconLibrary";
 
-import styles from "./TextFormatting.module.css";
 import { setIcon } from "@/helpers/marks";
+
+import styles from "./TextFormatting.module.css";
 
 const Icons = ({ editor }) => {
   const [showIcons, setShowIcons] = useState(false);
@@ -39,10 +40,11 @@ const Icons = ({ editor }) => {
 
   return (
     <div>
-      <TextFormatButton
+      <button className='buttonMain' onClick={() => setShowIcons(!showIcons)}><FaRegSmile /></button>
+      {/* <TextFormatButton
         text={<FaRegSmile style={{height: '1.25rem'}} />}
         command={() => setShowIcons(!showIcons)}
-      />
+      /> */}
       {showIcons && (
         <div className={styles.iconDropdownContainer}>
           {iconGroupsToRender}

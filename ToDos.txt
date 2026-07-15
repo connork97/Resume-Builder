@@ -44,6 +44,8 @@ MAIN FEATURES:
 
 BIGGER FEATURES:
 
+-Font Family Selection
+
 -Reset of Styling, Layout, etc Accross the Board
    -Ex: Reset individualized margin/padding to defaults
    -Useful for cases of when small changes add up and become unmanageable

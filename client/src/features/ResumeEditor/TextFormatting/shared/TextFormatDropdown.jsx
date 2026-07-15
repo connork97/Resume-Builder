@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./SharedTextFormatting.module.css";
 
-const TextFormatDropdown = ({ dropdownOptions }) => {
+const TextFormatDropdown = ({ dropdownOptions, styling }) => {
+
+   const [showTest, setShowTest] = useState(false)
   const dropdownRows = dropdownOptions?.map((option) => {
     return (
       <button
         key={option.value}
-        className={styles.textFormatDropdownRow}
+        className='buttonMain'
+        // className={styles.textFormatDropdownRow}
         onClick={() => option.command?.()}
+        style={{...styling}}
+      //   onMouseEnter={() => setShowTest(true)}
+      //   onMouseLeave={() => setShowTest(false)}
       >
-        {option.icon}
+        {option.icon}{showTest && 'test'}
       </button>
     );
   });

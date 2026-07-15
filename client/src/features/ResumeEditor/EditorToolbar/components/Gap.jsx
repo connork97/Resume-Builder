@@ -3,6 +3,7 @@ import TextFormatButton from "../../TextFormatting/shared/TextFormatButton";
 import styles from "@/features/ResumeEditor/TextFormatting/TextFormatting.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateResume } from "@/store/resumeSlice";
+import { RxColumnSpacing, RxRowSpacing } from "react-icons/rx";
 
 const Gap = ({ label, gapType }) => {
   const dispatch = useDispatch();
@@ -32,11 +33,21 @@ const Gap = ({ label, gapType }) => {
 
   return (
     <div className={styles.toolbarFlexWrapper}>
-      <label className={styles.toolbarLabelSpan}>
-        {label} {resumeGap[gapType]}
-        {/* {columnInputValue + " " + columnInputLabel}: */}
-      </label>
+
       <TextFormatButton text="-" command={() => updateResumeGap("decrement")} />
+        <button className={styles.textFormatButton}>
+
+        {gapType === 'horizontal' && 
+        <>
+        <RxColumnSpacing style={{position: 'relative', top: '0.1em'}} /> {resumeGap[gapType]}
+        </>
+        }
+        {gapType === 'vertical' && 
+        <>
+        <RxRowSpacing style={{position: 'relative', top: '0.1em'}} /> {resumeGap[gapType]}
+        </>
+        }
+        </button>
       {/* <ToolbarInput
             value={columnInputValue}
             handleChange={setColumnInputValue}

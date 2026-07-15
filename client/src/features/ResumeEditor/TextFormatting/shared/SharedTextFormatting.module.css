@@ -1,0 +1,25 @@
+.textFormatDropdownContainer {
+   position: absolute;
+   top: 100%;
+   /* transform: translateX(-0.75em); */
+   padding: 0.75rem;
+   border: 1px solid rgba(255, 255, 255, 0.25);
+   border-top: none;
+   /* border-radius: 0.75rem; */
+   border-radius: 0 0 1rem 1rem;
+   background-color: var(--background-toolbar);
+}
+
+.textFormatDropdownWrapper {
+   display: flex;
+   
+   gap: 0.75em;
+}
+
+.textFormatDropdownRow {
+   display: flex;
+   background-color: var(--background-toolbar-button);
+   border: 1px solid var(--border-toolbar-button);
+   border-radius: 0.25em;
+   padding: 0.5em;
+}

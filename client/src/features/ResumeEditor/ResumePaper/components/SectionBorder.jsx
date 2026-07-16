@@ -5,11 +5,10 @@ const SectionBorder = ({ sectionBorder={}, borderSide }) => {
    if (borderSide === 'bottom' || borderSide === 'top') {
       borderStyling.left = sectionBorder.width ? (100 - parseFloat(sectionBorder.width)) / 2 + '%' : 0,
       borderStyling.height = sectionBorder.height || 0,
-      borderStyling.width = sectionBorder.width || '100%'
-      borderStyling.outlineWidth = '1px';
+      borderStyling.outlineWidth = '15px';
       borderStyling.outlineStyle = sectionBorder.style || 'solid',
       borderStyling.outlineColor = sectionBorder.color || 'rgba(0, 0, 0, 1)',
-      borderStyling.backgroundColor = sectionBorder.color || 'rgba(0, 0, 0, 1)';
+      borderStyling.backgroundColor = sectionBorder.color || 'rgba(0, 0, 0, 0)';
    }
    if (borderSide === 'bottom') {
       borderStyling.bottom = sectionBorder.height ? `-${parseFloat(sectionBorder.height) / 2}px` : 0
@@ -17,22 +16,16 @@ const SectionBorder = ({ sectionBorder={}, borderSide }) => {
    if (borderSide === 'top') {
       borderStyling.top = sectionBorder.height ? `-${parseFloat(sectionBorder.height) / 2}px` : 0
    }
+      borderStyling.width = `calc(${sectionBorder.width} - ${borderStyling.outlineWidth} * 2)` || '100%'
+      borderStyling.left = `calc(${borderStyling.left} + ${borderStyling.outlineWidth})`
+
+   console.log('section border width: ', borderStyling.width, 'left: ', borderStyling.left)
   return (
     <div
       style={{
          ...borderStyling,
         position: "absolute",
         margin: "auto",
-      //   left: sectionBorder.bottom.width
-      //     ? (100 - parseFloat(sectionBorder.bottom.width)) / 2 + "%"
-      //     : 0,
-      //   bottom: sectionBorder.bottom.height
-      //     ? `-${parseFloat(sectionBorder.bottom.height) / 2}px`
-      //     : 0,
-      //   height: sectionBorder.bottom.height || "0px",
-      //   width: sectionBorder.bottom.width || "100%",
-      //   outline: `1px solid`,
-      //   backgroundColor: sectionBorder.bottom.color || "rgba(0, 0, 0, 1)",
         zIndex: 1,
       }}
     />

@@ -29,6 +29,7 @@ SMALL BUGS:
 
 -Text align dropdown icon reflects the resume, section, subsection (I think), and simple fields.  But it does NOT reflect fields with multiple children (i.e. unordered lists with multiple bullets)
 
+TINY BUGS:
 
 
 !------------!

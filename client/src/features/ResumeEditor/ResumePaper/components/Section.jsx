@@ -172,7 +172,6 @@ const Section = ({ section, column }) => {
   const sectionBorder = section.styling?.border;
   return (
     <div
-      // className={styles.sectionContainerDiv}
       className={`${styles.sectionContainerDiv} ${sectionIsActive && styles.activeSectionContainer}`}
       data-section-id={section.id}
       ref={sectionRef}
@@ -183,29 +182,14 @@ const Section = ({ section, column }) => {
       }}
       onClick={handleSetActiveSection}
     >
-      {sectionBorder?.bottom && (
+      {sectionBorder?.top && (
         <SectionBorder
           sectionBorder={sectionBorder.top}
           borderSide="top"
         />
       )}
-      {/* <SectionPadding
-        section={section}
-        column={column}
-        isFirstColumn={isFirstColumn}
-        isLastColumn={isLastColumn}
-        isFirstRow={isFirstRow}
-        isLastRow={isLastRow}
-      /> */}
       <div
         className={`${styles.sectionContentWrapper} ${sectionIsActive && styles.active}`}
-        style={
-          {
-            // ...section.styling,
-            // ...sectionPadding,
-            // outlineColor: section.styling?.color
-          }
-        }
         data-section-id={section.id}
         ref={sectionRef}
       >

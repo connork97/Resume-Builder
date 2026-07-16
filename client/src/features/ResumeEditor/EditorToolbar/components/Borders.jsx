@@ -50,7 +50,11 @@ const Borders = () => {
             changes: {
               styling: {
                 border: {
-                  [type]: value,
+                  ...currentSectionBorder,
+                  [type]: {
+                    ...currentSectionBorder?.[type],
+                    ...value,
+                  },
                 },
               },
             },
@@ -67,7 +71,10 @@ const Borders = () => {
             styling: {
               border: {
                 ...currentSectionBorder,
-                [type]: value,
+                [type]: {
+                  ...currentSectionBorder?.[type],
+                  ...value,
+                },
               },
             },
           },
@@ -91,34 +98,68 @@ const Borders = () => {
   ];
 
   const renderRepeatBorderElements = (borderSide) => {
+    const sectionBorder =sectionsById[activeSectionId]?.styling?.border?.[borderSide] || {};
+    
     return [
-      <RxBorderSolid style={{ scale: "1.25" }} />,
-      <RxBorderDashed style={{ scale: "1.25" }} />,
-      <RxBorderDotted style={{ scale: "1.25" }} />,
+      <button
+        className="buttonMain"
+        onClick={() => handleBorderUpdate(borderSide, { style: "solid" })}
+      >
+        <RxBorderSolid style={{ scale: "1.25" }} />
+      </button>,
+      <button
+        className="buttonMain"
+        onClick={() => handleBorderUpdate(borderSide, { style: "dashed" })}
+      >
+        <RxBorderDashed style={{ scale: "1.25" }} />
+      </button>,
+      <button
+        className="buttonMain"
+        onClick={() => handleBorderUpdate(borderSide, { style: "dotted" })}
+      >
+        <RxBorderDotted style={{ scale: "1.25" }} />
+      </button>,
+       <ColorDropdown
+         text={<FaSquare style={{ scale: "1.5", color: sectionBorder.color || "rgba(0, 0, 0, 1)" }} />}
+         currentEditorColor={sectionBorder.color || "rgba(0, 0, 0, 1)"}
+        //  currentEditorColor={"rgba(0, 0, 0, 1)"}
+         handleSetColor={(color) => handleBorderUpdate(borderSide, { color: color })}
+       />,
     ];
   };
 
   const dropdownOptions = [
     {
       value: "top",
-      elements: [<CgBorderTop style={{ scale: "1.75" }} />],
+      elements: [
+        <button
+          className="buttonMain"
+          onClick={() => handleBorderUpdate("top", { width: "100%" })}
+        >
+          <CgBorderTop style={{ scale: "1.75" }} />
+        </button>,
+        renderRepeatBorderElements("top"),
+      ],
       styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
-      command: () => handleBorderUpdate("top", { width: "90%" }),
+      // command: () => handleBorderUpdate("top", { width: "100%" }),
 
       // command: () => handleBorderUpdate("top", {width: '100%', height: '1px', style: 'solid', color: 'red'}),
-      // command: () => handleDropdownSelection("left"),
     },
     {
       value: "bottom",
       elements: [
-        <CgBorderBottom style={{ scale: "1.75" }} />,
-      //   ...repeatBorderElementsArr,
+        <button
+          className="buttonMain"
+          onClick={() => handleBorderUpdate("bottom", { width: "100%" })}
+        >
+          <CgBorderBottom style={{ scale: "1.75" }} />
+        </button>,
+        renderRepeatBorderElements("bottom"),
+        //   ...repeatBorderElementsArr,
       ],
       styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
-      command: () => handleBorderUpdate("bottom", { width: "90%" }),
+      // command: () => handleBorderUpdate("bottom", { width: "100%" }),
       // command: () => handleBorderUpdate("bottom", {width: '100%', height: '1px', style: 'solid', color: 'red'}),
-
-      // command: () => handleDropdownSelection("left"),
     },
     //  {
     //    value: "left",
@@ -128,7 +169,6 @@ const Borders = () => {
     //    ],
     //    styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
     //    command: () => handleBorderUpdate("left", {width: '100%', height: '1px', style: 'solid', color: 'red'}),
-    //    // command: () => handleDropdownSelection("left"),
     //  },
     //  {
     //    value: "right",
@@ -138,7 +178,6 @@ const Borders = () => {
     //    ],
     //    styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
     //    command: () => handleBorderUpdate("right", {width: '100%', height: '1px', style: 'solid', color: 'red'}),
-    //    // command: () => handleDropdownSelection("left"),
     //  },
   ];
   return (
@@ -153,7 +192,15 @@ const Borders = () => {
       {showBorderDropdown && (
         <TextFormatDropdown
           dropdownOptions={dropdownOptions}
-          styling={{ display: "flex", flexDirection: "column" }}
+          wrapperStyling={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+          }}
+          // containerStyling={{ display: "flex", flexDirection: "column",
+          containerStyling={{
+            transform: "translateX(-80%)",
+          }}
         />
       )}
     </div>

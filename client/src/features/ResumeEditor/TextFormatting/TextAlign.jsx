@@ -123,22 +123,22 @@ const TextAlign = ({ editor }) => {
   const dropdownOptions = [
     {
       value: 'left',
-      elements: [<MdFormatAlignLeft />],
+      elements: [<button className="buttonMain" onClick={() => handleDropdownSelection("left")}><MdFormatAlignLeft /></button>],
       command: () => handleDropdownSelection("left"),
     },
     {
       value: 'center',
-      elements: [<MdFormatAlignCenter />],
+      elements: [<button className="buttonMain" onClick={() => handleDropdownSelection("center")}><MdFormatAlignCenter /></button>],
       command: () => handleDropdownSelection("center"),
     },
     {
       value: 'right',
-      elements: [<MdFormatAlignRight />],
+      elements: [<button className="buttonMain" onClick={() => handleDropdownSelection("right")}><MdFormatAlignRight /></button>],
       command: () => handleDropdownSelection("right"),
     },
     {
       value: 'justify',
-      elements: [<MdFormatAlignJustify />],
+      elements: [<button className="buttonMain" onClick={() => handleDropdownSelection("justify")}><MdFormatAlignJustify /></button>],
       command: () => handleDropdownSelection("justify"),
     },
   ]

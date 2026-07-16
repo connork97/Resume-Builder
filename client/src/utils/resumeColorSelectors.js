@@ -51,6 +51,9 @@ export const selectUsedResumeColors = (state) => {
   Object.values(resume.sections.byId).forEach(section => {
     collectColorsFromStyle(section.styling, colors);
     collectColorsFromSlateNodes(section.value, colors);
+    Object.values(section.styling?.border || {}).forEach(border => {
+      collectColorsFromStyle(border, colors);
+    });
   });
 
   Object.values(resume.subsections.byId).forEach(subsection => {

@@ -182,12 +182,6 @@ const Section = ({ section, column }) => {
       }}
       onClick={handleSetActiveSection}
     >
-      {sectionBorder?.top && (
-        <SectionBorder
-          sectionBorder={sectionBorder.top}
-          borderSide="top"
-        />
-      )}
       <div
         className={`${styles.sectionContentWrapper} ${sectionIsActive && styles.active}`}
         data-section-id={section.id}
@@ -214,12 +208,10 @@ const Section = ({ section, column }) => {
           column={column}
         />
       )}
-      {sectionBorder?.bottom && (
-        <SectionBorder
-          sectionBorder={sectionBorder.bottom}
-          borderSide="bottom"
-        />
-      )}
+      {sectionBorder?.top && <SectionBorder sectionBorder={sectionBorder.top} borderSide="top" />}
+      {sectionBorder?.bottom && <SectionBorder sectionBorder={sectionBorder.bottom} borderSide="bottom" />}
+      {sectionBorder?.left && <SectionBorder sectionBorder={sectionBorder.left} borderSide="left" />}
+      {sectionBorder?.right && <SectionBorder sectionBorder={sectionBorder.right} borderSide="right" />}
     </div>
   );
 };

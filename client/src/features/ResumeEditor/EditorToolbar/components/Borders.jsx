@@ -59,7 +59,8 @@ const Borders = () => {
         );
       }
     } else if (activeSectionId) {
-      const currentSectionBorder = sectionsById[activeSectionId]?.styling?.border;
+      const currentSectionBorder =
+        sectionsById[activeSectionId]?.styling?.border;
       dispatch(
         updateSection({
           id: activeSectionId,
@@ -79,17 +80,18 @@ const Borders = () => {
     }
   };
 
-  const getBorderDefaults = (borderData = {}) => ({
-    ...borderData,
-    width: borderData.width ?? "100%",
-    height: borderData.height ?? "1px",
-    style: borderData.style ?? "solid",
-    color: borderData.color ?? "rgba(0, 0, 0, 1)",
-    display: true,
-  });
+  const getBorderDefaults = (borderData = {}, borderSide) => {
 
-  const [widthInputValue, setWidthInputValue] = useState(0);
-  const [heightInputValue, setHeightInputValue] = useState(0);
+     return {
+        ...borderData,
+        width: borderData.width ?? (borderSide === 'top' || borderSide === 'bottom') ? "100%" : '1px',
+        height: borderData.height ?? (borderSide === 'top' || borderSide === 'bottom') ? "1px" : "100%",
+        style: borderData.style ?? "solid",
+        color: borderData.color ?? "rgba(0, 0, 0, 1)",
+        display: true,
+      }
+};
+
   const renderRepeatBorderElements = (borderSide) => {
     const sectionBorder =
       sectionsById[activeSectionId]?.styling?.border?.[borderSide] || {};
@@ -99,59 +101,145 @@ const Borders = () => {
         <button className="buttonMain">
           <RxWidth style={{ scale: "1.25" }} />
         </button>
-        <input
-          className="inputMain"
-          style={{ width: "3.5rem", paddingRight: "1rem" }}
-          value={sectionBorder.width ? parseFloat(sectionBorder.width) : ""}
-          type="number"
-          step="0.1"
-          placeholder="100"
-          onChange={(e) => {
-            handleBorderUpdate(borderSide, { width: e.target.value + "%" });
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleBorderUpdate(borderSide, { width: e.target.value + "%" });
-            }
-          }}
-        />
-        <span
-          style={{
-            position: "relative",
-            margin: "0.25rem 0.5rem auto -1.75rem",
-          }}
-        >
-          %
-        </span>
+        {borderSide === "top" || borderSide === "bottom" ? (
+          <>
+            <input
+              className="inputMain"
+              style={{ width: "3.5rem", paddingRight: "1rem" }}
+              value={sectionBorder.width ? parseFloat(sectionBorder.width) : ""}
+              type="number"
+              step="0.1"
+              placeholder="100"
+              onChange={(e) => {
+                handleBorderUpdate(borderSide, { width: e.target.value + "%" });
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleBorderUpdate(borderSide, {
+                    width: e.target.value + "%",
+                  });
+                }
+              }}
+            />
+            <span
+              style={{
+                position: "relative",
+                margin: "0.25rem 0.5rem auto -1.75rem",
+              }}
+            >
+              %
+            </span>
+          </>
+        ) : (
+          <>
+            <input
+              className="inputMain"
+              style={{
+                width: "3rem",
+                paddingRight: "1rem",
+                paddingLeft: "0.5rem",
+                textAlign: "left",
+              }}
+              type="number"
+              step="0.1"
+              placeholder="0"
+              onChange={(e) => {
+                handleBorderUpdate(borderSide, {
+                  width: e.target.value + "px",
+                });
+              }}
+              value={sectionBorder.width ? parseFloat(sectionBorder.width) : ""}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleBorderUpdate(borderSide, {
+                    width: e.target.value + "px",
+                  });
+                }
+              }}
+            />
+            <span
+              style={{
+                position: "relative",
+                margin: "0.25rem 0.5rem auto -2rem",
+              }}
+            >
+              px
+            </span>
+          </>
+        )}
       </>,
       <>
         <button className="buttonMain">
           <RxHeight style={{ scale: "1.25" }} />
         </button>
-        <input
-          className="inputMain"
-          style={{ width: "3.5rem", paddingRight: "1rem" }}
-          type="number"
-          step="0.1"
-          placeholder="0"
-          onChange={(e) => {
-            handleBorderUpdate(borderSide, { height: e.target.value + "px" });
-          }}
-          value={sectionBorder.height ? parseFloat(sectionBorder.height) : ""}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleBorderUpdate(borderSide, { height: e.target.value + "px" });
-            }
-          }}
-        />
-        <span
-          style={{
-            position: "relative",
-            margin: "0.25rem 0.5rem auto -2rem",
-          }}
-        >
-          px
-        </span>
+        {borderSide === "top" || borderSide === "bottom" ? (
+          <>
+            <input
+              className="inputMain"
+              style={{
+                width: "3rem",
+                paddingRight: "1rem",
+                paddingLeft: "0.5rem",
+                textAlign: "left",
+              }}
+              type="number"
+              step="0.1"
+              placeholder="0"
+              onChange={(e) => {
+                handleBorderUpdate(borderSide, {
+                  height: e.target.value + "px",
+                });
+              }}
+              value={
+                sectionBorder.height ? parseFloat(sectionBorder.height) : ""
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleBorderUpdate(borderSide, {
+                    height: e.target.value + "px",
+                  });
+                }
+              }}
+            />
+            <span
+              style={{
+                position: "relative",
+                margin: "0.25rem 0.5rem auto -2rem",
+              }}
+            >
+              px
+            </span>
+          </>
+        ) : (
+          <>
+            <input
+              className="inputMain"
+              style={{ width: "3.5rem", paddingRight: "1rem" }}
+              value={sectionBorder.height ? parseFloat(sectionBorder.height) : ""}
+              type="number"
+              step="0.1"
+              placeholder="100"
+              onChange={(e) => {
+                handleBorderUpdate(borderSide, { height: e.target.value + "%" });
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleBorderUpdate(borderSide, {
+                    height: e.target.value + "%",
+                  });
+                }
+              }}
+            />
+            <span
+              style={{
+                position: "relative",
+                margin: "0.25rem 0.5rem auto -1.75rem",
+              }}
+            >
+              %
+            </span>
+          </>
+        )}
       </>,
       <button
         className="buttonMain"
@@ -204,9 +292,10 @@ const Borders = () => {
 
             handleBorderUpdate(
               "top",
-              getBorderDefaults(activeSectionBorder?.top),
+              getBorderDefaults(activeSectionBorder?.top, 'top'),
             );
-          }}        >
+          }}
+        >
           <CgBorderTop style={{ scale: "1.75" }} />
         </button>,
         renderRepeatBorderElements("top"),
@@ -229,13 +318,63 @@ const Borders = () => {
 
             handleBorderUpdate(
               "bottom",
-              getBorderDefaults(activeSectionBorder?.bottom),
+              getBorderDefaults(activeSectionBorder?.bottom, 'bottom'),
             );
           }}
         >
           <CgBorderBottom style={{ scale: "1.75" }} />
         </button>,
         renderRepeatBorderElements("bottom"),
+      ],
+      styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
+    },
+    {
+      value: "left",
+      elements: [
+        <button
+          className="buttonMain"
+          onClick={() => {
+            const currentDisplayValue = activeSectionBorder?.left?.display;
+
+            if (currentDisplayValue === true) {
+              handleBorderUpdate("left", { display: false });
+              return;
+            }
+
+            handleBorderUpdate(
+              "left",
+              getBorderDefaults(activeSectionBorder?.left, 'left'),
+            );
+          }}
+        >
+          <CgBorderLeft style={{ scale: "1.75" }} />
+        </button>,
+        renderRepeatBorderElements("left"),
+      ],
+      styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
+    },
+        {
+      value: "right",
+      elements: [
+        <button
+          className="buttonMain"
+          onClick={() => {
+            const currentDisplayValue = activeSectionBorder?.right?.display;
+
+            if (currentDisplayValue === true) {
+              handleBorderUpdate("right", { display: false });
+              return;
+            }
+
+            handleBorderUpdate(
+              "right",
+              getBorderDefaults(activeSectionBorder?.right, 'right'),
+            );
+          }}
+        >
+          <CgBorderRight style={{ scale: "1.75" }} />
+        </button>,
+        renderRepeatBorderElements("right"),
       ],
       styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
     },

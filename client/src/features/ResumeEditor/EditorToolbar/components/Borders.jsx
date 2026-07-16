@@ -32,18 +32,15 @@ const Borders = () => {
     (state) => state.resume.activeSectionIds,
   );
   const sectionsById = useSelector((state) => state.resume.sections.byId);
+  const activeSectionBorder =
+    sectionsById[activeSectionId]?.styling?.border || {};
 
   const [showBorderDropdown, setShowBorderDropdown] = useState(false);
 
   const handleBorderUpdate = (type, value) => {
-    console.log(
-      "handleBorderUpdate called with type:",
-      type,
-      "and value:",
-      value,
-    );
     if (activeSectionIds.length > 0) {
       for (let sectionId of activeSectionIds) {
+        const currentSectionBorder = sectionsById[sectionId]?.styling?.border;
         dispatch(
           updateSection({
             id: sectionId,
@@ -62,8 +59,7 @@ const Borders = () => {
         );
       }
     } else if (activeSectionId) {
-      const currentSectionBorder =
-        sectionsById[activeSectionId].styling?.border;
+      const currentSectionBorder = sectionsById[activeSectionId]?.styling?.border;
       dispatch(
         updateSection({
           id: activeSectionId,
@@ -83,24 +79,80 @@ const Borders = () => {
     }
   };
 
-  const repeatBorderElementsArr = [
-    <RxBorderSolid style={{ scale: "1.25" }} />,
-    //  <RxBorderDashed style={{ scale: "1.25" }} />,
-    //  <RxBorderDotted style={{ scale: "1.25" }} />,
-    //  <RxWidth style={{ scale: "1.25" }} />,
-    //  <RxHeight style={{ scale: "1.25" }} />,
+  const getBorderDefaults = (borderData = {}) => ({
+    ...borderData,
+    width: borderData.width ?? "100%",
+    height: borderData.height ?? "1px",
+    style: borderData.style ?? "solid",
+    color: borderData.color ?? "rgba(0, 0, 0, 1)",
+    display: true,
+  });
 
-    //  <ColorDropdown
-    //    skipButton={true}
-    //    text={<FaSquare style={{ scale: "2", margin: "-1rem" }} />}
-    //    currentEditorColor={"rgba(0, 0, 0, 1)"}
-    //  />,
-  ];
-
+  const [widthInputValue, setWidthInputValue] = useState(0);
+  const [heightInputValue, setHeightInputValue] = useState(0);
   const renderRepeatBorderElements = (borderSide) => {
-    const sectionBorder =sectionsById[activeSectionId]?.styling?.border?.[borderSide] || {};
-    
+    const sectionBorder =
+      sectionsById[activeSectionId]?.styling?.border?.[borderSide] || {};
+
     return [
+      <>
+        <button className="buttonMain">
+          <RxWidth style={{ scale: "1.25" }} />
+        </button>
+        <input
+          className="inputMain"
+          style={{ width: "3.5rem", paddingRight: "1rem" }}
+          value={sectionBorder.width ? parseFloat(sectionBorder.width) : ""}
+          type="number"
+          step="0.1"
+          placeholder="100"
+          onChange={(e) => {
+            handleBorderUpdate(borderSide, { width: e.target.value + "%" });
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleBorderUpdate(borderSide, { width: e.target.value + "%" });
+            }
+          }}
+        />
+        <span
+          style={{
+            position: "relative",
+            margin: "0.25rem 0.5rem auto -1.75rem",
+          }}
+        >
+          %
+        </span>
+      </>,
+      <>
+        <button className="buttonMain">
+          <RxHeight style={{ scale: "1.25" }} />
+        </button>
+        <input
+          className="inputMain"
+          style={{ width: "3.5rem", paddingRight: "1rem" }}
+          type="number"
+          step="0.1"
+          placeholder="0"
+          onChange={(e) => {
+            handleBorderUpdate(borderSide, { height: e.target.value + "px" });
+          }}
+          value={sectionBorder.height ? parseFloat(sectionBorder.height) : ""}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleBorderUpdate(borderSide, { height: e.target.value + "px" });
+            }
+          }}
+        />
+        <span
+          style={{
+            position: "relative",
+            margin: "0.25rem 0.5rem auto -2rem",
+          }}
+        >
+          px
+        </span>
+      </>,
       <button
         className="buttonMain"
         onClick={() => handleBorderUpdate(borderSide, { style: "solid" })}
@@ -119,12 +171,20 @@ const Borders = () => {
       >
         <RxBorderDotted style={{ scale: "1.25" }} />
       </button>,
-       <ColorDropdown
-         text={<FaSquare style={{ scale: "1.5", color: sectionBorder.color || "rgba(0, 0, 0, 1)" }} />}
-         currentEditorColor={sectionBorder.color || "rgba(0, 0, 0, 1)"}
-        //  currentEditorColor={"rgba(0, 0, 0, 1)"}
-         handleSetColor={(color) => handleBorderUpdate(borderSide, { color: color })}
-       />,
+      <ColorDropdown
+        text={
+          <FaSquare
+            style={{
+              scale: "1.5",
+              color: sectionBorder.color || "rgba(0, 0, 0, 1)",
+            }}
+          />
+        }
+        currentEditorColor={sectionBorder.color || "rgba(0, 0, 0, 1)"}
+        handleSetColor={(color) =>
+          handleBorderUpdate(borderSide, { color: color })
+        }
+      />,
     ];
   };
 
@@ -134,15 +194,24 @@ const Borders = () => {
       elements: [
         <button
           className="buttonMain"
-          onClick={() => handleBorderUpdate("top", { width: "100%" })}
-        >
+          onClick={() => {
+            const currentDisplayValue = activeSectionBorder?.top?.display;
+
+            if (currentDisplayValue === true) {
+              handleBorderUpdate("top", { display: false });
+              return;
+            }
+
+            handleBorderUpdate(
+              "top",
+              getBorderDefaults(activeSectionBorder?.top),
+            );
+          }}        >
           <CgBorderTop style={{ scale: "1.75" }} />
         </button>,
         renderRepeatBorderElements("top"),
       ],
       styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
-      // command: () => handleBorderUpdate("top", { width: "100%" }),
-
       // command: () => handleBorderUpdate("top", {width: '100%', height: '1px', style: 'solid', color: 'red'}),
     },
     {
@@ -150,36 +219,28 @@ const Borders = () => {
       elements: [
         <button
           className="buttonMain"
-          onClick={() => handleBorderUpdate("bottom", { width: "100%" })}
+          onClick={() => {
+            const currentDisplayValue = activeSectionBorder?.bottom?.display;
+
+            if (currentDisplayValue === true) {
+              handleBorderUpdate("bottom", { display: false });
+              return;
+            }
+
+            handleBorderUpdate(
+              "bottom",
+              getBorderDefaults(activeSectionBorder?.bottom),
+            );
+          }}
         >
           <CgBorderBottom style={{ scale: "1.75" }} />
         </button>,
         renderRepeatBorderElements("bottom"),
-        //   ...repeatBorderElementsArr,
       ],
       styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
-      // command: () => handleBorderUpdate("bottom", { width: "100%" }),
-      // command: () => handleBorderUpdate("bottom", {width: '100%', height: '1px', style: 'solid', color: 'red'}),
     },
-    //  {
-    //    value: "left",
-    //    elements: [
-    //      <CgBorderLeft style={{ scale: "1.75" }} />,
-    //      ...repeatBorderElementsArr,
-    //    ],
-    //    styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
-    //    command: () => handleBorderUpdate("left", {width: '100%', height: '1px', style: 'solid', color: 'red'}),
-    //  },
-    //  {
-    //    value: "right",
-    //    elements: [
-    //      <CgBorderRight style={{ scale: "1.75" }} />,
-    //      ...repeatBorderElementsArr,
-    //    ],
-    //    styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
-    //    command: () => handleBorderUpdate("right", {width: '100%', height: '1px', style: 'solid', color: 'red'}),
-    //  },
   ];
+
   return (
     <div>
       <button

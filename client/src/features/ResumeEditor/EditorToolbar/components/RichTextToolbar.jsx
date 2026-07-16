@@ -16,6 +16,7 @@ import styles from "./RichTextToolbar.module.css";
 import Gap from "./Gap.jsx";
 import Links from "../../TextFormatting/Links.jsx";
 import Icons from "../../TextFormatting/Icons.jsx";
+import Borders from "./Borders.jsx";
 
 const RichTextToolbar = ({ editor }) => {
 
@@ -91,6 +92,8 @@ const RichTextToolbar = ({ editor }) => {
         <Gap label="Section Gap:" gapType='vertical' />
 
         <Gap label="Column Gap:" gapType='horizontal' />
+
+        <Borders />
 
         {/* <div className={styles.belowToolbarWrapper}> */}
         {/* <CurrentlyEditing editor={editor} /> */}

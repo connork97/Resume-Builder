@@ -3,27 +3,34 @@ import React, { useState } from "react";
 import styles from "./SharedTextFormatting.module.css";
 
 const TextFormatDropdown = ({ dropdownOptions, styling }) => {
-
-   const [showTest, setShowTest] = useState(false)
+  const [showTest, setShowTest] = useState(false);
   const dropdownRows = dropdownOptions?.map((option) => {
     return (
-      <button
-        key={option.value}
-        className='buttonMain'
-        // className={styles.textFormatDropdownRow}
-        onClick={() => option.command?.()}
-        style={{...styling}}
-      //   onMouseEnter={() => setShowTest(true)}
-      //   onMouseLeave={() => setShowTest(false)}
-      >
-        {option.icon}{showTest && 'test'}
-      </button>
+      <div style={option.styling}>
+        {option.elements.map((element) => {
+          if (!element.skipButton) {
+
+            return (
+              <button
+              key={option.value}
+              className="buttonMain"
+              onClick={() => option.command?.()}
+              >
+            {element}
+            {showTest && "test"}
+          </button>
+          );
+        } else return <p>HIYA</p>
+        })}
+      </div>
     );
   });
 
   return (
     <div className={styles.textFormatDropdownContainer}>
-      <div className={styles.textFormatDropdownWrapper}>{dropdownRows}</div>
+      <div className={styles.textFormatDropdownWrapper} style={styling}>
+        {dropdownRows}
+      </div>
     </div>
   );
 };

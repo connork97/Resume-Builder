@@ -8,7 +8,7 @@ import TextFormatButton from './TextFormatButton';
 
 import styles from "../TextFormatting.module.css";
 
-const ColorDropdown = ({ currentEditorColor, text, handleSetColor }) => {
+const ColorDropdown = ({ currentEditorColor, text=false, handleSetColor }) => {
 
   const usedColors = useSelector(selectUsedResumeColors);
   // const colors = [

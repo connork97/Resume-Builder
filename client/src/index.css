@@ -162,6 +162,10 @@ a {
   background: var(--background-main);
 }
 
+.dropdownMain {
+  
+}
+
 /** SLATE SPECIFIC STYLING **/
 
 /* Prevents Slate Editors from inheriting weird outlines */

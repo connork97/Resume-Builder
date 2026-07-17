@@ -26,7 +26,10 @@
   --border-radius-rounded-main: 1rem;
   /* --border-radius-main: 0.75rem; */
   --border-radius-button-main: 0.25rem;
-  --font-main: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-main:
+    system-ui, 'Avenir', Helvetica, Arial, sans-serif, Arial, Verdana, Tahoma,
+    'Trebuchet MS', 'Times New Roman', 'Georgia', 'Garamond', 'Courier New',
+    'Brush Script MT', 'Brush Script MT (cursive)';
   --color-main: rgba(255, 255, 255, 1);
   --color-main-white: rgba(255, 255, 255, 1);
 
@@ -149,7 +152,7 @@ a {
 }
 
 .buttonMain:hover {
-   filter: brightness(1.25);
+  filter: brightness(1.25);
 }
 
 .inputMain {

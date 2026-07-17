@@ -23,6 +23,7 @@
   --border-toolbar-button: 1px solid rgba(58, 58, 58, 1);
   --border-button-main: 1px solid rgba(58, 58, 58, 1);
   --border-radius-main: 0.25rem;
+  --border-radius-rounded-main: 1rem;
   /* --border-radius-main: 0.75rem; */
   --border-radius-button-main: 0.25rem;
   --font-main: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -55,9 +56,10 @@
   --z-base: 0;
   --z-main: 99;
   --z-navbar: 100;
-  
+
   --z-sticky: 100;
   --z-dropdown: 500;
+  --z-modal: 1000;
 
   /* ! ----------- ! */
   /** END CSS VARIABLES **/
@@ -139,11 +141,11 @@ a {
 
   text-align: center;
   padding: 0.5rem;
-  
+
   color: var(--color-main-white);
   background: var(--background-button-main);
   border: var(--border-button-main);
-  border-radius: var(--border-radius-button-main); 
+  border-radius: var(--border-radius-button-main);
 }
 
 .inputMain {
@@ -162,10 +164,6 @@ a {
   background: var(--background-main);
 }
 
-.dropdownMain {
-  
-}
-
 /** SLATE SPECIFIC STYLING **/
 
 /* Prevents Slate Editors from inheriting weird outlines */
@@ -176,4 +174,22 @@ a {
 /* Moves bullets to top of list item for Slate Lists */
 [data-slate-editor="true"] li [data-slate-node="text"] {
   vertical-align: top;
+}
+
+/** MISC FREQUENTLY USED STYLING **/
+
+.flexRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.spaceBetween {
+  justify-content: space-between;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }

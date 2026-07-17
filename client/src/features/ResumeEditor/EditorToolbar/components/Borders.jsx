@@ -125,6 +125,7 @@ const Borders = () => {
               style={{
                 position: "relative",
                 margin: "0.25rem 0.5rem auto -1.75rem",
+                pointerEvents: 'none',
               }}
             >
               %
@@ -161,6 +162,7 @@ const Borders = () => {
               style={{
                 position: "relative",
                 margin: "0.25rem 0.5rem auto -2rem",
+                pointerEvents: 'none',
               }}
             >
               px
@@ -205,6 +207,7 @@ const Borders = () => {
               style={{
                 position: "relative",
                 margin: "0.25rem 0.5rem auto -2rem",
+                pointerEvents: 'none',
               }}
             >
               px
@@ -234,6 +237,7 @@ const Borders = () => {
               style={{
                 position: "relative",
                 margin: "0.25rem 0.5rem auto -1.75rem",
+                pointerEvents: 'none',
               }}
             >
               %

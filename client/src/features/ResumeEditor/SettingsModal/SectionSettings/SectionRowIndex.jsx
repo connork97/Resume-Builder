@@ -1,127 +1,142 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
-import { updateColumn } from '@/store/resumeSlice.js';
-import ToolbarButton from '@/features/ResumeEditor/EditorToolbar/components/shared/ToolbarButton.jsx';
+import { updateColumn } from "@/store/resumeSlice.js";
 
-import styles from '@/features/ResumeEditor/EditorToolbar/components/RichTextToolbar.module.css';
-import { updateSection } from '@/store/resumeSlice.js';
+import styles from "@/features/ResumeEditor/EditorToolbar/components/RichTextToolbar.module.css";
+import { updateSection } from "@/store/resumeSlice.js";
 
-const RowIndex = ({ section }) => {
+const SectionRowIndex = ({ section }) => {
+  const dispatch = useDispatch();
 
-   const dispatch = useDispatch();
+  const resume = useSelector((state) => state.resume);
+  const sections = resume.sections;
+  const columns = useSelector((state) => state.resume.columns);
+  const column = columns.byId[section.columnId];
 
-   const resume = useSelector(state => state.resume);
-   const sections = resume.sections;
-   const columns = useSelector(state => state.resume.columns);
-   const column = columns.byId[section.columnId];
+  const [rowIndexInputValue, setRowIndexInputValue] = useState("");
 
-   const [rowIndexInputValue, setRowIndexInputValue] = useState('');
+  useEffect(() => {
+    const rowIndex = columns.byId[section.columnId].sectionIds.indexOf(
+      section.id,
+    );
+    if (rowIndex >= 0) setRowIndexInputValue(rowIndex);
+    else {
+      setRowIndexInputValue("?");
+      console.error(
+        `Invalid Section Row Index.  Column with ID ${section.columnId} not found in columns state.`,
+      );
+    }
+  }, [section.columnId, column.sectionIds, columns.byId, section.id]);
 
-   useEffect(() => {
-      const rowIndex = columns.byId[section.columnId].sectionIds.indexOf(section.id);
-      if (rowIndex >= 0) setRowIndexInputValue(rowIndex);
-      else {
-         setRowIndexInputValue('?');
-         console.error(`Invalid Section Row Index.  Column with ID ${section.columnId} not found in columns state.`);
-      }
-   }, [section.columnId, column.sectionIds, columns.byId, section.id]);
+  const updateRowIndex = (action) => {
+    let newRowIndex;
 
-   const updateRowIndex = (action) => {
-      let newRowIndex;
+    if (action === "increment") newRowIndex = rowIndexInputValue + 1;
+    else if (action === "decrement") newRowIndex = rowIndexInputValue - 1;
 
-      if (action === 'increment') newRowIndex = rowIndexInputValue + 1;
-      else if (action === 'decrement') newRowIndex = rowIndexInputValue - 1;
+    if (newRowIndex < 0 || newRowIndex >= column.sectionIds.length) {
+      window.alert(
+        `Row index must be between 0 and ${column.sectionIds.length - 1}.`,
+      );
+      return;
+    }
 
-      if (newRowIndex < 0 || newRowIndex >= column.sectionIds.length) {
-         window.alert(`Row index must be between 0 and ${column.sectionIds.length - 1}.`);
-         return;
-      }
+    const splicedSectionIds = [...column.sectionIds];
+    splicedSectionIds.splice(rowIndexInputValue, 1);
+    splicedSectionIds.splice(newRowIndex, 0, section.id);
 
-      const splicedSectionIds = [...column.sectionIds];
-      splicedSectionIds.splice(rowIndexInputValue, 1);
-      splicedSectionIds.splice(newRowIndex, 0, section.id);
+    dispatch(
+      updateColumn({
+        id: section.columnId,
+        changes: {
+          sectionIds: splicedSectionIds,
+        },
+      }),
+    );
+    setRowIndexInputValue(newRowIndex);
+  };
 
-      dispatch(updateColumn({
-         id: section.columnId,
-         changes: {
-            sectionIds: splicedSectionIds
-         }
-      }));
-      setRowIndexInputValue(newRowIndex);
-   }
+  const moveSectionUpOrDown = (upOrDown) => {
+    const currentSection = sections.byId[section.id];
 
-   const moveSectionUpOrDown = (upOrDown) => {
-      const currentSection = sections.byId[section.id];
+    const sectionsInColumn = column.sectionIds
+      .map((id) => sections.byId[id])
+      .filter(Boolean)
+      .sort((a, b) => a.position - b.position);
 
-      const sectionsInColumn = column.sectionIds
-         .map(id => sections.byId[id])
-         .filter(Boolean)
-         .sort((a, b) => a.position - b.position);
+    const currentIndex = sectionsInColumn.findIndex(
+      (s) => s.id === currentSection.id,
+    );
 
-      const currentIndex = sectionsInColumn.findIndex(s => s.id === currentSection.id);
+    if (currentIndex === -1) {
+      alert("Could not find this section in the column.");
+      return;
+    }
 
-      if (currentIndex === -1) {
-         alert("Could not find this section in the column.");
-         return;
-      }
+    let sectionToSwapWith;
 
-      let sectionToSwapWith;
-      
-      if (upOrDown === 'down') sectionToSwapWith = sectionsInColumn[currentIndex + 1];
-      else if (upOrDown === 'up') sectionToSwapWith = sectionsInColumn[currentIndex - 1];
+    if (upOrDown === "down")
+      sectionToSwapWith = sectionsInColumn[currentIndex + 1];
+    else if (upOrDown === "up")
+      sectionToSwapWith = sectionsInColumn[currentIndex - 1];
 
-      if (!sectionToSwapWith) {
-         alert(`You cannot move this section ${upOrDown} any further.`);
-         return;
-      }
-      dispatch(updateSection({
-         id: currentSection.id,
-         changes: {
-            position: sectionToSwapWith.position,
-         },
-      }));
+    if (!sectionToSwapWith) {
+      alert(`You cannot move this section ${upOrDown} any further.`);
+      return;
+    }
+    dispatch(
+      updateSection({
+        id: currentSection.id,
+        changes: {
+          position: sectionToSwapWith.position,
+        },
+      }),
+    );
 
-      dispatch(updateSection({
-         id: sectionToSwapWith.id,
-         changes: {
-            position: currentSection.position,
-         },
-      }));
+    dispatch(
+      updateSection({
+        id: sectionToSwapWith.id,
+        changes: {
+          position: currentSection.position,
+        },
+      }),
+    );
 
-      setRowIndexInputValue(currentIndex + 1);
-      if (upOrDown === 'down') updateRowIndex('increment');
-      else if (upOrDown === 'up') updateRowIndex('decrement');
-   };
+    setRowIndexInputValue(currentIndex + 1);
+    if (upOrDown === "down") updateRowIndex("increment");
+    else if (upOrDown === "up") updateRowIndex("decrement");
+  };
 
-
-   return (
-      <div className={styles.toolBarButtonInputWrapper} style={{ justifyContent: 'space-between' }}>
-         {/* <SettingsModalInput
-            name="RowIndexInput"
-            label={`${section.label} Row Index`}
-            value={rowIndexInputValue}
-            handleSetInputValue={setRowIndexInputValue}
-            handleSetValue={() => updateRowIndex('input')}
-         /> */}
-         <span className={styles.sectionLabelSpan}>
-            Move {section.label} Section:
-         </span>
-         <div style={{ display: 'flex', gap: '1.4em', marginBottom: '0.25em', marginTop: '0.25em' }}>
-            <ToolbarButton
-               style={{ justifySelf: 'end' }}
-               text="Up"
-               command={() => moveSectionUpOrDown('up')}
-            />
-            <ToolbarButton
-               style={{ justifySelf: 'end' }}
-               text="Down"
-               command={() => moveSectionUpOrDown('down')}
-            />
-         </div>
+  return (
+    <div
+      className={styles.toolBarButtonInputWrapper}
+      style={{ justifyContent: "space-between" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          gap: "1.4em",
+          marginBottom: "0.25em",
+          marginTop: "0.25em",
+        }}
+      >
+        <button
+          className="buttonMain"
+          onClick={() => moveSectionUpOrDown("up")}
+        >
+          Up
+        </button>
+        <button
+          className="buttonMain"
+          onClick={() => moveSectionUpOrDown("down")}
+        >
+          Down
+        </button>
       </div>
-   )
-}
+    </div>
+  );
+};
 
-export default RowIndex;
+export default SectionRowIndex;

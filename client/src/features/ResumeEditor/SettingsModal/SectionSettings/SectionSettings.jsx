@@ -1,185 +1,94 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { updateSection } from '@/store/resumeSlice.js';
+import { updateSection } from "@/store/resumeSlice.js";
 
-import ColumnIndex from './SectionColumnIndex.jsx';
-import RowIndex from './SectionRowIndex.jsx';
-import FontColor from '../../TextFormatting/FontColor.jsx';
-import TextAlign from '../../TextFormatting/TextAlign.jsx';
-import BackgroundColor from '../../TextFormatting/BackgroundColor.jsx';
+import SectionColumnIndex from "./SectionColumnIndex.jsx";
+import SectionRowIndex from "./SectionRowIndex.jsx";
+import FontColor from "../../TextFormatting/FontColor.jsx";
+import TextAlign from "../../TextFormatting/TextAlign.jsx";
+import BackgroundColor from "../../TextFormatting/BackgroundColor.jsx";
 
-import FontSize from '../../TextFormatting/FontSize.jsx';
-import LineHeight from '../../TextFormatting/LineHeight.jsx';
+import FontSize from "../../TextFormatting/FontSize.jsx";
+import LineHeight from "../../TextFormatting/LineHeight.jsx";
 
-import styles from '../SettingsModal.module.css';
-import SectionFlexDirection from './SectionFlexDirection.jsx';
-import SectionJustifyContent from './SectionJustifyContent.jsx';
+import styles from "../SettingsModal.module.css";
+import SectionFlexDirection from "./SectionFlexDirection.jsx";
+import SectionJustifyContent from "./SectionJustifyContent.jsx";
+import MoveSection from "./MoveSection.jsx";
 
 const SectionSettings = () => {
+  const dispatch = useDispatch();
 
-   const dispatch = useDispatch();
+  const section = useSelector(
+    (state) => state.resume.sections.byId[state.resume.activeSectionId],
+  );
 
-   const section = useSelector(state => state.resume.sections.byId[state.resume.activeSectionId]);
-   const column = useSelector(state => state.resume.columns.byId[section.columnId]);
+  const hideOrShowHeading = () => {
+    const newShowHeadingValue = !section.showHeading;
+    dispatch(
+      updateSection({
+        id: section.id,
+        changes: {
+          showHeading: newShowHeadingValue,
+        },
+      }),
+    );
+  };
 
-   const resumeStyling = useSelector(state => state.resume.styling);
-   const sections = useSelector(state => state.resume.sections);
-   const columns = useSelector(state => state.resume.columns);
-   const fields = useSelector(state => state.resume.fields);
-   const subsections = useSelector(state => state.resume.subsections);
-   const activeSectionId = useSelector(state => state.resume.activeSectionId);
+//   const renderSettingsModalRows = () => {
+   //  let componentsArr = [
+      // { component: FontSize, label: "Font Size:", props: { section, column } },
+      // { component: LineHeight, label: "Line Height:", props: { section, column } },
+      // { component: TextAlign, label: "Text Align:", styling: { justifyContent: 'end' } },
+      // { component: FontColor, label: "Font Color:" },
+      // { component: BackgroundColor, label: 'Background Color:' },
+   //  ];
 
-   const sectionColumnIndex = columns.allIds.indexOf(section.columnId);
+//     return componentsArr.map((Component, index) => (
+//       <div className='flexRow' key={index}>
+//         <p className={styles.settingsModalLabel}>{Component.label}</p>
+//         <Component.component
+//           sections={sections}
+//           columns={columns}
+//           fields={fields}
+//           // label={Component.label}
+//           subsections={subsections}
+//           resumeStyling={resumeStyling}
+//           activeSectionId={activeSectionId}
+//           {...Component.props}
+//         />
+//       </div>
+//     ));
+//   };
 
-   // const getColumnCount = (gridTemplateColumns) => {
-   //    const match = gridTemplateColumns.match(/repeat\((\d+),\s*1fr\)/);
-   //    return match ? parseInt(match[1], 10) : "auto";
-   // };
-
-   // const getRowCount = (gridTemplateRows) => {
-   //    const match = gridTemplateRows.match(/repeat\((\d+),\s*auto\)/);
-   //    return match ? parseInt(match[1], 10) : "auto";
-   // }
-
-   // const [columnWidthInputValue, setColumnWidthInputValue] = useState('auto');
-
-   // const [columnIndexInputValue, setColumnIndexInputValue] = useState(0);
-   // // const [columnsInputValue, setColumnsInputValue] = useState('');
-   // // const [rowsInputValue, setRowsInputValue] = useState("auto");
-
-   // useEffect(() => {
-   //    if (sectionColumnIndex) {
-   //       setColumnIndexInputValue(sectionColumnIndex)
-   //    };
-   //    if (column?.width) setColumnWidthInputValue(parseInt(column.width));
-   //    // setColumnWidthInputValue(parseInt(column?.width));
-   // }, [column.width, section.columnId]);
-
-   // const dispatchLayoutChanges = (layoutChanges) => {
-   //    dispatch(updateSection({
-   //       id: section.id,
-   //       changes: {
-   //          layout: {
-   //             ...section.layout,
-   //             ...layoutChanges
-   //          }
-   //       }
-   //    }))
-   // }
-
-   // const handleSetColumnWidth = () => {
-   //    const newColumnWidth = columnWidthInputValue + '%';
-   //    dispatch(updateColumn({ id: column.id, changes: { width: newColumnWidth } }));
-   // }
-
-   // const handleSetLayoutChanges = () => {
-   //    let columnsValue = columnsInputValue;
-   //    let rowsValue = rowsInputValue;
-   //    if (columnsInputValue == 0) columnsValue = 'auto';
-   //    if (rowsInputValue == 0) rowsValue = 'auto';
-
-   //    let layoutChanges = {};
-
-   //    if (columnsValue == 1) {
-   //       layoutChanges = {
-   //          display: 'flex',
-   //          flexDirection: 'column',
-   //       };
-   //       setRowsInputValue('auto');
-   //    }
-   //    else if (columnsValue == 1 && (rowsValue == 1 || rowsValue == 'auto')) {
-   //       layoutChanges = {
-   //          display: 'flex',
-   //          flexDirection: 'row'
-   //       };
-   //    } else if (columnsValue == 1 && rowsValue > 1) {
-   //       layoutChanges = {
-   //          display: 'flex',
-   //          flexDirection: 'column'
-   //       };
-   //    }
-   //    else if (columnsValue > 1) {
-   //       layoutChanges = {
-   //          display: 'grid',
-   //          gridTemplateColumns: `repeat(${columnsValue}, 1fr)`,
-   //          gridTemplateRows: rowsValue > 1 ? `repeat(${rowsValue}, auto)` : 'auto',
-   //          alignItems: 'center'
-   //       };
-   //    } else if (columnsValue == 'auto') {
-   //       layoutChanges = {
-   //          display: 'flex',
-   //          justifyContent: 'space-evenly'
-   //       };
-   //    }
-   //    dispatchLayoutChanges(layoutChanges);
-   // }
-   const hideOrShowHeading = () => {
-      const newShowHeadingValue = !section.showHeading;
-      dispatch(updateSection({
-         id: section.id,
-         changes: {
-            showHeading: newShowHeadingValue
-         }
-      }))
-   }
-
-   const renderSettingsModalRows = () => {
-      let componentsArr = [
-         { component: FontSize, label: "Font Size:", props: { section, column } },
-         { component: LineHeight, label: "Line Height:", props: { section, column } },
-         { component: TextAlign, label: "Text Align:", styling: { justifyContent: 'end' } },
-         { component: FontColor, label: "Font Color:" },
-         { component: BackgroundColor, label: 'Background Color:' },
-      ];
-
-      return componentsArr.map((Component, index) => (
-         <div className={styles.settingsModalRow} key={index}>
-            <p className={styles.settingsModalLabel}>{Component.label}</p>
-            <Component.component
-               sections={sections}
-               columns={columns}
-               fields={fields}
-               // label={Component.label}
-               subsections={subsections}
-               resumeStyling={resumeStyling}
-               activeSectionId={activeSectionId}
-               {...Component.props}
-            />
-         </div>
-      ));
-   }
-
-   return (
-      <div className={styles.settingsModalWrapper}>
-         <h2 className={styles.settingsModalHeader}>{section.label} Settings:</h2>
-         <div className={styles.settingsModalRow}>
-            <label
-               className={styles.settingsModalLabel}
-               htmlFor='hideOrShowHeading'
-            >
-               Show Section {section.label} Heading:
-            </label>
-            <input
-               id='hideOrShowHeading'
-               className={styles.settingsModalCheckbox}
-               type='checkbox'
-               checked={section.showHeading}
-               onChange={() => hideOrShowHeading()}
-            />
-         </div>
-         <RowIndex
-            section={section}
-         />
-         <ColumnIndex
-            section={section}
-            sectionColumnIndex={sectionColumnIndex}
-         />
-         <SectionFlexDirection />
-         <SectionJustifyContent />
-         {renderSettingsModalRows()}
+  return (
+    <div className={styles.settingsModalWrapper}>
+      <h2 className={styles.settingsModalHeader}>{section.label} Settings:</h2>
+      <div className='flexRow'>
+        <label
+          className={styles.settingsModalLabel}
+          htmlFor="hideOrShowHeading"
+        >
+          Show Section {section.label} Heading:
+        </label>
+        <input
+          id="hideOrShowHeading"
+          className={styles.settingsModalCheckbox}
+          type="checkbox"
+          checked={section.showHeading}
+          onChange={() => hideOrShowHeading()}
+        />
       </div>
-   )
-}
+      <span className={styles.sectionLabelSpan}>
+        Move {section.label} Section:
+      </span>
+      <MoveSection section={section} />
+      <SectionFlexDirection />
+      <SectionJustifyContent />
+      {/* {renderSettingsModalRows()} */}
+    </div>
+  );
+};
 
 export default SectionSettings;

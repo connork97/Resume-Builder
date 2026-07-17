@@ -9,7 +9,7 @@ import ToolbarButton from '@/features/ResumeEditor/EditorToolbar/components/shar
 
 import styles from '@/features/ResumeEditor/EditorToolbar/components/RichTextToolbar.module.css';
 
-const ColumnIndex = ({ section }) => {
+const SectionColumnIndex = ({ section }) => {
 
    const dispatch = useDispatch();
 
@@ -91,18 +91,7 @@ const ColumnIndex = ({ section }) => {
    };
 
    return (
-      // <div className={styles.toolBarButtonInputWrapper} style={{ justifySelf: 'end' }}>
       <div className={styles.toolBarButtonInputWrapper}>
-         {/* <SettingsModalInput
-            name="columnIndexInput"
-            label={`${section.label} Column Index`}
-            value={columnIndexInputValue}
-            handleSetInputValue={setColumnIndexInputValue}
-            handleSetValue={() => moveSectionLeftOrRight('input')}
-         /> */}
-         {/* <span className={styles.sectionLabelSpan}>
-            Move {section.label} Section
-         </span> */}
          <div style={{ display: 'flex', gap: '1em' }}>
             <ToolbarButton
                text="Left"
@@ -117,4 +106,4 @@ const ColumnIndex = ({ section }) => {
    )
 }
 
-export default ColumnIndex;
+export default SectionColumnIndex;

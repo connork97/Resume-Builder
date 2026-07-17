@@ -11,11 +11,9 @@ const SectionBorder = ({ sectionBorder = {}, borderSide }) => {
       `calc(${sectionBorder.width} - ${sectionBorder.height || 0})` || "100%";
     borderStyling.outlineWidth =
       parseFloat(sectionBorder.height) / 2 + "px" || "1px";
-    // borderStyling.backgroundColor = "rgba(0, 0, 0, 0)";
     borderStyling.height = 0;
   }
   if (borderSide === "bottom") {
-    // borderStyling.bottom = '-0.125rem'
     borderStyling.bottom = '-2px'
   }
   if (borderSide === "top") {
@@ -23,12 +21,10 @@ const SectionBorder = ({ sectionBorder = {}, borderSide }) => {
   }
 
   if (borderSide === "left" || borderSide === "right") {
-    borderStyling.height = sectionBorder.height || '100%';
-    // borderStyling.width = sectionBorder.width || '0px';
+    borderStyling.height = `calc(${sectionBorder.height} - ${sectionBorder.width} + 2px)` || '100%';
     borderStyling.width = 0;
     borderStyling.outlineWidth = `calc(${sectionBorder.width} / 2)` || '1px';
-    borderStyling.top = 0;
-    // borderStyling.outlineWidth = sectionBorder.width;
+    borderStyling.top = `calc(${sectionBorder.width} / 2 + (100% - ${sectionBorder.height}) / 2)`
   }
 
   if (borderSide === "left") {

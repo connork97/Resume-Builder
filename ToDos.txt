@@ -16,7 +16,7 @@ SMALL BUGS:
 
 -Text Alignment on Placeholder Text becomes odd when aligned center or right
 
--Resume Gap and Column Padding can be Negative values
+-Resume Gap and Column Padding can be Negative values and markers can go outside the ruler bounds
    -Should combine both values to ensure the total remains 0 or greater
 
 -Having three or more columns messes with the margin ruler indicators
@@ -28,6 +28,11 @@ SMALL BUGS:
    -Then works fine.  Likely some issue regarding page mount timeline
 
 -Text align dropdown icon reflects the resume, section, subsection (I think), and simple fields.  But it does NOT reflect fields with multiple children (i.e. unordered lists with multiple bullets)
+
+-Border Inputs for left and right sometimes use wrong value
+
+-ActiveSectionId should get put into ActiveSectionIds array
+   -Once fully implemented, there will be less/no need for the singular ActiveSectionId
 
 TINY BUGS:
 
@@ -53,7 +58,7 @@ BIGGER FEATURES:
    -Likely a dropdown with checkboxes for font size, margin/padding, etc etc
    -Potentially show which sections, fields, etc are NOT default to even more clearly allow resets
 
--Borders
+
 
 -Drag and Drop Reorganization
    -First, for sections
@@ -78,3 +83,6 @@ SMALL FEATURES:
 -Make Font Size look nicer, removing label, potentially adding a dropdown for common font size values
 
 -Add Link Icon and toggle input in toolbar for links
+
+-Borders Customization
+   -Moving them in/out/left/right/up/down/etc

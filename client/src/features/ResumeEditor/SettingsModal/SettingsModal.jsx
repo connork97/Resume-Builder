@@ -1,10 +1,9 @@
 import React from 'react';
 
-
-import styles from './SettingsModal.module.css';
-
 import ColumnSettings from './ColumnSettings/ColumnSettings';
 import SectionSettings from './SectionSettings/SectionSettings';
+
+import styles from './SettingsModal.module.css';
 
 const SettingsModal = ({ isSettingsModalOpen, setIsSettingsModalOpen }) => {
 

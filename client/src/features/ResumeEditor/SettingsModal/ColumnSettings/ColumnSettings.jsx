@@ -71,22 +71,19 @@ const ColumnSettings = () => {
         Column {column.position + 1} Settings:
       </h2>
       <div className="flexRow spaceBetween">
-        <form
-          className='flexRow'
-          onSubmit={handleColumnWidthSubmit}
-        >
-          <label
-            htmlFor="columnWidthInput"
-            className={styles.settingsModalLabel}
-          >
-            <span style={{ verticalAlign: "middle" }}>Width:</span>
+        <form className="flexRow" onSubmit={handleColumnWidthSubmit}>
+          <label htmlFor="columnWidthInput" className="flexRow">
+            <span>Width:</span>
 
             <input
               id="columnWidthInput"
               className="inputMain"
-              style={{textAlign: 'left', width: '3.5rem', marginRight: '-1.75rem', padding: '0 0 0 0.5rem',}}
-
-              // className={styles.settingsModalInput}
+              style={{
+                textAlign: "left",
+                width: "3.5rem",
+                marginRight: "-1.75rem",
+                padding: "0 0 0 0.5rem",
+              }}
               type="number"
               min="1"
               max="100"
@@ -94,18 +91,14 @@ const ColumnSettings = () => {
               value={columnWidthInputValue}
               onChange={(e) => setColumnWidthInputValue(e.target.value)}
             />
-            <span style={{pointerEvents: 'none'}}>%</span>
+            <span style={{ pointerEvents: "none" }}>%</span>
           </label>
         </form>
-        <form
-          className='flexRow'
-          onSubmit={handleAutoWidthSubmit}
-        >
-          <label htmlFor="autoWidthInput" className={styles.settingsModalLabel}>
+        <form className="flexRow" onSubmit={handleAutoWidthSubmit}>
+          <label htmlFor="autoWidthInput" className="flexRow">
             AutoWidth:
             <input
-              // id="autoWidthInput"
-              // className='inputMain'
+              id="autoWidthInput"
               type="checkbox"
               checked={autoWidthInputValue}
               onChange={(e) => setAutoWidthInputValue(e.target.checked)}

@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 
 import { updateColumn, updateSection } from "@/store/resumeSlice.js";
-
-import ToolbarButton from "@/features/ResumeEditor/EditorToolbar/components/shared/ToolbarButton.jsx";
 
 import styles from "@/features/ResumeEditor/EditorToolbar/components/RichTextToolbar.module.css";
 
@@ -199,37 +196,20 @@ const MoveSection = ({ section }) => {
     else if (upOrDown === "up") updateRowIndex("decrement");
   };
 
+  const moveSectionButtons = ['up', 'down', 'left', 'right'].map(direction => {
+   let onClickFunction = direction === 'up' || direction === 'down' ? moveSectionUpOrDown : moveSectionLeftOrRight;
+   return (
+      <button
+      className='buttonMain'
+      onClick={() => onClickFunction(direction)}
+      >{direction.charAt(0).toUpperCase() + direction.slice(1)}</button>
+   )
+})
+
   return (
-    <>
-      <div className={styles.toolBarButtonInputWrapper}>
         <div className="flexRow">
-          <button
-            className="buttonMain"
-            onClick={() => moveSectionUpOrDown("up")}
-          >
-            Up
-          </button>
-          <button
-            className="buttonMain"
-            onClick={() => moveSectionUpOrDown("down")}
-          >
-            Down
-          </button>
-          <button
-            className="buttonMain"
-            onClick={() => moveSectionLeftOrRight("left")}
-          >
-            Left
-          </button>
-          <button
-            className="buttonMain"
-            onClick={() => moveSectionLeftOrRight("right")}
-          >
-            Right
-          </button>
-        </div>
-      </div>
-    </>
+         {moveSectionButtons}
+        </div> 
   );
 };
 

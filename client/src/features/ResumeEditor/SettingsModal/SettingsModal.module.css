@@ -40,27 +40,8 @@
 }
 
 .settingsModalHeader {
-   /* margin-bottom: 1rem; */
    font-size: 1.5rem;
    font-weight: bold;
-}
-
-.settingsModalLabel {
-   display: flex;
-   align-items: center;
-   gap: 0.5rem;
-   width: auto;
-}
-
-
-.settingsModalInput {
-   text-align: center;
-   width: 100px;
-   background: #222;
-   border: none;
-   border: 1px solid #3a3a3a;
-   border-radius: 0.5vh;
-   padding: 0.5vh 1vh;
 }
 
 /* Chrome, Safari, Edge, Opera */

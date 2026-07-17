@@ -16,7 +16,7 @@
   gap: 0.75vh;
 }
 
-.toolbarButton, .toolbarInput, .toolbarDropdownButton {
+.toolbarInput, .toolbarDropdownButton {
    background: #2a2a2a;
    color: white;
    border: none;
@@ -74,10 +74,6 @@
   width: 100%;
   cursor: pointer;
 }
-.toolbarButton, .toolbarDropdownContainer, .toolbarDropdownButton, .colorSwatch {
+.toolbarDropdownContainer, .toolbarDropdownButton, .colorSwatch {
    cursor: pointer;
-}
-
-.toolbarButton:hover, .toolbarDropdownContainer:hover, .toolbarDropdownOption:hover {
-   /* background: var(--background-toolbar-button); */
 }

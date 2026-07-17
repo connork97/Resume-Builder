@@ -16,7 +16,6 @@ const FontSize = ({
    selection,
    section,
    column,
-   label,
    columns,
    fields,
    subsections,

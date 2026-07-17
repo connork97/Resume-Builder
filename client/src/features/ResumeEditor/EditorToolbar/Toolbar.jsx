@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { editorRegistry } from "@/helpers/editorRegistry.js";
 
 import RichTextToolbar from "./components/RichTextToolbar.jsx";
-import MarginRulerTop from "../ResumePaper/components/MarginRulerTop.jsx";
 import TopBar from "./components/TopBar";
 
 import styles from "./Toolbar.module.css";
@@ -28,7 +27,6 @@ const Toolbar = ({ handlePrint }) => {
         <TopBar handlePrint={handlePrint} />
         <RichTextToolbar editor={editor} />
       </div>
-      {/* <MarginRulerTop /> */}
     </div>
   );
 };

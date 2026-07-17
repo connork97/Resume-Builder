@@ -10,13 +10,14 @@ import BackgroundColor from "@/features/ResumeEditor/TextFormatting/BackgroundCo
 import TextAlign from "@/features/ResumeEditor/TextFormatting/TextAlign.jsx";
 import Lists from "@/features/ResumeEditor/TextFormatting/Lists.jsx";
 import Marks from "@/features/ResumeEditor/TextFormatting/Marks.jsx";
-import Columns from "./Columns.jsx";
 
-import styles from "./RichTextToolbar.module.css";
+import Columns from "./Columns.jsx";
 import Gap from "./Gap.jsx";
 import Links from "../../TextFormatting/Links.jsx";
 import Icons from "../../TextFormatting/Icons.jsx";
 import Borders from "./Borders.jsx";
+
+import styles from "../Toolbar.module.css";
 
 const RichTextToolbar = ({ editor }) => {
 
@@ -34,11 +35,8 @@ const RichTextToolbar = ({ editor }) => {
 
       <div className={styles.richTextToolbarWrapper}>
         <LineHeight
-          label="Line Height:"
           editor={editor}
           selection={selection}
-          sections={sections}
-          columns={columns}
           fields={fields}
           subsections={subsections}
           activeSectionId={activeSectionId}
@@ -62,7 +60,6 @@ const RichTextToolbar = ({ editor }) => {
         />
 
         <FontSize
-          label="Font Size:"
           editor={editor}
           selection={selection}
           sections={sections}
@@ -94,12 +91,6 @@ const RichTextToolbar = ({ editor }) => {
         <Gap label="Column Gap:" gapType='horizontal' />
 
         <Borders />
-
-        {/* <div className={styles.belowToolbarWrapper}> */}
-        {/* <CurrentlyEditing editor={editor} /> */}
-
-        {/* <AddSection /> */}
-        {/* </div> */}
 
       </div>
     </div>

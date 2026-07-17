@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Node } from 'slate';
 import { setActiveEditorId, setActiveSectionId } from '@/store/resumeSlice.js';
 
-import TextFormatButton from '../../TextFormatting/shared/TextFormatButton.jsx';
 import { editorRegistry } from '@/helpers/editorRegistry.js';
 
 const CurrentlyEditing = () => {
@@ -41,10 +40,7 @@ const CurrentlyEditing = () => {
       dispatch(setActiveSectionId(null));
    }
    return (
-      <TextFormatButton
-         text={`Currently Editing: ${currentlyEditingText}`}
-         command={() => { clearToolbarSelection() }}
-      />
+      <button className='buttonMain' onClick={() => clearToolbarSelection()}>{`Currently Editing: ${currentlyEditingText}`}</button>
    )
 }
 

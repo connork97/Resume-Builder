@@ -4,13 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { deleteColumn, setResume } from "@/store/resumeSlice.js";
 
-// import styles from './RichTextToolbar.module.css';
 import styles from "@/features/ResumeEditor/TextFormatting/TextFormatting.module.css";
 import {
   addColumnToApi,
   deleteLastColumnFromApi,
 } from "@/services/resumeServices.js";
-import TextFormatButton from "../../TextFormatting/shared/TextFormatButton.jsx";
 import { TfiLayoutColumn3Alt } from "react-icons/tfi";
 
 const Columns = () => {

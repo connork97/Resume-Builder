@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { updateColumn, updateSection } from "@/store/resumeSlice.js";
 
-import styles from "@/features/ResumeEditor/EditorToolbar/components/RichTextToolbar.module.css";
 
 const MoveSection = ({ section }) => {
   const dispatch = useDispatch();

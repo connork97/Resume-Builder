@@ -2,9 +2,6 @@ import React from 'react';
 
 import { toggleList } from '../../../helpers/blocks';
 
-import ToolbarButton from '../EditorToolbar/components/shared/ToolbarButton';
-import TextFormatButton from './shared/TextFormatButton';
-
 import styles from './TextFormatting.module.css';
 import { MdFormatListBulleted, MdFormatListNumbered } from 'react-icons/md';
 

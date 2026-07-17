@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import TextFormatButton from "./shared/TextFormatButton";
 import { FaRegSmile } from "react-icons/fa";
 
 import { ICON_GROUPS } from "@/lib/iconLibrary";
@@ -41,17 +40,10 @@ const Icons = ({ editor }) => {
   return (
     <div>
       <button className='buttonMain' onClick={() => setShowIcons(!showIcons)}><FaRegSmile /></button>
-      {/* <TextFormatButton
-        text={<FaRegSmile style={{height: '1.25rem'}} />}
-        command={() => setShowIcons(!showIcons)}
-      /> */}
       {showIcons && (
         <div className={styles.iconDropdownContainer}>
           {iconGroupsToRender}
-          <TextFormatButton
-            text="Clear"
-            command={clearIcon}
-          />
+          <button className='buttonMain' onClick={() => clearIcon()}>Clear</button>
         </div>
       )}
     </div>

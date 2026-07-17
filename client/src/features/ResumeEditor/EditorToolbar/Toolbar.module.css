@@ -22,3 +22,43 @@
   top: 1rem;
   font-size: 2rem;
 }
+
+.richTextToolbarContainer {
+  height: calc(var(--height-toolbar) / 2);
+  width: 100%;
+}
+
+.richTextToolbarWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 0.5vh;
+}
+
+
+.topBarContainer {
+   height: calc(var(--height-toolbar) / 2);
+   width: 100%;
+}
+
+.dropdownContainer {
+   padding: 0.25em 1em;
+   background-color: var(--background-main);
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-radius: var(--border-radius-main);
+   position: absolute;
+   padding: 0;
+   margin-top: 1rem;
+   z-index: var(--z-dropdown);
+}
+
+.dropdownOption {
+   background-color: var(--background-main);
+   border-radius: var(--border-radius-main);
+   padding: 0.5em 1em;
+}
+.dropdownOption:hover {
+   cursor: pointer;
+   filter: brightness(1.1);
+}

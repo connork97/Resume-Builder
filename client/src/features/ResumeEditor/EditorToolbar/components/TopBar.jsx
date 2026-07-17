@@ -7,9 +7,10 @@ import { Link, useParams } from 'react-router-dom';
 import { setResume, updateResume } from '@/store/resumeSlice.js';
 import { getResumeFromApi, saveResumeToApi } from '@/services/resumeServices';
 
-import styles from './TopBar.module.css';
 import CurrentlyEditing from './CurrentlyEditing';
 import AddSection from './AddSection';
+
+import styles from '../Toolbar.module.css';
 
 // const TopBar = forwardRef(function TopBar({  }, ref) {
 const TopBar = ({ handlePrint }) => {
@@ -38,7 +39,7 @@ const TopBar = ({ handlePrint }) => {
       if (!resumeIsSaved) {
          return;
       }
-
+      
       alert('Resume saved successfully!');
    }
 
@@ -59,66 +60,38 @@ const TopBar = ({ handlePrint }) => {
       }))
    }
 
-   // const resumeRef = ref;
-
-   // const [isPrinting, setIsPrinting] = useState(true);
-
-   // const pageStyle = `
-   //    @page {
-   //       size: auto;
-   //       margin: 20mm;
-   //    }
-
-   //    @media print {
-   //       body {
-   //          -webkit-print-color-adjust: exact;
-   //       }
-   //    }
-   //    `;
-   // const reactToPrint = useReactToPrint({
-   //    documentTitle: resume.title,
-   //    contentRef: resumeRef,
-   //    pageStyle: pageStyle,
-   //    onAfterPrint: () => {
-   //       setIsPrinting(false);
-   //    },
-   // });
-
-   // const handlePrint = () => {
-   //    // setIsPrinting(false);
-   //    setIsPrinting(true);
-
-   //    setTimeout(async () => {
-   //       reactToPrint();
-   //    }, 500);
-   // };
-
    return (
       <div className={styles.topBarContainer}>
 
-         <div className={styles.topBarRow}>
+         <div
+            className='flexRow spaceBetween'
+         >
             <div
-               className={styles.topBarInput}
+               className='buttonMain'
                contentEditable
                suppressContentEditableWarning
                onBlur={handleSetResumeTitle}
             >
                {resumeTitle}
             </div>
-            <div className={styles.topBarFlexWrapper}>
+            <div
+               className='flexRow'
+            >
                <CurrentlyEditing />
                <AddSection />
             </div>
-            <div className={styles.topBarFlexWrapper}>
+            <div 
+            className='flexRow'
+            >
 
                <button
-                  className={styles.topBarButton}
+                  className='buttonMain'
                   onClick={saveResume}
                >
                   Save Resume
                </button>
                <button
-                  className={styles.topBarButton}
+                  className='buttonMain'
                   onClick={handlePrint}
                >
                   Print

@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import { selectUsedResumeColors } from '@/utils/resumeColorSelectors';
 import { BASE_COLORS } from '@/lib/baseColors';
 
-import TextFormatButton from './TextFormatButton';
-
 import styles from "../TextFormatting.module.css";
 
 const ColorDropdown = ({ currentEditorColor, text=false, handleSetColor }) => {

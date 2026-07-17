@@ -1,5 +1,4 @@
 import React from "react";
-import TextFormatButton from "../../TextFormatting/shared/TextFormatButton";
 import styles from "@/features/ResumeEditor/TextFormatting/TextFormatting.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateResume } from "@/store/resumeSlice";
@@ -59,7 +58,6 @@ const Gap = ({ label, gapType }) => {
             onBlur={() => updateColumns()}
             /> */}
       <button className='buttonMain' onClick={() => updateResumeGap('increment')}>+</button>
-      {/* <TextFormatButton text="+" command={() => updateResumeGap("increment")} /> */}
     </div>
   );
 };

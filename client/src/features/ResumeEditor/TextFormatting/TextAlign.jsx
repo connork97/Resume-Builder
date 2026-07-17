@@ -6,7 +6,6 @@ import { updateResume, updateSection } from "@/store/resumeSlice.js";
 
 import { setAlignment } from "@/helpers/blocks.js";
 
-import TextFormatButton from "./shared/TextFormatButton.jsx";
 
 import styles from "./TextFormatting.module.css";
 import {
@@ -148,47 +147,12 @@ const TextAlign = ({ editor }) => {
 
       <button
         className='buttonMain'
-        // className={styles.textFormatButton}
         onClick={() => handleDropdownClick()}
-        // onClick={() => handleSetTextAlign(editor, "left")}
         >
           {alignmentIcon}
-        {/* <MdFormatAlignLeft style={{ position: "relative", top: "0.1em" }} /> */}
         <MdArrowDropDown style={{marginRight: '-0.5em'}} />
       </button>
       {showTextAlignDropdown && <TextFormatDropdown dropdownOptions={dropdownOptions} />}
-        {/* 
-      <button
-        className={styles.textFormatButton}
-        onClick={() => handleSetTextAlign(editor, "center")}
-      >
-        <MdFormatAlignCenter style={{ position: "relative", top: "0.1em" }} />
-      </button>
-      <button
-        className={styles.textFormatButton}
-        onClick={() => handleSetTextAlign(editor, "right")}
-      >
-        <MdFormatAlignRight style={{ position: "relative", top: "0.1em" }} />
-      </button>
-      <button
-        className={styles.textFormatButton}
-        onClick={() => handleSetTextAlign(editor, "justify")}
-      >
-        <MdFormatAlignJustify style={{ position: "relative", top: "0.1em" }} />
-      </button> */}
-      {/* 
-         <TextFormatButton
-            text="C"
-            command={() => handleSetTextAlign(editor, 'center')}
-         />
-         <TextFormatButton
-            text="R"
-            command={() => handleSetTextAlign(editor, 'right')}
-         />
-         <TextFormatButton
-            text="J"
-            command={() => handleSetTextAlign(editor, 'justify')}
-         /> */}
     </div>
   );
 };

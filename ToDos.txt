@@ -39,7 +39,11 @@ SMALL BUGS:
 
 -When there are multiple font sizes in one field (including multi line lists), the Font Size does not properly adjust
 
+-Currently Editing Button often shows "undefined"
+
 TINY BUGS:
+
+-Margin Rulers are every so slightly off target
 
 
 !------------!
@@ -58,8 +62,6 @@ MAIN FEATURES:
 -Multi Page Resume
 
 -Autosave Functionality
-
--Font Family Selection
 
 -Copy Resumes (for slight edits or base starting point)
 
@@ -91,6 +93,9 @@ SMALL FEATURES:
 
 -Borders Customization
    -Moving them in/out/left/right/up/down/etc
+
+-Font Family
+   -Allowing different font families to be applied to different sections, subsections, fields, and slate leaves
 
 
 MAYBES:

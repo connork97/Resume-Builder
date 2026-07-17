@@ -23,7 +23,9 @@
   position: relative !important;
   height: 7.7in;
   width: 1rem;
-  margin: auto auto auto 22.5vw;
+  left: 0;
+  margin: auto auto auto calc(60% - var(--width-editor-page));
+  /* margin: auto auto auto 22.5vw; */
   top: calc(var(--height-toolbar));
 
   display: flex;

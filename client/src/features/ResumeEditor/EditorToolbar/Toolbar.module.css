@@ -40,6 +40,10 @@
 .topBarContainer {
    height: calc(var(--height-toolbar) / 2);
    width: 100%;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
 }
 
 .dropdownContainer {

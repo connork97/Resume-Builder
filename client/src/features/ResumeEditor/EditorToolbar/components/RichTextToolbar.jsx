@@ -19,6 +19,7 @@ import Borders from "./Borders.jsx";
 
 import styles from "../Toolbar.module.css";
 import FontFamily from "../../TextFormatting/FontFamily.jsx";
+import AddSection from "./AddSection.jsx";
 
 const RichTextToolbar = ({ editor }) => {
 
@@ -94,6 +95,7 @@ const RichTextToolbar = ({ editor }) => {
         <Gap label="Column Gap:" gapType='horizontal' />
 
         <Borders />
+          <AddSection />
 
       </div>
     </div>

@@ -18,6 +18,7 @@ import Icons from "../../TextFormatting/Icons.jsx";
 import Borders from "./Borders.jsx";
 
 import styles from "../Toolbar.module.css";
+import FontFamily from "../../TextFormatting/FontFamily.jsx";
 
 const RichTextToolbar = ({ editor }) => {
 
@@ -70,6 +71,8 @@ const RichTextToolbar = ({ editor }) => {
           activeEditorId={activeEditorId}
           resumeStyling={resumeStyling}
         />
+
+        <FontFamily />
 
         <Marks editor={editor} />
 

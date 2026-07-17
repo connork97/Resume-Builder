@@ -91,3 +91,8 @@ SMALL FEATURES:
 
 -Borders Customization
    -Moving them in/out/left/right/up/down/etc
+
+
+MAYBES:
+
+-Indentation

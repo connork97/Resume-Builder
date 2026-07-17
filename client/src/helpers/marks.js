@@ -31,6 +31,8 @@ export const getActiveMark = (editor, mark) => {
   if (activeMark) {
     let parsedMark;
     switch (mark) {
+      case ('fontFamily'):
+        return activeMark ?? console.error("No active font family found.");
       case ('fontSize'):
         parsedMark = parseInt(activeMark)
         return parsedMark ?? console.error("No active font size found.");
@@ -51,6 +53,8 @@ export const getActiveMark = (editor, mark) => {
   }
   if (!activeMark) {
     switch (mark) {
+      case ('fontFamily'):
+        return getResumeStyling('fontFamily');
       case ('fontSize'):
         return parseInt(getResumeStyling('fontSize'));
       case('fontSizeOffset'):
@@ -68,6 +72,11 @@ export const getActiveMark = (editor, mark) => {
     }
   }
   // return activeMark;
+};
+
+export const setFontFamily = (editor, fontFamily) => {
+  Editor.addMark(editor, 'fontFamily', fontFamily);
+  console.log(`Font family set to ${fontFamily}`);
 };
 
 export const setFontSize = (editor, fontSize) => {

@@ -225,6 +225,28 @@ export const addResumeToApi = async (resumeData) => {
    }
 }
 
+export const copyResumeToApi = async (resumeId) => {
+   try {
+      const data = await fetchApi({
+         endpoint: `/resumes/${resumeId}/copy`,
+         options: { method: 'POST' }
+      })
+
+      const normalizedResume = normalizeResumeFromApi(data);
+      return normalizedResume;
+
+   } catch (error) {
+      console.error(`Error copying resume of ID ${resumeId}: `, error);
+      alert(
+         error?.code && error?.message
+            ? error.code + '\n' + error.message
+            : `Error copying resume of ID ${resumeId}.`
+      )
+
+      return null;
+   }
+}
+
 export const saveResumeToApi = async (resume) => {
    try {
       console.log('Resume being saved to api: ', resume)

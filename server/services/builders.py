@@ -241,3 +241,33 @@ def build_resume_with_defaults(title, user_id, sections_data):
         section_position += 1
 
     return resume
+
+def build_resume_copy(resume_id):
+    print(f"Building copy of resume with ID {resume_id}")
+    # original_resume = Resume.query.get(Resume.id == resume_id).one_or_none()
+    # # resume_copy = deepcopy(original_resume)
+    # # # resume_copy.title = resume_copy.title + ' (Copy)'
+
+    # # db.session.add(resume_copy)
+    # # db.session.flush()
+    
+
+    # # return resume_copy
+    # resume_copy = Resume(user_id = original_resume.user_id, title = original_resume.title + ' (Copy)')
+    # db.session.add(resume_copy)
+    # db.session.flush()
+    
+    # # for column in resume_copy.__table__.columns:
+    # #     print(column.name)
+    # for column in original_resume.__table__.columns:
+    #     excluded_names = ['id', 'user_id', 'title', 'created_at', 'updated_at']
+        
+    #     column_name = column.name
+    #     column_value = getattr(original_resume, column_name)
+    #     if column_name not in excluded_names:
+    #         # if not resume_copy.column_name:
+    #         resume_copy.column_name = column_value
+    #         # print(column_name, column_value)
+            
+    # db.session.commit()
+    # return resume_copy

@@ -6,6 +6,7 @@ from models import db, Resume, Column, Section, Subsection, Field
 
 from services.builders import (
     build_resume_with_defaults,
+    build_resume_copy,
     add_column,
     add_section,
     add_subsection,
@@ -14,7 +15,7 @@ from services.builders import (
 )
 from services.resume_updater import update_resume_with_form_data
 
-from utils.responses import generate_error, generate_success
+from utils.responses import generate_error, generate_success, print_pending_request, print_successful_request, COLORS
 
 resume_bp = Blueprint("resume", __name__, url_prefix="/resumes")
 
@@ -22,7 +23,8 @@ resume_bp = Blueprint("resume", __name__, url_prefix="/resumes")
 @resume_bp.route("", methods=["POST"])
 def create_resume():
     form_data = request.get_json() or {}
-    print(f"Received POST request for /resumes with form_data: {form_data}")
+    print_pending_request('POST', '/resumes')
+    # print(f"Received POST request for /resumes with form_data: {form_data}")
 
     try:
         title = form_data.get("title")
@@ -49,7 +51,8 @@ def create_resume():
 
         db.session.commit()
 
-        print("SUCCESS. Created new resume:", new_resume.to_dict())
+        print_successful_request('Created new resume.')
+        # print("SUCCESS. Created new resume:", new_resume.to_dict())
         return jsonify(new_resume.to_dict()), 201
 
     except Exception as e:
@@ -60,11 +63,64 @@ def create_resume():
             code="ERROR_CREATING_RESUME",
             message="Failed to create resume.",
         )
+        
+@resume_bp.route("/<int:resume_id>/copy", methods=['POST'])
+def copy_resume(resume_id):
+    print(f"Received POST request for /resumes/{resume_id}/copy.")
+    resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
+    if not resume:
+        return generate_error(
+            error_type="NOT_FOUND",
+            code='RESUME_NOT_FOUND',
+            message=f"Resume of id {resume_id} not found."
+        )
+    # print(f"SUCCESS. Found resume: {jsonify(resume.to_dict()), 200}")
 
+    # print(f"Resume to copy: {resume.to_dict()}")
+    
+    resume_copy = Resume(user_id = resume.user_id, title = resume.title + ' (Copy)')
+    db.session.add(resume_copy)
+    db.session.flush()
+    
+    # for column in resume_copy.__table__.columns:
+    #     print(column.name)
+    for column in resume.__table__.columns:
+        excluded_names = ['id', 'user_id', 'title', 'created_at', 'updated_at']
+        
+        column_name = column.name
+        column_value = getattr(resume, column_name)
+        if column_name not in excluded_names:
+            # if not resume_copy.column_name:
+            resume_copy.column_name = column_value
+            # print(column_name, column_value)
+
+    db.session.commit()
+    print(resume_copy)
+    # db.session.rollback()
+    return jsonify(resume.to_dict()), 200
+    # try:
+        
+    #     resume_copy = build_resume_copy(resume_id)
+    
+    #     db.session.commit()
+    
+    #     return jsonify(resume_copy.to_dict()), 201
+    
+    # except Exception as e:
+    
+    #     db.session.rollback()
+    #     print(f"Error copying resume of ID {resume_id}: ", e)
+
+    #     return generate_error(
+    #         error_type="SERVER_ERROR",
+    #         code="ERROR_UPDATING_RESUME",
+    #         message=f"Failed to copy resume of ID {resume_id}.",
+    #     )
 
 @resume_bp.route("/<int:resume_id>", methods=["GET"])
 def resume(resume_id):
-    print(f"Received GET request for /resumes/{resume_id}")
+    print_pending_request('GET', f'/resumes/{resume_id}')
+    
     resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
     if not resume:
         return generate_error(
@@ -73,43 +129,47 @@ def resume(resume_id):
             message=f"Resume of id {resume_id} not found."
         )
 
-    print(f"SUCCESS. Found resume: {resume.to_dict()}")
+    # generate_success(message=f"Found resume of ID: {resume.id}")
+    print_successful_request('Found resume of ID:', resume_id)
     response = jsonify(resume.to_dict()), 200
     return response
 
 
 @resume_bp.route("/<int:resume_id>", methods=["DELETE"])
 def delete_resume(resume_id):
-    print(f"Received DELETE request for /resumes/{resume_id}")
+    print_pending_request('DELETE', f'/reumes/{resume_id}')
+    # print(f"Received DELETE request for /resumes/{resume_id}")
     resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
 
     if not resume:
         return generate_error(
             error_type="NOT_FOUND",
             code='RESUME_NOT_FOUND',
-            message=f"Resume of id {resume_id} not found."
+            message=f"Resume of ID {resume_id} not found."
         )
 
     elif resume:
         db.session.delete(resume)
         db.session.commit()
-        print(f"SUCCESS. Deleted resume of id: {resume_id}")
+        print_successful_request('Deleted resume of id:', resume_id)
+        # print(f"SUCCESS. Deleted resume of id: {resume_id}")
         return generate_success(
             success_type="DELETE",
-            resource=f"Resume of id {resume_id}"
+            resource=f"Resume of ID {resume_id}"
         )      
 
 @resume_bp.route("/<int:resume_id>", methods=["PUT"])
 def update_resume(resume_id):
-    print(f"Received PUT request for /resumes/{resume_id}")
+    print_pending_request('PUT', f'/resumes/{resume_id}')
+    # print(f"Received PUT request for /resumes/{resume_id}")
 
     form_data = request.get_json() or {}
-    print('this is the route')
 
     try:
         updated_resume = update_resume_with_form_data(resume_id, form_data)
         updated_resume.updated_at = db.func.now()
         db.session.commit()
+        print_successful_request('Updated resume of ID:', resume_id)
         return jsonify(updated_resume.to_dict()), 200
 
     except ValueError as e:
@@ -122,7 +182,7 @@ def update_resume(resume_id):
 
     except Exception as e:
         db.session.rollback()
-        print(f"Error updating resume of ID {resume_id}: ", e)
+        # print(f"Error updating resume of ID {resume_id}: ", e)
 
         return generate_error(
             error_type="SERVER_ERROR",

@@ -4,13 +4,15 @@
 
 BIGGER BUGS:
 
-
 -Several styling changes to individual words/strings results in line break
    -Likely due to a new Slate Field/Leaf being created
    -For Line Height, potentially reflecting the new line height on all other strings in the field could fix it, TBD
 
 -Section and Column Gaps don't work on individual section/columns
    -Only works resume wide
+
+-ActiveSectionId should get put into ActiveSectionIds array
+   -Once fully implemented, there will be less/no need for the singular ActiveSectionId
 
 SMALL BUGS:
 
@@ -34,9 +36,6 @@ SMALL BUGS:
 
 -Border Inputs for left and right sometimes use wrong value
 
--ActiveSectionId should get put into ActiveSectionIds array
-   -Once fully implemented, there will be less/no need for the singular ActiveSectionId
-
 -When there are multiple font sizes in one field (including multi line lists), the Font Size does not properly adjust
 
 -Currently Editing Button often shows "undefined"
@@ -52,8 +51,7 @@ TINY BUGS:
 
 STRETCH FEATURES:
 
--Resume Templates
-   -Ideally even have it where you can plug in default profile(s) info to auto fill resumes templates
+-Resume Templates Sharing Publicly
 
 MAIN FEATURES:
 
@@ -65,6 +63,9 @@ MAIN FEATURES:
 
 -Copy Resumes (for slight edits or base starting point)
 
+-Resume Templates
+   -Ideally even have it where you can plug in default profile(s) info to auto fill resumes templates
+   
 
 BIGGER FEATURES:
 

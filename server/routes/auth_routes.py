@@ -1,14 +1,14 @@
 from flask import Blueprint, request, jsonify, session
 from models import db, User
 
-from utils.responses import generate_error, generate_success
+from utils.responses import generate_error, generate_success, color_print, print_pending_request, print_successful_request, COLORS
 
 auth_bp = Blueprint('auth', __name__, url_prefix='')
 
 @auth_bp.route('/checksession', methods=['GET'])
 def check_session():
     user_id = session.get('user_id')
-    print(f"Received GET request for /checksession with session[user_id]: {user_id}")
+    print_pending_request('GET', '/checksession', 'with user ID of:', user_id)
     
     if not user_id:
         return generate_error(
@@ -26,14 +26,15 @@ def check_session():
             message=f'User of id {user_id} not found.'
         )
     
-    print(f"SUCCESS. Active session found for user: {user.email} (ID: {user.id})")
+    print_successful_request('Active session found for user with email and ID of', user.email, user.id)
+    # print(f"SUCCESS. Active session found for user: {user.email} (ID: {user.id})")
     response = jsonify(user.to_dict(exclude=['resumes'])), 200
     return response
 
 @auth_bp.route("/signup", methods=["POST"])
 def signup():
     form_data = request.get_json()
-    print("Received POST request for /users with form_data: ", form_data)
+    print_pending_request('POST', '/users', 'with form_data', form_data)
     
     try:
         email = (form_data.get('email') or '').strip().lower()
@@ -57,14 +58,16 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        print("SUCCESS. Created new user: ", new_user.to_dict())
-        print(f"Setting session['user_id'] to {new_user.id}")
+        print_successful_request('Created new user:', new_user.to_dict())
+        # print("SUCCESS. Created new user: ", new_user.to_dict())
+        print_successful_request("Setting session['user_id'] to", new_user.id)
+        # print(f"Setting session['user_id'] to {new_user.id}")
         response = jsonify(new_user.to_dict()), 201
         return response
     
     except Exception as e:
         db.session.rollback()
-        print("ERROR creating resume:", e)
+        # print("ERROR creating resume:", e)
         return generate_error(
             error_type='SERVER_ERROR',
             code='BAD_SIGNUP',
@@ -95,13 +98,16 @@ def login():
     
     session['user_id'] = user.id
     
-    print(f"SUCCESS. User {email} logged in successfully. Session set with user_id: {user.id}")
+    print_successful_request('User logged in sucessfully with email:', email)
+    # print(f"SUCCESS. User {email} logged in successfully. Session set with user_id: {user.id}")
+    print_successful_request('Setting session[user_id]:', user.id)
     response = jsonify(user.to_dict()), 200
     return response
 
 @auth_bp.route('/logout', methods=['DELETE'])
 def logout():
     session.pop('user_id', None)
+    print_successful_request('User logged out succesfully.')
     return generate_success(
         success_type='OK',
         code='SUCCESSFUL_LOGOUT',

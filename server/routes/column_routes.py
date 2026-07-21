@@ -14,7 +14,7 @@ from services.updaters import update_column_widths
 
 from services.resume_updater import update_resume_with_form_data
 
-from utils.responses import generate_error, generate_success
+from utils.responses import generate_error, generate_success, print_pending_request, print_successful_request
 
 column_bp = Blueprint("column", __name__, url_prefix="/columns")
 
@@ -23,7 +23,7 @@ column_bp = Blueprint("column", __name__, url_prefix="/columns")
 
 @column_bp.route("/<int:resume_id>", methods=["POST"])
 def add_column(resume_id):
-    print(f"Received POST request to add column to resume of ID {resume_id}.")
+    print_pending_request('POST', f'/columns/{resume_id}', 'to add column to resume of ID', resume_id)
 
     try:
         resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
@@ -48,6 +48,7 @@ def add_column(resume_id):
 
         db.session.commit()
 
+        print_successful_request('Column added successfully.')
         return jsonify(resume.to_dict()), 201
 
     except Exception:
@@ -56,7 +57,7 @@ def add_column(resume_id):
      
 @column_bp.route("/<int:resume_id>", methods=["DELETE"])
 def delete_last_column(resume_id):
-    print(f"Received DELETE request for the last column of resume of ID {resume_id}.")
+    print_pending_request('DELETE', 'the last column', 'in resume of ID', resume_id)
 
     try:
         resume = Resume.query.filter_by(id=resume_id).one_or_none()
@@ -120,11 +121,12 @@ def delete_last_column(resume_id):
 
         db.session.commit()
 
+        print_successful_request('Added column successfully.')
+
         return jsonify(resume.to_dict()), 200
 
     except Exception as e:
         db.session.rollback()
-        print(f"Error deleting column for resume of ID {resume_id}: ", e)
         return generate_error(
             error_type="SERVER_ERROR",
             code="ERROR_DELETING_COLUMN",
@@ -134,7 +136,7 @@ def delete_last_column(resume_id):
         
 @column_bp.route("/<int:column_id>", methods=["PUT"])
 def update_column(column_id):
-    print(f"Received PUT request to update column of ID {column_id}.")
+    print_pending_request('PUT', f'/columns/{column_id}', 'to update column of ID:', column_id)
 
     try:
         column = Column.query.filter_by(id=column_id).one_or_none()
@@ -170,11 +172,12 @@ def update_column(column_id):
 
         db.session.commit()
 
+        print_successful_request('Sucessfully updated column.')
+
         return jsonify(column.resume.to_dict()), 200
 
     except Exception as e:
         db.session.rollback()
-        print(f"Error updating column of ID {column_id}: ", e)
         return generate_error(
             error_type="SERVER_ERROR",
             code="ERROR_UPDATING_COLUMN",

@@ -243,31 +243,100 @@ def build_resume_with_defaults(title, user_id, sections_data):
     return resume
 
 def build_resume_copy(resume_id):
-    print(f"Building copy of resume with ID {resume_id}")
-    # original_resume = Resume.query.get(Resume.id == resume_id).one_or_none()
-    # # resume_copy = deepcopy(original_resume)
-    # # # resume_copy.title = resume_copy.title + ' (Copy)'
+    original_resume = Resume.query.get(resume_id)
 
-    # # db.session.add(resume_copy)
-    # # db.session.flush()
-    
+    if original_resume is None:
+        return None
 
-    # # return resume_copy
-    # resume_copy = Resume(user_id = original_resume.user_id, title = original_resume.title + ' (Copy)')
-    # db.session.add(resume_copy)
-    # db.session.flush()
+    # Helper function to create deep-copies of a models column-values in a new instance
+    def copy_instance(instance, model, excluded_names):
+        copied = {}
+        for column in model.__table__.columns:
+            column_name = column.name
+            if column_name in excluded_names:
+                continue
+            copied[column_name] = deepcopy(getattr(instance, column_name))
+        return model(**copied)
+
+    resume_copy = copy_instance(
+        original_resume,
+        Resume,
+        {"id", "title", "created_at", "updated_at"},
+    )
+    resume_copy.title = f"{original_resume.title} (Copy)"
     
-    # # for column in resume_copy.__table__.columns:
-    # #     print(column.name)
-    # for column in original_resume.__table__.columns:
-    #     excluded_names = ['id', 'user_id', 'title', 'created_at', 'updated_at']
+    db.session.add(resume_copy)
+    db.session.flush()
+
+    # Copy columns from the original resume to the new resume.
+    # Ordered by position, though probably not necessary, to catch edge cases of conflicting position values
+    # This happens for sections, subsections, and fields as well
+    original_columns = (
+        Column.query.filter_by(resume_id=original_resume.id)
+        .order_by(Column.position)
+        .all()
+    )
+
+    for original_column in original_columns:
+        column_copy = copy_instance(
+            original_column,
+            Column,
+            {"id", "resume_id"},
+        )
+        column_copy.resume_id = resume_copy.id
         
-    #     column_name = column.name
-    #     column_value = getattr(original_resume, column_name)
-    #     if column_name not in excluded_names:
-    #         # if not resume_copy.column_name:
-    #         resume_copy.column_name = column_value
-    #         # print(column_name, column_value)
+        db.session.add(column_copy)
+        db.session.flush()
+
+        original_sections = (
+            Section.query.filter_by(column_id=original_column.id)
+            .order_by(Section.position)
+            .all()
+        )
+
+        for original_section in original_sections:
+            section_copy = copy_instance(
+                original_section,
+                Section,
+                {"id", "column_id"},
+            )
+            section_copy.column_id = column_copy.id
             
-    # db.session.commit()
-    # return resume_copy
+            db.session.add(section_copy)
+            db.session.flush()
+
+            original_subsections = (
+                Subsection.query.filter_by(section_id=original_section.id)
+                .order_by(Subsection.position)
+                .all()
+            )
+
+            for original_subsection in original_subsections:
+                subsection_copy = copy_instance(
+                    original_subsection,
+                    Subsection,
+                    {"id", "section_id"},
+                )
+                subsection_copy.section_id = section_copy.id
+                
+                db.session.add(subsection_copy)
+                db.session.flush()
+
+                original_fields = (
+                    Field.query.filter_by(subsection_id=original_subsection.id)
+                    .order_by(Field.position)
+                    .all()
+                )
+
+                for original_field in original_fields:
+                    field_copy = copy_instance(
+                        original_field,
+                        Field,
+                        {"id", "subsection_id"},
+                    )
+                    field_copy.subsection_id = subsection_copy.id
+                    
+                    db.session.add(field_copy)
+
+    db.session.commit()
+    return resume_copy

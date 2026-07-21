@@ -60,7 +60,6 @@ def add_field_to_resume(subsection_id):
 @field_bp.route('/<int:field_id>', methods=['DELETE'])
 def delete_field_from_resume(field_id):
    print_pending_request('DELETE', f'/fields/{field_id}')
-   print(f'Recieved DELETE request for field of ID {field_id}.')
    
    try:
       field_to_delete = Field.query.get(field_id)

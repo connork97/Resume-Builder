@@ -66,56 +66,17 @@ def create_resume():
         
 @resume_bp.route("/<int:resume_id>/copy", methods=['POST'])
 def copy_resume(resume_id):
-    print(f"Received POST request for /resumes/{resume_id}/copy.")
-    resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
-    if not resume:
-        return generate_error(
-            error_type="NOT_FOUND",
-            code='RESUME_NOT_FOUND',
-            message=f"Resume of id {resume_id} not found."
-        )
-    # print(f"SUCCESS. Found resume: {jsonify(resume.to_dict()), 200}")
+    print_pending_request('POST', f'/resumes/{resume_id}/copy', 'to create a copy of resume of ID:', resume_id)
+    
+    try:
+        copied_resume = build_resume_copy(resume_id)
+    
+    except Exception as e:
+        return generate_error(message=f"Could not make copy of resume of ID: {resume_id}")
+    
+    print_successful_request('Created copy of resume of ID:', resume_id)
+    return jsonify(copied_resume.to_dict()), 200
 
-    # print(f"Resume to copy: {resume.to_dict()}")
-    
-    resume_copy = Resume(user_id = resume.user_id, title = resume.title + ' (Copy)')
-    db.session.add(resume_copy)
-    db.session.flush()
-    
-    # for column in resume_copy.__table__.columns:
-    #     print(column.name)
-    for column in resume.__table__.columns:
-        excluded_names = ['id', 'user_id', 'title', 'created_at', 'updated_at']
-        
-        column_name = column.name
-        column_value = getattr(resume, column_name)
-        if column_name not in excluded_names:
-            # if not resume_copy.column_name:
-            resume_copy.column_name = column_value
-            # print(column_name, column_value)
-
-    db.session.commit()
-    print(resume_copy)
-    # db.session.rollback()
-    return jsonify(resume.to_dict()), 200
-    # try:
-        
-    #     resume_copy = build_resume_copy(resume_id)
-    
-    #     db.session.commit()
-    
-    #     return jsonify(resume_copy.to_dict()), 201
-    
-    # except Exception as e:
-    
-    #     db.session.rollback()
-    #     print(f"Error copying resume of ID {resume_id}: ", e)
-
-    #     return generate_error(
-    #         error_type="SERVER_ERROR",
-    #         code="ERROR_UPDATING_RESUME",
-    #         message=f"Failed to copy resume of ID {resume_id}.",
-    #     )
 
 @resume_bp.route("/<int:resume_id>", methods=["GET"])
 def resume(resume_id):

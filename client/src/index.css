@@ -36,7 +36,7 @@
   --font-size-main: var(--font-size-navbar);
   --padding-x-main: clamp(1rem, 15vw, 25rem);
 
-  --width-main: 75%;
+  --width-main: 60%;
   /* Component Specific Variables */
   --height-navbar: clamp(1rem, 10dvh, 15rem);
   --height-toolbar: clamp(2rem, 5rem, 10rem);

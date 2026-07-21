@@ -29,7 +29,7 @@ const UserResumes = () => {
       if (!user.id) return;
       // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchUserResumes(user.id);
-   }, [user.id, fetchUserResumes])
+   }, [user.id])
 
 
    const renderResumes = () => {
@@ -48,7 +48,7 @@ const UserResumes = () => {
 
    return (
       <div className={styles.userResumesWrapper}>
-         <h1>My Resumes</h1>
+         <h1 style={{fontSize: '1.5rem'}}>My Resumes</h1>
          <div className={styles.userResumeRowsWrapper}>
             {renderResumes()}
          </div>
@@ -56,7 +56,7 @@ const UserResumes = () => {
             className={styles.accountSubmitButton}
             onClick={() => navigate('/editor/new')}
          >
-            Create Resume
+            Create New Resume
          </button>
       </div>
    );

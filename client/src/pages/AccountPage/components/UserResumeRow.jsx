@@ -38,14 +38,15 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
   const handleCopyResume = async () => {
    const copiedResume = copyResumeToApi(resume.id);
    console.log(copiedResume);
+   fetchUserResumes(user.id);
   }
 
   return (
     <div className={styles.userResumeRow}>
       <div className={styles.resumeInfoWrapper}>
-        <h2>{resume.title}</h2>
-        <p>Created On: {formatDateTime(resume.createdAt)}</p>
-        <p>Last Updated On: {formatDateTime(resume.updatedAt)}</p>
+        <h2 className={styles.resumeTitle}>{resume.title}</h2>
+        <p className={styles.resumeDetails}>Created On: {formatDateTime(resume.createdAt)}</p>
+        <p className={styles.resumeDetails}>Last Updated On: {formatDateTime(resume.updatedAt)}</p>
       </div>
       <div className={styles.userResumeRowButtons}>
         <button className={styles.editResumeButton} onClick={handleEditResume}>

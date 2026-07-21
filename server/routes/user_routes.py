@@ -18,7 +18,6 @@ def get_user_by_id(user_id):
         )
 
     print_successful_request('Found user with ID:', user.id)    
-    print(f"SUCCESS. Found user: {user} with id {user.id}")
     # session['user_id'] = user.id
     user_dict = user.to_dict()
     response = jsonify(user_dict), 200

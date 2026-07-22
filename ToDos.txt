@@ -2,6 +2,11 @@
    BUGS
 !--------!
 
+IMPORTANT BUGS:
+
+-Users can access all resumes by typing in the URL
+   -Need to implement auth requirements to allow proper user access/verification
+
 BIGGER BUGS:
 
 -Several styling changes to individual words/strings results in line break
@@ -14,10 +19,21 @@ BIGGER BUGS:
 -ActiveSectionId should get put into ActiveSectionIds array
    -Once fully implemented, there will be less/no need for the singular ActiveSectionId
 
-SMALL BUGS:
+-Not all changes get saved on first try.
+   -Ex:  I created new fields in the "skills" section, saved the resume, refreshed only to find roughly half of them remaining.
+      -Tried again and it saved properly.
+      -No idea why
 
--"School" name in education doesn't show up in outline
-   -Uses the placeholder instead
+
+MEDIUM BUGS:
+
+-Can't properly adjust section padding
+   -Specifically, when all sections have padding added globally from the toolbar, you can't reduce it on one specifically
+      -Due to it registering as a negative value
+         -Even though it is really a positive value when combined with the global padding
+
+
+SMALL BUGS:
 
 -Text Alignment on Placeholder Text becomes odd when aligned center or right
 
@@ -40,9 +56,15 @@ SMALL BUGS:
 
 -Currently Editing Button often shows "undefined"
 
+-Bullets don't allow for copy/pasting without breaking up indentation (shift + tab fixes indentation though, but is annoying)
+
+
 TINY BUGS:
 
 -Margin Rulers are every so slightly off target
+
+-"School" name in education doesn't show up in outline
+   -IF there is an empty line to start the field (from pressing enter before typing)
 
 
 !------------!
@@ -61,10 +83,11 @@ MAIN FEATURES:
 
 -Autosave Functionality
 
--Copy Resumes (for slight edits or base starting point)
-
 -Resume Templates
    -Ideally even have it where you can plug in default profile(s) info to auto fill resumes templates
+
+-Demo Editor
+   -For non logged in users to be able to try/test out resume editor
    
 
 BIGGER FEATURES:
@@ -84,6 +107,9 @@ BIGGER FEATURES:
       -Swap position values
       -Potentially need to swap other styling values as well
 
+-Outline "Start New Row" feature needs to be reworked.
+   -It's quite annoying to use currently.
+
 
 SMALL FEATURES:
 
@@ -98,6 +124,7 @@ SMALL FEATURES:
 -Font Family
    -Allowing different font families to be applied to different sections, subsections, fields, and slate leaves
 
+-Adding Margin Bottom to Section Headings
 
 MAYBES:
 

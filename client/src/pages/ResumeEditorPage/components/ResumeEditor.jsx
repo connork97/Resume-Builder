@@ -38,6 +38,7 @@ const ResumeEditor = () => {
 
    useEffect(() => {
       if (resumeId) fetchResumeById(resumeId);
+      else fetchResumeById(0)
    }, [resumeId, fetchResumeById])
 
    const resumeRef = useRef(null);

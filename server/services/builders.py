@@ -244,6 +244,7 @@ def build_resume_with_defaults(title, user_id, sections_data):
 
 def build_resume_copy(resume_id):
     original_resume = Resume.query.get(resume_id)
+    
 
     if original_resume is None:
         return None

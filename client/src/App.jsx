@@ -51,6 +51,7 @@ const App = () => {
         <Route path='/editor' element={<ResumeEditorPage />} />
         <Route path='/editor/new' element={<ResumeEditorPage />} />
         <Route path='/editor/:resumeId' element={<ResumeEditorPage />} />
+        <Route path='/demo' element={<ResumeEditorPage />}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -201,6 +201,7 @@ export const getResumeFromApi = async (resumeId) => {
 }
 
 export const addResumeToApi = async (resumeData) => {
+   console.log('ADD RESUME TO API RESUME DATA: ', resumeData)
    try {
       const data = await fetchApi({
          endpoint: '/resumes',

@@ -1,3 +1,7 @@
+WHERE I LEFT OFF:
+
+I was trying to get the drag and drop for sections working.  I think the only code I added was in Section.jsx, with the drag handler functions, as well as extra data sets being added.
+
 !--------!
    BUGS
 !--------!
@@ -88,6 +92,7 @@ MAIN FEATURES:
 
 -Demo Editor
    -For non logged in users to be able to try/test out resume editor
+   -Initial functionality implemented
    
 
 BIGGER FEATURES:
@@ -111,21 +116,26 @@ BIGGER FEATURES:
    -It's quite annoying to use currently.
 
 
+MEDIUM FEATURES:
+
+-Improved Keyboard Shortcuts
+   -Ease of life, the more intuitive the better
+   -Also App-Specific Hotkeys like ctrl + enter while in a field automatically adding a new field to that subsection
+
 SMALL FEATURES:
 
 -Adding an "active" indicator for toolbar settings already in use
    -Ex: When the active selection is already bolded, the toolbar should indicate that, such as slightly highlighting the Bold button
 
--Make Line Height look nicer, with a nice icon to indicate its purpose
-
 -Borders Customization
    -Moving them in/out/left/right/up/down/etc
 
--Font Family
-   -Allowing different font families to be applied to different sections, subsections, fields, and slate leaves
-
 -Adding Margin Bottom to Section Headings
+
 
 MAYBES:
 
 -Indentation
+
+-Font Family
+   -Allowing different font families to be applied to different sections, subsections, fields, and slate leaves

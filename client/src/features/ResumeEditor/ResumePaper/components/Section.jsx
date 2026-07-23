@@ -28,6 +28,7 @@ const Section = ({ section, column }) => {
   const dispatch = useDispatch();
 
   const resumeLayout = useSelector((state) => state.resume.layout);
+  const reduxSections = useSelector(state => state.resume.sections)
   const columns = useSelector((state) => state.resume.columns);
   const activeSectionIds = useSelector(
     (state) => state.resume.activeSectionIds,
@@ -165,27 +166,75 @@ const Section = ({ section, column }) => {
     } else {
       dispatch(setActiveSectionId(section.id));
     }
+   //  console.log("section ref clicked", sectionRef.current.dataset)
   };
 
   const sectionIsActive = activeSectionIds.includes(section.id);
 
   const sectionBorder = section.styling?.border;
+
+
+  const [dragTarget, setDragTarget] = useState(null);
+
+  const handleDragStart = () => {
+   console.log("drag start", section.id)
+   console.log(sectionRef.current.dataset)
+  };
+
+  const handleDragEnter = (e) => {
+   e.preventDefault()
+   
+   const targetSectionId = e.target.dataset.sectionId;
+   if (targetSectionId) {
+      // console.log(targetSectionId)
+      setDragTarget(targetSectionId)
+   }
+   
+   const sectionEnteredId = e.target.dataset.sectionId; 
+   if (sectionEnteredId) {
+      console.log(sectionEnteredId)
+   }
+  }
+
+  const handleDragDrop = (e) => {
+   e.preventDefault()
+   // console.log(e.target)
+   console.log('e.target', e.target, 'drag target', dragTarget, 'section', section)
+   if (dragTarget) console.log('there is a drag target')
+   else if (!dragTarget) console.log('there is NOT a drag target')
+  }
+
   return (
     <div
       className={`${styles.sectionContainerDiv} ${sectionIsActive && styles.activeSectionContainer}`}
-      data-section-id={section.id}
       ref={sectionRef}
+      data-id={section.id}
+      data-column-id={section.columnId}
+      data-position={section.position}
+      data-section-id={section.id}
+      data-section-column-id={section.columnId}
+      data-section-position={section.position}
       style={{
-        ...section.styling,
-        ...sectionPadding,
-        outlineColor: section.styling?.color,
+         ...section.styling,
+         ...sectionPadding,
+         outlineColor: section.styling?.color,
       }}
+
+      draggable
+      onDragOver={(e) => e.preventDefault()}
+
+      onDragEnter={handleDragEnter}
+      onDrop={handleDragDrop}
+
+
+
       onClick={handleSetActiveSection}
     >
       <div
         className={`${styles.sectionContentWrapper} ${sectionIsActive && styles.active}`}
         data-section-id={section.id}
-        ref={sectionRef}
+      //   ref={sectionRef}
+      //  Don't think I was using this ref for anything, commented out for now
       >
         <button className={styles.sectionSettingsButton}>
           <span

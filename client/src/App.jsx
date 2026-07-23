@@ -13,6 +13,7 @@ import AccountPage from "./pages/AccountPage/AccountPage";
 import ResumeEditorPage from "./pages/ResumeEditorPage/ResumeEditorPage";
 import UserResumes from "./pages/AccountPage/components/UserResumes.jsx";
 import AccountSettings from "./pages/AccountPage/components/AccountSettings.jsx";
+import Draggable from "./components/Draggable/Draggable";
 
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
             <Route path='my-resumes' element={<UserResumes />} />
             <Route path='settings' element={<AccountSettings />} />
           </Route>
+        <Route path='/draggable' element={<Draggable />} />
 
         <Route path='/editor' element={<ResumeEditorPage />} />
         <Route path='/editor/new' element={<ResumeEditorPage />} />

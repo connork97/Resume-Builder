@@ -333,7 +333,9 @@ const resumeSlice = createSlice({
 
             if (oldColumn) {
                oldColumn.sectionIds = oldColumn.sectionIds.filter(
-                  (id) => id !== id
+                  // (id) => id !== id
+                  (columnSectionId) => columnSectionId !== id
+
                );
             }
 
@@ -516,6 +518,113 @@ const resumeSlice = createSlice({
       // * REORDERING V
       // * ---------- V
 
+      dndReorderSections(state, action) {
+         const { dndKitDict } = action.payload;
+         const columnIds = Object.keys(dndKitDict);
+         columnIds.forEach(columnId => {
+            const column = state.columns.byId[columnId];
+            if (column) {
+               column.sectionIds = dndKitDict[columnId];
+               column.sectionIds.forEach((sectionId, index) => {
+                  const section = state.sections.byId[sectionId];
+                  if (section) {
+                     section.position = index;
+                     section.columnId = column.id;
+                  }
+               });
+            }
+         });
+      },
+      
+      newReorderSections(state, action) {
+         const { sectionId, dragTarget } = action.payload;
+         const sectionBeingDragged = state.sections.byId[sectionId];
+         if (!sectionBeingDragged || !dragTarget?.type || !dragTarget?.id) {
+            return;
+         }
+         console.log(sectionId, dragTarget);
+         const affectedColumns = []
+         if (dragTarget.type === 'column') {
+            const fromColumn = state.columns.byId[sectionBeingDragged.columnId];
+            fromColumn.sectionIds = fromColumn.sectionIds.filter((id) => id !== sectionId);
+            affectedColumns.push(fromColumn);
+
+            const targetColumn = state.columns.byId[dragTarget.id];
+            targetColumn.sectionIds.push(sectionId);
+            affectedColumns.push(targetColumn);
+
+            affectedColumns.forEach(column => {
+               column.sectionIds.map((sectionId, index) => {
+                  const section = state.sections.byId[sectionId];
+                  if (section) {
+                     section.position = index;
+                     section.columnId = column.id;
+                  }
+               });
+            });
+
+            sectionBeingDragged.columnId = targetColumn.id;
+         }
+         else if (dragTarget.type === 'section') {
+            const targetSection = state.sections.byId[dragTarget.id];
+            if (!targetSection) {
+               return;
+            }
+            if (targetSection.columnId === sectionBeingDragged.columnId) {
+               const column = state.columns.byId[sectionBeingDragged.columnId];
+               const fromIndex = column.sectionIds.indexOf(sectionId);
+               const toIndex = column.sectionIds.indexOf(targetSection.id);
+               if (fromIndex === -1 || toIndex === -1) {
+                  return;
+               }
+               column.sectionIds.splice(fromIndex, 1);
+               column.sectionIds.splice(toIndex, 0, sectionId);
+               column.sectionIds.forEach((id, index) => {
+                  const section = state.sections.byId[id];
+                  if (section) {
+                     section.position = index;
+                  }
+               });
+            } else if (targetSection.columnId !== sectionBeingDragged.columnId) {
+               const fromColumn = state.columns.byId[sectionBeingDragged.columnId];
+               const toColumn = state.columns.byId[targetSection.columnId];
+               if (!fromColumn || !toColumn) {
+                  return;
+               }
+               const targetIndex = toColumn.sectionIds.indexOf(targetSection.id);
+               if (targetIndex === -1) {
+                  return;
+               }
+               fromColumn.sectionIds = fromColumn.sectionIds.filter(id => id !== sectionId);
+               toColumn.sectionIds = toColumn.sectionIds.filter(id => id !== sectionId);
+               toColumn.sectionIds.splice(targetIndex, 0, sectionId);
+               affectedColumns.push(fromColumn);
+               affectedColumns.push(toColumn);
+               affectedColumns.forEach(column => {
+                  column.sectionIds.forEach((sectionId, index) => {
+                     const section = state.sections.byId[sectionId];
+                     if (section) {
+                        section.position = index;
+                        section.columnId = column.id;
+                     }
+                  });
+               });
+            }
+         }
+         console.log(state.sections.allIds)
+
+         const updatedSectionIdsArr = [];
+         state.columns.allIds.forEach(columnId => {
+            const column = state.columns.byId[columnId];
+            column.sectionIds.forEach(sectionId => {
+               updatedSectionIdsArr.push(sectionId);
+            });
+         })
+         state.sections.allIds = updatedSectionIdsArr;
+         console.log('still running')
+         console.log(state.sections.allIds)
+      },
+
       reorderSections(state, action) {
          const { fromId, toId } = action.payload;
 
@@ -664,6 +773,8 @@ export const {
    updateSection,
    deleteSection,
    reorderSections,
+   newReorderSections,
+   dndReorderSections,
 
    // addSubsection,
    updateSubsection,

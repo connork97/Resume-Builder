@@ -5,7 +5,7 @@ import styles from "../Outline.module.css";
 import OutlineSection from "./OutlineSection";
 import { useDispatch } from "react-redux";
 
-const Sortable = ({
+const SortableOutlineSection = ({
   id,
   index,
   getNodeString,
@@ -21,9 +21,9 @@ const Sortable = ({
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log("id", id, "index", index);
-  }, [index]);
+//   useEffect(() => {
+//     console.log("id", id, "index", index);
+//   }, [index]);
   return (
     <div ref={ref}
       className={`${styles.sectionBlock} ${styles.sectionRow}`}
@@ -69,4 +69,4 @@ const Sortable = ({
   /* // <li ref={ref}>Item {index}</li> */
 }
 
-export default Sortable;
+export default SortableOutlineSection;

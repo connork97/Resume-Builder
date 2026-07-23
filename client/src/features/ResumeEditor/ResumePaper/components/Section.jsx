@@ -16,8 +16,11 @@ import SectionPadding from "./SectionPadding.jsx";
 import { getContrastingColor } from "@/utils/colorUtils.js";
 import { parseRemValue } from "@/utils/formatters.js";
 import SectionBorder from "./SectionBorder.jsx";
+import { useSortable } from "@dnd-kit/react/sortable";
 
-const Section = ({ section, column }) => {
+const PAPER_SECTION_ID_PREFIX = "paper-section:";
+
+const Section = ({ id, section, column, index }) => {
   useEffect(() => {
     if (!section) {
       console.error("Section component rendered without a valid section prop.");
@@ -27,8 +30,18 @@ const Section = ({ section, column }) => {
 
   const dispatch = useDispatch();
 
+  //   const { ref } = useSortable({ id: `${PAPER_SECTION_ID_PREFIX}${id}` });
+  const { ref } = useSortable({
+   id: section.id,
+    index,
+   type: "section",
+    accept: "section",
+    group: column.id,
+    data: {columnId: column.id}
+});
+
   const resumeLayout = useSelector((state) => state.resume.layout);
-  const reduxSections = useSelector(state => state.resume.sections)
+  const reduxSections = useSelector((state) => state.resume.sections);
   const columns = useSelector((state) => state.resume.columns);
   const activeSectionIds = useSelector(
     (state) => state.resume.activeSectionIds,
@@ -48,7 +61,7 @@ const Section = ({ section, column }) => {
     paddingBottom: "0",
   });
 
-  (useEffect(() => {
+  useEffect(() => {
     if (!section || !column) return;
 
     // Determine if section is in the first column
@@ -70,8 +83,13 @@ const Section = ({ section, column }) => {
     const totalSectionsInColumn = column.sectionIds.length;
     if (sectionIndex === totalSectionsInColumn - 1) setIsLastRow(true);
     else if (sectionIndex !== totalSectionsInColumn - 1) setIsLastRow(false);
-  }),
-    [resumeLayout, section.columnId, column.sectionIds]);
+  }, [
+    resumeLayout,
+    section.columnId,
+    column.sectionIds,
+    column.id,
+    columns.allIds,
+  ]);
 
   useEffect(() => {
     setSectionPadding((prevStyling) => {
@@ -166,48 +184,18 @@ const Section = ({ section, column }) => {
     } else {
       dispatch(setActiveSectionId(section.id));
     }
-   //  console.log("section ref clicked", sectionRef.current.dataset)
+    //  console.log("section ref clicked", sectionRef.current.dataset)
   };
 
   const sectionIsActive = activeSectionIds.includes(section.id);
 
   const sectionBorder = section.styling?.border;
 
-
-  const [dragTarget, setDragTarget] = useState(null);
-
-  const handleDragStart = () => {
-   console.log("drag start", section.id)
-   console.log(sectionRef.current.dataset)
-  };
-
-  const handleDragEnter = (e) => {
-   e.preventDefault()
-   
-   const targetSectionId = e.target.dataset.sectionId;
-   if (targetSectionId) {
-      // console.log(targetSectionId)
-      setDragTarget(targetSectionId)
-   }
-   
-   const sectionEnteredId = e.target.dataset.sectionId; 
-   if (sectionEnteredId) {
-      console.log(sectionEnteredId)
-   }
-  }
-
-  const handleDragDrop = (e) => {
-   e.preventDefault()
-   // console.log(e.target)
-   console.log('e.target', e.target, 'drag target', dragTarget, 'section', section)
-   if (dragTarget) console.log('there is a drag target')
-   else if (!dragTarget) console.log('there is NOT a drag target')
-  }
-
   return (
     <div
       className={`${styles.sectionContainerDiv} ${sectionIsActive && styles.activeSectionContainer}`}
-      ref={sectionRef}
+      ref={ref}
+      // ref={sectionRef}
       data-id={section.id}
       data-column-id={section.columnId}
       data-position={section.position}
@@ -215,26 +203,17 @@ const Section = ({ section, column }) => {
       data-section-column-id={section.columnId}
       data-section-position={section.position}
       style={{
-         ...section.styling,
-         ...sectionPadding,
-         outlineColor: section.styling?.color,
+        ...section.styling,
+        ...sectionPadding,
+        outlineColor: section.styling?.color,
       }}
-
-      draggable
-      onDragOver={(e) => e.preventDefault()}
-
-      onDragEnter={handleDragEnter}
-      onDrop={handleDragDrop}
-
-
-
       onClick={handleSetActiveSection}
     >
       <div
         className={`${styles.sectionContentWrapper} ${sectionIsActive && styles.active}`}
         data-section-id={section.id}
-      //   ref={sectionRef}
-      //  Don't think I was using this ref for anything, commented out for now
+        //   ref={sectionRef}
+        //  Don't think I was using this ref for anything, commented out for now
       >
         <button className={styles.sectionSettingsButton}>
           <span
@@ -257,10 +236,21 @@ const Section = ({ section, column }) => {
           column={column}
         />
       )}
-      {sectionBorder?.top && <SectionBorder sectionBorder={sectionBorder.top} borderSide="top" />}
-      {sectionBorder?.bottom && <SectionBorder sectionBorder={sectionBorder.bottom} borderSide="bottom" />}
-      {sectionBorder?.left && <SectionBorder sectionBorder={sectionBorder.left} borderSide="left" />}
-      {sectionBorder?.right && <SectionBorder sectionBorder={sectionBorder.right} borderSide="right" />}
+      {sectionBorder?.top && (
+        <SectionBorder sectionBorder={sectionBorder.top} borderSide="top" />
+      )}
+      {sectionBorder?.bottom && (
+        <SectionBorder
+          sectionBorder={sectionBorder.bottom}
+          borderSide="bottom"
+        />
+      )}
+      {sectionBorder?.left && (
+        <SectionBorder sectionBorder={sectionBorder.left} borderSide="left" />
+      )}
+      {sectionBorder?.right && (
+        <SectionBorder sectionBorder={sectionBorder.right} borderSide="right" />
+      )}
     </div>
   );
 };

@@ -1,56 +1,65 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { DragDropProvider } from "@dnd-kit/react";
+import { move } from "@dnd-kit/helpers";
 
 import Column from "./components/Column.jsx";
-
-import styles from "./ResumePaper.module.css";
 import EndPageMarker from "./components/EndPageMarker.jsx";
 
-const ResumePaper = forwardRef(function ResumePaper(props, ref) {
-  // const ResumePaper = (props) => {
 
+import styles from "./ResumePaper.module.css";
+import { dndReorderSections } from "@/store/resumeSlice.js";
+
+const ResumePaper = forwardRef(function ResumePaper(props, ref) {
+
+   const dispatch = useDispatch();
   const editorRef = useRef(null);
 
   const resumeStyling = useSelector((state) => state.resume.styling);
   const columns = useSelector((state) => state.resume.columns);
-  const sectionsById = useSelector(state => state.resume.sections.byId);
+  const sectionsById = useSelector((state) => state.resume.sections.byId);
 
+  const [items, setItems] = useState({});
+  const previousItems = useRef({});
+  const [columnOrder, setColumnOrder] = useState([]);
 
-  //  const getIndicatorPosition = (topOrBottom) => {
+  useEffect(() => {
+    const nextItems = {};
 
-  //     const columnSectionIds = column?.sectionIds;
+    columns.allIds.forEach((columnId) => {
+      const column = columns.byId[columnId];
+      nextItems[columnId] = Array.isArray(column?.sectionIds)
+        ? [...column.sectionIds]
+        : [];
+    });
 
-  //     let total = 0;
+    setItems(nextItems);
+    setColumnOrder([...columns.allIds]);
+  }, [columns]);
 
-  //     for (let id of columnSectionIds) {
-  //        const sectionHeight = getSectionRect(id).height;
-  //        if (topOrBottom === 'top') {
-  //           if (id !== activeSectionId) {
-  //              total += sectionHeight;
-  //           } else {
-  //              return total;
-  //           }
-  //        } else if (topOrBottom === 'bottom') {
-  //           total += sectionHeight
-  //           if (id === activeSectionId) {
-  //              return total;
-  //           }
-  //        }
-  //     }
-  //     return total;
-  //  }
-  // Handle how many columns to render on the page based on resume layout settings.
-  const resumeColumns = columns.allIds?.map((columnId) => {
-    
+  const resumeColumns = columnOrder.map((columnId) => {
     const column = columns.byId[columnId];
+
     if (!column) {
       console.error(`Column with ID ${columnId} not found.`);
       return null;
     }
 
-    return <Column key={column.id} column={column} />;
+    return (
+      <Column
+        key={column.id}
+        column={column}
+        sectionIds={items[column.id] ?? []}
+        sectionById={sectionsById}
+      />
+    );
   });
+
+  useEffect(() => {
+   console.log(items)
+  }, [items]);
 
   return (
     <div className={styles.printPageRef} ref={ref}>
@@ -60,7 +69,38 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
         ref={editorRef}
         id="editorPage"
       >
-        {resumeColumns}
+        <DragDropProvider
+          onDragStart={() => {
+            previousItems.current = items;
+          }}
+          onDragOver={(event) => {
+            const { source } = event.operation;
+
+            if (source?.type === "column") return;
+
+            setItems((currentItems) => move(currentItems, event));
+          }}
+          onDragEnd={(event) => {
+            const { source } = event.operation;
+
+            if (event.canceled) {
+              if (source?.type === "section") {
+                setItems(previousItems.current);
+              }
+
+              return;
+            }
+
+            if (source?.type === "column") {
+              setColumnOrder((currentColumnOrder) =>
+                move(currentColumnOrder, event),
+              );
+            }
+            dispatch(dndReorderSections({ dndKitDict: items }));
+          }}
+        >
+          {resumeColumns}
+        </DragDropProvider>
         <EndPageMarker pageRef={editorRef} />
       </div>
     </div>

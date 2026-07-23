@@ -11,7 +11,7 @@ import { deleteSectionFromApi } from "@/services/resumeServices.js";
 import { StartNewRow } from "./components/StartNewRow.jsx";
 
 import { DragDropProvider } from "@dnd-kit/react";
-import Sortable from "@/features/ResumeEditor/EditorOutline/components/Sortable.jsx";
+import SortableOutlineSection from "@/features/ResumeEditor/EditorOutline/components/SortableOutlineSection.jsx";
 
 const Outline = () => {
   const dispatch = useDispatch();
@@ -85,8 +85,7 @@ const Outline = () => {
     return Node.string(slateValue);
   };
 
-  const [lastDraggedOverSectionId, setLastDraggedOverSectionId] =
-    useState(null);
+  const [lastDraggedOverSectionId, setLastDraggedOverSectionId] = useState(null);
 
   return (
     <div
@@ -137,7 +136,7 @@ const Outline = () => {
             <h2>No Sections to Display</h2>
           ) : (
             sections.allIds.map((sectionId, index) => (
-              <Sortable
+              <SortableOutlineSection
                 getNodeString={getNodeString}
                 getSectionById={getSectionById}
                 sectionId={sectionId}

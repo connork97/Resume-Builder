@@ -41,10 +41,10 @@ const SectionSettings = () => {
           />
         </label>
       </div>
-      <span className={styles.sectionLabelSpan}>
+      {/* <span className={styles.sectionLabelSpan}>
         Move {section.label} Section:
-      </span>
-      <MoveSection section={section} />
+      </span> */}
+      {/* <MoveSection section={section} /> */}
       <SectionFlex />
     </div>
   );

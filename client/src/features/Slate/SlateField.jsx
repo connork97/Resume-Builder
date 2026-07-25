@@ -13,8 +13,9 @@ import { editorRegistry } from "../../helpers/editorRegistry.js";
 import { getNodeString } from "@/helpers/getNodeString.js";
 import { getMinWidth } from "@/helpers/getMinWidth.js";
 import { getCascadedFontSize, getCascadedLineHeight } from "@/helpers/leafHelpers.js";
+import { useSortable } from "@dnd-kit/react/sortable";
 
-const SlateField = ({ field }) => {
+const SlateField = ({ field, index }) => {
   // Stable editor instance
   const fieldPlainText = getNodeString(field);
   const fieldMinWidth = !fieldPlainText ? getMinWidth(field.label) : 'auto';
@@ -121,7 +122,13 @@ const SlateField = ({ field }) => {
 
   if (!field.value) return null;
 
+  const { ref } = useSortable({id: field.id, index})
+
   return (
+     <div
+      style={{padding: '.5rem 1rem', margin: '-.5rem -1rem', cursor: 'pointer'}}
+      ref={ref}
+     >
     <Slate
       editor={editor}
       initialValue={ field.value ?? null }
@@ -132,17 +139,25 @@ const SlateField = ({ field }) => {
 
       }
       onClick={() => dispatch(setActiveEditorId(editorId))}
-    >
+      >
+
+      {/* <div */}
+         {/* style={{ position: 'relative', height: '150%', minWidth: `calc(${fieldMinWidth} * 1.5)`, minWidth: fieldMinWidth, fontSize: `${inheritedFontSize}px`, lineHeight: inheritedLineHeight }} */}
+      {/* > */}
+
       <Editable
-        onKeyDown={handleKeyDown}
-        onFocus={() => dispatch(setActiveEditorId(editorId))}
-        onClick={() => dispatch(setActiveEditorId(editorId))}
-        renderElement={renderElement}
-        renderLeaf={renderLeaf}
-        placeholder={field.label}
-        style={{ minWidth: fieldMinWidth, fontSize: `${inheritedFontSize}px`, lineHeight: inheritedLineHeight }}
-      />
+         // className='test'
+         onKeyDown={handleKeyDown}
+         onFocus={() => dispatch(setActiveEditorId(editorId))}
+         onClick={() => dispatch(setActiveEditorId(editorId))}
+         renderElement={renderElement}
+         renderLeaf={renderLeaf}
+         placeholder={field.label}
+         style={{ position: 'relative', minWidth: fieldMinWidth, fontSize: `${inheritedFontSize}px`, lineHeight: inheritedLineHeight, cursor: 'text' }}
+         />
+         {/* </div> */}
     </Slate>
+         </div>
   );
 };
 

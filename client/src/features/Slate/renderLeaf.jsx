@@ -107,8 +107,9 @@ const Leaf = ({
   }
 
   return (
-    <span {...attributes} style={stylingObj}>
+    <span {...attributes} style={{...stylingObj, cursor: 'auto'}}>
       {styledChildren}
+      {/* <span id='draggable' style={{position: 'absolute', height: '150%', width: '150%', top: '-25%', left: '-25%', cursor: 'all-scroll'}}></span> */}
     </span>
   );
 };

@@ -62,6 +62,7 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
       <SlateField
          key={field.id}
          field={field}
+         index={index}
          styling={{
             ...field.styling,
             ...fieldLayoutDict,

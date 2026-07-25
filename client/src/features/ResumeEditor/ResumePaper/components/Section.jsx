@@ -206,12 +206,14 @@ const Section = ({ id, section, column, index }) => {
         ...section.styling,
         ...sectionPadding,
         outlineColor: section.styling?.color,
+        cursor: 'all-scroll'
       }}
       onClick={handleSetActiveSection}
     >
       <div
         className={`${styles.sectionContentWrapper} ${sectionIsActive && styles.active}`}
         data-section-id={section.id}
+        style={{cursor: 'auto'}}
         //   ref={sectionRef}
         //  Don't think I was using this ref for anything, commented out for now
       >

@@ -535,6 +535,28 @@ const resumeSlice = createSlice({
             }
          });
       },
+
+      dndReorderFields(state, action) {
+         // const { fieldReorderDict } = action.payload;
+         const { fromFieldId, toFieldId, subsectionId } = action.payload;
+         // const fromField = state.fields.byId[fromFieldId];
+         // const toField = state.fields.byId[toFieldId];
+         const subsection = state.subsections.byId[subsectionId];
+         
+         const fromFieldIndex = subsection.fieldIds.indexOf(fromFieldId);
+         const toFieldIndex = subsection.fieldIds.indexOf(toFieldId);
+
+         subsection.fieldIds.splice(fromFieldIndex, 1);
+         subsection.fieldIds.splice(toFieldIndex, 0, fromFieldId);
+
+         subsection.fieldIds.forEach((fieldId, index) => {
+            const field = state.fields.byId[fieldId];
+            if (field) {
+               field.position = index;
+            }
+         });
+
+      },
       
       newReorderSections(state, action) {
          const { sectionId, dragTarget } = action.payload;
@@ -775,6 +797,7 @@ export const {
    reorderSections,
    newReorderSections,
    dndReorderSections,
+   dndReorderFields,
 
    // addSubsection,
    updateSubsection,

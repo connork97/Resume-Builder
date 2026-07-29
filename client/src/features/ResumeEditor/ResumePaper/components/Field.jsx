@@ -88,6 +88,7 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
     }
   }
 
+  const isFirstColumn = currentColumn === 1;
   const isLastColumn = currentColumn === totalColumns;
   const remainingColumnsInRow = totalColumns - currentColumn + 1;
   const columnSpanValue = Math.max(1, remainingColumnsInRow);
@@ -95,11 +96,20 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
     currentColumn === 1 &&
     (Boolean(nextField?.layout?.startNewRow) || !nextField);
   const isLastItemInIncompleteRow = !nextField && !isLastColumn;
-  const shouldSpanRemainingColumns =
-    isGrid &&
-    (isOnlyItemInRow ||
-      isLastItemInIncompleteRow ||
-      (Boolean(nextField?.layout?.startNewRow) && !isLastColumn));
+  const shouldSpanRemainingColumns = isOnlyItemInRow && field.layout.grid?.fillRow;
+   //  isGrid &&
+   //  (isOnlyItemInRow ||
+   //    isLastItemInIncompleteRow ||
+   //    (Boolean(nextField?.layout?.startNewRow) && !isLastColumn));
+   
+   let autoTextAlign;
+   
+   if (fieldLayoutDict.textAlign) autoTextAlign = fieldLayoutDict.textAlign;
+   else if (!fieldLayoutDict.textAlign && !isOnlyItemInRow && !isLastItemInIncompleteRow && totalColumns > 1) {
+      if (isLastColumn) autoTextAlign = 'right';
+      else if (isFirstColumn) autoTextAlign = 'left';
+      else if (!isFirstColumn && !isLastColumn) autoTextAlign = 'center';
+   }
 
   return (
     <React.Fragment>
@@ -113,6 +123,8 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
          //  gridColumn: (nextField?.layout.startNewRow && !field.layout.startNewRow) ? "auto / -1" : "auto",
           gridColumnStart: field.layout.startNewRow ? 1 : "auto",
           outline: `1px solid ${isHovered ? "black" : "transparent"}`,
+          textAlign: autoTextAlign,
+         //  textAlign: (isLastColumn && !isOnlyItemInRow && !fieldLayoutDict.textAlign && totalColumns > 1) && 'right',
          //  textAlign: shouldSpanRemainingColumns && 'right'
         }}
       >

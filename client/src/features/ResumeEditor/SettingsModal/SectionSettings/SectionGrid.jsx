@@ -97,7 +97,6 @@ const SectionGrid = ({ section }) => {
         Advanced Orientation (Check Box to Start a New Row):
         {section.subsectionIds.map((subsectionId) => {
           const subsection = subsectionsById[subsectionId];
-          let columnIndex = 1;
           //  ! WILL NEED TO BE ITS OWN COMPONENT TO AVOID REACT SAFETY ISSUES ! //
           return (
             <div>
@@ -116,6 +115,7 @@ const SectionGrid = ({ section }) => {
                 {subsection.fieldIds.map((fieldId, index) => {
                   const field = reduxFieldsById[fieldId];
                   const fieldIsNewRow = field.layout.startNewRow;
+                  const fieldShouldFillRow = field.layout.grid?.fillRow || false;
                   const fieldLabel = reduxFieldsById[fieldId].label || "Label";
                   const subsection = useSelector(
                     (state) =>
@@ -129,7 +129,10 @@ const SectionGrid = ({ section }) => {
                   );
 
                   // const [shouldSpanTwo, setShouldSpanTwo] = useState(false);
-                  const totalColumns = Math.max(1, Number(gridColumnsInput) || 1);
+                  const totalColumns = Math.max(
+                    1,
+                    Number(gridColumnsInput) || 1,
+                  );
                   let currentColumn = 1;
 
                   for (let i = 0; i < index; i += 1) {
@@ -138,7 +141,10 @@ const SectionGrid = ({ section }) => {
                     const shouldResetBeforeNext =
                       nextRenderedField?.layout?.startNewRow;
 
-                    if (shouldResetBeforeNext || currentColumn >= totalColumns) {
+                    if (
+                      shouldResetBeforeNext ||
+                      currentColumn >= totalColumns
+                    ) {
                       currentColumn = 1;
                     } else {
                       currentColumn += 1;
@@ -146,21 +152,22 @@ const SectionGrid = ({ section }) => {
                   }
 
                   let isLastColumn = currentColumn === totalColumns;
-                  const remainingColumnsInRow = totalColumns - currentColumn + 1;
+                  const remainingColumnsInRow =
+                    totalColumns - currentColumn + 1;
                   const columnSpanValue = Math.max(1, remainingColumnsInRow);
                   const isOnlyItemInRow =
                     currentColumn === 1 &&
                     (Boolean(nextField?.layout?.startNewRow) || !nextField);
                   const isLastItemInIncompleteRow = !nextField && !isLastColumn;
-                  const shouldSpanRemainingColumns =
+                  const shouldSpanRemainingColumns = fieldShouldFillRow && isOnlyItemInRow;
+                  // const shouldSpanRemainingColumns = fieldShouldFillRow;
                     isOnlyItemInRow ||
                     isLastItemInIncompleteRow ||
                     (Boolean(nextField?.layout?.startNewRow) && !isLastColumn);
 
-
                   // console.log(checked);
                   return (
-                    <span
+                    <div
                       style={{
                         gridColumnEnd: shouldSpanRemainingColumns
                           ? `span ${columnSpanValue}`
@@ -175,25 +182,54 @@ const SectionGrid = ({ section }) => {
                         padding: "0.25rem",
                       }}
                     >
-                      <input
-                        type="checkbox"
-                        checked={fieldIsNewRow}
-                        onChange={(event) => {
-                          // setStartNewRow(event.target.checked)
-                          dispatch(
-                            updateFieldLayout({
-                              id: fieldId,
-                              changes: {
-                                startNewRow: event.target.checked,
-                              },
-                            }),
-                          );
-                        }}
-                      />
-                      Field {index}
+                      <p>Field {index}</p>
+                      <div className="flexColumn">
+                        {(currentColumn !== 1 || fieldIsNewRow) && (
+                          <div className="flexRow">
+                            <input
+                              type="checkbox"
+                              checked={fieldIsNewRow}
+                              onChange={(event) => {
+                                // setStartNewRow(event.target.checked)
+                                dispatch(
+                                  updateFieldLayout({
+                                    id: fieldId,
+                                    changes: {
+                                      startNewRow: event.target.checked,
+                                    },
+                                  }),
+                                );
+                              }}
+                            />
+                            <span>Start New Row</span>
+                          </div>
+                        )}
+                        {isLastItemInIncompleteRow || isOnlyItemInRow && (
+                          <div className="flexRow">
+                            <input
+                              type="checkbox"
+                              checked={fieldShouldFillRow}
+                              onChange={(event) => {
+                                // setStartNewRow(event.target.checked)
+                                dispatch(
+                                  updateFieldLayout({
+                                    id: fieldId,
+                                    changes: {
+                                      grid: {
+                                        fillRow: event.target.checked,
+                                      },
+                                    },
+                                  }),
+                                );
+                              }}
+                            />
+                            <span>Fill Space</span>
+                          </div>
+                        )}
+                      </div>
                       {/* {fieldLabel} */}
                       {/* {fieldId} */}
-                    </span>
+                    </div>
                     // <span>{fieldId}</span>
                   );
                 })}

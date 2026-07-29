@@ -44,7 +44,7 @@ const SubsectionRenderer = ({ subsection }) => {
   } else if (sectionLayout.display === 'grid') {
    parentLayoutDict = {
       display: 'grid',
-      gridTemplateColumns: sectionLayout.grid?.columns ? `repeat(${sectionLayout.grid.columns}, auto)` : 'auto'
+      gridTemplateColumns: sectionLayout.grid?.columns ? `repeat(${sectionLayout.grid.columns}, 1fr)` : 'auto'
       
       // gridAutoFlow: 'column',
       // gridAutoColumns: '1fr'

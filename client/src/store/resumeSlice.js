@@ -542,6 +542,12 @@ const resumeSlice = createSlice({
          // const fromField = state.fields.byId[fromFieldId];
          // const toField = state.fields.byId[toFieldId];
          const subsection = state.subsections.byId[subsectionId];
+
+         const startNewRowArr = Array.from(subsection.fieldIds.map(fieldId => (state.fields.byId[fieldId].layout.startNewRow)));
+         console.log(startNewRowArr);
+         // subsection.fieldIds.forEach((fieldId) => {
+
+         // })
          
          const fromFieldIndex = subsection.fieldIds.indexOf(fromFieldId);
          const toFieldIndex = subsection.fieldIds.indexOf(toFieldId);
@@ -553,6 +559,7 @@ const resumeSlice = createSlice({
             const field = state.fields.byId[fieldId];
             if (field) {
                field.position = index;
+               field.startNewRow = startNewRowArr[index];
             }
          });
 

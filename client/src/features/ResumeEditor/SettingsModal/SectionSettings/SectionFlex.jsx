@@ -75,6 +75,8 @@ const SectionFlex = () => {
 
   return (
     <>
+      <h2>Flex Settings</h2>
+
       <label htmlFor="flex-direction-select">Section Flex Direction:</label>
       <div className="flexRow">
         <button

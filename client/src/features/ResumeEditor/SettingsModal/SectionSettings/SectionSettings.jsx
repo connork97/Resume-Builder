@@ -7,6 +7,7 @@ import MoveSection from "./MoveSection.jsx";
 import SectionFlex from "./SectionFlex";
 
 import styles from "../SettingsModal.module.css";
+import SectionGrid from "./SectionGrid.jsx";
 
 const SectionSettings = () => {
   const dispatch = useDispatch();
@@ -41,11 +42,49 @@ const SectionSettings = () => {
           />
         </label>
       </div>
+
       {/* <span className={styles.sectionLabelSpan}>
         Move {section.label} Section:
       </span> */}
       {/* <MoveSection section={section} /> */}
-      <SectionFlex />
+      <div className="flexRow spaceBetween">
+        <button
+          className="buttonMain"
+          onClick={() => {
+            dispatch(
+              updateSection({
+                id: section.id,
+                changes: {
+                  layout: {
+                    display: "flex",
+                  },
+                },
+              }),
+            );
+          }}
+        >
+          Flex
+        </button>
+        <button
+          className="buttonMain"
+          onClick={() => {
+            dispatch(
+              updateSection({
+                id: section.id,
+                changes: {
+                  layout: {
+                    display: "grid",
+                  },
+                },
+              }),
+            );
+          }}
+        >
+          Grid
+        </button>
+      </div>
+      {section.layout.display === "flex" && <SectionFlex />}
+      {section.layout.display === "grid" && <SectionGrid section={section} />}
     </div>
   );
 };

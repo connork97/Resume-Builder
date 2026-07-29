@@ -14,23 +14,43 @@ const SubsectionRenderer = ({ subsection }) => {
   const fields = useSelector((state) => state.resume.fields);
   const subsectionLayout = subsection.layout;
 
-  const parentLayoutDict = {
-    display: subsectionLayout?.display || sectionLayout?.display || "flex",
-    flexWrap: "wrap",
-    flexDirection:
-      subsectionLayout?.flexDirection ||
-      sectionLayout?.flexDirection ||
-      "column",
-    justifyContent:
-      subsectionLayout?.justifyContent ||
-      sectionLayout?.justifyContent ||
-      "space-between",
-    justifySelf: subsectionLayout?.justifySelf,
-    gridTemplateColumns: subsectionLayout?.gridTemplateColumns,
-    gridTemplateRows: subsectionLayout?.gridTemplateRows,
-    gap: subsectionLayout?.gap,
-    // width: '1fr'
-  };
+  //   const parentLayoutDict = {
+  //    display: 'grid',
+  //    gridAutoFlow: subsectionLayout?.flexDirection || sectionLayout?.flexDirection || 'row'
+  //    // gridAutoColumns: 'auto',
+  //    // gridAutoRows: 'auto'
+  //    // gridTemplateColumns: 'auto'
+  //   }
+  let parentLayoutDict = {};
+
+  if (sectionLayout.display === "flex") {
+    parentLayoutDict = {
+      display: subsectionLayout?.display || sectionLayout?.display || "flex",
+      flexWrap: "wrap",
+      flexDirection:
+        subsectionLayout?.flexDirection ||
+        sectionLayout?.flexDirection ||
+        "column",
+      justifyContent:
+        subsectionLayout?.justifyContent ||
+        sectionLayout?.justifyContent ||
+        "space-between",
+      justifySelf: subsectionLayout?.justifySelf,
+      // gridTemplateColumns: subsectionLayout?.gridTemplateColumns,
+      // gridTemplateRows: subsectionLayout?.gridTemplateRows,
+      gap: subsectionLayout?.gap,
+      // width: '1fr'
+    };
+  } else if (sectionLayout.display === 'grid') {
+   parentLayoutDict = {
+      display: 'grid',
+      gridTemplateColumns: sectionLayout.grid?.columns ? `repeat(${sectionLayout.grid.columns}, auto)` : 'auto'
+      
+      // gridAutoFlow: 'column',
+      // gridAutoColumns: '1fr'
+      // gridTemplateColumns: sectionLayout.gridTemplateColumns || 'auto',
+   }
+  }
 
   const [fieldReorderDict, setFieldReorderDict] = useState({
     fromFieldId: null,
@@ -47,8 +67,8 @@ const SubsectionRenderer = ({ subsection }) => {
             console.error("Error occured on field drag start.");
             return;
           }
-         //  console.log("DRAG START", "SOURCE: ", source, "TARGET: ", target);
-         //  console.log(fieldReorderDict);
+          //  console.log("DRAG START", "SOURCE: ", source, "TARGET: ", target);
+          //  console.log(fieldReorderDict);
           setFieldReorderDict((prevState) => ({
             ...prevState,
             fromFieldId: source.id,

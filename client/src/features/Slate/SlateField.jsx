@@ -2,31 +2,48 @@ import React, { useEffect, useMemo, useCallback } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, Editor, Transforms } from "slate";
 import { useDispatch, useSelector } from "react-redux";
-import { updateFieldValue, setActiveEditorId, setActiveEditorSelection } from "../../store/resumeSlice.js";
+import {
+  updateFieldValue,
+  setActiveEditorId,
+  setActiveEditorSelection,
+} from "../../store/resumeSlice.js";
 
 import Leaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
-import { addListItem, indentList, outdentList } from "../../helpers/listBehavior.js";
+import {
+  addListItem,
+  indentList,
+  outdentList,
+} from "../../helpers/listBehavior.js";
 
 import { editorRegistry } from "../../helpers/editorRegistry.js";
 import { getNodeString } from "@/helpers/getNodeString.js";
 import { getMinWidth } from "@/helpers/getMinWidth.js";
-import { getCascadedFontSize, getCascadedLineHeight } from "@/helpers/leafHelpers.js";
+import {
+  getCascadedFontSize,
+  getCascadedLineHeight,
+} from "@/helpers/leafHelpers.js";
 import { useSortable } from "@dnd-kit/react/sortable";
 
 const SlateField = ({ field, index }) => {
   // Stable editor instance
   const fieldPlainText = getNodeString(field);
-  const fieldMinWidth = !fieldPlainText ? getMinWidth(field.label) : 'auto';
+  const fieldMinWidth = !fieldPlainText ? getMinWidth(field.label) : "auto";
 
   const editorId = field.id;
   const editor = useMemo(() => withReact(createEditor()), []);
   const dispatch = useDispatch();
-  const resumeStyling = useSelector(state => state.resume.styling);
-  const subsection = useSelector(state => state.resume.subsections.byId[field.subsectionId]);
-  const section = useSelector(state => state.resume.sections.byId[subsection?.sectionId]);
-  const column = useSelector(state => state.resume.columns.byId[section?.columnId]);
+  const resumeStyling = useSelector((state) => state.resume.styling);
+  const subsection = useSelector(
+    (state) => state.resume.subsections.byId[field.subsectionId],
+  );
+  const section = useSelector(
+    (state) => state.resume.sections.byId[subsection?.sectionId],
+  );
+  const column = useSelector(
+    (state) => state.resume.columns.byId[section?.columnId],
+  );
   const fieldStyling = field?.styling;
   const columnStyling = column?.styling;
   const sectionStyling = section?.styling;
@@ -51,18 +68,27 @@ const SlateField = ({ field, index }) => {
     return () => editorRegistry.delete(editorId);
   }, [editorId, editor]);
 
-  const renderLeaf = useCallback((props) => {
-    return (
-      <Leaf
-        {...props}
-        resumeStyling={resumeStyling}
-        columnStyling={columnStyling}
-        sectionStyling={sectionStyling}
-        subsectionStyling={subsectionStyling}
-        fieldStyling={fieldStyling}
-      />
-    );
-  }, [resumeStyling, columnStyling, sectionStyling, subsectionStyling, fieldStyling]);
+  const renderLeaf = useCallback(
+    (props) => {
+      return (
+        <Leaf
+          {...props}
+          resumeStyling={resumeStyling}
+          columnStyling={columnStyling}
+          sectionStyling={sectionStyling}
+          subsectionStyling={subsectionStyling}
+          fieldStyling={fieldStyling}
+        />
+      );
+    },
+    [
+      resumeStyling,
+      columnStyling,
+      sectionStyling,
+      subsectionStyling,
+      fieldStyling,
+    ],
+  );
 
   const renderElement = useCallback((props) => {
     return (
@@ -80,13 +106,13 @@ const SlateField = ({ field, index }) => {
       updateFieldValue({
         fieldId: field.id,
         newValue,
-      })
+      }),
     );
   };
 
   const handleKeyDown = (event) => {
     // Early exit from keydown function
-    const validKeyDowns = ['Enter', 'Tab']
+    const validKeyDowns = ["Enter", "Tab"];
     if (!validKeyDowns.includes(event.key)) return;
 
     const [listItemEntry] = Editor.nodes(editor, {
@@ -96,12 +122,12 @@ const SlateField = ({ field, index }) => {
     if (!listItemEntry) {
       console.error("No list item entry found.");
       return;
-    };
+    }
 
     if (validKeyDowns.includes(event.key)) {
       event.preventDefault();
       event.stopPropagation();
-    };
+    }
 
     if (event.key === "Enter") {
       // Editor.normalize(editor, { force: true });
@@ -122,42 +148,42 @@ const SlateField = ({ field, index }) => {
 
   if (!field.value) return null;
 
-//   const { ref } = useSortable({id: field.id, index})
-
   return (
-     <div
-      style={{padding: '.5rem 1rem', margin: '-.5rem -1rem', cursor: 'pointer'}}
-      // ref={ref}
-     >
-    <Slate
-      editor={editor}
-      initialValue={ field.value ?? null }
-      onChange={(value) => {
-        handleUpdateFieldValue(value);
-        dispatch(setActiveEditorSelection(editor.children));
-      }
-
-      }
-      onClick={() => dispatch(setActiveEditorId(editorId))}
+    <div
+      style={{
+        padding: "0 1rem",
+        margin: "0 -1rem",
+        cursor: "pointer",
+      }}
+    >
+      <Slate
+        editor={editor}
+        initialValue={field.value ?? null}
+        onChange={(value) => {
+          handleUpdateFieldValue(value);
+          dispatch(setActiveEditorSelection(editor.children));
+        }}
+        onClick={() => dispatch(setActiveEditorId(editorId))}
       >
-
-      {/* <div */}
-         {/* style={{ position: 'relative', height: '150%', minWidth: `calc(${fieldMinWidth} * 1.5)`, minWidth: fieldMinWidth, fontSize: `${inheritedFontSize}px`, lineHeight: inheritedLineHeight }} */}
-      {/* > */}
-
-      <Editable
-         // className='test'
-         onKeyDown={handleKeyDown}
-         onFocus={() => dispatch(setActiveEditorId(editorId))}
-         onClick={() => dispatch(setActiveEditorId(editorId))}
-         renderElement={renderElement}
-         renderLeaf={renderLeaf}
-         placeholder={field.label}
-         style={{ position: 'relative', minWidth: fieldMinWidth, fontSize: `${inheritedFontSize}px`, lineHeight: inheritedLineHeight, cursor: 'text' }}
-         />
-         {/* </div> */}
-    </Slate>
-         </div>
+        <Editable
+          // className='test'
+          onKeyDown={handleKeyDown}
+          onFocus={() => dispatch(setActiveEditorId(editorId))}
+          onClick={() => dispatch(setActiveEditorId(editorId))}
+          renderElement={renderElement}
+          renderLeaf={renderLeaf}
+          placeholder={field.label}
+          style={{
+            position: "relative",
+            minWidth: fieldMinWidth,
+            fontSize: `${inheritedFontSize}px`,
+            lineHeight: inheritedLineHeight,
+            cursor: "text",
+          }}
+        />
+        {/* </div> */}
+      </Slate>
+    </div>
   );
 };
 

@@ -23,47 +23,6 @@ const SectionGrid = ({ section }) => {
   return (
     <>
       <h2>Grid Settings</h2>
-      <label>Base Orientation:</label>
-      <div className="flexRow">
-        <button
-          className="buttonMain"
-          onClick={() => {
-            let currentSectionColumns = section.layout.grid.columns || 1;
-            dispatch(
-              updateSection({
-                id: section.id,
-                changes: {
-                  layout: {
-                    grid: {
-                      columns: currentSectionColumns,
-                    },
-                  },
-                },
-              }),
-            );
-            setGridColumnsInput(currentSectionColumns);
-          }}
-        >
-          Column
-        </button>
-        <button
-          className="buttonMain"
-          onClick={() => {
-            dispatch(
-              updateSection({
-                id: section.id,
-                changes: {
-                  layout: {
-                    display: "flex",
-                  },
-                },
-              }),
-            );
-          }}
-        >
-          Row
-        </button>
-      </div>
       <div className="flexColumn">
         Advanced Orientation:
         <label htmlFor="flex-direction-select" className="flexRow">
@@ -72,22 +31,21 @@ const SectionGrid = ({ section }) => {
             className="inputMain"
             type="number"
             value={gridColumnsInput}
-            onChange={(e) => setGridColumnsInput(e.target.value)}
-            onKeyDown={(e) =>
-              e.key === "Enter" &&
+            onChange={(e) => {
+              setGridColumnsInput(e.target.value);
               dispatch(
                 updateSection({
                   id: section.id,
                   changes: {
                     layout: {
                       grid: {
-                        columns: gridColumnsInput,
+                        columns: e.target.value,
                       },
                     },
                   },
                 }),
-              )
-            }
+              );
+            }}
             style={{ width: "3rem" }}
           />
         </label>
@@ -100,13 +58,14 @@ const SectionGrid = ({ section }) => {
           //  ! WILL NEED TO BE ITS OWN COMPONENT TO AVOID REACT SAFETY ISSUES ! //
           return (
             <div>
-              Subsection {subsectionId}
+              <p style={{textAlign: 'center', fontSize: '125%'}}>Subsection {subsectionId}</p>
               <div
                 style={{
                   display: "grid",
                   gridTemplateColumns: `repeat(${gridColumnsInput}, 1fr)`,
-                  backgroundColor: "black",
-                  border: "1px solid black",
+                  backgroundColor: "var(--background-toolbar)",
+                  border: "var(--border-main)",
+                  borderRadius: 'var(--border-radius-main)',
                   gap: "1px",
                   // border: '1px solid white',
                   // gap: "1rem",
@@ -115,7 +74,8 @@ const SectionGrid = ({ section }) => {
                 {subsection.fieldIds.map((fieldId, index) => {
                   const field = reduxFieldsById[fieldId];
                   const fieldIsNewRow = field.layout.startNewRow;
-                  const fieldShouldFillRow = field.layout.grid?.fillRow || false;
+                  const fieldShouldFillRow =
+                    field.layout.grid?.fillRow || false;
                   const fieldLabel = reduxFieldsById[fieldId].label || "Label";
                   const subsection = useSelector(
                     (state) =>
@@ -159,9 +119,10 @@ const SectionGrid = ({ section }) => {
                     currentColumn === 1 &&
                     (Boolean(nextField?.layout?.startNewRow) || !nextField);
                   const isLastItemInIncompleteRow = !nextField && !isLastColumn;
-                  const shouldSpanRemainingColumns = fieldShouldFillRow && isOnlyItemInRow;
+                  const shouldSpanRemainingColumns =
+                    fieldShouldFillRow && isOnlyItemInRow;
                   // const shouldSpanRemainingColumns = fieldShouldFillRow;
-                    isOnlyItemInRow ||
+                  isOnlyItemInRow ||
                     isLastItemInIncompleteRow ||
                     (Boolean(nextField?.layout?.startNewRow) && !isLastColumn);
 
@@ -174,8 +135,10 @@ const SectionGrid = ({ section }) => {
                           : "auto",
                         gridColumnStart: fieldIsNewRow ? 1 : "auto",
                         width: "100%",
-                        backgroundColor: "white",
-                        color: "black",
+                        backgroundColor: "var(--background-main)",
+                        color: "white",
+                        border: 'var(--border-main)',
+                        borderRadius: 'var(--border-radius-main)',
                         // textAlign: shouldSpanRemainingColumns && 'right',
                         // border: '1px solid white',
                         // borderRight: 'none',
@@ -204,28 +167,29 @@ const SectionGrid = ({ section }) => {
                             <span>Start New Row</span>
                           </div>
                         )}
-                        {isLastItemInIncompleteRow || isOnlyItemInRow && (
-                          <div className="flexRow">
-                            <input
-                              type="checkbox"
-                              checked={fieldShouldFillRow}
-                              onChange={(event) => {
-                                // setStartNewRow(event.target.checked)
-                                dispatch(
-                                  updateFieldLayout({
-                                    id: fieldId,
-                                    changes: {
-                                      grid: {
-                                        fillRow: event.target.checked,
+                        {(isLastItemInIncompleteRow ||
+                          isOnlyItemInRow) && (
+                            <div className="flexRow">
+                              <input
+                                type="checkbox"
+                                checked={fieldShouldFillRow}
+                                onChange={(event) => {
+                                  // setStartNewRow(event.target.checked)
+                                  dispatch(
+                                    updateFieldLayout({
+                                      id: fieldId,
+                                      changes: {
+                                        grid: {
+                                          fillRow: event.target.checked,
+                                        },
                                       },
-                                    },
-                                  }),
-                                );
-                              }}
-                            />
-                            <span>Fill Space</span>
-                          </div>
-                        )}
+                                    }),
+                                  );
+                                }}
+                              />
+                              <span>Fill Space</span>
+                            </div>
+                          )}
                       </div>
                       {/* {fieldLabel} */}
                       {/* {fieldId} */}

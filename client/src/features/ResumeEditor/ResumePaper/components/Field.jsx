@@ -98,62 +98,86 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
     currentColumn === 1 &&
     (Boolean(nextField?.layout?.startNewRow) || !nextField);
   const isLastItemInIncompleteRow = !nextField && !isLastColumn;
-  const shouldSpanRemainingColumns = isOnlyItemInRow && field.layout.grid?.fillRow;
-   //  isGrid &&
-   //  (isOnlyItemInRow ||
-   //    isLastItemInIncompleteRow ||
-   //    (Boolean(nextField?.layout?.startNewRow) && !isLastColumn));
-   
-   let autoTextAlign;
-   
-   if (fieldLayoutDict.textAlign) autoTextAlign = fieldLayoutDict.textAlign;
-   else if (!fieldLayoutDict.textAlign && !isOnlyItemInRow && !isLastItemInIncompleteRow && totalColumns > 1) {
-      if (isLastColumn) autoTextAlign = 'right';
-      else if (isFirstColumn) autoTextAlign = 'left';
-      else if (!isFirstColumn && !isLastColumn) autoTextAlign = 'center';
-   }
+  const shouldSpanRemainingColumns =
+    isOnlyItemInRow && field.layout.grid?.fillRow;
+  //  isGrid &&
+  //  (isOnlyItemInRow ||
+  //    isLastItemInIncompleteRow ||
+  //    (Boolean(nextField?.layout?.startNewRow) && !isLastColumn));
 
-   //  <React.Fragment>
-   {/* </React.Fragment> */}
-  const { ref, handleRef } = useSortable({id: fieldId, index})
+  let autoTextAlign;
+
+  if (fieldLayoutDict.textAlign) autoTextAlign = fieldLayoutDict.textAlign;
+  else if (
+    !fieldLayoutDict.textAlign &&
+    !isOnlyItemInRow &&
+    !isLastItemInIncompleteRow &&
+    totalColumns > 1 &&
+    fieldLayoutDict.display === 'grid'
+  ) {
+    if (isLastColumn) autoTextAlign = "right";
+    else if (isFirstColumn) autoTextAlign = "left";
+    else if (!isFirstColumn && !isLastColumn) autoTextAlign = "center";
+  }
+
+  //  <React.Fragment>
+  {
+    /* </React.Fragment> */
+  }
+  const { ref, handleRef } = useSortable({ id: fieldId, index });
+
+  const fieldWrapperStyling = {};
+
+  if (parentLayoutDict.display === "grid") {
+    fieldWrapperStyling.gridColumnEnd = shouldSpanRemainingColumns
+      ? `span ${columnSpanValue}`
+      : "auto";
+    fieldWrapperStyling.gridColumnStart = field.layout.startNewRow ? 1 : "auto";
+  }
 
   return (
-      <div
-         ref={ref}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{
-          position: "relative",
-          gridColumnEnd: shouldSpanRemainingColumns
-            ? `span ${columnSpanValue}`
-            : "auto",
-         //  gridColumn: (nextField?.layout.startNewRow && !field.layout.startNewRow) ? "auto / -1" : "auto",
-          gridColumnStart: field.layout.startNewRow ? 1 : "auto",
-          outline: `1px solid ${isHovered ? "black" : "transparent"}`,
-          textAlign: autoTextAlign,
-        }}
-      >
+    <div
+      ref={ref}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+         ...fieldWrapperStyling,
+         position: "relative",
+        outline: `1px solid ${isHovered ? "black" : "transparent"}`,
+        borderRadius: '2px',
+        outlineOffset: '1px',
+        textAlign: autoTextAlign,
+      }}
+    >
       {isHovered && (
         <MdDragIndicator
           ref={handleRef}
           type="button"
           aria-label={`Drag ${field.label}`}
-          style={{position: 'absolute', width: 'auto', height: 'auto', top: '50%', right: 'calc(100% + 2px)', transform: 'translateY(-50%)', cursor: 'grab'}}
-          />
-      )}
-        <SlateField
-          key={field.id}
-          field={field}
-          index={index}
-          styling={{
-            ...field.styling,
-            ...fieldLayoutDict,
+          style={{
+            position: "absolute",
+            width: "auto",
+            height: "auto",
+            top: "50%",
+            right: "calc(100% + 2px)",
+            transform: "translateY(-50%)",
+            cursor: "grab",
           }}
-          sectionId={field.sectionId}
-          subsectionId={field.subsectionId}
-          layout={parentLayoutDict}
         />
-      </div>
+      )}
+      <SlateField
+        key={field.id}
+        field={field}
+        index={index}
+        styling={{
+          ...field.styling,
+          ...fieldLayoutDict,
+        }}
+        sectionId={field.sectionId}
+        subsectionId={field.subsectionId}
+        layout={parentLayoutDict}
+      />
+    </div>
   );
 };
 

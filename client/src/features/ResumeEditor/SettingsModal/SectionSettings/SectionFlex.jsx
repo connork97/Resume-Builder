@@ -75,10 +75,10 @@ const SectionFlex = () => {
 
   return (
     <>
-      <h2>Flex Settings</h2>
+      {/* <h2>Flex Settings</h2> */}
 
-      <label htmlFor="flex-direction-select">Section Flex Direction:</label>
-      <div className="flexRow">
+      {/* <label htmlFor="flex-direction-select">Section Flex Direction:</label> */}
+      {/* <div className="flexRow">
         <button
           className="buttonMain"
           value="row"
@@ -93,7 +93,7 @@ const SectionFlex = () => {
         >
           Column
         </button>
-      </div>
+      </div> */}
       <div className="flexColumn">
         <label htmlFor="justifyContentOptions">Section Justify Content:</label>
         <div className="flexRow">

@@ -94,8 +94,6 @@ const updateAutoColumnWidths = (state) => {
    for (let columnId of state.columns.allIds) {
       const column = state.columns.byId[columnId]
       if (column.layout.width.auto !== undefined) {
-         console.log('CHECKING')
-
          if (column.layout.width.auto === true) {
             autoColumnsArr.push(columnId);
          } else {

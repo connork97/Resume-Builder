@@ -57,10 +57,6 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
     );
   });
 
-  useEffect(() => {
-   console.log(items)
-  }, [items]);
-
   return (
     <div className={styles.printPageRef} ref={ref}>
       <div

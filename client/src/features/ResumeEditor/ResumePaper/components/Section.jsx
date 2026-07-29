@@ -17,8 +17,22 @@ import { getContrastingColor } from "@/utils/colorUtils.js";
 import { parseRemValue } from "@/utils/formatters.js";
 import SectionBorder from "./SectionBorder.jsx";
 import { useSortable } from "@dnd-kit/react/sortable";
+import { KeyboardSensor, PointerSensor } from "@dnd-kit/react";
 
-const PAPER_SECTION_ID_PREFIX = "paper-section:";
+const sectionPointerSensor = PointerSensor.configure({
+  preventActivation(event, source) {
+    if (
+      event.target instanceof Element &&
+      event.target.closest('[data-section-dnd-exclude="true"]')
+    ) {
+      return true;
+    }
+
+    return PointerSensor.defaults.preventActivation(event, source);
+  },
+});
+
+const sectionSensors = [sectionPointerSensor, KeyboardSensor];
 
 const Section = ({ id, section, column, index }) => {
   useEffect(() => {
@@ -35,9 +49,10 @@ const Section = ({ id, section, column, index }) => {
    id: section.id,
     index,
    type: "section",
-    accept: "section",
+   accept: "section",
     group: column.id,
-    data: {columnId: column.id}
+    data: {columnId: column.id},
+    sensors: sectionSensors,
 });
 
   const resumeLayout = useSelector((state) => state.resume.layout);

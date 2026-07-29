@@ -39,6 +39,7 @@ const SettingsModal = ({ isSettingsModalOpen, setIsSettingsModalOpen }) => {
   return (
     <>
       <div
+        data-section-dnd-exclude="true"
         className={styles.settingsModalOverlayDiv}
         styles={
           isSettingsModalOpen ? { display: "block" } : { display: "none" }
@@ -46,6 +47,7 @@ const SettingsModal = ({ isSettingsModalOpen, setIsSettingsModalOpen }) => {
         onClick={() => setIsSettingsModalOpen(false)}
       />
       <div
+        data-section-dnd-exclude="true"
         className={styles.settingsModalContainerDiv}
         ref={modalRef}
         style={modalStylingDict}

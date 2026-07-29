@@ -1,6 +1,6 @@
 WHERE I LEFT OFF:
 
-I was trying to get the drag and drop for sections working.  I think the only code I added was in Section.jsx, with the drag handler functions, as well as extra data sets being added.
+Making Field Drag and Drop not merge fields together
 
 !--------!
    BUGS
@@ -36,8 +36,15 @@ MEDIUM BUGS:
       -Due to it registering as a negative value
          -Even though it is really a positive value when combined with the global padding
 
+-Settings Modal is Draggable
+
 
 SMALL BUGS:
+
+-Drag Reordering of Fields doesn't show the visual cue when dragging over a row with "startNewRow" set to "true"
+   -Still reorders, but doesn't look like it will
+
+-Field drag destination state may be stale or persist between drags. (Written by Codex)
 
 -Text Alignment on Placeholder Text becomes odd when aligned center or right
 
@@ -131,6 +138,12 @@ SMALL FEATURES:
    -Moving them in/out/left/right/up/down/etc
 
 -Adding Margin Bottom to Section Headings
+
+
+TINY FEATURES:
+
+-Allowing the adjustment of grid column widths within subsections
+   -Gap too probably
 
 
 MAYBES:

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import SlateField from "@/features/Slate/SlateField";
 import { useSelector } from "react-redux";
+import { useSortable } from "@dnd-kit/react/sortable";
+import { MdDragIndicator } from "react-icons/md";
 
 // import { getNodeString } from '@/helpers/getNodeString';
 
@@ -111,12 +113,17 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
       else if (!isFirstColumn && !isLastColumn) autoTextAlign = 'center';
    }
 
+   //  <React.Fragment>
+   {/* </React.Fragment> */}
+  const { ref, handleRef } = useSortable({id: fieldId, index})
+
   return (
-    <React.Fragment>
       <div
+         ref={ref}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
+          position: "relative",
           gridColumnEnd: shouldSpanRemainingColumns
             ? `span ${columnSpanValue}`
             : "auto",
@@ -124,14 +131,16 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
           gridColumnStart: field.layout.startNewRow ? 1 : "auto",
           outline: `1px solid ${isHovered ? "black" : "transparent"}`,
           textAlign: autoTextAlign,
-         //  textAlign: (isLastColumn && !isOnlyItemInRow && !fieldLayoutDict.textAlign && totalColumns > 1) && 'right',
-         //  textAlign: shouldSpanRemainingColumns && 'right'
         }}
       >
-        {/* {newRowDiv} */}
-        {/* {field.layout.startNewRow && (
-        <div style={{ flexBasis: "100%", width: 0, height: 0 }} />
-      )} */}
+      {isHovered && (
+        <MdDragIndicator
+          ref={handleRef}
+          type="button"
+          aria-label={`Drag ${field.label}`}
+          style={{position: 'absolute', width: 'auto', height: 'auto', top: '50%', right: 'calc(100% + 2px)', transform: 'translateY(-50%)', cursor: 'grab'}}
+          />
+      )}
         <SlateField
           key={field.id}
           field={field}
@@ -145,7 +154,6 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
           layout={parentLayoutDict}
         />
       </div>
-    </React.Fragment>
   );
 };
 

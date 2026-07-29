@@ -543,14 +543,25 @@ const resumeSlice = createSlice({
          // const toField = state.fields.byId[toFieldId];
          const subsection = state.subsections.byId[subsectionId];
 
-         const startNewRowArr = Array.from(subsection.fieldIds.map(fieldId => (state.fields.byId[fieldId].layout.startNewRow)));
-         console.log(startNewRowArr);
-         // subsection.fieldIds.forEach((fieldId) => {
+         if (!subsection || !Array.isArray(subsection.fieldIds)) {
+            console.error(`Cannot reorder fields. Subsection with ID ${subsectionId} not found.`);
+            return;
+         }
 
-         // })
+         const layoutByPosition = subsection.fieldIds.map((fieldId) => {
+            const field = state.fields.byId[fieldId];
+            return {
+               startNewRow: Boolean(field?.layout?.startNewRow),
+               fillRow: Boolean(field?.layout?.grid?.fillRow),
+            };
+         });
          
          const fromFieldIndex = subsection.fieldIds.indexOf(fromFieldId);
          const toFieldIndex = subsection.fieldIds.indexOf(toFieldId);
+
+         if (fromFieldIndex === -1 || toFieldIndex === -1) {
+            return;
+         }
 
          subsection.fieldIds.splice(fromFieldIndex, 1);
          subsection.fieldIds.splice(toFieldIndex, 0, fromFieldId);
@@ -559,7 +570,18 @@ const resumeSlice = createSlice({
             const field = state.fields.byId[fieldId];
             if (field) {
                field.position = index;
-               field.startNewRow = startNewRowArr[index];
+
+               if (!field.layout) {
+                  field.layout = {};
+               }
+
+               field.layout.startNewRow = layoutByPosition[index].startNewRow;
+
+               if (!field.layout.grid) {
+                  field.layout.grid = {};
+               }
+
+               field.layout.grid.fillRow = layoutByPosition[index].fillRow;
             }
          });
 

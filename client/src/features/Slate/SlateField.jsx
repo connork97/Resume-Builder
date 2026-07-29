@@ -122,12 +122,12 @@ const SlateField = ({ field, index }) => {
 
   if (!field.value) return null;
 
-  const { ref } = useSortable({id: field.id, index})
+//   const { ref } = useSortable({id: field.id, index})
 
   return (
      <div
       style={{padding: '.5rem 1rem', margin: '-.5rem -1rem', cursor: 'pointer'}}
-      ref={ref}
+      // ref={ref}
      >
     <Slate
       editor={editor}

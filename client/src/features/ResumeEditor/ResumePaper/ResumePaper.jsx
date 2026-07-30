@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DragDropProvider } from "@dnd-kit/react";
 import { move } from "@dnd-kit/helpers";
 
-import Column from "./components/Column.jsx";
+import Column from "./Column.jsx";
 import EndPageMarker from "./components/EndPageMarker.jsx";
 
 

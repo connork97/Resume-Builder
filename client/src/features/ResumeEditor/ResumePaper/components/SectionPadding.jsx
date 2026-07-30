@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { updateColumn, updateSection } from '@/store/resumeSlice.js';
 
-import styles from './Section.module.css';
+import styles from '../Section.module.css';
 
 const SectionPadding = ({ section, column, isFirstColumn, isLastColumn }) => {
 

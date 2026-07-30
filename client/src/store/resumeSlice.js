@@ -534,6 +534,41 @@ const resumeSlice = createSlice({
          });
       },
 
+      dndReorderSubsections(state, action) {
+         const { fromSubsectionId, toSubsectionId } = action.payload;
+
+         const fromSubsection = state.subsections.byId[fromSubsectionId];
+         const toSubsection = state.subsections.byId[toSubsectionId];
+
+         if (!fromSubsection || !toSubsection) {
+            console.error("Cannot reorder subsections. One of the subsections not found.");
+            return;
+         }
+
+         const section = state.sections.byId[fromSubsection.sectionId];
+         if (!section) {
+            console.error(`Cannot reorder subsections. Section with ID ${fromSubsection.sectionId} not found.`);
+            return;
+         }
+
+         const fromIndex = section.subsectionIds.indexOf(fromSubsectionId);
+         const toIndex = section.subsectionIds.indexOf(toSubsectionId);
+
+         if (fromIndex === -1 || toIndex === -1) {
+            return;
+         }
+
+         section.subsectionIds.splice(fromIndex, 1);
+         section.subsectionIds.splice(toIndex, 0, fromSubsectionId);
+
+         section.subsectionIds.forEach((subId, index) => {
+            const subsection = state.subsections.byId[subId];
+            if (subsection) {
+               subsection.position = index;
+            }
+         });
+      },
+
       dndReorderFields(state, action) {
          // const { fieldReorderDict } = action.payload;
          const { fromFieldId, toFieldId, subsectionId } = action.payload;
@@ -582,7 +617,6 @@ const resumeSlice = createSlice({
                field.layout.grid.fillRow = layoutByPosition[index].fillRow;
             }
          });
-
       },
       
       newReorderSections(state, action) {
@@ -824,6 +858,7 @@ export const {
    reorderSections,
    newReorderSections,
    dndReorderSections,
+   dndReorderSubsections,
    dndReorderFields,
 
    // addSubsection,

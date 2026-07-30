@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Field from "./Field";
 import { DragDropProvider } from "@dnd-kit/react";
 import { dndReorderFields } from "@/store/resumeSlice";
+import { useSortable } from "@dnd-kit/react/sortable";
+import { MdDragIndicator } from "react-icons/md";
 
 const SubsectionRenderer = ({ subsection }) => {
   const dispatch = useDispatch();
@@ -14,13 +16,6 @@ const SubsectionRenderer = ({ subsection }) => {
   const fields = useSelector((state) => state.resume.fields);
   const subsectionLayout = subsection.layout;
 
-  //   const parentLayoutDict = {
-  //    display: 'grid',
-  //    gridAutoFlow: subsectionLayout?.flexDirection || sectionLayout?.flexDirection || 'row'
-  //    // gridAutoColumns: 'auto',
-  //    // gridAutoRows: 'auto'
-  //    // gridTemplateColumns: 'auto'
-  //   }
   let parentLayoutDict = {};
 
   if (sectionLayout.display === "flex") {
@@ -36,20 +31,15 @@ const SubsectionRenderer = ({ subsection }) => {
         sectionLayout?.justifyContent ||
         "space-between",
       justifySelf: subsectionLayout?.justifySelf,
-      // gridTemplateColumns: subsectionLayout?.gridTemplateColumns,
-      // gridTemplateRows: subsectionLayout?.gridTemplateRows,
       gap: subsectionLayout?.gap,
-      // width: '1fr'
     };
-  } else if (sectionLayout.display === 'grid') {
-   parentLayoutDict = {
-      display: 'grid',
-      gridTemplateColumns: sectionLayout.grid?.columns ? `repeat(${sectionLayout.grid.columns}, 1fr)` : 'auto'
-      
-      // gridAutoFlow: 'column',
-      // gridAutoColumns: '1fr'
-      // gridTemplateColumns: sectionLayout.gridTemplateColumns || 'auto',
-   }
+  } else if (sectionLayout.display === "grid") {
+    parentLayoutDict = {
+      display: "grid",
+      gridTemplateColumns: sectionLayout.grid?.columns
+        ? `repeat(${sectionLayout.grid.columns}, 1fr)`
+        : "auto",
+    };
   }
 
   const [fieldReorderDict, setFieldReorderDict] = useState({
@@ -58,8 +48,40 @@ const SubsectionRenderer = ({ subsection }) => {
     subsectionId: subsection.id,
   });
 
+  const { ref, handleRef } = useSortable({
+    id: subsection.id,
+    index: subsection.position,
+  });
+
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div style={parentLayoutDict}>
+    <div
+      style={{
+        ...parentLayoutDict,
+        ...(isHovered ? { border: "1px solid red" } : {}),
+        position: "relative",
+        boxSizing: "border-box",
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      ref={ref}
+    >
+      {isHovered && (
+        <MdDragIndicator
+          ref={handleRef}
+          style={{
+            position: "absolute",
+            top: "50%",
+            transform: "translateY(-50%)",
+            left: "100%",
+            height: "2rem",
+            width: "auto",
+            cursor: "grab",
+            zIndex: 10,
+          }}
+        />
+      )}
       <DragDropProvider
         onDragStart={({ operation }) => {
           const { source, target } = operation;
@@ -94,8 +116,6 @@ const SubsectionRenderer = ({ subsection }) => {
             console.error("Error occured on field drag end.");
             return;
           }
-          //  console.log("DRAG END", "SOURCE: ", source, "TARGET: ", target);
-          //  console.log(fieldReorderDict);
           if (
             fieldReorderDict.fromFieldId &&
             fieldReorderDict.toFieldId &&

@@ -24,12 +24,6 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
 
   const isGrid = activeLayout?.display === "grid";
 
-  // useEffect(() => {
-  // if (field?.label === 'Description') {
-  // fieldLayoutDict.gridColumn = '1 / -1';
-  // }
-  // }, [field]);
-
   const getColumnCount = (columns) => {
     if (!columns) return 0;
 
@@ -120,10 +114,6 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
     else if (!isFirstColumn && !isLastColumn) autoTextAlign = "center";
   }
 
-  //  <React.Fragment>
-  {
-    /* </React.Fragment> */
-  }
   const { ref, handleRef } = useSortable({ id: fieldId, index });
 
   const fieldWrapperStyling = {};

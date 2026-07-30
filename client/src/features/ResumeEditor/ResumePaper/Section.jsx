@@ -1,23 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+   dndReorderSubsections,
   setActiveEditorId,
   setActiveEditorSelection,
   setActiveSectionId,
   setActiveSectionIds,
-} from "../../../../store/resumeSlice.js";
+} from "@/store/resumeSlice.js";
 // import { setActiveSectionId, setActiveEditorId, setActiveEditorSelection } from "../../../../../resumeSlice.js";
 
-import SlateHeading from "../../../Slate/SlateHeading.jsx";
+import SlateHeading from "../../Slate/SlateHeading.jsx";
 import styles from "./Section.module.css";
-import SettingsModal from "../../SettingsModal/SettingsModal.jsx";
+import SettingsModal from "../SettingsModal/SettingsModal.jsx";
 import SubsectionRenderer from "./Subsection.jsx";
-import SectionPadding from "./SectionPadding.jsx";
+import SectionPadding from "./components/SectionPadding.jsx";
 import { getContrastingColor } from "@/utils/colorUtils.js";
 import { parseRemValue } from "@/utils/formatters.js";
-import SectionBorder from "./SectionBorder.jsx";
+import SectionBorder from "./components/SectionBorder.jsx";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { KeyboardSensor, PointerSensor } from "@dnd-kit/react";
+import {
+  DragDropProvider,
+  KeyboardSensor,
+  PointerSensor,
+} from "@dnd-kit/react";
 
 const sectionPointerSensor = PointerSensor.configure({
   preventActivation(event, source) {
@@ -44,16 +49,15 @@ const Section = ({ id, section, column, index }) => {
 
   const dispatch = useDispatch();
 
-  //   const { ref } = useSortable({ id: `${PAPER_SECTION_ID_PREFIX}${id}` });
   const { ref } = useSortable({
-   id: section.id,
+    id: section.id,
     index,
-   type: "section",
-   accept: "section",
+    type: "section",
+    accept: "section",
     group: column.id,
-    data: {columnId: column.id},
+    data: { columnId: column.id },
     sensors: sectionSensors,
-});
+  });
 
   const resumeLayout = useSelector((state) => state.resume.layout);
   const reduxSections = useSelector((state) => state.resume.sections);
@@ -62,8 +66,6 @@ const Section = ({ id, section, column, index }) => {
     (state) => state.resume.activeSectionIds,
   );
   const subsections = useSelector((state) => state.resume.subsections);
-
-  const sectionRef = useRef(null);
 
   const [isFirstColumn, setIsFirstColumn] = useState(false);
   const [isLastColumn, setIsLastColumn] = useState(false);
@@ -133,33 +135,16 @@ const Section = ({ id, section, column, index }) => {
         paddingLeft: isFirstColumn
           ? resumeLayout.padding.left
           : `${parsedSectionPadding.left + parsedResumeGap.horizontal}rem`,
-        // : column?.layout?.padding?.left ?? resumeLayout.padding.left,
         paddingRight: isLastColumn
           ? resumeLayout.padding.right
           : `${parsedSectionPadding.right + parsedResumeGap.horizontal}rem`,
-        // : column?.layout?.padding?.right ?? resumeLayout.padding.right,
         paddingTop: isFirstRow
           ? resumeLayout?.padding?.top
-          : // ? resumeLayout?.gap?.vertical
-            `${parsedSectionPadding.top + parsedResumeGap.vertical}rem`,
-        // : sectionPaddingTop,
-        // : section.layout?.padding?.top ?? resumeLayout.padding.top,
-        // : section?.layout?.padding?.top ?? column?.layout?.padding?.top,
+          : `${parsedSectionPadding.top + parsedResumeGap.vertical}rem`,
         paddingBottom:
           !isLastRow &&
           `${parsedSectionPadding.bottom + parsedResumeGap.vertical}rem`,
-        // paddingBottom: sectionPaddingBottom,
-        // paddingBottom: !isLastRow && (section?.layout?.padding?.bottom ?? resumeLayout.padding.bottom),
-        // paddingBottom: isLastRow
-        // // ? resumeLayout?.gap?.vertical
-        // ? null
-        // : section.layout?.padding?.bottom ?? resumeLayout.padding.bottom,
-        // : section?.layout?.padding?.bottom ?? column?.layout?.padding?.top,
         flex: isLastRow ? "1" : "none",
-        // borderTop: section.styling?.border?.top ?? 'none',
-        // borderBottom: section.styling?.border?.bottom ?? 'none',
-        // borderLeft: section.styling?.border?.left ?? 'none',
-        // borderRight: section.styling?.border?.right ?? 'none',
       };
     });
   }, [
@@ -199,18 +184,21 @@ const Section = ({ id, section, column, index }) => {
     } else {
       dispatch(setActiveSectionId(section.id));
     }
-    //  console.log("section ref clicked", sectionRef.current.dataset)
   };
 
   const sectionIsActive = activeSectionIds.includes(section.id);
 
   const sectionBorder = section.styling?.border;
 
+  const [subsectionReorderDict, setSubsectionReorderDict] = useState({
+    fromSubsectionId: null,
+    toSubsectionId: null,
+  });
+
   return (
     <div
       className={`${styles.sectionContainerDiv} ${sectionIsActive && styles.activeSectionContainer}`}
       ref={ref}
-      // ref={sectionRef}
       data-id={section.id}
       data-column-id={section.columnId}
       data-position={section.position}
@@ -221,16 +209,14 @@ const Section = ({ id, section, column, index }) => {
         ...section.styling,
         ...sectionPadding,
         outlineColor: section.styling?.color,
-        cursor: 'all-scroll'
+        cursor: "all-scroll",
       }}
       onClick={handleSetActiveSection}
     >
       <div
         className={`${styles.sectionContentWrapper} ${sectionIsActive && styles.active}`}
         data-section-id={section.id}
-        style={{cursor: 'auto'}}
-        //   ref={sectionRef}
-        //  Don't think I was using this ref for anything, commented out for now
+        style={{ cursor: "auto" }}
       >
         <button className={styles.sectionSettingsButton}>
           <span
@@ -243,7 +229,33 @@ const Section = ({ id, section, column, index }) => {
         {section.showHeading !== false && (
           <SlateHeading key={section.id} section={section} id={section.id} />
         )}
-        {renderedSubsections}
+        <DragDropProvider
+          onDragStart={({ operation }) => {
+            const { source } = operation;
+            // console.log()
+            setSubsectionReorderDict((prevState) => ({
+              ...prevState,
+              fromSubsectionId: source.id,
+            }));
+            console.log("Drag started:", operation, source.id);
+          }}
+          onDragOver={({ operation }) => {
+            const { target } = operation;
+            if (target.id !== subsectionReorderDict.fromSubsectionId) {
+              setSubsectionReorderDict((prevState) => ({
+                ...prevState,
+                toSubsectionId: target.id,
+              }));
+            }
+            console.log("Drag over:", operation);
+          }}
+          onDragEnd={({ operation }) => {
+            dispatch(dndReorderSubsections(subsectionReorderDict));
+            console.log("Drag ended:", operation);
+          }}
+        >
+          {renderedSubsections}
+        </DragDropProvider>
       </div>
       {isSettingsModalOpen && (
         <SettingsModal

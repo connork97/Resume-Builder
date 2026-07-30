@@ -4,7 +4,7 @@ import { useDroppable } from "@dnd-kit/react";
 
 import Section from "./Section.jsx";
 
-import styles from "../ResumePaper.module.css";
+import styles from "./ResumePaper.module.css";
 import { CollisionPriority } from "@dnd-kit/abstract";
 
 const Column = ({ column, sectionIds, sectionById }) => {

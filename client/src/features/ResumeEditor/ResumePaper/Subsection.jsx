@@ -89,8 +89,6 @@ const SubsectionRenderer = ({ subsection }) => {
             console.error("Error occured on field drag start.");
             return;
           }
-          //  console.log("DRAG START", "SOURCE: ", source, "TARGET: ", target);
-          //  console.log(fieldReorderDict);
           setFieldReorderDict((prevState) => ({
             ...prevState,
             fromFieldId: source.id,
@@ -102,13 +100,12 @@ const SubsectionRenderer = ({ subsection }) => {
             console.error("Error occured on field drag over.");
             return;
           }
-          console.log("DRAG OVER", "SOURCE: ", source, "TARGET: ", target);
-          if (target?.id !== fieldReorderDict.fromFieldId) {
+         //  if (target?.id !== fieldReorderDict.fromFieldId) {
             setFieldReorderDict((prevState) => ({
               ...prevState,
               toFieldId: target.id,
             }));
-          }
+         //  }
         }}
         onDragEnd={({ operation }) => {
           const { source, target } = operation;

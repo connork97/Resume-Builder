@@ -232,26 +232,20 @@ const Section = ({ id, section, column, index }) => {
         <DragDropProvider
           onDragStart={({ operation }) => {
             const { source } = operation;
-            // console.log()
             setSubsectionReorderDict((prevState) => ({
               ...prevState,
               fromSubsectionId: source.id,
             }));
-            console.log("Drag started:", operation, source.id);
           }}
           onDragOver={({ operation }) => {
             const { target } = operation;
-            if (target.id !== subsectionReorderDict.fromSubsectionId) {
               setSubsectionReorderDict((prevState) => ({
                 ...prevState,
                 toSubsectionId: target.id,
               }));
-            }
-            console.log("Drag over:", operation);
           }}
           onDragEnd={({ operation }) => {
             dispatch(dndReorderSubsections(subsectionReorderDict));
-            console.log("Drag ended:", operation);
           }}
         >
           {renderedSubsections}

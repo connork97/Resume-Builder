@@ -5,6 +5,7 @@ import styles from "../Outline.module.css";
 import OutlineSection from "./OutlineSection";
 import { useDispatch } from "react-redux";
 import { deleteSectionFromApi } from "@/services/resumeServices";
+import { deleteSection } from "@/store/resumeSlice.js";
 
 const SortableOutlineSection = ({
   id,

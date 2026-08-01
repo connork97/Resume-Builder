@@ -124,6 +124,9 @@ BIGGER FEATURES:
 -Outline "Start New Row" feature needs to be reworked.
    -It's quite annoying to use currently.
 
+-Column Setup/Organization
+   -Need to add a way to have multiple columns on page, but also allowing particular sections to span multiple columns
+
 
 MEDIUM FEATURES:
 

@@ -164,7 +164,7 @@ const Section = ({ id, section, column, index }) => {
     resumeLayout.padding,
     resumeLayout.gap,
     section.layout?.padding,
-    column.layout.padding,
+    column.layout?.padding,
     section,
   ]);
 

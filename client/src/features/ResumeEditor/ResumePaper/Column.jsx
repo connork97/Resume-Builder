@@ -56,7 +56,7 @@ const Column = ({ column, sectionIds, sectionById }) => {
     id: column.id,
     type: 'column',
     accept: 'section',
-    collisionPriority: CollisionPriority.Low,
+    collisionPriority: CollisionPriority.High,
   });
   return (
     <div

@@ -81,16 +81,21 @@ const Borders = () => {
   };
 
   const getBorderDefaults = (borderData = {}, borderSide) => {
-
-     return {
-        ...borderData,
-        width: borderData.width ?? (borderSide === 'top' || borderSide === 'bottom') ? "100%" : '1px',
-        height: borderData.height ?? (borderSide === 'top' || borderSide === 'bottom') ? "1px" : "100%",
-        style: borderData.style ?? "solid",
-        color: borderData.color ?? "rgba(0, 0, 0, 1)",
-        display: true,
-      }
-};
+    return {
+      ...borderData,
+      width:
+        (borderData.width ?? (borderSide === "top" || borderSide === "bottom"))
+          ? "100%"
+          : "1px",
+      height:
+        (borderData.height ?? (borderSide === "top" || borderSide === "bottom"))
+          ? "1px"
+          : "100%",
+      style: borderData.style ?? "solid",
+      color: borderData.color ?? "rgba(0, 0, 0, 1)",
+      display: true,
+    };
+  };
 
   const renderRepeatBorderElements = (borderSide) => {
     const sectionBorder =
@@ -125,7 +130,7 @@ const Borders = () => {
               style={{
                 position: "relative",
                 margin: "0.25rem 0.5rem auto -1.75rem",
-                pointerEvents: 'none',
+                pointerEvents: "none",
               }}
             >
               %
@@ -162,7 +167,7 @@ const Borders = () => {
               style={{
                 position: "relative",
                 margin: "0.25rem 0.5rem auto -2rem",
-                pointerEvents: 'none',
+                pointerEvents: "none",
               }}
             >
               px
@@ -207,7 +212,7 @@ const Borders = () => {
               style={{
                 position: "relative",
                 margin: "0.25rem 0.5rem auto -2rem",
-                pointerEvents: 'none',
+                pointerEvents: "none",
               }}
             >
               px
@@ -218,12 +223,16 @@ const Borders = () => {
             <input
               className="inputMain"
               style={{ width: "3.5rem", paddingRight: "1rem" }}
-              value={sectionBorder.height ? parseFloat(sectionBorder.height) : ""}
+              value={
+                sectionBorder.height ? parseFloat(sectionBorder.height) : ""
+              }
               type="number"
               step="0.1"
               placeholder="100"
               onChange={(e) => {
-                handleBorderUpdate(borderSide, { height: e.target.value + "%" });
+                handleBorderUpdate(borderSide, {
+                  height: e.target.value + "%",
+                });
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -237,7 +246,7 @@ const Borders = () => {
               style={{
                 position: "relative",
                 margin: "0.25rem 0.5rem auto -1.75rem",
-                pointerEvents: 'none',
+                pointerEvents: "none",
               }}
             >
               %
@@ -296,7 +305,7 @@ const Borders = () => {
 
             handleBorderUpdate(
               "top",
-              getBorderDefaults(activeSectionBorder?.top, 'top'),
+              getBorderDefaults(activeSectionBorder?.top, "top"),
             );
           }}
         >
@@ -322,7 +331,7 @@ const Borders = () => {
 
             handleBorderUpdate(
               "bottom",
-              getBorderDefaults(activeSectionBorder?.bottom, 'bottom'),
+              getBorderDefaults(activeSectionBorder?.bottom, "bottom"),
             );
           }}
         >
@@ -347,7 +356,7 @@ const Borders = () => {
 
             handleBorderUpdate(
               "left",
-              getBorderDefaults(activeSectionBorder?.left, 'left'),
+              getBorderDefaults(activeSectionBorder?.left, "left"),
             );
           }}
         >
@@ -357,7 +366,7 @@ const Borders = () => {
       ],
       styling: { display: "flex", flexDirection: "row", gap: "0.5rem" },
     },
-        {
+    {
       value: "right",
       elements: [
         <button
@@ -372,7 +381,7 @@ const Borders = () => {
 
             handleBorderUpdate(
               "right",
-              getBorderDefaults(activeSectionBorder?.right, 'right'),
+              getBorderDefaults(activeSectionBorder?.right, "right"),
             );
           }}
         >
@@ -395,6 +404,8 @@ const Borders = () => {
       </button>
       {showBorderDropdown && (
         <TextFormatDropdown
+          isOpen={showBorderDropdown}
+          setIsOpen={setShowBorderDropdown}
           dropdownOptions={dropdownOptions}
           wrapperStyling={{
             display: "flex",

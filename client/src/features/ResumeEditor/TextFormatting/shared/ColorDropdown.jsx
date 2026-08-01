@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import useClickOutside from '@/hooks/useClickOutside';
 import { useSelector } from 'react-redux';
 
 import { selectUsedResumeColors } from '@/utils/resumeColorSelectors';
@@ -9,12 +10,8 @@ import styles from "../TextFormatting.module.css";
 const ColorDropdown = ({ currentEditorColor, text=false, handleSetColor }) => {
 
   const usedColors = useSelector(selectUsedResumeColors);
-  // const colors = [
-  // ...BASE_COLORS,
-  // ...usedColors
-  // ]
 
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleCustomColor = (event) => {
     const hex = event.target.value;
@@ -24,28 +21,23 @@ const ColorDropdown = ({ currentEditorColor, text=false, handleSetColor }) => {
     const b = parseInt(hex.slice(5, 7), 16);
 
     handleSetColor(`rgba(${r}, ${g}, ${b}, 1)`);
-    setOpen(false);
+    setIsOpen(false);
   };
-  //  const dispatch = useDispatch();
-  //  const activeSectionId = useSelector(state => state.resume.activeSectionId);
-  //  const resumeStyling = useSelector(state => state.resume.styling);
 
-  //  const [currentEditorFontColor, setCurrentEditorFontColor] = useState('rgba(0, 0, 0, 1)');
-
-  //  useEffect(() => {
-  //     if (!editor || !selection) return;
-
-  //     const currentFontColor = getActiveMark(editor, 'color');
-  //     currentFontColor && setCurrentEditorFontColor(currentFontColor);
-  //  }, [editor, selection])
   const textFormatButtonStyling = { fontWeight: 'bold', boxShadow: `0 -0.35vh 0 ${currentEditorColor} inset` }
 
+  const closeDropdown = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const dropdownRef = useClickOutside(closeDropdown, isOpen);
+
   return (
-    <div className={styles.colorDropdownContainer}>
-      <button className='buttonMain' style={{...textFormatButtonStyling}} onClick={() => setOpen(o => !o)}>{text}</button>
+    <div className={styles.colorDropdownContainer}  ref={dropdownRef}>
+      <button className='buttonMain' style={{...textFormatButtonStyling}} onClick={() => setIsOpen(o => !o)}>{text}</button>
 
 
-      {open && (
+      {isOpen && (
         <div className={styles.dropdownPanel}>
           {BASE_COLORS.map((color, index) => (
             <div
@@ -54,7 +46,7 @@ const ColorDropdown = ({ currentEditorColor, text=false, handleSetColor }) => {
               style={{ backgroundColor: color }}
               onClick={() => {
                 handleSetColor(color);
-                setOpen(false);
+                setIsOpen(false);
               }}
             />
           ))}
@@ -66,7 +58,7 @@ const ColorDropdown = ({ currentEditorColor, text=false, handleSetColor }) => {
                 style={{ backgroundColor: color }}
                 onClick={() => {
                   handleSetColor(color);
-                  setOpen(false);
+                  setIsOpen(false);
                 }}
               />
             ))}

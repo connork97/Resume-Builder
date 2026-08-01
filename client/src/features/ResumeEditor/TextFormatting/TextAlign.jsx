@@ -87,36 +87,10 @@ const TextAlign = ({ editor }) => {
   }
 
   useEffect(() => {
-    // let activeEditorAlignment = true;
-    // console.log('editor', editor)
-    // if (!activeEditorAlignment && !activeSectionAlignment && !resumeAlignment && !activeEditorChildren) return;
-    // let firstChildAlignment = false;
-    // if (activeEditorChildren) {
-    //   console.log(activeEditorChildren)
-    //   activeEditorChildren.map(child => {
-    //     console.log(child)
-    //     if (child.textAlign) {
-    //       console.log('CHILD TEXT ALIGN', child.textAlign)
-    //       firstChildAlignment = child.textAlign;
-    //       return;
-    //     }
-    //   })
-    // }
-    // console.log('first child', firstChildAlignment)
-    // console.log(resumeAlignment, activeSectionAlignment, activeEditorAlignment, firstChildAlignment)
     if (!activeEditorAlignment && !activeSectionAlignment && resumeAlignment) return handleSetAlignmentIcon(resumeAlignment);
     else if (!activeEditorAlignment && activeSectionAlignment) return handleSetAlignmentIcon(activeSectionAlignment);
     else if (activeEditorAlignment) return handleSetAlignmentIcon(activeEditorAlignment);
-    // else if (firstChildAlignment) return handleSetAlignmentIcon(firstChildAlignment);
     else return handleSetAlignmentIcon('left');
-    
-    // if (!activeEditorAlignment && activeSectionId) {
-
-    // }
-    // if (activeEditorAlignment) {
-
-    // }
-  // }, [activeSectionId])
   }, [editor, activeEditorAlignment, activeSectionId])
 
   const dropdownOptions = [
@@ -152,7 +126,7 @@ const TextAlign = ({ editor }) => {
           {alignmentIcon}
         <MdArrowDropDown style={{marginRight: '-0.5em'}} />
       </button>
-      {showTextAlignDropdown && <TextFormatDropdown dropdownOptions={dropdownOptions} />}
+      {showTextAlignDropdown && <TextFormatDropdown isOpen={showTextAlignDropdown} setIsOpen={setShowTextAlignDropdown} dropdownOptions={dropdownOptions} />}
     </div>
   );
 };

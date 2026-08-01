@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { FaRegSmile } from "react-icons/fa";
 
 import { ICON_GROUPS } from "@/lib/iconLibrary";
 
 import { setIcon } from "@/helpers/marks";
+
+import useClickOutside from "@/hooks/useClickOutside.js";
 
 import styles from "./TextFormatting.module.css";
 
@@ -37,11 +39,16 @@ const Icons = ({ editor }) => {
     );
   });
 
+  const closeDropdown = useCallback(() => {
+    setShowIcons(false);
+  }, []);
+
+  const dropdownRef = useClickOutside(closeDropdown, showIcons);
   return (
     <div>
       <button className='buttonMain' onClick={() => setShowIcons(!showIcons)}><FaRegSmile /></button>
       {showIcons && (
-        <div className={styles.iconDropdownContainer}>
+        <div className={styles.iconDropdownContainer} ref={dropdownRef}>
           {iconGroupsToRender}
           <button className='buttonMain' onClick={() => clearIcon()}>Clear</button>
         </div>

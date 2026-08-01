@@ -97,6 +97,8 @@ const FontFamily = () => {
       </button>
       {showDropdown && (
         <TextFormatDropdown
+            isOpen={showDropdown}
+            setIsOpen={setShowDropdown}
           dropdownOptions={fontFamiliesArr}
             containerStyling={{ height: '30rem', overflowY: 'scroll', scrollbarWidth: 'thin', scrollbarColor: 'rgba(255, 255, 255, 0.1) transparent' }}
           wrapperClassName="flexColumn"

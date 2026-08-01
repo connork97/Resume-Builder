@@ -52,8 +52,6 @@ SMALL BUGS:
 
 -When there are multiple font sizes in one field (including multi line lists), the Font Size does not properly adjust
 
--Currently Editing Button often shows "undefined"
-
 -Bullets don't allow for copy/pasting without breaking up indentation (shift + tab fixes indentation though, but is annoying)
 
 -Margin Ruler Indicators should be touched up to more clearly depict their effects

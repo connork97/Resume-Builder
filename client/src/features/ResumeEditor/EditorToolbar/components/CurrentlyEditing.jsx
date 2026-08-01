@@ -4,20 +4,26 @@ import { Node } from 'slate';
 import { setActiveEditorId, setActiveSectionId } from '@/store/resumeSlice.js';
 
 import { editorRegistry } from '@/helpers/editorRegistry.js';
+import { getNodeString } from '@/helpers/getNodeString';
 
 const CurrentlyEditing = () => {
 
    const dispatch = useDispatch();
 
    const sections = useSelector(state => state.resume.sections);
+   const reduxSubsections = useSelector(state => state.resume.subsections);
    const activeSectionId = useSelector(state => state.resume.activeSectionId);
    const activeEditorId = useSelector((state) => state.resume.activeEditorId);
+   const reduxField = useSelector(state => state.resume.fields.byId[activeEditorId]);
+   const reduxFieldSubsection = reduxSubsections.byId[reduxField?.subsectionId];
+   const reduxFieldIndex = reduxFieldSubsection?.fieldIds?.indexOf(activeEditorId);
    const editor = editorRegistry.get(activeEditorId);
    const activeEditorText = editor ? Node.string(editor) : null;
-   const activeEditorLabel = editor?.children[0].label;
+   const activeEditorLabel = reduxField?.label || editor?.children[0].label || editor?.label || 'Field' + reduxFieldIndex || 'Field';
 
    const activeSection = sections.byId[activeSectionId];
-   const activeSectionText = activeSection ? Node.string({ children: activeSection?.value ?? [] }) : null;
+   const activeSectionText = activeSection ? getNodeString(activeSection) : null;
+   // const activeSectionText = activeSection ? Node.string({ children: activeSection?.value ?? [] }) : null;
 
    const [currentlyEditingText, setCurrentlyEditingText] = useState('Full Resume');
 

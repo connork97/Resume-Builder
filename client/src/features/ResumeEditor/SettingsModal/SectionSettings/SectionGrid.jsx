@@ -145,7 +145,7 @@ const SectionGrid = ({ section }) => {
                         padding: "0.25rem",
                       }}
                     >
-                      <p>Field {index}</p>
+                      <p>Field {field.id}</p>
                       <div className="flexColumn">
                         {(currentColumn !== 1 || fieldIsNewRow) && (
                           <div className="flexRow">

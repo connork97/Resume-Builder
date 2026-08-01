@@ -17,11 +17,8 @@ BIGGER BUGS:
    -Likely due to a new Slate Field/Leaf being created
    -For Line Height, potentially reflecting the new line height on all other strings in the field could fix it, TBD
 
--Section and Column Gaps don't work on individual section/columns
-   -Only works resume wide
-
 -ActiveSectionId should get put into ActiveSectionIds array
-   -Once fully implemented, there will be less/no need for the singular ActiveSectionId
+   -Once fully implemented, there will be less need (or ideally no need at all) for the singular ActiveSectionId
 
 -Not all changes get saved on first try.
    -Ex:  I created new fields in the "skills" section, saved the resume, refreshed only to find roughly half of them remaining.
@@ -30,13 +27,6 @@ BIGGER BUGS:
 
 
 MEDIUM BUGS:
-
--Can't properly adjust section padding
-   -Specifically, when all sections have padding added globally from the toolbar, you can't reduce it on one specifically
-      -Due to it registering as a negative value
-         -Even though it is really a positive value when combined with the global padding
-
--Settings Modal is Draggable
 
 -Dragging Fields is Clunky/Buggy
 
@@ -47,11 +37,6 @@ SMALL BUGS:
    -Still reorders, but doesn't look like it will
 
 -Field drag destination state may be stale or persist between drags. (Written by Codex)
-
--Text Alignment on Placeholder Text becomes odd when aligned center or right
-
--Resume Gap and Column Padding can be Negative values and markers can go outside the ruler bounds
-   -Should combine both values to ensure the total remains 0 or greater
 
 -Having three or more columns messes with the margin ruler indicators
 
@@ -71,8 +56,12 @@ SMALL BUGS:
 
 -Bullets don't allow for copy/pasting without breaking up indentation (shift + tab fixes indentation though, but is annoying)
 
+-Margin Ruler Indicators should be touched up to more clearly depict their effects
+   -Something like a tiny indicator to show where the section/column starts, and the main indicator to show where it ends up
 
 TINY BUGS:
+
+-Text Alignment on Placeholder Text becomes odd when aligned center or right
 
 -Margin Rulers are every so slightly off target
 

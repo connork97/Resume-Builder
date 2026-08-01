@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Minimal rounded resume icon</title>
+  <desc id="desc">A grayscale sheet of paper with rounded corners and three abstract horizontal lines on a transparent background.</desc>
+
+  <path fill="#fff" stroke="#d4d4d4" stroke-width="4" stroke-linejoin="round" d="M138 42h180l100 100v304a24 24 0 0 1-24 24H138a24 24 0 0 1-24-24V66a24 24 0 0 1 24-24Z"/>
+  <path fill="#d3d3d3" stroke="#d4d4d4" stroke-width="4" stroke-linejoin="round" d="M318 42v76a24 24 0 0 0 24 24h76Z"/>
+
+  <g fill="#414141">
+    <rect x="158" y="220" width="202" height="18" rx="9"/>
+    <rect x="158" y="294" width="202" height="18" rx="9"/>
+    <rect x="158" y="368" width="154" height="18" rx="9"/>
+  </g>
+</svg>

@@ -570,10 +570,7 @@ const resumeSlice = createSlice({
       },
 
       dndReorderFields(state, action) {
-         // const { fieldReorderDict } = action.payload;
          const { fromFieldId, toFieldId, subsectionId } = action.payload;
-         // const fromField = state.fields.byId[fromFieldId];
-         // const toField = state.fields.byId[toFieldId];
          const subsection = state.subsections.byId[subsectionId];
 
          if (!subsection || !Array.isArray(subsection.fieldIds)) {

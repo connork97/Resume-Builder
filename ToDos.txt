@@ -38,6 +38,8 @@ MEDIUM BUGS:
 
 -Settings Modal is Draggable
 
+-Dragging Fields is Clunky/Buggy
+
 
 SMALL BUGS:
 

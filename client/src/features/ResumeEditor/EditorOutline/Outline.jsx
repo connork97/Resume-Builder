@@ -59,27 +59,27 @@ const Outline = () => {
     return sections.byId[sectionId];
   };
 
-  const handleDeleteSection = async (sectionId) => {
-    const section = getSectionById(sectionId);
-    const sectionTitle = getNodeString(section.value[0]);
-    if (
-      !confirm(
-        `Are you sure you want to delete the entire ${sectionTitle} section?`,
-      )
-    ) {
-      return;
-    }
+//   const handleDeleteSection = async (sectionId) => {
+//     const section = getSectionById(sectionId);
+//     const sectionTitle = getNodeString(section.value[0]);
+//     if (
+//       !confirm(
+//         `Are you sure you want to delete the entire ${sectionTitle} section?`,
+//       )
+//     ) {
+//       return;
+//     }
 
-    const autoSave = false;
+//     const autoSave = false;
 
-    if (autoSave) {
-      const sectionIsDeleted = await deleteSectionFromApi(sectionId);
-      if (!sectionIsDeleted) {
-        return;
-      }
-    }
-    dispatch(deleteSection(sectionId));
-  };
+//     if (autoSave) {
+//       const sectionIsDeleted = await deleteSectionFromApi(sectionId);
+//       if (!sectionIsDeleted) {
+//         return;
+//       }
+//     }
+//     dispatch(deleteSection(sectionId));
+//   };
 
   const getNodeString = (slateValue) => {
     return Node.string(slateValue);

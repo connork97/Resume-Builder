@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import styles from "../Outline.module.css";
 import OutlineSection from "./OutlineSection";
 import { useDispatch } from "react-redux";
+import { deleteSectionFromApi } from "@/services/resumeServices";
 
 const SortableOutlineSection = ({
   id,
@@ -24,6 +25,27 @@ const SortableOutlineSection = ({
 //   useEffect(() => {
 //     console.log("id", id, "index", index);
 //   }, [index]);
+  const handleDeleteSection = async (sectionId) => {
+    const section = getSectionById(sectionId);
+    const sectionTitle = getNodeString(section.value[0]);
+    if (
+      !confirm(
+        `Are you sure you want to delete the entire ${sectionTitle} section?`,
+      )
+    ) {
+      return;
+    }
+
+    const autoSave = false;
+
+    if (autoSave) {
+      const sectionIsDeleted = await deleteSectionFromApi(sectionId);
+      if (!sectionIsDeleted) {
+        return;
+      }
+    }
+    dispatch(deleteSection(sectionId));
+  };
   return (
     <div ref={ref}
       className={`${styles.sectionBlock} ${styles.sectionRow}`}

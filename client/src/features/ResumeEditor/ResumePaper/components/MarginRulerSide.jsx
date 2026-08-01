@@ -55,9 +55,16 @@ const MarginRulerSide = ({ renderMarginRuler }) => {
 
       const adjustmentValue = e.key === 'ArrowUp' ? -0.1 : 0.1
 
-      if (parseFloat(parsedOldPaddingVal + adjustmentValue).toFixed(1) < 0) {
-         alert('Cannot have a negative margin.');
-         return;
+      if (name === 'resume') {
+         if (parseFloat(parsedOldPaddingVal + adjustmentValue).toFixed(1) < 0) {
+            alert('Cannot have a negative margin.');
+            return;
+         }
+      } else if (name === 'section' && adjustmentValue === -0.1) {
+         if (parseFloat(parsedOldPaddingVal + adjustmentValue + defaultPaddingVal).toFixed(1) < 0) {
+            alert('Cannot have a negative margin.');
+            return;
+         }
       }
       const newPaddingVal = (parsedOldPaddingVal + adjustmentValue).toFixed(1) + 'rem';
 

@@ -10,6 +10,7 @@ import { MdDragIndicator } from "react-icons/md";
 
 const SubsectionRenderer = ({ subsection }) => {
   const dispatch = useDispatch();
+  const section = useSelector(state => state.resume.sections.byId[subsection.sectionId]);
   const sectionLayout = useSelector(
     (state) => state.resume.sections.byId[subsection.sectionId].layout,
   );
@@ -59,7 +60,6 @@ const SubsectionRenderer = ({ subsection }) => {
     <div
       style={{
         ...parentLayoutDict,
-        ...(isHovered ? { border: "1px solid red" } : {}),
         position: "relative",
         boxSizing: "border-box",
       }}
@@ -67,7 +67,7 @@ const SubsectionRenderer = ({ subsection }) => {
       onMouseLeave={() => setIsHovered(false)}
       ref={ref}
     >
-      {isHovered && (
+      {(isHovered && section.subsectionIds.length > 1) && (
         <MdDragIndicator
           ref={handleRef}
           style={{

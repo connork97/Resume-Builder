@@ -13,8 +13,6 @@ import SlateHeading from "../../Slate/SlateHeading.jsx";
 import styles from "./Section.module.css";
 import SettingsModal from "../SettingsModal/SettingsModal.jsx";
 import SubsectionRenderer from "./Subsection.jsx";
-import SectionPadding from "./components/SectionPadding.jsx";
-import { getContrastingColor } from "@/utils/colorUtils.js";
 import { parseRemValue } from "@/utils/formatters.js";
 import SectionBorder from "./components/SectionBorder.jsx";
 import { useSortable } from "@dnd-kit/react/sortable";
@@ -23,6 +21,8 @@ import {
   KeyboardSensor,
   PointerSensor,
 } from "@dnd-kit/react";
+
+import { MdSettings } from "react-icons/md";
 
 const sectionPointerSensor = PointerSensor.configure({
   preventActivation(event, source) {
@@ -122,28 +122,37 @@ const Section = ({ id, section, column, index }) => {
         horizontal: parseRemValue(resumeLayout?.gap?.horizontal) ?? 0,
       };
 
-      const sectionPaddingTop =
-        parseRemValue(section.layout?.padding?.top) +
-        parseRemValue(resumeLayout.gap?.vertical) +
-        "rem";
-      const sectionPaddingBottom =
-        parseRemValue(section.layout?.padding?.bottom) +
-        parseRemValue(resumeLayout.gap?.vertical) +
-        "rem";
+      const actualSectionPadding = {
+        top: (parsedSectionPadding.top + parsedResumeGap.vertical) > 0
+          ? parsedSectionPadding.top + parsedResumeGap.vertical
+          : 0,
+        bottom: (parsedSectionPadding.bottom + parsedResumeGap.vertical) > 0
+          ? parsedSectionPadding.bottom + parsedResumeGap.vertical
+          : 0,
+        left: (parsedSectionPadding.left + parsedResumeGap.horizontal) > 0
+          ? parsedSectionPadding.left + parsedResumeGap.horizontal
+          : 0,
+        right: (parsedSectionPadding.right + parsedResumeGap.horizontal) > 0
+          ? parsedSectionPadding.right + parsedResumeGap.horizontal
+          : 0,
+      };
       return {
         ...prevStyling,
         paddingLeft: isFirstColumn
           ? resumeLayout.padding.left
-          : `${parsedSectionPadding.left + parsedResumeGap.horizontal}rem`,
+          : actualSectionPadding.left + "rem",
+         //  : `${parsedSectionPadding.left + parsedResumeGap.horizontal}rem`,
         paddingRight: isLastColumn
           ? resumeLayout.padding.right
-          : `${parsedSectionPadding.right + parsedResumeGap.horizontal}rem`,
+            : actualSectionPadding.right + "rem",
+         //  : `${parsedSectionPadding.right + parsedResumeGap.horizontal}rem`,
         paddingTop: isFirstRow
           ? resumeLayout?.padding?.top
-          : `${parsedSectionPadding.top + parsedResumeGap.vertical}rem`,
+          : actualSectionPadding.top + "rem",
+         //  : `${parsedSectionPadding.top + parsedResumeGap.vertical}rem`,
         paddingBottom:
-          !isLastRow &&
-          `${parsedSectionPadding.bottom + parsedResumeGap.vertical}rem`,
+          !isLastRow && actualSectionPadding.bottom + "rem",
+         //  `${parsedSectionPadding.bottom + parsedResumeGap.vertical}rem`,
         flex: isLastRow ? "1" : "none",
       };
     });
@@ -223,7 +232,7 @@ const Section = ({ id, section, column, index }) => {
             className={styles.sectionSettingsButtonIcon}
             onClick={handleSettingsIconClick}
           >
-            ⚙️
+            <MdSettings />
           </span>
         </button>
         {section.showHeading !== false && (

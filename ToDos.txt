@@ -40,9 +40,6 @@ SMALL BUGS:
 
 -Having three or more columns messes with the margin ruler indicators
 
--Dropdowns don't lose focus/disappear when clicked out of
-   -Sometimes intentional, typically not
-
 -Autofilling the link input from preexisting links takes two tries to work initially after page load
    -Then works fine.  Likely some issue regarding page mount timeline
 

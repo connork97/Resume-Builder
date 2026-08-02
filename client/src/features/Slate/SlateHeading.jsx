@@ -1,19 +1,29 @@
 import React, { useMemo, useCallback, useEffect } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor } from "slate";
+import { withHistory } from "slate-history";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSection, setActiveEditorId, setActiveEditorSelection } from "@/store/resumeSlice.js";
+import {
+  updateSection,
+  setActiveEditorId,
+  setActiveEditorSelection,
+} from "@/store/resumeSlice.js";
 
-import Leaf from '@/features/Slate/renderLeaf.jsx';
-import { getCascadedFontSize, getCascadedLineHeight } from "@/helpers/leafHelpers.js";
+import Leaf from "@/features/Slate/renderLeaf.jsx";
+import {
+  getCascadedFontSize,
+  getCascadedLineHeight,
+} from "@/helpers/leafHelpers.js";
 import RenderElement from "./RenderElement.jsx";
 
 import { editorRegistry } from "../../helpers/editorRegistry.js";
 
 const SlateHeading = ({ section }) => {
   const dispatch = useDispatch();
-  const resumeStyling = useSelector(state => state.resume.styling);
-  const column = useSelector(state => state.resume.columns.byId[section.columnId]);
+  const resumeStyling = useSelector((state) => state.resume.styling);
+  const column = useSelector(
+    (state) => state.resume.columns.byId[section.columnId],
+  );
   const sectionStyling = section?.styling;
   const columnStyling = column?.styling;
   const inheritedFontSize = getCascadedFontSize({
@@ -30,23 +40,28 @@ const SlateHeading = ({ section }) => {
   // Stable editor instance
   // const editorId = useMemo(() => section?.id)
   const editorId = section?.id;
-  const editor = useMemo(() => withReact(createEditor()), []);
+  const editor = useMemo(() => withReact(withHistory(createEditor())), []);
+
+  //   const editor = useMemo(() => withReact(createEditor()), []);
 
   useEffect(() => {
     editorRegistry.set(editorId, editor);
     return () => editorRegistry.delete(editorId);
   }, [editorId, editor]);
 
-  const renderLeaf = useCallback((props) => {
-    return (
-      <Leaf
-        {...props}
-        resumeStyling={resumeStyling}
-        columnStyling={columnStyling}
-        sectionStyling={sectionStyling}
-      />
-    );
-  }, [resumeStyling, columnStyling, sectionStyling]);
+  const renderLeaf = useCallback(
+    (props) => {
+      return (
+        <Leaf
+          {...props}
+          resumeStyling={resumeStyling}
+          columnStyling={columnStyling}
+          sectionStyling={sectionStyling}
+        />
+      );
+    },
+    [resumeStyling, columnStyling, sectionStyling],
+  );
 
   const renderElement = useCallback((props) => {
     return (
@@ -64,7 +79,7 @@ const SlateHeading = ({ section }) => {
       updateSection({
         id: section.id,
         changes: { value: newValue },
-      })
+      }),
     );
   };
 
@@ -73,9 +88,7 @@ const SlateHeading = ({ section }) => {
   return (
     <Slate
       editor={editor}
-      initialValue={
-        section.value ?? null
-      }
+      initialValue={section.value ?? null}
       onChange={(value) => {
         handleUpdateSection(value);
         dispatch(setActiveEditorSelection(editor.children));
@@ -86,7 +99,10 @@ const SlateHeading = ({ section }) => {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={section.label}
-        style={{ fontSize: `${inheritedFontSize}px`, lineHeight: inheritedLineHeight }}
+        style={{
+          fontSize: `${inheritedFontSize}px`,
+          lineHeight: inheritedLineHeight,
+        }}
       />
     </Slate>
   );

@@ -25,6 +25,7 @@ import {
   getCascadedLineHeight,
 } from "@/helpers/leafHelpers.js";
 import { useSortable } from "@dnd-kit/react/sortable";
+import { withHistory } from "slate-history";
 
 const SlateField = ({ field, index }) => {
   // Stable editor instance
@@ -32,7 +33,8 @@ const SlateField = ({ field, index }) => {
   const fieldMinWidth = !fieldPlainText ? getMinWidth(field.label) : "auto";
 
   const editorId = field.id;
-  const editor = useMemo(() => withReact(createEditor()), []);
+  const editor = useMemo(() => withReact(withHistory(createEditor())), []);
+
   const dispatch = useDispatch();
   const resumeStyling = useSelector((state) => state.resume.styling);
   const subsection = useSelector(

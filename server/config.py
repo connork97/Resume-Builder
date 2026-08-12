@@ -1,4 +1,6 @@
 # * Library Imports
+import os
+
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -31,11 +33,35 @@ db.init_app(app)
 # * Migrations
 migrate = Migrate(app, db)
 
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://free-resume-builder.up.railway.app"
+    ]
+
+database_url = os.getenv(
+    "DATABASE_URL", "sqlite:///app.db"
+)  # Default to SQLite if DATABASE_URL is not set
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace(
+        "postgres://",
+        "postgresql+psycopg://",
+        1,
+    )
+elif database_url.startswith("postgresql://"):
+    database_url = database_url.replace(
+        "postgresql://",
+        "postgresql+psycopg://",
+        1,
+    )
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "my-secret-key")
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+
 # * CORS (allow frontend requests)
 CORS(
     app,
     supports_credentials=True,
-    origins=["http://localhost:5173", 'http://127.0.0.1:5173']
+    origins=ALLOWED_ORIGINS
 )
 
 

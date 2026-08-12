@@ -21,24 +21,33 @@ def upgrade():
     with op.batch_alter_table('columns', schema=None) as batch_op:
         batch_op.add_column(sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False))
         batch_op.add_column(sa.Column('updated_at', sa.DateTime(), nullable=False))
-        batch_op.alter_column('id',
-               existing_type=sa.VARCHAR(),
-               type_=sa.Integer(),
-               existing_nullable=False,
-               autoincrement=True)
+        batch_op.alter_column(
+            'id',
+            existing_type=sa.VARCHAR(),
+            type_=sa.Integer(),
+            existing_nullable=False,
+            autoincrement=True,
+            postgresql_using='id::integer'
+        )
 
     with op.batch_alter_table('fields', schema=None) as batch_op:
         batch_op.add_column(sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False))
         batch_op.add_column(sa.Column('updated_at', sa.DateTime(), nullable=False))
-        batch_op.alter_column('id',
-               existing_type=sa.VARCHAR(),
-               type_=sa.Integer(),
-               existing_nullable=False,
-               autoincrement=True)
-        batch_op.alter_column('subsection_id',
-               existing_type=sa.VARCHAR(),
-               type_=sa.Integer(),
-               existing_nullable=False)
+        batch_op.alter_column(
+            'id',
+            existing_type=sa.VARCHAR(),
+            type_=sa.Integer(),
+            existing_nullable=False,
+            autoincrement=True,
+            postgresql_using='id::integer'
+        )
+        batch_op.alter_column(
+            'subsection_id',
+            existing_type=sa.VARCHAR(),
+            type_=sa.Integer(),
+            existing_nullable=False,
+            postgresql_using='subsection_id::integer'
+        )
 
     with op.batch_alter_table('resumes', schema=None) as batch_op:
         batch_op.add_column(sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False))
@@ -47,28 +56,40 @@ def upgrade():
     with op.batch_alter_table('sections', schema=None) as batch_op:
         batch_op.add_column(sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False))
         batch_op.add_column(sa.Column('updated_at', sa.DateTime(), nullable=False))
-        batch_op.alter_column('id',
-               existing_type=sa.VARCHAR(),
-               type_=sa.Integer(),
-               existing_nullable=False,
-               autoincrement=True)
-        batch_op.alter_column('column_id',
-               existing_type=sa.VARCHAR(),
-               type_=sa.Integer(),
-               existing_nullable=False)
+        batch_op.alter_column(
+            'id',
+            existing_type=sa.VARCHAR(),
+            type_=sa.Integer(),
+            existing_nullable=False,
+            autoincrement=True,
+            postgresql_using='id::integer'
+        )
+        batch_op.alter_column(
+            'column_id',
+            existing_type=sa.VARCHAR(),
+            type_=sa.Integer(),
+            existing_nullable=False,
+            postgresql_using='column_id::integer'
+        )
 
     with op.batch_alter_table('subsections', schema=None) as batch_op:
         batch_op.add_column(sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False))
         batch_op.add_column(sa.Column('updated_at', sa.DateTime(), nullable=False))
-        batch_op.alter_column('id',
-               existing_type=sa.VARCHAR(),
-               type_=sa.Integer(),
-               existing_nullable=False,
-               autoincrement=True)
-        batch_op.alter_column('section_id',
-               existing_type=sa.VARCHAR(),
-               type_=sa.Integer(),
-               existing_nullable=False)
+        batch_op.alter_column(
+            'id',
+            existing_type=sa.VARCHAR(),
+            type_=sa.Integer(),
+            existing_nullable=False,
+            autoincrement=True,
+            postgresql_using='id::integer'
+        )
+        batch_op.alter_column(
+            'section_id',
+            existing_type=sa.VARCHAR(),
+            type_=sa.Integer(),
+            existing_nullable=False,
+            postgresql_using='section_id::integer'
+        )
 
     # ### end Alembic commands ###
 

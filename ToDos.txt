@@ -30,6 +30,8 @@ MEDIUM BUGS:
 
 -Dragging Fields is Clunky/Buggy
 
+-Margins can go negative without any real, convenient way for the user to know this.
+
 
 SMALL BUGS:
 

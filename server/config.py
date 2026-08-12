@@ -7,23 +7,16 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 
-#  * Local Imports
-# from models import *
-
-# * App
 app = Flask(__name__)  # Main Flask app
-
-# * Config
 
 ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://free-resume-builder.up.railway.app"
-    ]
+    "https://free-resume-builder.up.railway.app",
+]
 
-database_url = os.getenv(
-    "DATABASE_URL", "sqlite:///app.db"
-)  # Default to SQLite if DATABASE_URL is not set
+database_url = os.getenv("DATABASE_URL", "sqlite:///app.db")
+
 if database_url.startswith("postgres://"):
     database_url = database_url.replace(
         "postgres://",
@@ -36,15 +29,17 @@ elif database_url.startswith("postgresql://"):
         "postgresql+psycopg://",
         1,
     )
+    
 # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"  # Local DB file
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "my-secret-key")
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Disable extra tracking
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# app.config["SECRET_KEY"] = "my-secret-key"
-app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SECURE"] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config["SESSION_COOKIE_SAMESITE"] = "None"
+# app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+
 app.json.compact = False  # Pretty Print JSON in dev
 # * Database
 metadata = MetaData(
@@ -52,19 +47,13 @@ metadata = MetaData(
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
     }
 )
+
 db = SQLAlchemy(metadata=metadata)
 db.init_app(app)
 
-# * Migrations
 migrate = Migrate(app, db)
 
-
-# * CORS (allow frontend requests)
-CORS(
-    app,
-    supports_credentials=True,
-    origins=ALLOWED_ORIGINS
-)
+CORS(app, supports_credentials=True, origins=ALLOWED_ORIGINS)
 
 
 # ! Note to self, these are the terminal commands to create initial and followup migrations:

@@ -32,4 +32,5 @@ def health():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5555)
+    app.run()
+    # app.run(debug=True, port=5555)

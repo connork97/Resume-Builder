@@ -14,25 +14,6 @@ from sqlalchemy import MetaData
 app = Flask(__name__)  # Main Flask app
 
 # * Config
-# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"  # Local DB file
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Disable extra tracking
-
-# app.config["SECRET_KEY"] = "my-secret-key"
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.json.compact = False  # Pretty Print JSON in dev
-
-# * Database
-metadata = MetaData(
-    naming_convention={
-        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    }
-)
-db = SQLAlchemy(metadata=metadata)
-db.init_app(app)
-
-# * Migrations
-migrate = Migrate(app, db)
 
 ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -55,8 +36,28 @@ elif database_url.startswith("postgresql://"):
         "postgresql+psycopg://",
         1,
     )
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"  # Local DB file
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "my-secret-key")
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Disable extra tracking
+
+# app.config["SECRET_KEY"] = "my-secret-key"
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config["SESSION_COOKIE_SECURE"] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.json.compact = False  # Pretty Print JSON in dev
+# * Database
+metadata = MetaData(
+    naming_convention={
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    }
+)
+db = SQLAlchemy(metadata=metadata)
+db.init_app(app)
+
+# * Migrations
+migrate = Migrate(app, db)
+
 
 # * CORS (allow frontend requests)
 CORS(

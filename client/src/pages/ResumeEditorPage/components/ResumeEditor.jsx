@@ -15,6 +15,7 @@ import { useReactToPrint } from 'react-to-print';
 
 import styles from './ResumeEditor.module.css';
 import MarginRuler from '@/features/ResumeEditor/ResumePaper/components/MarginRuler';
+import { handleGlobalHotKey } from '@/utils/hotKeys';
 
 const ResumeEditor = () => {
 
@@ -40,6 +41,25 @@ const ResumeEditor = () => {
       if (resumeId) fetchResumeById(resumeId);
       else fetchResumeById(0)
    }, [resumeId, fetchResumeById])
+
+   useEffect(() => {
+      const onGlobalKeyDown = (event) => {
+         const isSaveShortcut =
+            (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's';
+
+         if (!isSaveShortcut) return;
+
+         event.preventDefault();
+         event.stopPropagation();
+         handleGlobalHotKey(resume, event);
+      };
+
+      window.addEventListener('keydown', onGlobalKeyDown);
+
+      return () => {
+         window.removeEventListener('keydown', onGlobalKeyDown);
+      };
+   }, [resume]);
 
    const resumeRef = useRef(null);
 
@@ -85,6 +105,7 @@ const ResumeEditor = () => {
    };
 
    return (
+      // <div className={styles.resumeEditorContainer}>
       <div className={styles.resumeEditorContainer}>
          <Toolbar handlePrint={handlePrint} />
          <Outline />

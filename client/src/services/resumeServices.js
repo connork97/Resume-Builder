@@ -250,7 +250,7 @@ export const copyResumeToApi = async (resumeId) => {
 
 export const saveResumeToApi = async (resume) => {
    try {
-      console.log('Resume being saved to api: ', resume)
+      console.log(`Resume of ID ${resume.id} being saved to api: `)
       await fetchApi({
          endpoint: `/resumes/${resume.id}`,
          options: {
@@ -259,6 +259,7 @@ export const saveResumeToApi = async (resume) => {
          }
       })
 
+      console.log(`Resume of ID ${resume.id} saved successfully to API.`);
       return true;
 
    } catch (error) {

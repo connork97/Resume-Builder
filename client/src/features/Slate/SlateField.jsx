@@ -27,6 +27,8 @@ import {
 import { useSortable } from "@dnd-kit/react/sortable";
 import { withHistory } from "slate-history";
 import { toggleMark } from "@/helpers/marks.js";
+import { toggleList } from "@/helpers/blocks.js";
+import { handleHotKey } from "@/utils/hotKeys.js";
 
 const SlateField = ({ field, index }) => {
   // Stable editor instance
@@ -113,60 +115,76 @@ const SlateField = ({ field, index }) => {
     );
   };
 
-  const handleKeyDown = (event) => {
-    // Early exit from keydown function
-    const validKeyDowns = ["Enter", "Tab"];
-    if (!validKeyDowns.includes(event.key) && !event.ctrlKey) return;
+//   const handleKeyDown = (e) => {
+//     return handleHotKey(editor, e);
+//   };
+// //   const handleKeyDown = (event) => {
+// //     // Early exit from keydown function
+// //     const validKeyDowns = ["Enter", "Tab"];
+// //     if (!validKeyDowns.includes(event.key)) return;
 
-    const [listItemEntry] = Editor.nodes(editor, {
-      match: (n) => n.type === "list-item",
-    });
+// //     const [listItemEntry] = Editor.nodes(editor, {
+// //       match: (n) => n.type === "list-item",
+// //     });
 
-    if (!listItemEntry) {
-      console.error("No list item entry found.");
-      return;
-    }
+// //     if (!listItemEntry) {
+// //       console.error("No list item entry found.");
+// //       return;
+// //     }
 
-    if (validKeyDowns.includes(event.key)) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+// //     if (validKeyDowns.includes(event.key) && !event.ctrlKey && !event.shiftKey) {
+// //       event.preventDefault();
+// //       event.stopPropagation();
+// //     }
 
-    if (event.ctrlKey) {
-      switch (event.key) {
-        case "b":
-          toggleMark(editor, "bold");
-          break;
-        case "i":
-          toggleMark(editor, "italic");
-          break;
-        case "u":
-          toggleMark(editor, "underline");
-          break;
-        case "s":
-          toggleMark(editor, "strikeThrough");
-          break;
-        default:
-          break;
-      }
-      return;
-    }
-    if (event.key === "Enter") {
-      // Editor.normalize(editor, { force: true });
-      addListItem(editor, listItemEntry);
-      return;
-    }
+// //     if (event.ctrlKey && event.shiftKey) {
+// //       switch (event.key) {
+// //         case "8":
+// //           toggleList(editor, "unordered-list");
+// //           break;
+// //         case "*":
+// //           toggleList(editor, "unordered-list");
+// //           break;
+// //         default:
+// //           break;
+// //       }
+// //     }
 
-    if (event.key === "Tab") {
-      // Editor.normalize(editor, { force: true });
-      if (event.shiftKey) {
-        outdentList(editor, listItemEntry);
-      } else {
-        indentList(editor, listItemEntry);
-      }
-      return;
-    }
-  };
+// //     if (event.ctrlKey) {
+// //       switch (event.key) {
+// //         case "b":
+// //           toggleMark(editor, "bold");
+// //           break;
+// //         case "i":
+// //           toggleMark(editor, "italic");
+// //           break;
+// //         case "u":
+// //           toggleMark(editor, "underline");
+// //           break;
+// //         //   case "s":
+// //         //  toggleMark(editor, "strikeThrough");
+// //         //  break;
+// //         default:
+// //           break;
+// //       }
+// //       return;
+// //     }
+// //     if (event.key === "Enter") {
+// //       // Editor.normalize(editor, { force: true });
+// //       addListItem(editor, listItemEntry);
+// //       return;
+// //     }
+
+// //     if (event.key === "Tab") {
+// //       // Editor.normalize(editor, { force: true });
+// //       if (event.shiftKey) {
+// //         outdentList(editor, listItemEntry);
+// //       } else {
+// //         indentList(editor, listItemEntry);
+// //       }
+// //       return;
+// //     }
+// //   };
 
   if (!field.value) return null;
 
@@ -189,7 +207,7 @@ const SlateField = ({ field, index }) => {
       >
         <Editable
           // className='test'
-          onKeyDown={handleKeyDown}
+          onKeyDown={(event) => handleHotKey(editor, event)}
           onFocus={() => dispatch(setActiveEditorId(editorId))}
           onClick={() => dispatch(setActiveEditorId(editorId))}
           renderElement={renderElement}

@@ -112,6 +112,10 @@ MAIN FEATURES:
 
 BIGGER FEATURES:
 
+-Undo/Redo should stack across multiple fields/sections/subsections/etc.
+   -Need to create some sort of call stack that can be traced backwards/forwards strikeThrough 
+      -With some cut off probably, baseline of 10?  Since last save?  TBD.
+
 -Reset of Styling, Layout, etc Accross the Board
    -Ex: Reset individualized margin/padding to defaults
    -Useful for cases of when small changes add up and become unmanageable

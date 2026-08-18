@@ -26,6 +26,7 @@ import {
 } from "@/helpers/leafHelpers.js";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { withHistory } from "slate-history";
+import { toggleMark } from "@/helpers/marks.js";
 
 const SlateField = ({ field, index }) => {
   // Stable editor instance
@@ -115,7 +116,7 @@ const SlateField = ({ field, index }) => {
   const handleKeyDown = (event) => {
     // Early exit from keydown function
     const validKeyDowns = ["Enter", "Tab"];
-    if (!validKeyDowns.includes(event.key)) return;
+    if (!validKeyDowns.includes(event.key) && !event.ctrlKey) return;
 
     const [listItemEntry] = Editor.nodes(editor, {
       match: (n) => n.type === "list-item",
@@ -131,6 +132,25 @@ const SlateField = ({ field, index }) => {
       event.stopPropagation();
     }
 
+    if (event.ctrlKey) {
+      switch (event.key) {
+        case "b":
+          toggleMark(editor, "bold");
+          break;
+        case "i":
+          toggleMark(editor, "italic");
+          break;
+        case "u":
+          toggleMark(editor, "underline");
+          break;
+        case "s":
+          toggleMark(editor, "strikeThrough");
+          break;
+        default:
+          break;
+      }
+      return;
+    }
     if (event.key === "Enter") {
       // Editor.normalize(editor, { force: true });
       addListItem(editor, listItemEntry);

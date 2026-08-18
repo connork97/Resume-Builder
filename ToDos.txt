@@ -8,10 +8,21 @@ Making Field Drag and Drop not merge fields together
 
 IMPORTANT BUGS:
 
+-Link application not working on deployed site
+   -Potentially wasn't an issue, as it seemed to work fine upon next inspection
+
 -Users can access all resumes by typing in the URL
    -Need to implement auth requirements to allow proper user access/verification
 
 BIGGER BUGS:
+
+-Icons sometimes disappear after clicking back into the same field it was added to.  Unsure of the reason why.
+
+-Settings Modal Overflows off the page.
+
+-Field Reordering Not persisting
+
+-Adding new sections, subsections, etc causes prior styling changes to be undone
 
 -Several styling changes to individual words/strings results in line break
    -Likely due to a new Slate Field/Leaf being created
@@ -26,6 +37,7 @@ BIGGER BUGS:
       -No idea why
 
 
+
 MEDIUM BUGS:
 
 -Dragging Fields is Clunky/Buggy
@@ -33,7 +45,15 @@ MEDIUM BUGS:
 -Margins can go negative without any real, convenient way for the user to know this.
 
 
+-Top margin indicator (left hand side ruler) doesn't work unless the user is actively clicked into a particular section
+
 SMALL BUGS:
+
+-Resume Outline can overflow off the page by a little
+   -Probably just needs a little Padding
+
+-Resume Editor is prioritized visually over the Resume Outline
+   -Just need to increase z-index of outline/decrease z-index for editor page
 
 -Drag Reordering of Fields doesn't show the visual cue when dragging over a row with "startNewRow" set to "true"
    -Still reorders, but doesn't look like it will

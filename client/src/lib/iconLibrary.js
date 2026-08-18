@@ -66,7 +66,10 @@ import {
    FaBook,
    FaBookOpen,
    FaBookReader,
+   FaExternalLinkAlt
 } from 'react-icons/fa';
+
+import { TbExternalLink } from 'react-icons/tb';
 
 export const ICON_GROUPS = [
    {
@@ -170,6 +173,8 @@ export const ICON_GROUPS = [
       icons: {
          other: FaLaptop,
          other2: FaLaptopCode,
+         externalLink: FaExternalLinkAlt,
+         externalLink2: TbExternalLink,
       },
    },
 ];

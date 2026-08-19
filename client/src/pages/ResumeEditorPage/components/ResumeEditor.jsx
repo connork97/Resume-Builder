@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { setResume } from '@/store/resumeSlice.js';
+import { toggleAllSectionIds, setResume } from '@/store/resumeSlice.js';
 
 import Toolbar from '@/features/ResumeEditor/EditorToolbar/Toolbar.jsx';
 import Outline from '@/features/ResumeEditor/EditorOutline/Outline.jsx';
@@ -44,10 +44,18 @@ const ResumeEditor = () => {
 
    useEffect(() => {
       const onGlobalKeyDown = (event) => {
-         const isSaveShortcut =
-            (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's';
+         // if (!event.ctrlKey && !event.metaKey) return;
+         const isSaveShortcut = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's';
+         const isSelectAllShortcut = (event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === 'a';
 
-         if (!isSaveShortcut) return;
+         if (!isSaveShortcut && !isSelectAllShortcut) return;
+
+         if (isSelectAllShortcut) {
+            event.preventDefault();
+            event.stopPropagation();
+            dispatch(toggleAllSectionIds());
+            return;
+         }
 
          event.preventDefault();
          event.stopPropagation();

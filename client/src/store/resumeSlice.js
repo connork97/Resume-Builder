@@ -482,6 +482,16 @@ const resumeSlice = createSlice({
             .map(f => f.id);
       },
 
+      toggleAllSectionIds(state) {
+         if (state.activeSectionIds.length === state.sections.allIds.length) {
+            console.log("Clearing all active section IDs.")
+            state.activeSectionIds = [];
+         } else {
+            console.log("Setting all section IDs active: ", state.sections.allIds)
+            state.activeSectionIds = [...state.sections.allIds];
+         }
+      },
+
       setActiveSectionIds(state, action) {
          const id = action.payload;
          const currentActiveSectionIds = state.activeSectionIds;
@@ -836,6 +846,7 @@ const resumeSlice = createSlice({
 export const {
    setActiveSectionId,
    setActiveSectionIds,
+   toggleAllSectionIds,
    clearActiveSectionIds,
    setActiveEditorId,
    setActiveEditorSelection,

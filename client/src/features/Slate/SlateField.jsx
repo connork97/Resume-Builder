@@ -123,6 +123,7 @@ const SlateField = ({ field, index }) => {
         padding: "0 1rem",
         margin: "0 -1rem",
         cursor: "pointer",
+      //   display: 'inline-block',
       }}
     >
       <Slate

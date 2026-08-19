@@ -34,7 +34,7 @@ const Leaf = ({
   });
 
   const stylingObj = {
-    display: "inline-block",
+    //  display: "inline-block",
     fontSize: `${fontSize}px`,
     lineHeight,
     color: leaf.color,
@@ -62,14 +62,14 @@ const Leaf = ({
   if (leaf.link) {
     stylingObj.cursor = "pointer";
     styledChildren = (
-      <a 
+      <a
         target="_blank"
         href={leaf.link}
         style={{
           cursor: "pointer",
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '0.25em'
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "0.25em",
         }}
       >
         {/* <LinkIcon
@@ -96,18 +96,21 @@ const Leaf = ({
     }
 
     return (
-      <span {...attributes} style={{...stylingObj, display: 'inline-flex', alignItems: 'center'}}>
-        <Icon style={{ fontSize: '1em', marginRight: '0.5em'}} />
+      <span
+        {...attributes}
+        style={{ ...stylingObj, display: "inline-flex", alignItems: "center" }}
+      >
+        <Icon style={{ fontSize: "1em", marginRight: "0.5em" }} />
         {/* {React.createElement(Icon, {
           style: { fontSize: '1em', marginRight: '0.5em' },
         })} */}
         {styledChildren}
       </span>
-    )
+    );
   }
 
   return (
-    <span {...attributes} style={{...stylingObj, cursor: 'auto'}}>
+    <span {...attributes} style={{ ...stylingObj, cursor: "auto" }}>
       {styledChildren}
       {/* <span id='draggable' style={{position: 'absolute', height: '150%', width: '150%', top: '-25%', left: '-25%', cursor: 'all-scroll'}}></span> */}
     </span>

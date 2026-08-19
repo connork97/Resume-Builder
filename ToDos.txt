@@ -24,10 +24,6 @@ BIGGER BUGS:
 
 -Adding new sections, subsections, etc causes prior styling changes to be undone
 
--Several styling changes to individual words/strings results in line break
-   -Likely due to a new Slate Field/Leaf being created
-   -For Line Height, potentially reflecting the new line height on all other strings in the field could fix it, TBD
-
 -ActiveSectionId should get put into ActiveSectionIds array
    -Once fully implemented, there will be less need (or ideally no need at all) for the singular ActiveSectionId
 

@@ -44,12 +44,14 @@ const ResumeEditor = () => {
 
    useEffect(() => {
       const onGlobalKeyDown = (event) => {
-         // if (!event.ctrlKey && !event.metaKey) return;
+         // Early return for general key presses
+         if (!event.ctrlKey && !event.metaKey) return;
          const isSaveShortcut = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's';
          const isSelectAllShortcut = (event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === 'a';
 
          if (!isSaveShortcut && !isSelectAllShortcut) return;
 
+         // Ctrl + Shift + A: Select All Sections, useDispatch can't be used in the hotKeys.js util
          if (isSelectAllShortcut) {
             event.preventDefault();
             event.stopPropagation();

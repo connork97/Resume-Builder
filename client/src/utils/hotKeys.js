@@ -3,16 +3,22 @@ import { Editor } from "slate";
 import { toggleMark } from "@/helpers/marks";
 import { toggleList } from "@/helpers/blocks";
 import { outdentList, indentList, addListItem } from "@/helpers/listBehavior";
-import { useSelector } from "react-redux";
 import { saveResumeToApi } from "@/services/resumeServices";
 
 export const handleGlobalHotKey = (resume, event) => {
    console.log("handleGlobalHotKey called with event:", event);
-   if (event.ctrlKey) {
-      switch (event.key) {
+   if ((event.ctrlKey || event.metaKey) && event.shiftKey) {
+      switch (event.key.toLowerCase()) {
+         default:
+            break;
+      }
+   }
+   else if (event.ctrlKey || event.metaKey) {
+      switch (event.key.toLowerCase()) {
          case "s":
-         case "S":
             saveResumeToApi(resume);
+            break;
+         default:
             break;
       }
    }
@@ -72,21 +78,17 @@ export const handleHotKey = (editor, event) => {
 
    // * Handle Ctrl key combinations * //
    else if (event.ctrlKey) {
-      switch (event.key) {
+      switch (event.key.toLowerCase()) {
          case "b":
-         case "B":
             toggleMark(editor, "bold");
             break;
          case "i":
-         case "I":
             toggleMark(editor, "italic");
             break;
          case "u":
-         case "U":
             toggleMark(editor, "underline");
             break;
          // case "s":
-         // case "S":
          // toggleMark(editor, "strikeThrough");
          // break;
          default:

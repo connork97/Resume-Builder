@@ -31,20 +31,16 @@ BIGGER BUGS:
       -No idea why
 
 
-
 MEDIUM BUGS:
-
 
 -Dragging Fields is Clunky/Buggy
 
 -Margins can go negative without any real, convenient way for the user to know this.
 
-
 -Top margin indicator (left hand side ruler) doesn't work unless the user is actively clicked into a particular section
 
-SMALL BUGS:
 
--When there are multiple font sizes in one field (including multi line lists), the Font Size does not properly adjust
+SMALL BUGS:
 
 -Resume Outline can overflow off the page by a little
    -Probably just needs a little Padding
@@ -66,11 +62,11 @@ SMALL BUGS:
 
 -Border Inputs for left and right sometimes use wrong value
 
-
 -Bullets don't allow for copy/pasting without breaking up indentation (shift + tab fixes indentation though, but is annoying)
 
 -Margin Ruler Indicators should be touched up to more clearly depict their effects
    -Something like a tiny indicator to show where the section/column starts, and the main indicator to show where it ends up
+
 
 TINY BUGS:
 

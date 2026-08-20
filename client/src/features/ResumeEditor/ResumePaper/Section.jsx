@@ -193,6 +193,13 @@ const Section = ({ id, section, column, index }) => {
     } else {
       dispatch(setActiveSectionId(section.id));
     }
+    console.log('e.target.dataset', e.target.dataset.sectionId)
+    if (e.target.dataset.sectionId) {
+      console.log('first', e.target.dataset.sectionId);
+      console.log('second', e.target.dataset['section-id']);
+      dispatch(setActiveEditorId(null));
+      dispatch(setActiveEditorSelection([]));
+    }
   };
 
   const sectionIsActive = activeSectionIds.includes(section.id);
@@ -220,7 +227,11 @@ const Section = ({ id, section, column, index }) => {
         outlineColor: section.styling?.color,
         cursor: "all-scroll",
       }}
-      onClick={handleSetActiveSection}
+      onClick={(e) => {
+         console.log(e.target)
+         return handleSetActiveSection(e)
+      }
+      }
     >
       <div
         className={`${styles.sectionContentWrapper} ${sectionIsActive && styles.active}`}

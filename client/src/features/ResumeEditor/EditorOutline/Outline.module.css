@@ -12,6 +12,10 @@
   overflow-y: auto;
   font-family: sans-serif;
 }
+.outlineWrapper, .outlineContainer {
+   /* z-index: var(--z-outline); */
+   z-index: var(--z-outline);
+}
 
 .hiddenOutlineContainer {
   left: -42.5vh;
@@ -41,6 +45,10 @@
   background: #2a2a2a;
   border-radius: 0.75vh;
   padding: 1vh;
+}
+
+.sectionBlock:last-child {
+  margin-bottom: 10vh;
 }
 
 .sectionHeader {
@@ -102,6 +110,7 @@
   display: flex;
   flex-direction: column;
   gap: 1vh;
+
 }
 
 
@@ -224,7 +233,7 @@
   left: 0;
   height: 100vh;
   transition: transform 0.25s ease-in-out;
-  z-index: 99;
+  /* z-index: var(--z-outline); */
 }
 
 .hidden {
@@ -255,7 +264,8 @@
   border-radius: 0.5vh;
   cursor: pointer;
   font-weight: bold;
-  z-index: 100;
+  
+  /* z-index: 100; */
 }
 
 .showOutlineButton {

@@ -42,12 +42,6 @@ MEDIUM BUGS:
 
 SMALL BUGS:
 
--Resume Outline can overflow off the page by a little
-   -Probably just needs a little Padding
-
--Resume Editor is prioritized visually over the Resume Outline
-   -Just need to increase z-index of outline/decrease z-index for editor page
-
 -Drag Reordering of Fields doesn't show the visual cue when dragging over a row with "startNewRow" set to "true"
    -Still reorders, but doesn't look like it will
 

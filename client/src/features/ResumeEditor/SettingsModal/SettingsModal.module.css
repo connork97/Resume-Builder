@@ -5,7 +5,8 @@
    width: 100vw;
    height: 100vh;
    background: rgba(254, 193, 193, 0);
-   z-index: 998;
+   /* z-index: 998; */
+   z-index: calc(var(--z-modal) - 1);
 }
 
 .settingsModalContainerDiv {

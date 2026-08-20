@@ -44,6 +44,8 @@ MEDIUM BUGS:
 
 SMALL BUGS:
 
+-When there are multiple font sizes in one field (including multi line lists), the Font Size does not properly adjust
+
 -Resume Outline can overflow off the page by a little
    -Probably just needs a little Padding
 
@@ -64,7 +66,6 @@ SMALL BUGS:
 
 -Border Inputs for left and right sometimes use wrong value
 
--When there are multiple font sizes in one field (including multi line lists), the Font Size does not properly adjust
 
 -Bullets don't allow for copy/pasting without breaking up indentation (shift + tab fixes indentation though, but is annoying)
 
@@ -141,13 +142,13 @@ MEDIUM FEATURES:
 
 SMALL FEATURES:
 
--Adding an "active" indicator for toolbar settings already in use
-   -Ex: When the active selection is already bolded, the toolbar should indicate that, such as slightly highlighting the Bold button
-
 -Borders Customization
    -Moving them in/out/left/right/up/down/etc
 
 -Adding Margin Bottom to Section Headings
+
+-Allow "Apply To All" tag for Subsection Grid Settings, so changes to one subsection's layout can be mimicked automatically to others in the section
+   -Will likely need to have a check for when new subsections are created afterwards
 
 
 TINY FEATURES:
@@ -155,6 +156,8 @@ TINY FEATURES:
 -Allowing the adjustment of grid column widths within subsections
    -Gap too probably
 
+-Adding an "active" indicator for toolbar settings already in use
+   -Ex: When the active selection is already bolded, the toolbar should indicate that, such as slightly highlighting the Bold button
 
 MAYBES:
 

@@ -34,7 +34,7 @@ const SettingsModal = ({ isSettingsModalOpen, setIsSettingsModalOpen }) => {
       ...prevState,
       transform: `translateY(${translateYValue})`,
     }));
-  }, []);
+  }, [modalRef.current, isSettingsModalOpen]);
 
   return (
     <>

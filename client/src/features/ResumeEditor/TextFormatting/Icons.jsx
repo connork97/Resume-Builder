@@ -12,6 +12,10 @@ import styles from "./TextFormatting.module.css";
 const Icons = ({ editor }) => {
   const [showIcons, setShowIcons] = useState(false);
 
+  const preserveEditorSelection = (event) => {
+    event.preventDefault();
+  };
+
   const addIcon = (iconId) => {
     setIcon(editor, iconId);
     setShowIcons(false);
@@ -27,6 +31,7 @@ const Icons = ({ editor }) => {
       return React.createElement(Icon, {
         key: id,
         style: { cursor: 'pointer' },
+        onMouseDown: preserveEditorSelection,
         onClick: () => addIcon(id),
       });
     });
@@ -46,11 +51,24 @@ const Icons = ({ editor }) => {
   const dropdownRef = useClickOutside(closeDropdown, showIcons);
   return (
     <div>
-      <button className='buttonMain' onClick={() => setShowIcons(!showIcons)}><FaRegSmile /></button>
+      <button
+        className='buttonMain'
+        onMouseDown={preserveEditorSelection}
+        onClick={() => setShowIcons(!showIcons)}
+      >
+        <FaRegSmile />
+      </button>
       {showIcons && (
         <div className={styles.iconDropdownContainer} ref={dropdownRef}>
           {iconGroupsToRender}
-          <button className='buttonMain' onClick={() => clearIcon()}>Clear</button>
+          {/* Leaving Clear Button for now, but should not be necessary moving forward, as icons have been migrated from marks to inline void elements */}
+          {/* <button
+            className='buttonMain'
+            onMouseDown={preserveEditorSelection}
+            onClick={() => clearIcon()}
+          >
+            Clear
+          </button> */}
         </div>
       )}
     </div>

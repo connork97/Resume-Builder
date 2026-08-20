@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback, useEffect } from "react";
+import { withInlineVoidIcons } from "../../helpers/slateHelpers/editorSchemaRules.js";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor } from "slate";
 import { withHistory } from "slate-history";
@@ -40,8 +41,10 @@ const SlateHeading = ({ section }) => {
   // Stable editor instance
   // const editorId = useMemo(() => section?.id)
   const editorId = section?.id;
-  const editor = useMemo(() => withReact(withHistory(createEditor())), []);
-
+  const editor = useMemo(
+    () => withReact(withHistory(withInlineVoidIcons(createEditor()))),
+    [],
+  );
   //   const editor = useMemo(() => withReact(createEditor()), []);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { Editor } from "slate";
+import { Editor, Range, Transforms } from "slate";
 
 import { store } from "../store/store.js";
 
@@ -131,10 +131,28 @@ export const setLink = (editor, link) => {
 }
 
 export const setIcon = (editor, icon) => {
+   if (!editor) {
+      console.error("Editor instance is not available.");
+      return;
+   }
+
+  if (!editor.selection) {
+    return;
+  }
+
   if (!icon) {
+    // Backward compatibility for older documents that may still store icon as mark.
     Editor.removeMark(editor, 'icon');
     return;
   }
 
-  Editor.addMark(editor, 'icon', icon);
+  if (Range.isExpanded(editor.selection)) {
+    Transforms.collapse(editor, { edge: 'start' });
+  }
+
+  Transforms.insertNodes(editor, {
+    type: 'icon',
+    iconId: icon,
+    children: [{ text: '' }],
+  });
 }

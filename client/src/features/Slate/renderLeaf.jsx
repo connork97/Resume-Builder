@@ -84,30 +84,31 @@ const Leaf = ({
     );
   }
 
-  if (leaf.icon) {
-    const Icon = getFaIcon(leaf.icon);
+//   ! Previous Icon Insertion/Rendering Behavior
+//   if (leaf.icon) {
+//     const Icon = getFaIcon(leaf.icon);
 
-    if (!Icon) {
-      return (
-        <span {...attributes} style={stylingObj}>
-          {styledChildren}
-        </span>
-      );
-    }
+//     if (!Icon) {
+//       return (
+//         <span {...attributes} style={stylingObj}>
+//           {styledChildren}
+//         </span>
+//       );
+//     }
 
-    return (
-      <span
-        {...attributes}
-        style={{ ...stylingObj, display: "inline-flex", alignItems: "center" }}
-      >
-        <Icon style={{ fontSize: "1em", marginRight: "0.5em" }} />
-        {/* {React.createElement(Icon, {
-          style: { fontSize: '1em', marginRight: '0.5em' },
-        })} */}
-        {styledChildren}
-      </span>
-    );
-  }
+//     return (
+//       <span
+//         {...attributes}
+//         style={{ ...stylingObj, display: "inline-flex", alignItems: "center" }}
+//       >
+//         <Icon style={{ fontSize: "1em", marginRight: "0.5em" }} />
+//         {/* {React.createElement(Icon, {
+//           style: { fontSize: '1em', marginRight: '0.5em' },
+//         })} */}
+//         {styledChildren}
+//       </span>
+//     );
+//   }
 
   return (
     <span {...attributes} style={{ ...stylingObj, cursor: "auto" }}>

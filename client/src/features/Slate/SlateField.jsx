@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useCallback } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, Editor, Transforms } from "slate";
+import { withInlineVoidIcons } from "../../helpers/slateHelpers/editorSchemaRules.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateFieldValue,
@@ -30,13 +31,18 @@ import { toggleMark } from "@/helpers/marks.js";
 import { toggleList } from "@/helpers/blocks.js";
 import { handleHotKey } from "@/utils/hotKeys.js";
 
+
+
 const SlateField = ({ field, index }) => {
   // Stable editor instance
   const fieldPlainText = getNodeString(field);
   const fieldMinWidth = !fieldPlainText ? getMinWidth(field.label) : "auto";
 
   const editorId = field.id;
-  const editor = useMemo(() => withReact(withHistory(createEditor())), []);
+  const editor = useMemo(
+    () => withReact(withHistory(withInlineVoidIcons(createEditor()))),
+    [],
+  );
 
   const dispatch = useDispatch();
   const resumeStyling = useSelector((state) => state.resume.styling);

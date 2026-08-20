@@ -16,8 +16,6 @@ IMPORTANT BUGS:
 
 BIGGER BUGS:
 
--Icons sometimes disappear after clicking back into the same field it was added to.  Unsure of the reason why.
-
 -Settings Modal Overflows off the page.
 
 -Field Reordering Not persisting
@@ -35,6 +33,7 @@ BIGGER BUGS:
 
 
 MEDIUM BUGS:
+
 
 -Dragging Fields is Clunky/Buggy
 

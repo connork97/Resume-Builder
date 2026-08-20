@@ -1,4 +1,4 @@
-import { Editor, Range, Transforms } from "slate";
+import { Editor, Element, Range, Transforms } from "slate";
 
 import { store } from "../store/store.js";
 
@@ -7,6 +7,47 @@ const getResumeStyling = (style) => {
   const resumeStyling = state.resume.styling;
   return resumeStyling[style];
 }
+
+const getActiveEditorColor = (editor) => {
+  const activeMarkColor = Editor.marks(editor)?.color;
+
+  if (activeMarkColor) {
+    return activeMarkColor;
+  }
+
+  const state = store.getState();
+  const activeEditorId = state.resume.activeEditorId;
+  const activeField = state.resume.fields.byId[activeEditorId];
+  const activeSection =
+    state.resume.sections.byId[activeEditorId] ||
+    state.resume.sections.byId[state.resume.activeSectionId];
+  const activeSubsection = state.resume.subsections.byId[activeField?.subsectionId];
+  const activeColumn = state.resume.columns.byId[activeSection?.columnId];
+
+  return (
+    activeField?.styling?.color ||
+    activeSubsection?.styling?.color ||
+    activeSection?.styling?.color ||
+    activeColumn?.styling?.color ||
+    getResumeStyling('color')
+  );
+};
+
+const syncIconColorsInSelection = (editor, color) => {
+  if (!editor.selection || !Range.isExpanded(editor.selection)) {
+    return;
+  }
+
+  Transforms.setNodes(
+    editor,
+    { iconColor: color },
+    {
+      at: editor.selection,
+      match: (node) => Element.isElement(node) && node.type === 'icon',
+      split: true,
+    },
+  );
+};
 export const isMarkActive = (editor, format) => {
   const marks = Editor.marks(editor);
   return marks ? marks[format] === true : false;
@@ -107,6 +148,7 @@ export const setLineHeightOffset = (editor, lineHeightOffset) => {
 
 export const setFontColor = (editor, fontColor) => {
   Editor.addMark(editor, 'color', fontColor);
+  syncIconColorsInSelection(editor, fontColor);
   console.log(`Color set to ${fontColor}`);
 }
 
@@ -153,6 +195,7 @@ export const setIcon = (editor, icon) => {
   Transforms.insertNodes(editor, {
     type: 'icon',
     iconId: icon,
+    iconColor: getActiveEditorColor(editor),
     children: [{ text: '' }],
   });
 }

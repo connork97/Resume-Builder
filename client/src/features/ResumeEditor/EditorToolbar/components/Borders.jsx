@@ -25,12 +25,8 @@ import {
 import ColorDropdown from "../../TextFormatting/shared/ColorDropdown";
 import { updateSection } from "@/store/resumeSlice";
 
-const Borders = () => {
+const Borders = ({ activeSectionId, activeSectionIds }) => {
   const dispatch = useDispatch();
-  const activeSectionId = useSelector((state) => state.resume.activeSectionId);
-  const activeSectionIds = useSelector(
-    (state) => state.resume.activeSectionIds,
-  );
   const sectionsById = useSelector((state) => state.resume.sections.byId);
   const activeSectionBorder =
     sectionsById[activeSectionId]?.styling?.border || {};
@@ -38,32 +34,11 @@ const Borders = () => {
   const [showBorderDropdown, setShowBorderDropdown] = useState(false);
 
   const handleBorderUpdate = (type, value) => {
-    if (activeSectionIds.length > 0) {
-      for (let sectionId of activeSectionIds) {
-        const currentSectionBorder = sectionsById[sectionId]?.styling?.border;
-        dispatch(
-          updateSection({
-            id: sectionId,
-            changes: {
-              styling: {
-                border: {
-                  ...currentSectionBorder,
-                  [type]: {
-                    ...currentSectionBorder?.[type],
-                    ...value,
-                  },
-                },
-              },
-            },
-          }),
-        );
-      }
-    } else if (activeSectionId) {
-      const currentSectionBorder =
-        sectionsById[activeSectionId]?.styling?.border;
+    for (let sectionId of activeSectionIds) {
+      const currentSectionBorder = sectionsById[sectionId]?.styling?.border;
       dispatch(
         updateSection({
-          id: activeSectionId,
+          id: sectionId,
           changes: {
             styling: {
               border: {

@@ -20,7 +20,7 @@ const getActiveEditorColor = (editor) => {
   const activeField = state.resume.fields.byId[activeEditorId];
   const activeSection =
     state.resume.sections.byId[activeEditorId] ||
-    state.resume.sections.byId[state.resume.activeSectionId];
+    state.resume.sections.byId[state.resume.activeSectionIds[0]];
   const activeSubsection = state.resume.subsections.byId[activeField?.subsectionId];
   const activeColumn = state.resume.columns.byId[activeSection?.columnId];
 

@@ -1,9 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-
-import LineHeight from '@/features/ResumeEditor/TextFormatting/LineHeight.jsx';
-import FontSize from '@/features/ResumeEditor/TextFormatting/FontSize.jsx';
+import LineHeight from "@/features/ResumeEditor/TextFormatting/LineHeight.jsx";
+import FontSize from "@/features/ResumeEditor/TextFormatting/FontSize.jsx";
 import FontColor from "@/features/ResumeEditor/TextFormatting/FontColor.jsx";
 import HighlightColor from "@/features/ResumeEditor/TextFormatting/HighlightColor.jsx";
 import BackgroundColor from "@/features/ResumeEditor/TextFormatting/BackgroundColor.jsx";
@@ -22,19 +21,21 @@ import FontFamily from "../../TextFormatting/FontFamily.jsx";
 import AddSection from "./AddSection.jsx";
 
 const RichTextToolbar = ({ editor }) => {
-
   const resumeStyling = useSelector((state) => state.resume.styling);
   const sections = useSelector((state) => state.resume.sections);
   const columns = useSelector((state) => state.resume.columns);
   const fields = useSelector((state) => state.resume.fields);
   const subsections = useSelector((state) => state.resume.subsections);
-  const activeSectionId = useSelector(state => state.resume.activeSectionId);
-  const activeEditorId = useSelector(state => state.resume.activeEditorId);
-  const selection = useSelector(state => state.resume.activeEditorSelection);
+
+  const activeSectionIds = useSelector(
+    (state) => state.resume.activeSectionIds,
+  );
+  const activeSectionId = activeSectionIds[0] ?? null;
+  const activeEditorId = useSelector((state) => state.resume.activeEditorId);
+  const selection = useSelector((state) => state.resume.activeEditorSelection);
 
   return (
     <div className={styles.richTextToolbarContainer}>
-
       <div className={styles.richTextToolbarWrapper}>
         <LineHeight
           editor={editor}
@@ -42,6 +43,7 @@ const RichTextToolbar = ({ editor }) => {
           fields={fields}
           subsections={subsections}
           activeSectionId={activeSectionId}
+          activeSectionIds={activeSectionIds}
           activeEditorId={activeEditorId}
           resumeStyling={resumeStyling}
         />
@@ -49,16 +51,15 @@ const RichTextToolbar = ({ editor }) => {
         <FontColor
           editor={editor}
           selection={selection}
+          activeSectionId={activeSectionId}
+          activeSectionIds={activeSectionIds}
         />
 
-        <HighlightColor
-          editor={editor}
-          selection={selection}
-          activeSectionId={activeSectionId}
-        />
+        <HighlightColor editor={editor} selection={selection} />
 
         <BackgroundColor
           activeSectionId={activeSectionId}
+          activeSectionIds={activeSectionIds}
         />
 
         <FontSize
@@ -69,6 +70,7 @@ const RichTextToolbar = ({ editor }) => {
           fields={fields}
           subsections={subsections}
           activeSectionId={activeSectionId}
+          activeSectionIds={activeSectionIds}
           activeEditorId={activeEditorId}
           resumeStyling={resumeStyling}
         />
@@ -81,6 +83,7 @@ const RichTextToolbar = ({ editor }) => {
           editor={editor}
           selection={selection}
           activeSectionId={activeSectionId}
+          activeSectionIds={activeSectionIds}
         />
 
         <Lists editor={editor} />
@@ -91,13 +94,16 @@ const RichTextToolbar = ({ editor }) => {
 
         <Columns label="Columns:" />
 
-        <Gap label="Section Gap:" gapType='vertical' />
+        <Gap label="Section Gap:" gapType="vertical" />
 
-        <Gap label="Column Gap:" gapType='horizontal' />
+        <Gap label="Column Gap:" gapType="horizontal" />
 
-        <Borders />
-          <AddSection />
+        <Borders
+          activeSectionId={activeSectionId}
+          activeSectionIds={activeSectionIds}
+        />
 
+        <AddSection />
       </div>
     </div>
   );

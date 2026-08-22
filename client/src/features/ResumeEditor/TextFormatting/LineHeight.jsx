@@ -29,15 +29,13 @@ const LineHeight = ({
   fields,
   subsections,
   activeSectionId,
+  activeSectionIds,
   activeEditorId,
   resumeStyling,
 }) => {
   const dispatch = useDispatch();
   const reduxSections = useSelector((state) => state.resume.sections);
   const reduxColumns = useSelector((state) => state.resume.columns);
-  const activeSectionIds = useSelector(
-    (state) => state.resume.activeSectionIds,
-  );
 
   const getResumeLineHeight = useCallback(
     () => roundToTenth(getNumber(resumeStyling?.lineHeight, 1.2)),
@@ -165,51 +163,6 @@ const LineHeight = ({
 
     const sectionIdToUse = effectiveSectionId;
 
-    // Case 1:  Sections are Selected
-    if (activeSectionIds.length > 0) {
-      activeSectionIds.forEach((sectionId) => {
-        const sectionData = reduxSections.byId[sectionId];
-        if (!sectionData) return;
-
-        const columnData = reduxColumns.byId[sectionData.columnId];
-        const currentSectionLineHeightOffset = getNumber(
-          sectionData?.styling?.lineHeightOffset,
-          0,
-        );
-        let newSectionLineHeightOffset = currentSectionLineHeightOffset;
-
-        if (newLineHeight === "increment") {
-          newSectionLineHeightOffset = roundToTenth(
-            currentSectionLineHeightOffset + LINE_HEIGHT_STEP,
-          );
-        } else if (newLineHeight === "decrement") {
-          newSectionLineHeightOffset = roundToTenth(
-            currentSectionLineHeightOffset - LINE_HEIGHT_STEP,
-          );
-        } else {
-          const inheritedLineHeight = getCascadedLineHeight({
-            resumeStyling,
-            columnStyling: columnData?.styling,
-          });
-          newSectionLineHeightOffset = roundToTenth(
-            targetLineHeight - inheritedLineHeight,
-          );
-        }
-
-        dispatch(
-          updateSection({
-            id: sectionId,
-            changes: {
-              styling: { lineHeightOffset: newSectionLineHeightOffset },
-            },
-          }),
-        );
-      });
-
-      setLineHeightInputValue(targetLineHeight);
-      return;
-    }
-
     // Case:  A Slate Field is Selected
     if (editor && activeEditorId && fields) {
       const field = fields.byId[activeEditorId];
@@ -293,29 +246,53 @@ const LineHeight = ({
       }
     }
 
-    // Case: One Section is Selected (likely from the section settings modal)
-    if (!editor && sectionIdToUse && !(activeSectionIds.length > 0)) {
-      const sectionData = getSection();
-      if (!sectionData) return;
+    // Case:  Sections are Selected (no editor)
+    if (activeSectionIds.length > 0) {
+      activeSectionIds.forEach((sectionId) => {
+        const sectionData = reduxSections.byId[sectionId];
+        if (!sectionData) return;
 
-      const inheritedLineHeight = getCascadedLineHeight({
-        resumeStyling,
-        columnStyling: getColumn()?.styling,
+        const columnData = reduxColumns.byId[sectionData.columnId];
+        const currentSectionLineHeightOffset = getNumber(
+          sectionData?.styling?.lineHeightOffset,
+          0,
+        );
+        let newSectionLineHeightOffset = currentSectionLineHeightOffset;
+
+        if (newLineHeight === "increment") {
+          newSectionLineHeightOffset = roundToTenth(
+            currentSectionLineHeightOffset + LINE_HEIGHT_STEP,
+          );
+        } else if (newLineHeight === "decrement") {
+          newSectionLineHeightOffset = roundToTenth(
+            currentSectionLineHeightOffset - LINE_HEIGHT_STEP,
+          );
+        } else {
+          const inheritedLineHeight = getCascadedLineHeight({
+            resumeStyling,
+            columnStyling: columnData?.styling,
+          });
+          newSectionLineHeightOffset = roundToTenth(
+            targetLineHeight - inheritedLineHeight,
+          );
+        }
+
+        dispatch(
+          updateSection({
+            id: sectionId,
+            changes: {
+              styling: { lineHeightOffset: newSectionLineHeightOffset },
+            },
+          }),
+        );
       });
-      const newSectionLineHeightOffset = roundToTenth(
-        targetLineHeight - inheritedLineHeight,
-      );
 
-      dispatch(
-        updateSection({
-          id: sectionIdToUse,
-          changes: {
-            styling: { lineHeightOffset: newSectionLineHeightOffset },
-          },
-        }),
-      );
       setLineHeightInputValue(targetLineHeight);
-    } else if (!editor && !sectionIdToUse) {
+      return;
+    }
+
+    // Case:  Resume level (no editor, no section)
+    if (!editor && !sectionIdToUse) {
       dispatch(
         updateResume({
           key: "styling",

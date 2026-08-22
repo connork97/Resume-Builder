@@ -7,11 +7,9 @@ import { updateResume, updateSection } from '../../../store/resumeSlice.js';
 import ColorDropdown from './shared/ColorDropdown.jsx';
 import { BiSolidColorFill } from 'react-icons/bi';
 
-const BackgroundColor = () => {
+const BackgroundColor = ({activeSectionId, activeSectionIds}) => {
 
    const dispatch = useDispatch();
-   const activeSectionId = useSelector(state => state.resume.activeSectionId);
-   const activeSectionIds = useSelector(state => state.resume.activeSectionIds);
    const sectionBackgroundColor = useSelector(state => state.resume.sections.byId[activeSectionId]?.styling?.backgroundColor);
 
    const handleSetSectionBackgroundColor = (color) => {
@@ -23,19 +21,13 @@ const BackgroundColor = () => {
                changes: { styling: { backgroundColor: color } }
             }));
          }
-      } else if (!activeSectionIds.length > 0 && !activeSectionId) {
+      } else {
          dispatch(updateResume({
             key: 'styling',
             changes: {
                backgroundColor: color
             }
          }))
-         return;
-      } else if (!activeSectionIds.length && activeSectionId) {
-         dispatch(updateSection({
-            id: activeSectionId,
-            changes: { styling: { backgroundColor: color } }
-         }));
       }
    };
 

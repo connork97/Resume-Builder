@@ -12,7 +12,8 @@ const CurrentlyEditing = () => {
 
    const sections = useSelector(state => state.resume.sections);
    const reduxSubsections = useSelector(state => state.resume.subsections);
-   const activeSectionId = useSelector(state => state.resume.activeSectionId);
+   const activeSectionIds = useSelector(state => state.resume.activeSectionIds);
+   const activeSectionId = activeSectionIds[0] ?? null;
    const activeEditorId = useSelector((state) => state.resume.activeEditorId);
    const reduxField = useSelector(state => state.resume.fields.byId[activeEditorId]);
    const reduxFieldSubsection = reduxSubsections.byId[reduxField?.subsectionId];

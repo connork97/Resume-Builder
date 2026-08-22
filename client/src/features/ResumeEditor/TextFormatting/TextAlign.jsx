@@ -17,21 +17,19 @@ import {
 } from "react-icons/md";
 import TextFormatDropdown from "./shared/TextFormatDropdown.jsx";
 
-const TextAlign = ({ editor, selection }) => {
+const TextAlign = ({ editor, selection, activeSectionId, activeSectionIds }) => {
   const dispatch = useDispatch();
   const resumeAlignment = useSelector((state) => state.resume?.styling?.textAlign);
   const activeEditorSelection = useSelector((state) => state.resume?.activeEditorSelection)
   const activeEditorAlignment = editor ? getActiveAlignment(editor) : null;
 //   const activeEditorAlignment = activeEditorSelection?.[0]?.textAlign;
   const activeEditorChildren = activeEditorSelection?.[0]?.children;
-  const activeSectionId = useSelector((state) => state.resume.activeSectionId);
   const activeSectionAlignment = useSelector((state) => state.resume?.sections?.byId[activeSectionId]?.styling?.textAlign)
-  const activeSectionIds = useSelector(
-    (state) => state.resume.activeSectionIds,
-  );
 
   const handleSetTextAlign = (editor, alignment) => {
-    if (activeSectionIds.length > 0) {
+    if (editor) {
+      setAlignment(editor, alignment);
+    } else if (activeSectionIds.length > 0) {
       for (let sectionId of activeSectionIds) {
         dispatch(
           updateSection({
@@ -44,7 +42,7 @@ const TextAlign = ({ editor, selection }) => {
           }),
         );
       }
-    } else if (!editor && !activeSectionId) {
+    } else {
       dispatch(
         updateResume({
           key: "styling",
@@ -53,17 +51,6 @@ const TextAlign = ({ editor, selection }) => {
           },
         }),
       );
-      return;
-    } else if (!editor && activeSectionId) {
-      dispatch(
-        updateSection({
-          id: activeSectionId,
-          changes: { styling: { textAlign: alignment } },
-        }),
-      );
-      return;
-    } else if (editor) {
-      setAlignment(editor, alignment);
     }
   };
 

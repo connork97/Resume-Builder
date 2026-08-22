@@ -8,15 +8,10 @@ Making Field Drag and Drop not merge fields together
 
 IMPORTANT BUGS:
 
--Link application not working on deployed site
-   -Potentially wasn't an issue, as it seemed to work fine upon next inspection
-
 -Users can access all resumes by typing in the URL
    -Need to implement auth requirements to allow proper user access/verification
 
 BIGGER BUGS:
-
--Settings Modal Overflows off the page.
 
 -Field Reordering Not persisting
 
@@ -77,8 +72,6 @@ STRETCH FEATURES:
 
 MAIN FEATURES:
 
--Undo/Redo
-
 -Multi Page Resume
 
 -Autosave Functionality
@@ -89,6 +82,7 @@ MAIN FEATURES:
 -Demo Editor
    -For non logged in users to be able to try/test out resume editor
    -Initial functionality implemented
+      -Need to insert a new test resume with ID 0 to deployed PostgreSQL DB
    
 
 BIGGER FEATURES:
@@ -103,17 +97,7 @@ BIGGER FEATURES:
    -Likely a dropdown with checkboxes for font size, margin/padding, etc etc
    -Potentially show which sections, fields, etc are NOT default to even more clearly allow resets
 
--Drag and Drop Reorganization
-   -First, for sections
-      -Swap column and position values
-   -Second, for subsections
-      -Swap position values
-   -Third, for fields
-      -Swap position values
-      -Potentially need to swap other styling values as well
-
--Outline "Start New Row" feature needs to be reworked.
-   -It's quite annoying to use currently.
+-Outline "Start New Row" feature needs to be reworked and/or removed.
 
 -Column Setup/Organization
    -Need to add a way to have multiple columns on page, but also allowing particular sections to span multiple columns
@@ -124,6 +108,7 @@ MEDIUM FEATURES:
 -Improved Keyboard Shortcuts
    -Ease of life, the more intuitive the better
    -Also App-Specific Hotkeys like ctrl + enter while in a field automatically adding a new field to that subsection
+
 
 SMALL FEATURES:
 

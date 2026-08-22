@@ -12,7 +12,8 @@ const MarginRulerSide = ({ renderMarginRuler }) => {
    const resume = useSelector(state => state.resume);
    const resumePadding = resume?.layout?.padding;
 
-   const activeSectionId = useSelector(state => state.resume.activeSectionId);
+   const activeSectionIds = useSelector(state => state.resume.activeSectionIds);
+   const activeSectionId = activeSectionIds[0] ?? null;
 
    const section = useSelector(state => state.resume.sections.byId[activeSectionId]);
    const sectionPadding = section?.layout?.padding;

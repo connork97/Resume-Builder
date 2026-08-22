@@ -157,7 +157,6 @@ const initialState = {
       }
    },
    activeSectionIds: [],
-   activeSectionId: null,
    activeEditorId: null,
    activeEditorSelection: null,
    resumeRef: null,
@@ -171,7 +170,6 @@ const resumeSlice = createSlice({
          return {
             ...initialState,
             ...action.payload,
-            activeSectionId: null,
             activeEditorId: null,
             activeEditorSelection: null,
          };
@@ -181,7 +179,6 @@ const resumeSlice = createSlice({
          return {
             ...initialState,
             ...action.payload,
-            activeSectionId: null,
             activeEditorId: null,
             activeEditorSelection: null,
          };
@@ -312,6 +309,7 @@ const resumeSlice = createSlice({
             layout: column.layout,
          });
       },
+      
       updateSection(state, action) {
          const { id, changes } = action.payload;
 
@@ -509,8 +507,10 @@ const resumeSlice = createSlice({
          state.activeSectionIds = [];
       },
 
+      // Exclusive select: replaces the whole active-section selection with a single id
       setActiveSectionId(state, action) {
-         state.activeSectionId = action.payload;
+         const id = action.payload;
+         state.activeSectionIds = id ? [id] : [];
       },
 
       setActiveEditorId(state, action) {

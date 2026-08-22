@@ -4,7 +4,7 @@ import styles from './MarginRuler.module.css';
 import MarginRulerTop from './MarginRulerTop';
 import MarginRulerSide from './MarginRulerSide';
 import { useDispatch } from 'react-redux';
-import { clearActiveSectionIds, setActiveEditorId, setActiveEditorSelection, setActiveSectionId } from '@/store/resumeSlice';
+import { clearActiveSectionIds, setActiveEditorId, setActiveEditorSelection } from '@/store/resumeSlice';
 
 const MarginRuler = () => {
 
@@ -49,7 +49,6 @@ const MarginRuler = () => {
       if (preventBlur) return;
       dispatch(setActiveEditorId(null));
       dispatch(setActiveEditorSelection(null))
-      dispatch(setActiveSectionId(null))
       dispatch(clearActiveSectionIds())
    }
 

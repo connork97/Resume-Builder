@@ -12,8 +12,9 @@ import SectionGrid from "./SectionGrid.jsx";
 const SectionSettings = () => {
   const dispatch = useDispatch();
 
+  const activeSectionIds = useSelector((state) => state.resume.activeSectionIds);
   const section = useSelector(
-    (state) => state.resume.sections.byId[state.resume.activeSectionId],
+    (state) => state.resume.sections.byId[activeSectionIds[0]],
   );
 
   const hideOrShowHeading = () => {

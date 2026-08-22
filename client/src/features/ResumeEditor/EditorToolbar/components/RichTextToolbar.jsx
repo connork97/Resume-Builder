@@ -84,7 +84,7 @@ const RichTextToolbar = ({ editor }) => {
 
         <Lists editor={editor} />
 
-        <Links editor={editor} />
+        <Links editor={editor} selection={selection} />
 
         <Icons editor={editor} />
 

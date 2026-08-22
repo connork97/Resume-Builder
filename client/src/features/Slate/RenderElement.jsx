@@ -34,7 +34,7 @@ const RenderElement = ({ element, attributes, children, type }) => {
                   // display: 'inline-flex',
                   alignItems: 'center',
                   verticalAlign: 'baseline',
-                  color: 'inherit',
+                  // color: 'inherit',
                   color: element.iconColor ?? 'currentColor',
                   fontSize: element.iconSize ?? '1em',
                   lineHeight: 1,

@@ -3,7 +3,7 @@ import { getActiveMark, setLink } from "@/helpers/marks";
 import styles from "./TextFormatting.module.css";
 import { FaLink } from "react-icons/fa6";
 
-const Links = ({ editor }) => {
+const Links = ({ editor, selection }) => {
   const [linkText, setLinkText] = useState("");
 
   const normalizeLink = (value) => {
@@ -49,7 +49,7 @@ const Links = ({ editor }) => {
   useEffect(() => {
     if (!editor) return;
     getLink();
-  }, [editor]);
+  }, [editor, selection]);
 
   return (
     <div className={styles.toolbarFlexWrapper}>
@@ -58,20 +58,12 @@ const Links = ({ editor }) => {
       </button>
       {showLinkInput && (
         <div className={styles.linkDropdownContainer}>
-          {/* <div
-            style={{
-              position: "absolute",
-              top: "5rem",
-              display: "flex",
-              transform: "translateX(-35%)",
-            }}
-          > */}
           <input
             className="inputMain"
             value={linkText}
             placeholder="Your Link Here"
             onChange={(e) => setLinkText(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleCommitLink}
+            onKeyDown={(e) => e.key === "Enter" && handleCommitLink()}
             style={{ width: "20rem" }}
           />
             <button className="buttonMain" style={{margin: 'auto 0.5rem'}} onClick={handleCommitLink}>
@@ -81,7 +73,6 @@ const Links = ({ editor }) => {
             <button className="buttonMain" onClick={handleRemoveLink}>
               -
             </button>
-          {/* </div> */}
         </div>
       )}
     </div>

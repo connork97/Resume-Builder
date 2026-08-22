@@ -39,15 +39,15 @@ MEDIUM BUGS:
 
 -Top margin indicator (left hand side ruler) doesn't work unless the user is actively clicked into a particular section
 
+-Having three or more columns messes with the margin ruler indicators
+
 
 SMALL BUGS:
 
 -Drag Reordering of Fields doesn't show the visual cue when dragging over a row with "startNewRow" set to "true"
    -Still reorders, but doesn't look like it will
 
--Field drag destination state may be stale or persist between drags. (Written by Codex)
-
--Having three or more columns messes with the margin ruler indicators
+-Field drag destination state may be stale or persist between drags
 
 -Autofilling the link input from preexisting links takes two tries to work initially after page load
    -Then works fine.  Likely some issue regarding page mount timeline

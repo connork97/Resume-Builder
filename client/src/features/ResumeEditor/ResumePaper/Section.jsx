@@ -193,10 +193,8 @@ const Section = ({ id, section, column, index }) => {
     } else {
       dispatch(setActiveSectionId(section.id));
     }
-    console.log('e.target.dataset', e.target.dataset.sectionId)
+   //  If clicking on the section container itself, not on a subsection or field, clear the active editor and selection to allow changes directly on the section
     if (e.target.dataset.sectionId) {
-      console.log('first', e.target.dataset.sectionId);
-      console.log('second', e.target.dataset['section-id']);
       dispatch(setActiveEditorId(null));
       dispatch(setActiveEditorSelection([]));
     }
@@ -227,11 +225,7 @@ const Section = ({ id, section, column, index }) => {
         outlineColor: section.styling?.color,
         cursor: "all-scroll",
       }}
-      onClick={(e) => {
-         console.log(e.target)
-         return handleSetActiveSection(e)
-      }
-      }
+      onClick={(e) => handleSetActiveSection(e)}
     >
       <div
         className={`${styles.sectionContentWrapper} ${sectionIsActive && styles.active}`}

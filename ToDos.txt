@@ -49,8 +49,6 @@ SMALL BUGS:
 
 -Field drag destination state may be stale or persist between drags
 
--Text align dropdown icon reflects the resume, section, subsection (I think), and simple fields.  But it does NOT reflect fields with multiple children (i.e. unordered lists with multiple bullets)
-
 -Border Inputs for left and right sometimes use wrong value
 
 -Bullets don't allow for copy/pasting without breaking up indentation (shift + tab fixes indentation though, but is annoying)

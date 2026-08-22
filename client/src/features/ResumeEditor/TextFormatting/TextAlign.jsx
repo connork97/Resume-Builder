@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { updateResume, updateSection } from "@/store/resumeSlice.js";
 
-import { setAlignment } from "@/helpers/blocks.js";
+import { setAlignment, getActiveAlignment } from "@/helpers/blocks.js";
 
 
 import styles from "./TextFormatting.module.css";
@@ -17,11 +17,12 @@ import {
 } from "react-icons/md";
 import TextFormatDropdown from "./shared/TextFormatDropdown.jsx";
 
-const TextAlign = ({ editor }) => {
+const TextAlign = ({ editor, selection }) => {
   const dispatch = useDispatch();
   const resumeAlignment = useSelector((state) => state.resume?.styling?.textAlign);
   const activeEditorSelection = useSelector((state) => state.resume?.activeEditorSelection)
-  const activeEditorAlignment = activeEditorSelection?.[0]?.textAlign;
+  const activeEditorAlignment = editor ? getActiveAlignment(editor) : null;
+//   const activeEditorAlignment = activeEditorSelection?.[0]?.textAlign;
   const activeEditorChildren = activeEditorSelection?.[0]?.children;
   const activeSectionId = useSelector((state) => state.resume.activeSectionId);
   const activeSectionAlignment = useSelector((state) => state.resume?.sections?.byId[activeSectionId]?.styling?.textAlign)
@@ -91,7 +92,7 @@ const TextAlign = ({ editor }) => {
     else if (!activeEditorAlignment && activeSectionAlignment) return handleSetAlignmentIcon(activeSectionAlignment);
     else if (activeEditorAlignment) return handleSetAlignmentIcon(activeEditorAlignment);
     else return handleSetAlignmentIcon('left');
-  }, [editor, activeEditorAlignment, activeSectionId])
+  }, [editor, activeEditorAlignment, activeSectionId, selection])
 
   const dropdownOptions = [
     {

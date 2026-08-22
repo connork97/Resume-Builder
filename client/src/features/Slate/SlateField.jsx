@@ -31,8 +31,6 @@ import { toggleMark } from "@/helpers/marks.js";
 import { toggleList } from "@/helpers/blocks.js";
 import { handleHotKey } from "@/utils/hotKeys.js";
 
-
-
 const SlateField = ({ field, index }) => {
   // Stable editor instance
   const fieldPlainText = getNodeString(field);
@@ -129,7 +127,7 @@ const SlateField = ({ field, index }) => {
         padding: "0 1rem",
         margin: "0 -1rem",
         cursor: "pointer",
-      //   display: 'inline-block',
+        //   display: 'inline-block',
       }}
     >
       <Slate
@@ -137,7 +135,8 @@ const SlateField = ({ field, index }) => {
         initialValue={field.value ?? null}
         onChange={(value) => {
           handleUpdateFieldValue(value);
-          dispatch(setActiveEditorSelection(editor.children));
+          dispatch(setActiveEditorSelection([...editor.children]));
+          //  dispatch(setActiveEditorSelection(editor.children));
         }}
         onClick={() => dispatch(setActiveEditorId(editorId))}
       >

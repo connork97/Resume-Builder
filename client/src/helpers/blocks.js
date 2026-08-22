@@ -43,6 +43,17 @@ export const toggleList = (editor, format) => {
    }
 };
 
+export const getActiveAlignment = (editor) => {
+  if (!editor?.selection) return null;
+
+  const [match] = Editor.nodes(editor, {
+    match: (n) => SlateElement.isElement(n) && n.textAlign,
+    mode: "lowest",
+  });
+
+  return match ? match[0].textAlign : null;
+};
+
 export const setAlignment = (editor, alignment) => {
    Transforms.setNodes(
       editor,

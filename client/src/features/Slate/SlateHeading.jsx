@@ -94,7 +94,8 @@ const SlateHeading = ({ section }) => {
       initialValue={section.value ?? null}
       onChange={(value) => {
         handleUpdateSection(value);
-        dispatch(setActiveEditorSelection(editor.children));
+        dispatch(setActiveEditorSelection([...editor.children]));
+      //   dispatch(setActiveEditorSelection(editor.children));
       }}
     >
       <Editable

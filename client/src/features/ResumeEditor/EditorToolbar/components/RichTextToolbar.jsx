@@ -79,6 +79,7 @@ const RichTextToolbar = ({ editor }) => {
 
         <TextAlign
           editor={editor}
+          selection={selection}
           activeSectionId={activeSectionId}
         />
 

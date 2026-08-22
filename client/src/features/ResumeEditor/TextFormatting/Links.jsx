@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import useClickOutside from "@/hooks/useClickOutside";
 import { getActiveMark, setLink } from "@/helpers/marks";
 import styles from "./TextFormatting.module.css";
 import { FaLink } from "react-icons/fa6";
@@ -51,13 +52,19 @@ const Links = ({ editor, selection }) => {
     getLink();
   }, [editor, selection]);
 
+  const closeDropdown = useCallback(() => {
+    setShowLinkInput(false);
+  }, []);
+
+  const dropdownRef = useClickOutside(closeDropdown, showLinkInput, true);
+
   return (
     <div className={styles.toolbarFlexWrapper}>
       <button className="buttonMain" onClick={handleLinkIconClick}>
         <FaLink />
       </button>
       {showLinkInput && (
-        <div className={styles.linkDropdownContainer}>
+        <div className={styles.linkDropdownContainer} ref={dropdownRef}>
           <input
             className="inputMain"
             value={linkText}

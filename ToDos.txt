@@ -49,9 +49,6 @@ SMALL BUGS:
 
 -Field drag destination state may be stale or persist between drags
 
--Autofilling the link input from preexisting links takes two tries to work initially after page load
-   -Then works fine.  Likely some issue regarding page mount timeline
-
 -Text align dropdown icon reflects the resume, section, subsection (I think), and simple fields.  But it does NOT reflect fields with multiple children (i.e. unordered lists with multiple bullets)
 
 -Border Inputs for left and right sometimes use wrong value

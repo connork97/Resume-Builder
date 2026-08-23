@@ -53,11 +53,6 @@ TINY BUGS:
 
 -Text Alignment on Placeholder Text becomes odd when aligned center or right
 
--Margin Rulers are every so slightly off target
-
--"School" name in education doesn't show up in outline
-   -IF there is an empty line to start the field (from pressing enter before typing)
-
 
 !------------!
    FEATURES
@@ -97,6 +92,8 @@ BIGGER FEATURES:
 -Column Setup/Organization
    -Need to add a way to have multiple columns on page, but also allowing particular sections to span multiple columns
 
+-Adding Margin Bottom to Section Headings, Subsections, Fields, etc
+   -Need to be able to streamline it as well so keep the resume looking uniform even with small changes
 
 MEDIUM FEATURES:
 
@@ -110,19 +107,17 @@ SMALL FEATURES:
 -Borders Customization
    -Moving them in/out/left/right/up/down/etc
 
--Adding Margin Bottom to Section Headings
-
 -Allow "Apply To All" tag for Subsection Grid Settings, so changes to one subsection's layout can be mimicked automatically to others in the section
    -Will likely need to have a check for when new subsections are created afterwards
 
+-Adding an "active" indicator for toolbar settings already in use
+   -Ex: When the active selection is already bolded, the toolbar should indicate that, such as slightly highlighting the Bold button
 
 TINY FEATURES:
 
 -Allowing the adjustment of grid column widths within subsections
    -Gap too probably
 
--Adding an "active" indicator for toolbar settings already in use
-   -Ex: When the active selection is already bolded, the toolbar should indicate that, such as slightly highlighting the Bold button
 
 MAYBES:
 

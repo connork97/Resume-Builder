@@ -1,23 +1,38 @@
-import React from 'react';
+import React from "react";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
-import { Node } from 'slate';
+import { Node } from "slate";
+import { getTrimmedNodeString } from "@/helpers/getNodeString";
 
-import { deleteField, reorderFields, swapFieldPositions } from "@/store/resumeSlice";
+import {
+  deleteField,
+  reorderFields,
+  swapFieldPositions,
+} from "@/store/resumeSlice";
 
-import styles from '../Outline.module.css';
-import { deleteFieldFromApi } from '@/services/resumeServices';
+import styles from "../Outline.module.css";
+import { deleteFieldFromApi } from "@/services/resumeServices";
 
-const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSummary, dragItem, setDragItem }) => {
-
+const FieldRow = ({
+  fieldId,
+  fieldIndex,
+  sectionId,
+  subsectionId,
+  isHeaderOrSummary,
+  dragItem,
+  setDragItem,
+}) => {
   const dispatch = useDispatch();
 
-  const fields = useSelector(state => state.resume.fields);
+  const fields = useSelector((state) => state.resume.fields);
   const field = fields.byId[fieldId];
-  const subsection = useSelector(state => state.resume.subsections.byId[subsectionId]);
+  const subsection = useSelector(
+    (state) => state.resume.subsections.byId[subsectionId],
+  );
 
-  const fieldValueText = Node.string(field.value[0]);
+  //   const fieldValueText = Node.string(field.value[0]);
+  const fieldValueText = getTrimmedNodeString(field);
   const placeholderFieldText = field.label;
 
   const handleDeleteField = async (fieldId) => {
@@ -32,17 +47,16 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
         return;
       }
     }
-    dispatch(deleteField(fieldId))
-  }
+    dispatch(deleteField(fieldId));
+  };
 
   const moveFieldUpOrDown = (upOrDown) => {
     const fieldsInSubsection = subsection.fieldIds
-      .map(id => fields.byId[id])
+      .map((id) => fields.byId[id])
       .filter(Boolean)
       .sort((a, b) => a.position - b.position);
 
-    const targetIndex =
-      upOrDown === "down" ? fieldIndex + 1 : fieldIndex - 1;
+    const targetIndex = upOrDown === "down" ? fieldIndex + 1 : fieldIndex - 1;
 
     const fieldToSwapWith = fieldsInSubsection[targetIndex];
 
@@ -51,10 +65,12 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
       return;
     }
 
-    dispatch(swapFieldPositions({
-      fieldId,
-      targetFieldId: fieldToSwapWith.id,
-    }));
+    dispatch(
+      swapFieldPositions({
+        fieldId,
+        targetFieldId: fieldToSwapWith.id,
+      }),
+    );
   };
 
   return (
@@ -69,7 +85,7 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
           type: "field",
           sectionId,
           subsectionId,
-          index: fieldIndex
+          index: fieldIndex,
         });
         e.dataTransfer.effectAllowed = "move";
       }}
@@ -93,8 +109,8 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
             sectionId,
             subsectionId: isHeaderOrSummary ? null : subsectionId,
             fromIndex: dragItem.index,
-            toIndex: fieldIndex
-          })
+            toIndex: fieldIndex,
+          }),
         );
 
         setDragItem((prev) => ({ ...prev, index: fieldIndex }));
@@ -110,27 +126,33 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
     >
       {/* <div className={styles.dragHandle}>⋮⋮</div> */}
       <div className={styles.upOrDownArrowWrapper}>
-        {fieldIndex !== 0 &&
+        {fieldIndex !== 0 && (
           <span
             className={styles.upOrDownArrow}
-            onClick={() => moveFieldUpOrDown('up')}
+            onClick={() => moveFieldUpOrDown("up")}
           >
             ▲
           </span>
-        }
-        {fieldIndex !== subsection.fieldIds.length - 1 &&
+        )}
+        {fieldIndex !== subsection.fieldIds.length - 1 && (
           <span
             className={styles.upOrDownArrow}
-            onClick={() => moveFieldUpOrDown('down')}
+            onClick={() => moveFieldUpOrDown("down")}
           >
             ▼
           </span>
-        }
+        )}
       </div>
-      <p className={
-        fieldValueText.length ? styles.subFieldText : styles.placeholderFieldText
-      }>
-         {fieldValueText.length < 50 ? fieldValueText : fieldValueText.slice(0, 50) + "..." || placeholderFieldText}
+      <p
+        className={
+          fieldValueText.length
+            ? styles.subFieldText
+            : styles.placeholderFieldText
+        }
+      >
+        {fieldValueText.length < 50
+          ? fieldValueText
+          : fieldValueText.slice(0, 50) + "..." || placeholderFieldText}
         {/* {fieldValueText || placeholderFieldText} */}
         {/* {fieldValueText.length ? fieldValueText : placeholderFieldText} */}
       </p>

@@ -1,28 +1,38 @@
-.outlineContainer, .hiddenOutlineContainer {
+.outlineContainer,
+.hiddenOutlineContainer {
   position: fixed;
   left: 0;
   top: 0;
   margin-top: calc(var(--height-toolbar));
-  width: 42.5vh;
+  width: 35vh;
   height: 100%;
   background: #1e1e1e;
   color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   padding: 2.5vh;
   overflow-y: auto;
   font-family: sans-serif;
 }
-.outlineWrapper, .outlineContainer {
-   /* z-index: var(--z-outline); */
-   z-index: var(--z-outline);
+.outlineContainer {
+  /* width: 42.5vh; */
+  height: 100vh;
+  background: #1e1e1e;
+  padding: 2vh;
+  overflow-y: auto;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.4);
+}
+.outlineWrapper,
+.outlineContainer {
+  /* z-index: var(--z-outline); */
+  z-index: var(--z-outline);
 }
 
 .hiddenOutlineContainer {
-  left: -42.5vh;
+  left: -35vh;
 }
 
 .outlineTitle {
-  font-size: 4vh;
+  font-size: 3vh;
   font-weight: 600;
   margin-bottom: 3vh;
   /* text-align: center; */
@@ -33,7 +43,7 @@
 
 .hideOutlineSpan {
   /* font-size: 2vh; */
-  margin: auto 0 auto auto;  
+  margin: auto 0 auto auto;
 }
 
 .hideOutlineSpan:hover {
@@ -110,9 +120,7 @@
   display: flex;
   flex-direction: column;
   gap: 1vh;
-
 }
-
 
 .subsectionItem {
   /* display: flex; */
@@ -137,23 +145,27 @@
   font-size: 1.75vh;
 }
 
-.subFieldText, .placeholderFieldText {
+.fieldInputRow {
+  display: flex;
+  width: 100%;
+}
+
+.subFieldText,
+.placeholderFieldText {
   /* background: #3a3a3a; */
   /* border: 1px solid #555; */
   color: #ffffff;
   padding: 0.75vh;
   border-radius: 0.5vh;
   font-size: 1.75vh;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .placeholderFieldText {
   color: rgba(255, 255, 255, 0.25);
 }
 
-.fieldInputRow {
-  display: flex;
-  width: 100%;
-}
 
 .fieldInputRow .deleteButton {
   margin-left: auto;
@@ -225,7 +237,6 @@
   padding-left: 1vh;
 }
 
-
 /* Wrapper that controls slide animation */
 .outlineWrapper {
   position: fixed;
@@ -237,19 +248,11 @@
 }
 
 .hidden {
-  transform: translateX(-40.5vh);
+  transform: translateX(-33vh);
 }
 
-.outlineContainer {
-  width: 42.5vh;
-  height: 100vh;
-  background: #1e1e1e;
-  padding: 2vh;
-  overflow-y: auto;
-  box-shadow: 2px 0 6px rgba(0,0,0,0.4);
-}
-
-.hideOutlineButton, .showOutlineButton {
+.hideOutlineButton,
+.showOutlineButton {
   position: fixed;
   top: 11vh;
   width: 5vh;
@@ -264,18 +267,18 @@
   border-radius: 0.5vh;
   cursor: pointer;
   font-weight: bold;
-  
+
   /* z-index: 100; */
 }
 
 .showOutlineButton {
-  left: 43.5vh;
+  left: 36vh;
   background: #555;
   /* transform: translateX(100%); */
 }
 
 .hideOutlineButton {
-  left: 35.5vh; 
+  left: 28vh;
 }
 
 .startNewRowWrapper {

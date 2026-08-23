@@ -17,9 +17,6 @@ BIGGER BUGS:
 
 -Adding new sections, subsections, etc causes prior styling changes to be undone
 
--ActiveSectionId should get put into ActiveSectionIds array
-   -Once fully implemented, there will be less need (or ideally no need at all) for the singular ActiveSectionId
-
 -Not all changes get saved on first try.
    -Ex:  I created new fields in the "skills" section, saved the resume, refreshed only to find roughly half of them remaining.
       -Tried again and it saved properly.
@@ -96,8 +93,6 @@ BIGGER FEATURES:
    -Useful for cases of when small changes add up and become unmanageable
    -Likely a dropdown with checkboxes for font size, margin/padding, etc etc
    -Potentially show which sections, fields, etc are NOT default to even more clearly allow resets
-
--Outline "Start New Row" feature needs to be reworked and/or removed.
 
 -Column Setup/Organization
    -Need to add a way to have multiple columns on page, but also allowing particular sections to span multiple columns

@@ -7,9 +7,7 @@ import { Node } from 'slate';
 import { deleteField, reorderFields, swapFieldPositions } from "@/store/resumeSlice";
 
 import styles from '../Outline.module.css';
-import { BASE_URL } from '@/config';
 import { deleteFieldFromApi } from '@/services/resumeServices';
-import { StartNewRow } from './StartNewRow';
 
 const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSummary, dragItem, setDragItem }) => {
 
@@ -132,21 +130,13 @@ const FieldRow = ({ fieldId, fieldIndex, sectionId, subsectionId, isHeaderOrSumm
       <p className={
         fieldValueText.length ? styles.subFieldText : styles.placeholderFieldText
       }>
-        {fieldValueText || placeholderFieldText}
+         {fieldValueText.length < 50 ? fieldValueText : fieldValueText.slice(0, 50) + "..." || placeholderFieldText}
+        {/* {fieldValueText || placeholderFieldText} */}
         {/* {fieldValueText.length ? fieldValueText : placeholderFieldText} */}
       </p>
       <button
         className={styles.deleteButton}
         onClick={() => handleDeleteField(fieldId)}
-      // onClick={() =>
-      //   dispatch(
-      //     deleteField({
-      //       sectionId,
-      //       subsectionId,
-      //       fieldId: field.id
-      //     })
-      //   )
-      // }
       >
         ✕
       </button>

@@ -246,6 +246,7 @@ const Section = ({ id, section, column, index }) => {
         <DragDropProvider
           onDragStart={({ operation }) => {
             const { source } = operation;
+            if (!source) return;
             setSubsectionReorderDict((prevState) => ({
               ...prevState,
               fromSubsectionId: source.id,
@@ -253,6 +254,7 @@ const Section = ({ id, section, column, index }) => {
           }}
           onDragOver={({ operation }) => {
             const { target } = operation;
+            if (!target) return;
               setSubsectionReorderDict((prevState) => ({
                 ...prevState,
                 toSubsectionId: target.id,

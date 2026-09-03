@@ -14,6 +14,8 @@ IMPORTANT BUGS:
 BIGGER BUGS:
 
 -Field Reordering Not persisting
+   -Drag Reordering of Fields doesn't show the visual cue when dragging over a row with "startNewRow" set to "true"
+      -Still reorders, but doesn't look like it will
 
 -Adding new sections, subsections, etc causes prior styling changes to be undone
 
@@ -36,9 +38,6 @@ MEDIUM BUGS:
 
 SMALL BUGS:
 
--Drag Reordering of Fields doesn't show the visual cue when dragging over a row with "startNewRow" set to "true"
-   -Still reorders, but doesn't look like it will
-
 -Field drag destination state may be stale or persist between drags
 
 -Border Inputs for left and right sometimes use wrong value
@@ -48,10 +47,6 @@ SMALL BUGS:
 -Margin Ruler Indicators should be touched up to more clearly depict their effects
    -Something like a tiny indicator to show where the section/column starts, and the main indicator to show where it ends up
 
-
-TINY BUGS:
-
--Text Alignment on Placeholder Text becomes odd when aligned center or right
 
 
 !------------!

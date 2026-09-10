@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-   dndReorderSubsections,
+  dndReorderSubsections,
   setActiveEditorId,
   setActiveEditorSelection,
   setActiveSectionId,
@@ -123,36 +123,39 @@ const Section = ({ id, section, column, index }) => {
       };
 
       const actualSectionPadding = {
-        top: (parsedSectionPadding.top + parsedResumeGap.vertical) > 0
-          ? parsedSectionPadding.top + parsedResumeGap.vertical
-          : 0,
-        bottom: (parsedSectionPadding.bottom + parsedResumeGap.vertical) > 0
-          ? parsedSectionPadding.bottom + parsedResumeGap.vertical
-          : 0,
-        left: (parsedSectionPadding.left + parsedResumeGap.horizontal) > 0
-          ? parsedSectionPadding.left + parsedResumeGap.horizontal
-          : 0,
-        right: (parsedSectionPadding.right + parsedResumeGap.horizontal) > 0
-          ? parsedSectionPadding.right + parsedResumeGap.horizontal
-          : 0,
+        top:
+          parsedSectionPadding.top + parsedResumeGap.vertical > 0
+            ? parsedSectionPadding.top + parsedResumeGap.vertical
+            : 0,
+        bottom:
+          parsedSectionPadding.bottom + parsedResumeGap.vertical > 0
+            ? parsedSectionPadding.bottom + parsedResumeGap.vertical
+            : 0,
+        left:
+          parsedSectionPadding.left + parsedResumeGap.horizontal > 0
+            ? parsedSectionPadding.left + parsedResumeGap.horizontal
+            : 0,
+        right:
+          parsedSectionPadding.right + parsedResumeGap.horizontal > 0
+            ? parsedSectionPadding.right + parsedResumeGap.horizontal
+            : 0,
       };
       return {
         ...prevStyling,
         paddingLeft: isFirstColumn
           ? resumeLayout.padding.left
           : actualSectionPadding.left + "rem",
-         //  : `${parsedSectionPadding.left + parsedResumeGap.horizontal}rem`,
+        //  : `${parsedSectionPadding.left + parsedResumeGap.horizontal}rem`,
         paddingRight: isLastColumn
           ? resumeLayout.padding.right
-            : actualSectionPadding.right + "rem",
-         //  : `${parsedSectionPadding.right + parsedResumeGap.horizontal}rem`,
+          : actualSectionPadding.right + "rem",
+        //  : `${parsedSectionPadding.right + parsedResumeGap.horizontal}rem`,
         paddingTop: isFirstRow
           ? resumeLayout?.padding?.top
           : actualSectionPadding.top + "rem",
-         //  : `${parsedSectionPadding.top + parsedResumeGap.vertical}rem`,
-        paddingBottom:
-          !isLastRow && actualSectionPadding.bottom + "rem",
-         //  `${parsedSectionPadding.bottom + parsedResumeGap.vertical}rem`,
+        //  : `${parsedSectionPadding.top + parsedResumeGap.vertical}rem`,
+        paddingBottom: !isLastRow && actualSectionPadding.bottom + "rem",
+        //  `${parsedSectionPadding.bottom + parsedResumeGap.vertical}rem`,
         flex: isLastRow ? "1" : "none",
       };
     });
@@ -193,7 +196,7 @@ const Section = ({ id, section, column, index }) => {
     } else {
       dispatch(setActiveSectionId(section.id));
     }
-   //  If clicking on the section container itself, not on a subsection or field, clear the active editor and selection to allow changes directly on the section
+    //  If clicking on the section container itself, not on a subsection or field, clear the active editor and selection to allow changes directly on the section
     if (e.target.dataset.sectionId) {
       dispatch(setActiveEditorId(null));
       dispatch(setActiveEditorSelection([]));
@@ -207,6 +210,7 @@ const Section = ({ id, section, column, index }) => {
   const [subsectionReorderDict, setSubsectionReorderDict] = useState({
     fromSubsectionId: null,
     toSubsectionId: null,
+    // sectionId: section.id,
   });
 
   return (
@@ -255,13 +259,34 @@ const Section = ({ id, section, column, index }) => {
           onDragOver={({ operation }) => {
             const { target } = operation;
             if (!target) return;
+            if (target?.id !== subsectionReorderDict.fromSubsectionId) {
               setSubsectionReorderDict((prevState) => ({
                 ...prevState,
                 toSubsectionId: target.id,
               }));
+            }
           }}
-          onDragEnd={({ operation }) => {
-            dispatch(dndReorderSubsections(subsectionReorderDict));
+          onDragEnd={(event) => {
+            const { source, target } = event.operation;
+            if (event.canceled || !source) {
+              console.error("Error occured on subsection drag end.");
+              return;
+            }
+            // const fromIndex = source.initialIndex;
+            // const toIndex = source.index;
+            // if (
+            //   !Number.isInteger(fromIndex) ||
+            //   !Number.isInteger(toIndex) ||
+            //   fromIndex === toIndex
+            // )
+            //   return;
+            if (
+              subsectionReorderDict.fromSubsectionId &&
+              subsectionReorderDict.toSubsectionId
+              //   && subsectionReorderDict.sectionId
+            ) {
+              dispatch(dndReorderSubsections(subsectionReorderDict));
+            }
           }}
         >
           {renderedSubsections}

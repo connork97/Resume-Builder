@@ -839,6 +839,13 @@ const resumeSlice = createSlice({
          const fieldIdsArr = subsection.fieldIds;
          const [moved] = fieldIdsArr.splice(fromIndex, 1);
          fieldIdsArr.splice(toIndex, 0, moved);
+
+         fieldIdsArr.forEach((fieldId, index) => {
+            const field = state.fields.byId[fieldId];
+            if (field) {
+               field.position = index;
+            }
+         });
       },
    },
 });

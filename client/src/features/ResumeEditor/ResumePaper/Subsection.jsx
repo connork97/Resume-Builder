@@ -10,7 +10,9 @@ import { MdDragIndicator } from "react-icons/md";
 
 const SubsectionRenderer = ({ subsection }) => {
   const dispatch = useDispatch();
-  const section = useSelector(state => state.resume.sections.byId[subsection.sectionId]);
+  const section = useSelector(
+    (state) => state.resume.sections.byId[subsection.sectionId],
+  );
   const sectionLayout = useSelector(
     (state) => state.resume.sections.byId[subsection.sectionId].layout,
   );
@@ -46,7 +48,7 @@ const SubsectionRenderer = ({ subsection }) => {
   const [fieldReorderDict, setFieldReorderDict] = useState({
     fromFieldId: null,
     toFieldId: null,
-    subsectionId: subsection.id,
+    //  subsectionId: subsection.id,
   });
 
   const { ref, handleRef } = useSortable({
@@ -67,7 +69,7 @@ const SubsectionRenderer = ({ subsection }) => {
       onMouseLeave={() => setIsHovered(false)}
       ref={ref}
     >
-      {(isHovered && section.subsectionIds.length > 1) && (
+      {isHovered && section.subsectionIds.length > 1 && (
         <MdDragIndicator
           ref={handleRef}
           style={{
@@ -92,6 +94,7 @@ const SubsectionRenderer = ({ subsection }) => {
           setFieldReorderDict((prevState) => ({
             ...prevState,
             fromFieldId: source.id,
+            subsectionId: subsection.id,
           }));
         }}
         onDragOver={({ operation }) => {
@@ -100,19 +103,28 @@ const SubsectionRenderer = ({ subsection }) => {
             console.error("Error occured on field drag over.");
             return;
           }
-         //  if (target?.id !== fieldReorderDict.fromFieldId) {
+          if (target?.id !== fieldReorderDict.fromFieldId) {
             setFieldReorderDict((prevState) => ({
               ...prevState,
               toFieldId: target.id,
             }));
-         //  }
+          }
         }}
-        onDragEnd={({ operation }) => {
-          const { source, target } = operation;
-          if (!source) {
+        onDragEnd={(event) => {
+          const { source, target } = event.operation;
+          if (event.canceled || !source) {
             console.error("Error occured on field drag end.");
             return;
           }
+         //  const fromIndex = source.initialIndex;
+         //  const toIndex = source.index;
+
+         //  if (
+         //    !Number.isInteger(fromIndex) ||
+         //    !Number.isInteger(toIndex) ||
+         //    fromIndex === toIndex
+         //  )
+         //    return;
           if (
             fieldReorderDict.fromFieldId &&
             fieldReorderDict.toFieldId &&

@@ -45,12 +45,6 @@ const SubsectionRenderer = ({ subsection }) => {
     };
   }
 
-  const [fieldReorderDict, setFieldReorderDict] = useState({
-    fromFieldId: null,
-    toFieldId: null,
-    //  subsectionId: subsection.id,
-  });
-
   const { ref, handleRef } = useSortable({
     id: subsection.id,
     index: subsection.position,
@@ -85,53 +79,31 @@ const SubsectionRenderer = ({ subsection }) => {
         />
       )}
       <DragDropProvider
-        onDragStart={({ operation }) => {
-          const { source, target } = operation;
-          if (!source) {
-            console.error("Error occured on field drag start.");
-            return;
-          }
-          setFieldReorderDict((prevState) => ({
-            ...prevState,
-            fromFieldId: source.id,
-            subsectionId: subsection.id,
-          }));
-        }}
-        onDragOver={({ operation }) => {
-          const { source, target } = operation;
-          if (!source || !target) {
-            console.error("Error occured on field drag over.");
-            return;
-          }
-          if (target?.id !== fieldReorderDict.fromFieldId) {
-            setFieldReorderDict((prevState) => ({
-              ...prevState,
-              toFieldId: target.id,
-            }));
-          }
-        }}
         onDragEnd={(event) => {
-          const { source, target } = event.operation;
-          if (event.canceled || !source) {
-            console.error("Error occured on field drag end.");
-            return;
-          }
+          if (event.canceled) return;
+
+          const { source } = event.operation;
+          if (!source) return;
+
           const fromIndex = source.initialIndex;
           const toIndex = source.index;
+          const ids = subsection.fieldIds;
 
           if (
             !Number.isInteger(fromIndex) ||
             !Number.isInteger(toIndex) ||
+            fromIndex < 0 ||
+            toIndex < 0 ||
+            fromIndex >= ids.length ||
+            toIndex >= ids.length ||
             fromIndex === toIndex
-          )
-            return;
-          if (
-            fieldReorderDict.fromFieldId &&
-            fieldReorderDict.toFieldId &&
-            fieldReorderDict.subsectionId
-          ) {
-            dispatch(dndReorderFields(fieldReorderDict));
-          }
+          ) return;
+
+          dispatch(dndReorderFields({
+            subsectionId: subsection.id,
+            fromFieldId: ids[fromIndex],
+            toFieldId: ids[toIndex],
+          }));
         }}
       >
         {subsection.fieldIds.map((fieldId, index) => {

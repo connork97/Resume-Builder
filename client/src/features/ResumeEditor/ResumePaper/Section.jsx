@@ -207,12 +207,6 @@ const Section = ({ id, section, column, index }) => {
 
   const sectionBorder = section.styling?.border;
 
-  const [subsectionReorderDict, setSubsectionReorderDict] = useState({
-    fromSubsectionId: null,
-    toSubsectionId: null,
-    // sectionId: section.id,
-  });
-
   return (
     <div
       className={`${styles.sectionContainerDiv} ${sectionIsActive && styles.activeSectionContainer}`}
@@ -248,45 +242,30 @@ const Section = ({ id, section, column, index }) => {
           <SlateHeading key={section.id} section={section} id={section.id} />
         )}
         <DragDropProvider
-          onDragStart={({ operation }) => {
-            const { source } = operation;
-            if (!source) return;
-            setSubsectionReorderDict((prevState) => ({
-              ...prevState,
-              fromSubsectionId: source.id,
-            }));
-          }}
-          onDragOver={({ operation }) => {
-            const { target } = operation;
-            if (!target) return;
-            if (target?.id !== subsectionReorderDict.fromSubsectionId) {
-              setSubsectionReorderDict((prevState) => ({
-                ...prevState,
-                toSubsectionId: target.id,
-              }));
-            }
-          }}
           onDragEnd={(event) => {
-            const { source, target } = event.operation;
-            if (event.canceled || !source) {
-              console.error("Error occured on subsection drag end.");
-              return;
-            }
+            if (event.canceled) return;
+
+            const { source } = event.operation;
+            if (!source) return;
+
             const fromIndex = source.initialIndex;
             const toIndex = source.index;
+            const ids = section.subsectionIds;
+
             if (
               !Number.isInteger(fromIndex) ||
               !Number.isInteger(toIndex) ||
+              fromIndex < 0 ||
+              toIndex < 0 ||
+              fromIndex >= ids.length ||
+              toIndex >= ids.length ||
               fromIndex === toIndex
-            )
-              return;
-            if (
-              subsectionReorderDict.fromSubsectionId &&
-              subsectionReorderDict.toSubsectionId
-              //   && subsectionReorderDict.sectionId
-            ) {
-              dispatch(dndReorderSubsections(subsectionReorderDict));
-            }
+            ) return;
+
+            dispatch(dndReorderSubsections({
+              fromSubsectionId: ids[fromIndex],
+              toSubsectionId: ids[toIndex],
+            }));
           }}
         >
           {renderedSubsections}

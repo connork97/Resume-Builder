@@ -272,14 +272,14 @@ const Section = ({ id, section, column, index }) => {
               console.error("Error occured on subsection drag end.");
               return;
             }
-            // const fromIndex = source.initialIndex;
-            // const toIndex = source.index;
-            // if (
-            //   !Number.isInteger(fromIndex) ||
-            //   !Number.isInteger(toIndex) ||
-            //   fromIndex === toIndex
-            // )
-            //   return;
+            const fromIndex = source.initialIndex;
+            const toIndex = source.index;
+            if (
+              !Number.isInteger(fromIndex) ||
+              !Number.isInteger(toIndex) ||
+              fromIndex === toIndex
+            )
+              return;
             if (
               subsectionReorderDict.fromSubsectionId &&
               subsectionReorderDict.toSubsectionId

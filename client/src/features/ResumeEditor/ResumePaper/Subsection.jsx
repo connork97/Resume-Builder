@@ -116,15 +116,15 @@ const SubsectionRenderer = ({ subsection }) => {
             console.error("Error occured on field drag end.");
             return;
           }
-         //  const fromIndex = source.initialIndex;
-         //  const toIndex = source.index;
+          const fromIndex = source.initialIndex;
+          const toIndex = source.index;
 
-         //  if (
-         //    !Number.isInteger(fromIndex) ||
-         //    !Number.isInteger(toIndex) ||
-         //    fromIndex === toIndex
-         //  )
-         //    return;
+          if (
+            !Number.isInteger(fromIndex) ||
+            !Number.isInteger(toIndex) ||
+            fromIndex === toIndex
+          )
+            return;
           if (
             fieldReorderDict.fromFieldId &&
             fieldReorderDict.toFieldId &&

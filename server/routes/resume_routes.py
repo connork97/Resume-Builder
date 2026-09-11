@@ -24,7 +24,6 @@ resume_bp = Blueprint("resume", __name__, url_prefix="/resumes")
 def create_resume():
     form_data = request.get_json() or {}
     print_pending_request('POST', '/resumes')
-    # print(f"Received POST request for /resumes with form_data: {form_data}")
 
     try:
         title = form_data.get("title")
@@ -52,7 +51,6 @@ def create_resume():
         db.session.commit()
 
         print_successful_request('Created new resume.')
-        # print("SUCCESS. Created new resume:", new_resume.to_dict())
         return jsonify(new_resume.to_dict()), 201
 
     except Exception as e:
@@ -82,8 +80,24 @@ def copy_resume(resume_id):
 def resume(resume_id):
     print_pending_request('GET', f'/resumes/{resume_id}')
     
-    resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
-    if not resume:
+    user_id = session.get('user_id')
+    
+    if user_id is None and resume_id != 0:
+        return generate_error(
+            error_type="UNAUTHORIZED",
+            code="UNAUTHORIZED_USER",
+            message="You do not have permission to view this resume.",
+        )
+    
+    query = Resume.query.filter_by(id=resume_id)
+    
+    if resume_id != 0:
+        query = query.filter_by(user_id=user_id)
+        
+    resume = query.one_or_none()
+    
+    # resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
+    if resume is None:
         return generate_error(
             error_type="NOT_FOUND",
             code='RESUME_NOT_FOUND',

@@ -27,7 +27,6 @@ def check_session():
         )
     
     print_successful_request('Active session found for user with email and ID of', user.email, user.id)
-    # print(f"SUCCESS. Active session found for user: {user.email} (ID: {user.id})")
     response = jsonify(user.to_dict(exclude=['resumes'])), 200
     return response
 
@@ -59,15 +58,12 @@ def signup():
         session['user_id'] = new_user.id
 
         print_successful_request('Created new user:', new_user.to_dict())
-        # print("SUCCESS. Created new user: ", new_user.to_dict())
         print_successful_request("Setting session['user_id'] to", new_user.id)
-        # print(f"Setting session['user_id'] to {new_user.id}")
         response = jsonify(new_user.to_dict()), 201
         return response
     
     except Exception as e:
         db.session.rollback()
-        # print("ERROR creating resume:", e)
         return generate_error(
             error_type='SERVER_ERROR',
             code='BAD_SIGNUP',
@@ -100,7 +96,6 @@ def login():
     session.permanent = True
     
     print_successful_request('User logged in sucessfully with email:', email)
-    # print(f"SUCCESS. User {email} logged in successfully. Session set with user_id: {user.id}")
     print_successful_request('Setting session[user_id]:', user.id)
     response = jsonify(user.to_dict()), 200
     return response

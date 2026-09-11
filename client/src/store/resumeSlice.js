@@ -222,6 +222,33 @@ const resumeSlice = createSlice({
       //   const subsection = createDefaultSubsection(state, section.type, sectionId);
       //   createDefaultField(state, section.type, subsection.id);
       // },
+      addSubsection(state, action) {
+         const { subsectionData } = action.payload;
+         const { fields = [], ...subsection } = subsectionData;
+         const sortedFields = [...fields].sort(
+            (a, b) => a.position - b.position
+         );
+
+         state.subsections.byId[subsection.id] = {
+            ...subsection,
+            fieldIds: sortedFields.map(field => field.id),
+         };
+         state.subsections.allIds.push(subsection.id);
+         state.sections.byId[subsection.sectionId]
+            .subsectionIds.push(subsection.id);
+
+         for (const field of sortedFields) {
+            state.fields.byId[field.id] = field;
+            state.fields.allIds.push(field.id);
+         }
+      },
+      // addSubsection(state, action) {
+      //    const { subsectionData } = action.payload;
+      //    console.log("Adding subsection with data: ", subsectionData);
+      //    state.subsections.byId[subsectionData.id] = subsectionData;
+      //    state.subsections.allIds.push(subsectionData.id);
+      //    state.sections.byId[subsectionData.sectionId].subsectionIds.push(subsectionData.id);
+      // },
 
       addField(state, action) {
          const { fieldData } = action.payload;
@@ -316,7 +343,7 @@ const resumeSlice = createSlice({
             layout: column.layout,
          });
       },
-      
+
       updateSection(state, action) {
          const { id, changes } = action.payload;
 
@@ -602,7 +629,7 @@ const resumeSlice = createSlice({
                fillRow: Boolean(field?.layout?.grid?.fillRow),
             };
          });
-         
+
          const fromFieldIndex = subsection.fieldIds.indexOf(fromFieldId);
          const toFieldIndex = subsection.fieldIds.indexOf(toFieldId);
 
@@ -632,7 +659,7 @@ const resumeSlice = createSlice({
             }
          });
       },
-      
+
       newReorderSections(state, action) {
          const { sectionId, dragTarget } = action.payload;
          const sectionBeingDragged = state.sections.byId[sectionId];
@@ -883,7 +910,7 @@ export const {
    dndReorderSubsections,
    dndReorderFields,
 
-   // addSubsection,
+   addSubsection,
    updateSubsection,
    updateSubsectionFlexDirection,
    deleteSubsection,

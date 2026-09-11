@@ -37,7 +37,7 @@ def add_subsection_to_resume(section_id):
          position = 0
 
                
-      add_subsection(
+      subsection = add_subsection(
          section_id = section_id,
          section_type = section.type,
          position = position
@@ -47,7 +47,8 @@ def add_subsection_to_resume(section_id):
       
       print_successful_request('Successfully added new subsection to section of ID:', section_id)
       
-      return jsonify(resume.to_dict()), 200
+      return jsonify(subsection.to_dict()), 201
+    #   return jsonify(resume.to_dict()), 200
    
    except Exception as e:
       db.session.rollback()
@@ -59,7 +60,7 @@ def add_subsection_to_resume(section_id):
       )
       
       
-@subsection_bp.route('<int:subsection_id>', methods=['DELETE'])
+@subsection_bp.route('/<int:subsection_id>', methods=['DELETE'])
 def delete_subsection_from_resume(subsection_id):
    print_pending_request('DELETE', f'/subsection/{subsection_id}')
    

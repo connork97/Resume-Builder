@@ -57,8 +57,9 @@ export const addSubsectionToApi = async (sectionId) => {
          }
       )
 
-      const normalizedResume = normalizeResumeFromApi(data);
-      return normalizedResume;
+      return data;
+      // const normalizedResume = normalizeResumeFromApi(data);
+      // return normalizedResume;
 
    } catch (error) {
       console.error(`Error adding subsection to section of ID ${sectionId}: `, error);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import { addField } from "@/store/resumeSlice";
+import { addField, addSubsection } from "@/store/resumeSlice";
 
 import {
   updateSubsection,
@@ -12,7 +12,11 @@ import {
 
 import styles from "../Outline.module.css";
 import { BASE_URL } from "@/config";
-import { addFieldToApi, addSubsectionToApi, deleteSubsectionFromApi } from "@/services/resumeServices";
+import {
+  addFieldToApi,
+  addSubsectionToApi,
+  deleteSubsectionFromApi,
+} from "@/services/resumeServices";
 
 const OutlineSection = ({
   dispatch,
@@ -22,8 +26,7 @@ const OutlineSection = ({
   setDragItem,
   renderFieldRow,
 }) => {
-
-  const subsections = useSelector(state => state.resume.subsections);
+  const subsections = useSelector((state) => state.resume.subsections);
 
   // Collapse state for SUBSECTIONS
   const [collapsedSubsections, setCollapsedSubsections] = useState({});
@@ -36,29 +39,30 @@ const OutlineSection = ({
   };
 
   const handleAddSubsection = async () => {
-
-    const updatedNormalizedResumeData = await addSubsectionToApi(section.id);
-
-    if (!updatedNormalizedResumeData) {
+    //  const updatedNormalizedResumeData = await addSubsectionToApi(section.id);
+    //  if (!updatedNormalizedResumeData) {
+    //    return;
+    //  }
+    //  dispatch(setResume(updatedNormalizedResumeData));
+    const subsectionData = await addSubsectionToApi(section.id);
+    if (!subsectionData) {
       return;
     }
-
-    dispatch(setResume(updatedNormalizedResumeData));
+    dispatch(addSubsection({ subsectionData }));
   };
 
   const handleAddField = async (subsectionId) => {
-   // ! This was from when I would save the full resume data being returned, which caused issues when adding multiple fields at once losing text data
-   //  const updatedNormalizedResumeData = await addFieldToApi(subsectionId);
-   //  if (!updatedNormalizedResumeData) {
-   //    return;
-   //  }
-   //  dispatch(setResume(updatedNormalizedResumeData));
-   const fieldData = await addFieldToApi(subsectionId);
-   if (!fieldData) {
-     return;
-   }
-   console.log("FIELD DATA", fieldData);
-   dispatch(addField({ fieldData }));
+    // ! This was from when I would save the full resume data being returned, which caused issues when adding multiple fields at once losing text data
+    //  const updatedNormalizedResumeData = await addFieldToApi(subsectionId);
+    //  if (!updatedNormalizedResumeData) {
+    //    return;
+    //  }
+    //  dispatch(setResume(updatedNormalizedResumeData));
+    const fieldData = await addFieldToApi(subsectionId);
+    if (!fieldData) {
+      return;
+    }
+    dispatch(addField({ fieldData }));
   };
 
   const handleOnDragStart = (e, subIndex, subsectionId) => {
@@ -86,18 +90,22 @@ const OutlineSection = ({
         sectionId: section.id,
         fromIndex: dragItem.index,
         toIndex: subIndex,
-      })
+      }),
     );
 
     setDragItem((prev) => ({ ...prev, index: subIndex }));
-  }
+  };
 
   const getSubsectionById = (subsectionId) => {
     return subsections.byId[subsectionId];
-  }
+  };
 
   const handleDeleteSubsection = async (subId, subIndex) => {
-    if (!confirm(`Are you sure you want to delete the ${sectionTitle} subsection at index ${subIndex}?`)) {
+    if (
+      !confirm(
+        `Are you sure you want to delete the ${sectionTitle} subsection at index ${subIndex}?`,
+      )
+    ) {
       return;
     }
     const autoSave = false;
@@ -109,15 +117,15 @@ const OutlineSection = ({
       }
     }
     dispatch(deleteSubsection(subId));
-  }
+  };
 
   useEffect(() => {
     if (!section.subsectionIds?.length) return;
 
-    setCollapsedSubsections(prev => {
+    setCollapsedSubsections((prev) => {
       const updated = { ...prev };
 
-      section.subsectionIds.forEach(id => {
+      section.subsectionIds.forEach((id) => {
         if (!(id in updated)) {
           updated[id] = true; // collapsed by default
         }
@@ -131,7 +139,7 @@ const OutlineSection = ({
     const currentSubsection = subsections.byId[subsectionId];
 
     const subsectionsInSection = section.subsectionIds
-      .map(id => subsections.byId[id])
+      .map((id) => subsections.byId[id])
       .filter(Boolean)
       .sort((a, b) => a.position - b.position);
 
@@ -142,9 +150,9 @@ const OutlineSection = ({
 
     let targetIndex;
 
-    if (upOrDown === 'down') {
+    if (upOrDown === "down") {
       targetIndex = subsectionIndex + 1;
-    } else if (upOrDown === 'up') {
+    } else if (upOrDown === "up") {
       targetIndex = subsectionIndex - 1;
     }
 
@@ -156,19 +164,23 @@ const OutlineSection = ({
     }
 
     // Swap positions
-    dispatch(updateSubsection({
-      subsectionId: currentSubsection.id,
-      changes: {
-        position: subsectionToSwapWith.position,
-      },
-    }));
+    dispatch(
+      updateSubsection({
+        subsectionId: currentSubsection.id,
+        changes: {
+          position: subsectionToSwapWith.position,
+        },
+      }),
+    );
 
-    dispatch(updateSubsection({
-      subsectionId: subsectionToSwapWith.id,
-      changes: {
-        position: currentSubsection.position,
-      },
-    }));
+    dispatch(
+      updateSubsection({
+        subsectionId: subsectionToSwapWith.id,
+        changes: {
+          position: currentSubsection.position,
+        },
+      }),
+    );
   };
 
   return (
@@ -194,22 +206,26 @@ const OutlineSection = ({
             {/* <div className={styles.dragHandle}> */}
             <div className={styles.subsectionHeaderRowWrapper}>
               <div className={styles.upArrowDownArrowWrapper}>
-                {subIndex !== 0 &&
+                {subIndex !== 0 && (
                   <span
                     className={styles.upOrDownArrow}
-                    onClick={() => moveSubsectionUpOrDown('up', subId, subIndex)}
+                    onClick={() =>
+                      moveSubsectionUpOrDown("up", subId, subIndex)
+                    }
                   >
                     ▲
                   </span>
-                }
-                {subIndex !== subsections.allIds.length - 1 &&
+                )}
+                {subIndex !== subsections.allIds.length - 1 && (
                   <span
                     className={styles.upOrDownArrow}
-                    onClick={() => moveSubsectionUpOrDown('down', subId, subIndex)}
+                    onClick={() =>
+                      moveSubsectionUpOrDown("down", subId, subIndex)
+                    }
                   >
                     ▼
                   </span>
-                }
+                )}
               </div>
               {/* ⋮⋮ */}
               <span className={styles.subsectionHeaderSpan}>
@@ -223,17 +239,15 @@ const OutlineSection = ({
                   toggleSubsection(subId);
                 }}
               >
-                {/* {collapsedSubsections[subId] ? "▼" : "▲"} */}
-                ▼
+                {/* {collapsedSubsections[subId] ? "▼" : "▲"} */}▼
               </button>
             </div>
 
             {!collapsedSubsections[subId] && (
               <div className={styles.subsectionFields}>
                 {subsection.fieldIds?.map((fieldId, fieldIndex) => {
-                  return renderFieldRow(section.id, subId, fieldId, fieldIndex)
-                }
-                )}
+                  return renderFieldRow(section.id, subId, fieldId, fieldIndex);
+                })}
 
                 <button
                   className={`${styles.addButton} ${styles.addFieldButton}`}
@@ -251,13 +265,10 @@ const OutlineSection = ({
               Delete {sectionTitle} Subsection
             </button>
           </div>
-        )
+        );
       })}
 
-      <button
-        className={styles.addButton}
-        onClick={handleAddSubsection}
-      >
+      <button className={styles.addButton} onClick={handleAddSubsection}>
         + Add {section.label} Subsection
       </button>
     </>

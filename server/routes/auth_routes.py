@@ -54,9 +54,9 @@ def signup():
         )
         
         new_user.set_password(form_data['password'])
-        session['user_id'] = new_user.id
         db.session.add(new_user)
         db.session.commit()
+        session['user_id'] = new_user.id
 
         print_successful_request('Created new user:', new_user.to_dict())
         # print("SUCCESS. Created new user: ", new_user.to_dict())
@@ -97,6 +97,7 @@ def login():
         )
     
     session['user_id'] = user.id
+    session.permanent = True
     
     print_successful_request('User logged in sucessfully with email:', email)
     # print(f"SUCCESS. User {email} logged in successfully. Session set with user_id: {user.id}")

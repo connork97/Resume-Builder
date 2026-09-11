@@ -6,8 +6,11 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
+from datetime import timedelta
 
 app = Flask(__name__)  # Main Flask app
+
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=31)
 
 ALLOWED_ORIGINS = [
     "http://localhost:5173",

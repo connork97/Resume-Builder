@@ -36,7 +36,7 @@ def add_field_to_resume(subsection_id):
       else:
          position = 0
          
-      add_field(
+      field = add_field(
          subsection_id = subsection_id,
          label = f'{subsection.section.type} Field',
          position = position
@@ -45,7 +45,8 @@ def add_field_to_resume(subsection_id):
       db.session.commit()
 
       print_successful_request('Added field to subsection of ID:', subsection_id)      
-      return jsonify(resume.to_dict()), 200
+      return jsonify(field.to_dict()), 201
+    #   return jsonify(resume.to_dict()), 200
    
    except Exception as e:
       db.session.rollback()

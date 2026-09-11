@@ -101,8 +101,7 @@ export const addSectionToApi = async (resumeId, sectionType) => {
          options: { method: 'POST', body: JSON.stringify({ type: sectionType }) }
       })
 
-      const normalizedResume = normalizeResumeFromApi(data);
-      return normalizedResume;
+      return data;
 
    } catch (error) {
       console.error(`Error adding ${sectionType} section to resume of ID ${resumeId}: `, error)

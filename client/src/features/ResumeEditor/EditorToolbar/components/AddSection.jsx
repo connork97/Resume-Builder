@@ -4,7 +4,7 @@ import styles from "../Toolbar.module.css";
 import { addSectionToApi } from "@/services/resumeServices";
 import TextFormatDropdown from "../../TextFormatting/shared/TextFormatDropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { setResume } from "@/store/resumeSlice";
+import { addSection, addSubsection } from "@/store/resumeSlice";
 
 const AddSection = () => {
   const dispatch = useDispatch();
@@ -39,12 +39,16 @@ const AddSection = () => {
   ];
 
   const handleAddSection = async (type) => {
-    const updatedNormalizedResumeData = await addSectionToApi(resume.id, type);
-    if (!updatedNormalizedResumeData) {
+    const createdData = await addSectionToApi(resume.id, type);
+    if (!createdData) {
       return;
     }
 
-    dispatch(setResume(updatedNormalizedResumeData));
+    if (createdData.section) {
+      dispatch(addSection({ sectionData: createdData.section }));
+    } else if (createdData.subsection) {
+      dispatch(addSubsection({ subsectionData: createdData.subsection }));
+    }
 
     setAddSectionDropdownIsOpen(false);
   };

@@ -58,7 +58,7 @@ def add_section_to_resume(resume_id):
         if existing_section:
             new_subsection_position = len(existing_section.subsections)
 
-            add_subsection(
+            subsection = add_subsection(
                 section_id=existing_section.id,
                 section_type=existing_section.type,
                 position=new_subsection_position,
@@ -80,7 +80,7 @@ def add_section_to_resume(resume_id):
 
             new_section_position = len(first_column.sections)
 
-            add_section(
+            section = add_section(
                 column_id=first_column.id,
                 section_type=section_type,
                 position=new_section_position,
@@ -89,7 +89,9 @@ def add_section_to_resume(resume_id):
         db.session.commit()
 
         print_successful_request("Added section to resume of ID:", resume_id)
-        return jsonify(resume.to_dict()), 201
+        if existing_section:
+            return jsonify({"subsection": subsection.to_dict()}), 201
+        return jsonify({"section": section.to_dict()}), 201
 
     except Exception as e:
         db.session.rollback()

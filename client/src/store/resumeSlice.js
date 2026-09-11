@@ -1,5 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// Insert only the new subsection and its fields; keep existing local edits.
+const insertSubsection = (state, subsectionData) => {
+   const { fields = [], ...subsection } = subsectionData;
+   const sortedFields = [...fields].sort(
+      (a, b) => a.position - b.position
+   );
+
+   state.subsections.byId[subsection.id] = {
+      ...subsection,
+      fieldIds: sortedFields.map(field => field.id),
+   };
+   state.subsections.allIds.push(subsection.id);
+   state.sections.byId[subsection.sectionId]
+      .subsectionIds.push(subsection.id);
+
+   for (const field of sortedFields) {
+      state.fields.byId[field.id] = field;
+      state.fields.allIds.push(field.id);
+   }
+};
+
 const deleteColumnById = (state, columnId) => {
    const allColumnIds = state.columns.allIds;
 
@@ -200,17 +221,24 @@ const resumeSlice = createSlice({
       //   createDefaultColumn(state);
       // },
 
-      // addSection(state, action) {
-      //   const type = action.payload;
-      //   const section = createDefaultSection(state, type);
-      //   if (!section) {
-      //     console.error(`Failed to create section of type ${type}.`);
-      //     return;
-      //   }
-      //   const subsection = createDefaultSubsection(state, type, section.id);
-      //   createDefaultField(state, type, subsection.id);
-      //   // return section;
-      // },
+      addSection(state, action) {
+         const { sectionData } = action.payload;
+         const { subsections = [], ...section } = sectionData;
+         const sortedSubsections = [...subsections].sort(
+            (a, b) => a.position - b.position
+         );
+
+         state.sections.byId[section.id] = {
+            ...section,
+            subsectionIds: [],
+         };
+         state.sections.allIds.push(section.id);
+         state.columns.byId[section.columnId].sectionIds.push(section.id);
+
+         for (const subsection of sortedSubsections) {
+            insertSubsection(state, subsection);
+         }
+      },
 
       // addSubsection(state, action) {
       //   const { sectionId } = action.payload;
@@ -224,23 +252,7 @@ const resumeSlice = createSlice({
       // },
       addSubsection(state, action) {
          const { subsectionData } = action.payload;
-         const { fields = [], ...subsection } = subsectionData;
-         const sortedFields = [...fields].sort(
-            (a, b) => a.position - b.position
-         );
-
-         state.subsections.byId[subsection.id] = {
-            ...subsection,
-            fieldIds: sortedFields.map(field => field.id),
-         };
-         state.subsections.allIds.push(subsection.id);
-         state.sections.byId[subsection.sectionId]
-            .subsectionIds.push(subsection.id);
-
-         for (const field of sortedFields) {
-            state.fields.byId[field.id] = field;
-            state.fields.allIds.push(field.id);
-         }
+         insertSubsection(state, subsectionData);
       },
       // addSubsection(state, action) {
       //    const { subsectionData } = action.payload;
@@ -901,7 +913,7 @@ export const {
    deleteColumn,
    updateColumn,
 
-   // addSection,
+   addSection,
    updateSection,
    deleteSection,
    reorderSections,

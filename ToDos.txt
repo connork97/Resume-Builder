@@ -8,9 +8,6 @@ Making Field Drag and Drop not merge fields together
 
 IMPORTANT BUGS:
 
--Verify Persistent Logins
-   -Unsure if it's my cookies getting cleared by chrome, or something from my code letting the session expire
-   
 -Users can access all resumes by typing in the URL
    -Need to implement auth requirements to allow proper user access/verification
 

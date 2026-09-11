@@ -2,16 +2,7 @@
    BUGS
 !--------!
 
-IMPORTANT BUGS:
-
--Users can access all resumes by typing in the URL
-   -Need to implement auth requirements to allow proper user access/verification
-
 BIGGER BUGS:
-
--Field Reordering Not persisting
-   -Drag Reordering of Fields doesn't show the visual cue when dragging over a row with "startNewRow" set to "true"
-      -Still reorders, but doesn't look like it will
 
 -Adding new sections, subsections, etc causes prior styling changes to be undone
 

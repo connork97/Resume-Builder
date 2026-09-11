@@ -223,6 +223,13 @@ const resumeSlice = createSlice({
       //   createDefaultField(state, section.type, subsection.id);
       // },
 
+      addField(state, action) {
+         const { fieldData } = action.payload;
+         console.log("Adding field with data: ", fieldData);
+         state.fields.byId[fieldData.id] = fieldData;
+         state.fields.allIds.push(fieldData.id);
+         state.subsections.byId[fieldData.subsectionId].fieldIds.push(fieldData.id);
+      },
       // addField(state, action) {
       //   const { subsectionId } = action.payload;
       //   const subsection = state.subsections.byId[subsectionId];
@@ -882,7 +889,7 @@ export const {
    deleteSubsection,
    reorderSubsections,
 
-   // addField,
+   addField,
    deleteField,
    updateFieldValue,
    updateFieldLayout,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { useSelector } from "react-redux";
+import { addField } from "@/store/resumeSlice";
 
 import {
   updateSubsection,
@@ -46,13 +47,18 @@ const OutlineSection = ({
   };
 
   const handleAddField = async (subsectionId) => {
-    const updatedNormalizedResumeData = await addFieldToApi(subsectionId);
-
-    if (!updatedNormalizedResumeData) {
-      return;
-    }
-
-    dispatch(setResume(updatedNormalizedResumeData));
+   // ! This was from when I would save the full resume data being returned, which caused issues when adding multiple fields at once losing text data
+   //  const updatedNormalizedResumeData = await addFieldToApi(subsectionId);
+   //  if (!updatedNormalizedResumeData) {
+   //    return;
+   //  }
+   //  dispatch(setResume(updatedNormalizedResumeData));
+   const fieldData = await addFieldToApi(subsectionId);
+   if (!fieldData) {
+     return;
+   }
+   console.log("FIELD DATA", fieldData);
+   dispatch(addField({ fieldData }));
   };
 
   const handleOnDragStart = (e, subIndex, subsectionId) => {

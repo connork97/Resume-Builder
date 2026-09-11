@@ -10,8 +10,9 @@ export const addFieldToApi = async (subsectionId) => {
          }
       )
 
-      const normalizedResume = normalizeResumeFromApi(data);
-      return normalizedResume;
+      return data;
+      // const normalizedResume = normalizeResumeFromApi(data);
+      // return normalizedResume;
 
    } catch (error) {
       console.error(`Error adding field to subsection of ID ${subsectionId}: `, error);

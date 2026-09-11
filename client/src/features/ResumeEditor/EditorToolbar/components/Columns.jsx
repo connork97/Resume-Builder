@@ -8,6 +8,7 @@ import styles from "@/features/ResumeEditor/TextFormatting/TextFormatting.module
 import {
   addColumnToApi,
   deleteLastColumnFromApi,
+  saveResumeToApi,
 } from "@/services/resumeServices.js";
 import { TfiLayoutColumn3Alt } from "react-icons/tfi";
 
@@ -28,6 +29,10 @@ const Columns = () => {
   }, [columns.allIds]);
 
   const addColumn = async () => {
+    const saved = await saveResumeToApi(resume);
+   
+    if (!saved) return;
+    
     const updatedNormalizedResumeData = await addColumnToApi(resume.id);
 
     if (!updatedNormalizedResumeData) {
@@ -63,7 +68,7 @@ const Columns = () => {
         -
       </button>
       <button className="buttonMain">
-        <TfiLayoutColumn3Alt style={{marginRight: '0.5rem'}} />
+        <TfiLayoutColumn3Alt style={{ marginRight: "0.5rem" }} />
         {columnInputValue}
       </button>
       <button className="buttonMain" onClick={() => addColumn()}>

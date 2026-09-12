@@ -24,12 +24,16 @@ import {
 } from "react-icons/rx";
 import ColorDropdown from "../../TextFormatting/shared/ColorDropdown";
 import { updateSection } from "@/store/resumeSlice";
+import styles from "../../TextFormatting/TextFormatting.module.css";
 
 const Borders = ({ activeSectionId, activeSectionIds }) => {
   const dispatch = useDispatch();
   const sectionsById = useSelector((state) => state.resume.sections.byId);
   const activeSectionBorder =
     sectionsById[activeSectionId]?.styling?.border || {};
+  const hasActiveBorder = ["top", "bottom", "left", "right"].some(
+    (side) => activeSectionBorder[side]?.display === true,
+  );
 
   const [showBorderDropdown, setShowBorderDropdown] = useState(false);
 
@@ -75,6 +79,9 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
   const renderRepeatBorderElements = (borderSide) => {
     const sectionBorder =
       sectionsById[activeSectionId]?.styling?.border?.[borderSide] || {};
+    const activeBorderStyle = sectionBorder.display === true
+      ? sectionBorder.style || "solid"
+      : null;
 
     return [
       <>
@@ -235,21 +242,27 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
       </>,
       <button
         data-toolbar-label="Solid"
-        className="buttonMain"
+        aria-label={`${borderSide} border solid`}
+        aria-pressed={activeBorderStyle === "solid"}
+        className={`buttonMain ${styles.borderButton}`}
         onClick={() => handleBorderUpdate(borderSide, { style: "solid" })}
       >
         <RxBorderSolid style={{ scale: "1.25" }} />
       </button>,
       <button
         data-toolbar-label="Dashed"
-        className="buttonMain"
+        aria-label={`${borderSide} border dashed`}
+        aria-pressed={activeBorderStyle === "dashed"}
+        className={`buttonMain ${styles.borderButton}`}
         onClick={() => handleBorderUpdate(borderSide, { style: "dashed" })}
       >
         <RxBorderDashed style={{ scale: "1.25" }} />
       </button>,
       <button
         data-toolbar-label="Dotted"
-        className="buttonMain"
+        aria-label={`${borderSide} border dotted`}
+        aria-pressed={activeBorderStyle === "dotted"}
+        className={`buttonMain ${styles.borderButton}`}
         onClick={() => handleBorderUpdate(borderSide, { style: "dotted" })}
       >
         <RxBorderDotted style={{ scale: "1.25" }} />
@@ -279,7 +292,9 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
       elements: [
         <button
           data-toolbar-label="Top"
-          className="buttonMain"
+          aria-label="Top border"
+          aria-pressed={activeSectionBorder.top?.display === true}
+          className={`buttonMain ${styles.borderButton}`}
           onClick={() => {
             const currentDisplayValue = activeSectionBorder?.top?.display;
 
@@ -306,7 +321,9 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
       elements: [
         <button
           data-toolbar-label="Bottom"
-          className="buttonMain"
+          aria-label="Bottom border"
+          aria-pressed={activeSectionBorder.bottom?.display === true}
+          className={`buttonMain ${styles.borderButton}`}
           onClick={() => {
             const currentDisplayValue = activeSectionBorder?.bottom?.display;
 
@@ -332,7 +349,9 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
       elements: [
         <button
           data-toolbar-label="Left"
-          className="buttonMain"
+          aria-label="Left border"
+          aria-pressed={activeSectionBorder.left?.display === true}
+          className={`buttonMain ${styles.borderButton}`}
           onClick={() => {
             const currentDisplayValue = activeSectionBorder?.left?.display;
 
@@ -358,7 +377,9 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
       elements: [
         <button
           data-toolbar-label="Right"
-          className="buttonMain"
+          aria-label="Right border"
+          aria-pressed={activeSectionBorder.right?.display === true}
+          className={`buttonMain ${styles.borderButton}`}
           onClick={() => {
             const currentDisplayValue = activeSectionBorder?.right?.display;
 
@@ -384,7 +405,10 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
   return (
     <div>
       <button
-        className="buttonMain"
+        aria-label="Borders"
+        aria-pressed={hasActiveBorder}
+        aria-expanded={showBorderDropdown}
+        className={`buttonMain ${styles.borderButton}`}
         onClick={() => setShowBorderDropdown(!showBorderDropdown)}
       >
         <MdBorderAll style={{ scale: "1.1" }} />

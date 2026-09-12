@@ -177,6 +177,7 @@
 
 .markButton[aria-pressed="true"],
 .listButton[aria-pressed="true"],
-.linkButton[aria-pressed="true"] {
+.linkButton[aria-pressed="true"],
+.borderButton[aria-pressed="true"] {
   background: color-mix(in srgb, var(--background-button-main), white 12%);
 }

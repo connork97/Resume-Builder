@@ -43,6 +43,7 @@ const Links = ({ editor, selection }) => {
   };
 
   const handleLinkIconClick = () => {
+    if (!editor) return;
     getLink();
     setShowLinkInput(!showLinkInput);
   };
@@ -60,7 +61,14 @@ const Links = ({ editor, selection }) => {
 
   return (
     <div className={styles.toolbarFlexWrapper}>
-      <button className="buttonMain" onClick={handleLinkIconClick}>
+      <button
+        aria-label="Link"
+        aria-pressed={!!editor && !!getActiveMark(editor, "link")}
+        aria-expanded={showLinkInput}
+        className={`buttonMain ${styles.linkButton}`}
+        onMouseDown={(event) => event.preventDefault()}
+        onClick={handleLinkIconClick}
+      >
         <FaLink />
       </button>
       {showLinkInput && (

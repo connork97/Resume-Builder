@@ -91,8 +91,12 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
       return;
    }
     newPaddingVal = parseFloat(newPaddingVal).toFixed(1) + "rem";
-
+   console.log('NEW PADDING VAL: ', newPaddingVal)
     if (name === "resume") {
+       if (parseFloat(newPaddingVal) < 0) {
+         alert('Cannot have a negative margin.');
+         return;
+       }
       dispatch(
         updateResume({
           key: "layout",
@@ -105,7 +109,6 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
         }),
       );
     } else if (name === "column") {
-
       dispatch(
         updateColumn({
           id: column.id,

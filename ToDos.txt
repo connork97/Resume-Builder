@@ -5,15 +5,17 @@
 MEDIUM BUGS:
 
 -Dragging Fields is Clunky/Buggy
+   -Particularly when dragging within grid layouts
 
 -Margins can go negative without any real, convenient way for the user to know this.
-
+   
 -Having three or more columns messes with the margin ruler indicators
 
 
 SMALL BUGS:
 
 -Border Inputs for left and right sometimes use wrong value
+   -It may be defaulting to a predetermined value, unsure of what the issue really is specifically
 
 -Bullets don't allow for copy/pasting without breaking up indentation (shift + tab fixes indentation though, but is annoying)
 

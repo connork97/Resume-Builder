@@ -5,7 +5,7 @@ import { updateResume, updateSection } from '@/store/resumeSlice';
 
 import styles from './MarginRuler.module.css';
 
-const MarginRulerSide = ({ renderMarginRuler }) => {
+const MarginRulerSide = ({ renderMarginRuler, geometry }) => {
 
    const dispatch = useDispatch()
 
@@ -96,38 +96,6 @@ const MarginRulerSide = ({ renderMarginRuler }) => {
       setIsEditing(false);
    };
 
-   const getSectionRect = (sectionId) => {
-      const element = document.querySelector(`[data-section-id="${sectionId}"]`);
-
-      if (!element) return null;
-
-      return element.getBoundingClientRect();
-   };
-
-   const getIndicatorPosition = (topOrBottom) => {
-
-      const columnSectionIds = column?.sectionIds;
-
-      let total = 0;
-
-      for (let id of columnSectionIds) {
-         const sectionHeight = getSectionRect(id).height;
-         if (topOrBottom === 'top') {
-            if (id !== activeSectionId) {
-               total += sectionHeight;
-            } else {
-               return total;
-            }
-         } else if (topOrBottom === 'bottom') {
-            total += sectionHeight
-            if (id === activeSectionId) {
-               return total;
-            }
-         }
-      }
-      return total;
-   }
-
    return (
       // <div className={styles.marginsContainer}>
          <div
@@ -146,24 +114,24 @@ const MarginRulerSide = ({ renderMarginRuler }) => {
                onBlur={handleBlur}
             />
 
-            {section && !isFirstSectionInColumn &&
+            {section && geometry && !isFirstSectionInColumn &&
                   <div
                   data-name='section'
                   data-value='top'
                   className={styles.sectionMarginIndicatorTop}
-                  style={{ marginTop: `calc(${getIndicatorPosition('top')}px)` }}
+                  style={{ marginTop: geometry.top }}
                   tabIndex={0}
                   onClick={handleClick}
                   onKeyDown={handleKeyDown}
                   onBlur={handleBlur}
                   />
                }
-            {section &&
+            {section && geometry &&
                   <div
                      data-name='section'
                      data-value='bottom'
                      className={styles.sectionMarginIndicatorBottom}
-                     style={{ marginTop: `calc(${getIndicatorPosition('bottom')}px)` }}
+                     style={{ marginTop: geometry.bottom }}
                      tabIndex={0}
                      onClick={handleClick}
                      onKeyDown={handleKeyDown}

@@ -3,12 +3,17 @@ import React from 'react';
 import styles from './MarginRuler.module.css';
 import MarginRulerTop from './MarginRulerTop';
 import MarginRulerSide from './MarginRulerSide';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import useMarginGeometry from '@/hooks/useMarginGeometry';
 import { clearActiveSectionIds, setActiveEditorId, setActiveEditorSelection } from '@/store/resumeSlice';
 
-const MarginRuler = () => {
+const MarginRuler = ({ pageRef }) => {
 
    const dispatch = useDispatch();
+   const sectionId = useSelector(state => state.resume.activeSectionIds[0] ?? null);
+   const columnId = useSelector(state => state.resume.sections.byId[sectionId]?.columnId);
+   // Share one measurement and observer set between both rulers.
+   const geometry = useMarginGeometry(pageRef, columnId, sectionId);
 
    const renderMarginRuler = (target, step, endsWith = [], position) => {
       const count = target / step + 1;
@@ -58,9 +63,11 @@ const MarginRuler = () => {
          onClick={(e) => handleEditorBlur(e)}
       >
          <MarginRulerTop
+            geometry={geometry}
             renderMarginRuler={renderMarginRuler}
          />
          <MarginRulerSide
+            geometry={geometry}
             renderMarginRuler={renderMarginRuler}
          />
       </div>

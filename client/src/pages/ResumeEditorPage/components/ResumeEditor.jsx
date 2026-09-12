@@ -72,6 +72,7 @@ const ResumeEditor = () => {
    }, [resume]);
 
    const resumeRef = useRef(null);
+   const editorPageRef = useRef(null);
 
    const [isPrinting, setIsPrinting] = useState(false);
 
@@ -119,8 +120,8 @@ const ResumeEditor = () => {
       <div className={styles.resumeEditorContainer}>
          <Toolbar handlePrint={handlePrint} />
          <Outline />
-         <ResumePaper ref={resumeRef} isPrinting={isPrinting} />
-         <MarginRuler />
+         <ResumePaper ref={resumeRef} editorPageRef={editorPageRef} isPrinting={isPrinting} />
+         <MarginRuler pageRef={editorPageRef} />
          {showNewResumeModal &&
             <NewResumeModal />
          }

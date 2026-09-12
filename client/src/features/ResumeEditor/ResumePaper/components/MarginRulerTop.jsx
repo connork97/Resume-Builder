@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateColumn, updateResume, updateSection } from "@/store/resumeSlice";
 import { parseRemValue } from "@/utils/formatters";
 
-const MarginRulerTop = ({ renderMarginRuler }) => {
+const MarginRulerTop = ({ renderMarginRuler, geometry }) => {
   const dispatch = useDispatch();
 
   const resume = useSelector((state) => state.resume);
@@ -27,22 +27,6 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
   const isFirstColumn = column?.id === columns?.allIds[0];
   const isLastColumn =
     column?.id === columns?.allIds[columns.allIds.length - 1];
-
-  const getColumnWidths = (includeCurrent = false) => {
-    let priorColumnWidths = 0;
-    if (!column || !columns?.allIds) return 0;
-
-    for (const columnId of columns.allIds) {
-      if (String(columnId) === String(column.id) && !includeCurrent) {
-        return priorColumnWidths;
-      }
-      const widthValue = columns.byId[columnId]?.layout?.width?.value || "0%";
-      const parsedColumnWidth = parseFloat(widthValue.replace("%", ""));
-      priorColumnWidths += parsedColumnWidth;
-    }
-
-    return priorColumnWidths;
-  };
 
   const getSectionMargin = (name) => {
     const parsedColumnPadding = parseRemValue(columnPadding?.[name]);
@@ -167,13 +151,13 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
       />
-      {column && !isFirstColumn && (
+      {column && geometry && !isFirstColumn && (
         <div
           data-name="column"
           data-value="left"
           className={styles.sectionMarginIndicatorLeft}
           style={{
-            marginLeft: `calc(${getColumnWidths(false)}% + ${getSectionMargin("left")})`,
+            marginLeft: `calc(${geometry.left}px + ${getSectionMargin("left")})`,
           }}
           tabIndex={0}
           onClick={handleClick}
@@ -181,13 +165,13 @@ const MarginRulerTop = ({ renderMarginRuler }) => {
           onBlur={handleBlur}
         />
       )}
-      {column && !isLastColumn && (
+      {column && geometry && !isLastColumn && (
         <div
           data-name="column"
           data-value="right"
           className={styles.sectionMarginIndicatorRight}
           style={{
-            marginLeft: `calc(${column.layout?.width?.value ?? "0%"} - ${columnPadding.right ?? "0rem"})`,
+            marginLeft: `calc(${geometry.right}px - ${columnPadding.right ?? "0rem"})`,
           }}
           tabIndex={0}
           onClick={handleClick}

@@ -15,7 +15,8 @@ import { dndReorderSections } from "@/store/resumeSlice.js";
 const ResumePaper = forwardRef(function ResumePaper(props, ref) {
 
    const dispatch = useDispatch();
-  const editorRef = useRef(null);
+  const localEditorRef = useRef(null);
+  const editorRef = props.editorPageRef ?? localEditorRef;
 
   const resumeStyling = useSelector((state) => state.resume.styling);
   const columns = useSelector((state) => state.resume.columns);

@@ -4,13 +4,14 @@
 
 MEDIUM BUGS:
 
+-Settings Modal should no longer use "Row", as that is effectively the same as 1 Column
+
 -Dragging Fields is Clunky/Buggy
    -Particularly when dragging within grid layouts
 
--Margins can go negative without any real, convenient way for the user to know this.
+-Margins can look like they're negative when adjusting the space between columns
    
--Having three or more columns messes with the margin ruler indicators
-
+-Hotkeys don't work in Slate Headings
 
 SMALL BUGS:
 
@@ -41,13 +42,12 @@ MAIN FEATURES:
 -Resume Templates
    -Ideally even have it where you can plug in default profile(s) info to auto fill resumes templates
 
--Demo Editor
-   -For non logged in users to be able to try/test out resume editor
-   -Initial functionality implemented
-      -Need to insert a new test resume with ID 0 to deployed PostgreSQL DB
-   
+-Demo Editor Tutorial/Walk Through
 
 BIGGER FEATURES:
+
+-Adding Margin Bottom to Section Headings, Subsections, Fields, etc
+   -Need to be able to streamline it as well so keep the resume looking uniform even with small changes
 
 -Undo/Redo should stack across multiple fields/sections/subsections/etc.
    -Need to create some sort of call stack that can be traced backwards/forwards strikeThrough 
@@ -62,8 +62,11 @@ BIGGER FEATURES:
 -Column Setup/Organization
    -Need to add a way to have multiple columns on page, but also allowing particular sections to span multiple columns
 
--Adding Margin Bottom to Section Headings, Subsections, Fields, etc
-   -Need to be able to streamline it as well so keep the resume looking uniform even with small changes
+-Dragging for Column Widths
+   -In between columns there should be a grabbable and draggable line that drags and adjusts the width of each column around that line
+
+-Dragging for Margin Indicators
+   -Much nicer than clicking and pressing keys
 
 MEDIUM FEATURES:
 

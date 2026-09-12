@@ -175,6 +175,7 @@
   z-index: var(--z-dropdown);
 }
 
-.markButton[aria-pressed="true"] {
+.markButton[aria-pressed="true"],
+.listButton[aria-pressed="true"] {
   background: color-mix(in srgb, var(--background-button-main), white 12%);
 }

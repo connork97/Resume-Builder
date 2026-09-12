@@ -2,16 +2,6 @@
    BUGS
 !--------!
 
-BIGGER BUGS:
-
--Adding new sections, subsections, etc causes prior styling changes to be undone
-
--Not all changes get saved on first try.
-   -Ex:  I created new fields in the "skills" section, saved the resume, refreshed only to find roughly half of them remaining.
-      -Tried again and it saved properly.
-      -No idea why
-
-
 MEDIUM BUGS:
 
 -Dragging Fields is Clunky/Buggy

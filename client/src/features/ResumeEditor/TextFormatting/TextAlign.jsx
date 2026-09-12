@@ -84,22 +84,22 @@ const TextAlign = ({ editor, selection, activeSectionId, activeSectionIds }) => 
   const dropdownOptions = [
     {
       value: 'left',
-      elements: [<button className="buttonMain" onClick={() => handleDropdownSelection("left")}><MdFormatAlignLeft /></button>],
+      elements: [<button data-toolbar-label="Left" className="buttonMain" onClick={() => handleDropdownSelection("left")}><MdFormatAlignLeft /></button>],
       command: () => handleDropdownSelection("left"),
     },
     {
       value: 'center',
-      elements: [<button className="buttonMain" onClick={() => handleDropdownSelection("center")}><MdFormatAlignCenter /></button>],
+      elements: [<button data-toolbar-label="Center" className="buttonMain" onClick={() => handleDropdownSelection("center")}><MdFormatAlignCenter /></button>],
       command: () => handleDropdownSelection("center"),
     },
     {
       value: 'right',
-      elements: [<button className="buttonMain" onClick={() => handleDropdownSelection("right")}><MdFormatAlignRight /></button>],
+      elements: [<button data-toolbar-label="Right" className="buttonMain" onClick={() => handleDropdownSelection("right")}><MdFormatAlignRight /></button>],
       command: () => handleDropdownSelection("right"),
     },
     {
       value: 'justify',
-      elements: [<button className="buttonMain" onClick={() => handleDropdownSelection("justify")}><MdFormatAlignJustify /></button>],
+      elements: [<button data-toolbar-label="Justify" className="buttonMain" onClick={() => handleDropdownSelection("justify")}><MdFormatAlignJustify /></button>],
       command: () => handleDropdownSelection("justify"),
     },
   ]

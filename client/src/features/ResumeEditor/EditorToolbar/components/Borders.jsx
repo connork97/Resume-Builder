@@ -78,12 +78,13 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
 
     return [
       <>
-        <button className="buttonMain">
+        <button data-toolbar-label="Width" className="buttonMain">
           <RxWidth style={{ scale: "1.25" }} />
         </button>
         {borderSide === "top" || borderSide === "bottom" ? (
           <>
             <input
+              data-toolbar-label="Width"
               className="inputMain"
               style={{ width: "3.5rem", paddingRight: "1rem" }}
               value={sectionBorder.width ? parseFloat(sectionBorder.width) : ""}
@@ -114,6 +115,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
         ) : (
           <>
             <input
+              data-toolbar-label="Width"
               className="inputMain"
               style={{
                 width: "3rem",
@@ -151,12 +153,13 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
         )}
       </>,
       <>
-        <button className="buttonMain">
+        <button data-toolbar-label="Height" className="buttonMain">
           <RxHeight style={{ scale: "1.25" }} />
         </button>
         {borderSide === "top" || borderSide === "bottom" ? (
           <>
             <input
+              data-toolbar-label="Height"
               className="inputMain"
               style={{
                 width: "3rem",
@@ -196,6 +199,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
         ) : (
           <>
             <input
+              data-toolbar-label="Height"
               className="inputMain"
               style={{ width: "3.5rem", paddingRight: "1rem" }}
               value={
@@ -230,37 +234,42 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
         )}
       </>,
       <button
+        data-toolbar-label="Solid"
         className="buttonMain"
         onClick={() => handleBorderUpdate(borderSide, { style: "solid" })}
       >
         <RxBorderSolid style={{ scale: "1.25" }} />
       </button>,
       <button
+        data-toolbar-label="Dashed"
         className="buttonMain"
         onClick={() => handleBorderUpdate(borderSide, { style: "dashed" })}
       >
         <RxBorderDashed style={{ scale: "1.25" }} />
       </button>,
       <button
+        data-toolbar-label="Dotted"
         className="buttonMain"
         onClick={() => handleBorderUpdate(borderSide, { style: "dotted" })}
       >
         <RxBorderDotted style={{ scale: "1.25" }} />
       </button>,
-      <ColorDropdown
-        text={
-          <FaSquare
-            style={{
-              scale: "1.5",
-              color: sectionBorder.color || "rgba(0, 0, 0, 1)",
-            }}
-          />
-        }
-        currentEditorColor={sectionBorder.color || "rgba(0, 0, 0, 1)"}
-        handleSetColor={(color) =>
-          handleBorderUpdate(borderSide, { color: color })
-        }
-      />,
+      <div data-toolbar-label="Color" style={{ display: "contents" }}>
+        <ColorDropdown
+          text={
+            <FaSquare
+              style={{
+                scale: "1.5",
+                color: sectionBorder.color || "rgba(0, 0, 0, 1)",
+              }}
+            />
+          }
+          currentEditorColor={sectionBorder.color || "rgba(0, 0, 0, 1)"}
+          handleSetColor={(color) =>
+            handleBorderUpdate(borderSide, { color: color })
+          }
+        />
+      </div>,
     ];
   };
 
@@ -269,6 +278,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
       value: "top",
       elements: [
         <button
+          data-toolbar-label="Top"
           className="buttonMain"
           onClick={() => {
             const currentDisplayValue = activeSectionBorder?.top?.display;
@@ -295,6 +305,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
       value: "bottom",
       elements: [
         <button
+          data-toolbar-label="Bottom"
           className="buttonMain"
           onClick={() => {
             const currentDisplayValue = activeSectionBorder?.bottom?.display;
@@ -320,6 +331,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
       value: "left",
       elements: [
         <button
+          data-toolbar-label="Left"
           className="buttonMain"
           onClick={() => {
             const currentDisplayValue = activeSectionBorder?.left?.display;
@@ -345,6 +357,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
       value: "right",
       elements: [
         <button
+          data-toolbar-label="Right"
           className="buttonMain"
           onClick={() => {
             const currentDisplayValue = activeSectionBorder?.right?.display;

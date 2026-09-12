@@ -37,73 +37,101 @@ const RichTextToolbar = ({ editor }) => {
   return (
     <div className={styles.richTextToolbarContainer}>
       <div className={styles.richTextToolbarWrapper}>
-        <LineHeight
-          editor={editor}
-          selection={selection}
-          fields={fields}
-          subsections={subsections}
-          activeSectionId={activeSectionId}
-          activeSectionIds={activeSectionIds}
-          activeEditorId={activeEditorId}
-          resumeStyling={resumeStyling}
-        />
+        <div data-toolbar-label="Line Height" style={{ display: "contents" }}>
+          <LineHeight
+            editor={editor}
+            selection={selection}
+            fields={fields}
+            subsections={subsections}
+            activeSectionId={activeSectionId}
+            activeSectionIds={activeSectionIds}
+            activeEditorId={activeEditorId}
+            resumeStyling={resumeStyling}
+          />
+        </div>
 
-        <FontColor
-          editor={editor}
-          selection={selection}
-          activeSectionId={activeSectionId}
-          activeSectionIds={activeSectionIds}
-        />
+        <div data-toolbar-label="Font Color" style={{ display: "contents" }}>
+          <FontColor
+            editor={editor}
+            selection={selection}
+            activeSectionId={activeSectionId}
+            activeSectionIds={activeSectionIds}
+          />
+        </div>
 
-        <HighlightColor editor={editor} selection={selection} />
+        <div data-toolbar-label="Highlight Color" style={{ display: "contents" }}>
+          <HighlightColor editor={editor} selection={selection} />
+        </div>
 
-        <BackgroundColor
-          activeSectionId={activeSectionId}
-          activeSectionIds={activeSectionIds}
-        />
+        <div data-toolbar-label="Background Color" style={{ display: "contents" }}>
+          <BackgroundColor
+            activeSectionId={activeSectionId}
+            activeSectionIds={activeSectionIds}
+          />
+        </div>
 
-        <FontSize
-          editor={editor}
-          selection={selection}
-          sections={sections}
-          columns={columns}
-          fields={fields}
-          subsections={subsections}
-          activeSectionId={activeSectionId}
-          activeSectionIds={activeSectionIds}
-          activeEditorId={activeEditorId}
-          resumeStyling={resumeStyling}
-        />
+        <div data-toolbar-label="Font Size" style={{ display: "contents" }}>
+          <FontSize
+            editor={editor}
+            selection={selection}
+            sections={sections}
+            columns={columns}
+            fields={fields}
+            subsections={subsections}
+            activeSectionId={activeSectionId}
+            activeSectionIds={activeSectionIds}
+            activeEditorId={activeEditorId}
+            resumeStyling={resumeStyling}
+          />
+        </div>
 
-        <FontFamily />
+        <div data-toolbar-label="Font Family" style={{ display: "contents" }}>
+          <FontFamily />
+        </div>
 
         <Marks editor={editor} />
 
-        <TextAlign
-          editor={editor}
-          selection={selection}
-          activeSectionId={activeSectionId}
-          activeSectionIds={activeSectionIds}
-        />
+        <div data-toolbar-label="Text Alignment" style={{ display: "contents" }}>
+          <TextAlign
+            editor={editor}
+            selection={selection}
+            activeSectionId={activeSectionId}
+            activeSectionIds={activeSectionIds}
+          />
+        </div>
 
         <Lists editor={editor} />
 
-        <Links editor={editor} selection={selection} />
+        <div data-toolbar-label="Link" style={{ display: "contents" }}>
+          <Links editor={editor} selection={selection} />
+        </div>
 
-        <Icons editor={editor} />
+        <div data-toolbar-label="Insert Icon" style={{ display: "contents" }}>
+          <Icons editor={editor} />
+        </div>
 
-        <Columns label="Columns:" />
+        <div data-toolbar-label="Columns" style={{ display: "contents" }}>
+          <Columns label="Columns:" />
+        </div>
 
-        <Gap label="Section Gap:" gapType="vertical" />
+        <div data-toolbar-label="Section Gap" style={{ display: "contents" }}>
+          <Gap label="Section Gap:" gapType="vertical" />
+        </div>
 
-        <Gap label="Column Gap:" gapType="horizontal" />
+        <div data-toolbar-label="Column Gap" style={{ display: "contents" }}>
+          <Gap label="Column Gap:" gapType="horizontal" />
+        </div>
 
-        <Borders
-          activeSectionId={activeSectionId}
-          activeSectionIds={activeSectionIds}
-        />
+        <div data-toolbar-label="Borders" style={{ display: "contents" }}>
+          <Borders
+            activeSectionId={activeSectionId}
+            activeSectionIds={activeSectionIds}
+          />
+        </div>
 
-        <AddSection />
+        <div data-toolbar-label="Add Section" style={{ display: "contents" }}>
+          <AddSection />
+        </div>
       </div>
     </div>
   );

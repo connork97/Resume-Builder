@@ -8,14 +8,14 @@ import { MdFormatListBulleted, MdFormatListNumbered } from 'react-icons/md';
 const Lists = ({ editor }) => {
   return (
     <div className={styles.toolbarFlexWrapper}>
-      <button
+      <button data-toolbar-label="Bulleted List"
         className='buttonMain'
         onClick={() => editor && toggleList(editor, "unordered-list")}
       >
         <MdFormatListBulleted style={{position: 'relative', top: '0.1em'}} />
         </button>
 
-      <button
+      <button data-toolbar-label="Numbered List"
         className='buttonMain'
         onClick={() => editor && toggleList(editor, "ordered-list")}
       >

@@ -68,6 +68,7 @@ const TopBar = ({ handlePrint }) => {
         <div
           className="buttonMain"
           contentEditable
+          data-toolbar-label="Resume Title"
           suppressContentEditableWarning
           onBlur={handleSetResumeTitle}
           style={{
@@ -84,10 +85,10 @@ const TopBar = ({ handlePrint }) => {
         {/* <AddSection /> */}
         <div className='flexRow'>
 
-        <button className="buttonMain" onClick={saveResume}>
+        <button data-toolbar-label="Save Resume" className="buttonMain" onClick={saveResume}>
           Save Resume
         </button>
-        <button className="buttonMain" onClick={handlePrint}>
+        <button data-toolbar-label="Print Resume" className="buttonMain" onClick={handlePrint}>
           Print
         </button>
         </div>

@@ -66,3 +66,25 @@
    cursor: pointer;
    filter: brightness(1.1);
 }
+
+.tooltip {
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 10000;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #222;
+  color: #fff;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@media print {
+  .tooltip {
+    display: none;
+  }
+}

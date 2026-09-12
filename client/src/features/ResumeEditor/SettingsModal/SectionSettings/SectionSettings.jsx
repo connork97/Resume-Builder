@@ -41,50 +41,6 @@ const SectionSettings = () => {
           />
         </label>
       </div>
-      {/* <div className="flexRow">
-        <label>Orientation:</label>
-        <button
-          className="buttonMain"
-          onClick={() => {
-            let currentSectionColumns = section.layout.grid?.columns || 1;
-            dispatch(
-              updateSection({
-                id: section.id,
-                changes: {
-                  layout: {
-                    display: "grid",
-                    grid: {
-                      columns: currentSectionColumns,
-                    },
-                  },
-                },
-              }),
-            );
-            // setGridColumnsInput(currentSectionColumns);
-          }}
-        >
-          Column
-        </button>
-        <button
-          className="buttonMain"
-          onClick={() => {
-            dispatch(
-              updateSection({
-                id: section.id,
-                changes: {
-                  layout: {
-                    display: "flex",
-                  },
-                },
-              }),
-            );
-          }}
-        >
-          Row
-        </button>
-      </div>
-      {section.layout.display === "flex" && <SectionFlex />} */}
-      {/* {section.layout.display == "grid" && <SectionGrid section={section} />} */}
       <SectionGrid section={section} />
     </div>
   );

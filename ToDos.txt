@@ -15,6 +15,11 @@ MEDIUM BUGS:
 
 SMALL BUGS:
 
+-Icons don't center perfectly
+
+-Icons don't change size properly
+   -Such as when font size changes
+
 -Border Inputs for left and right sometimes use wrong value
    -It may be defaulting to a predetermined value, unsure of what the issue really is specifically
 

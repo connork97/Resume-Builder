@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { updateFieldLayout, updateSection } from "@/store/resumeSlice.js";
+import { getTrimmedNodeString } from "@/helpers/getNodeString";
 
 
 
@@ -79,7 +80,7 @@ const SectionGrid = ({ section }) => {
           const subsection = subsectionsById[subsectionId];
           return (
             <div key={subsectionId}>
-              <p style={{ textAlign: "center", fontSize: "125%" }}>
+              <p style={{ textAlign: "center", fontSize: "125%", marginBottom: "0.5rem" }}>
                 Subsection {index + 1}
               </p>
               <div
@@ -135,6 +136,9 @@ const SectionGrid = ({ section }) => {
                     fieldShouldFillRow && isOnlyItemInRow;
 
                   // console.log(checked);
+                  let fieldString = getTrimmedNodeString(field);
+                  if (fieldString.length > 20) fieldString = fieldString.slice(0, 15) + "...";
+                  else if (!fieldString.length) fieldString = `Field ${index + 1} (Empty)`;
                   return (
                     <div
                       key={fieldId}
@@ -154,7 +158,8 @@ const SectionGrid = ({ section }) => {
                         padding: "0.25rem",
                       }}
                     >
-                      <p>Field {index + 1}</p>
+                      {/* <p>Field {index + 1}</p> */}
+                      <p>{fieldString}</p>
                       <div className="flexColumn">
                         {(currentColumn !== 1 || fieldIsNewRow) && (
                           <div className="flexRow">

@@ -32,6 +32,21 @@ const SectionGrid = ({ section }) => {
   const subsectionsById = useSelector((state) => state.resume.subsections.byId);
   const reduxFieldsById = useSelector((state) => state.resume.fields.byId);
 
+  const updateColumnCount = (newColumnCount) => {
+   if (newColumnCount < 1) return;
+    dispatch(
+      updateSection({
+        id: section.id,
+        changes: {
+          layout: {
+            grid: {
+              columns: newColumnCount,
+            },
+          },
+        },
+      }),
+    );
+  };
   return (
     <>
       {/* <h2>Grid Settings</h2> */}
@@ -39,26 +54,22 @@ const SectionGrid = ({ section }) => {
         <h3>Advanced Orientation:</h3>
         <label htmlFor="flex-direction-select" className="flexRow">
           Columns:
+          <button className="buttonMain" onClick={() => updateColumnCount(gridColumnsInput - 1)}>
+            -
+          </button>
           <input
             className="inputMain"
             type="number"
             value={gridColumnsInput}
             onChange={(e) => {
-              dispatch(
-                updateSection({
-                  id: section.id,
-                  changes: {
-                    layout: {
-                      grid: {
-                        columns: e.target.value,
-                      },
-                    },
-                  },
-                }),
-              );
+              updateColumnCount(Number(e.target.value));
             }}
             style={{ width: "3rem" }}
           />
+                    <button className="buttonMain" onClick={() => updateColumnCount(gridColumnsInput + 1)}>
+            +
+          </button>
+
         </label>
       </div>
 
@@ -69,7 +80,7 @@ const SectionGrid = ({ section }) => {
           return (
             <div key={subsectionId}>
               <p style={{ textAlign: "center", fontSize: "125%" }}>
-                Subsection {subsectionId}
+                Subsection {index + 1}
               </p>
               <div
                 style={{
@@ -143,7 +154,7 @@ const SectionGrid = ({ section }) => {
                         padding: "0.25rem",
                       }}
                     >
-                      <p>Field {field.id}</p>
+                      <p>Field {index + 1}</p>
                       <div className="flexColumn">
                         {(currentColumn !== 1 || fieldIsNewRow) && (
                           <div className="flexRow">
@@ -184,7 +195,7 @@ const SectionGrid = ({ section }) => {
                                 );
                               }}
                             />
-                            <span>Fill Space</span>
+                            <span>Fill Row</span>
                           </div>
                         )}
                       </div>

@@ -8,8 +8,6 @@ MEDIUM BUGS:
 
 -Margins can go negative without any real, convenient way for the user to know this.
 
--Top margin indicator (left hand side ruler) doesn't work unless the user is actively clicked into a particular section
-
 -Having three or more columns messes with the margin ruler indicators
 
 
@@ -79,9 +77,6 @@ SMALL FEATURES:
 
 -Allow "Apply To All" tag for Subsection Grid Settings, so changes to one subsection's layout can be mimicked automatically to others in the section
    -Will likely need to have a check for when new subsections are created afterwards
-
--Adding an "active" indicator for toolbar settings already in use
-   -Ex: When the active selection is already bolded, the toolbar should indicate that, such as slightly highlighting the Bold button
 
 TINY FEATURES:
 

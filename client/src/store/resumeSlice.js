@@ -1,3 +1,4 @@
+import { normalizeSectionLayout } from "../utils/normalizeSectionLayout.js";
 import { createSlice } from '@reduxjs/toolkit';
 
 // Insert only the new subsection and its fields; keep existing local edits.
@@ -230,6 +231,7 @@ const resumeSlice = createSlice({
 
          state.sections.byId[section.id] = {
             ...section,
+            layout: normalizeSectionLayout(section.layout),
             subsectionIds: [],
          };
          state.sections.allIds.push(section.id);

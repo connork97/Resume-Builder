@@ -38,12 +38,10 @@ DEFAULT_COLUMN_LAYOUT = {
     },
 }
 
-# DEFAULT_SECTION_LAYOUT = {
-#     'padding': {
-#         'top': '0.5rem',
-#         'bottom': '0.5rem',
-#     }
-# }
+DEFAULT_SECTION_LAYOUT = {
+    "display": "grid",
+    "grid": {"columns": 1},
+}
 
 DEFAULT_SECTION_HEADERS = {
     "header": "Header",
@@ -142,7 +140,7 @@ def add_section(column_id, section_type, position=0):
         label=format_label(section_type),
         type=section_type,
         position=position,
-        # layout=deepcopy(DEFAULT_SECTION_LAYOUT),
+        layout=deepcopy(DEFAULT_SECTION_LAYOUT),
         value=build_section_heading_slate_value(section_type),
     )
 

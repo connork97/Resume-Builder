@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { updateSection } from "@/store/resumeSlice.js";
 
-import MoveSection from "./MoveSection.jsx";
-import SectionFlex from "./SectionFlex";
 
 import styles from "../SettingsModal.module.css";
 import SectionGrid from "./SectionGrid.jsx";
@@ -43,12 +41,7 @@ const SectionSettings = () => {
           />
         </label>
       </div>
-
-      {/* <span className={styles.sectionLabelSpan}>
-        Move {section.label} Section:
-      </span> */}
-      {/* <MoveSection section={section} /> */}
-      <div className="flexRow">
+      {/* <div className="flexRow">
         <label>Orientation:</label>
         <button
           className="buttonMain"
@@ -90,46 +83,9 @@ const SectionSettings = () => {
           Row
         </button>
       </div>
-
-      {/* <div className="flexRow spaceBetween">
-        <button
-          className="buttonMain"
-          onClick={() => {
-            dispatch(
-              updateSection({
-                id: section.id,
-                changes: {
-                  layout: {
-                    display: "flex",
-                  },
-                },
-              }),
-            );
-          }}
-        >
-          Flex
-        </button>
-        <button
-          className="buttonMain"
-          onClick={() => {
-            dispatch(
-              updateSection({
-                id: section.id,
-                changes: {
-                  layout: {
-                    display: "grid",
-                  },
-                },
-              }),
-            );
-          }}
-        >
-          Grid
-        </button>
-      </div> */}
-      {/* {section?.layout && <SectionGrid />} */}
-      {section.layout.display === "flex" && <SectionFlex />}
-      {section.layout.display == "grid" && <SectionGrid section={section} />}
+      {section.layout.display === "flex" && <SectionFlex />} */}
+      {/* {section.layout.display == "grid" && <SectionGrid section={section} />} */}
+      <SectionGrid section={section} />
     </div>
   );
 };

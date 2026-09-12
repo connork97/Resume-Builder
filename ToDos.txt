@@ -9,7 +9,7 @@ MEDIUM BUGS:
 -Dragging Fields is Clunky/Buggy
    -Particularly when dragging within grid layouts
 
--Margins can look like they're negative when adjusting the space between columns
+-Margins can look like they're slightly to moderately negative when adjusting the space between columns
    
 -Hotkeys don't work in Slate Headings
 

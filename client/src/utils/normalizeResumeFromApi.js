@@ -2,7 +2,7 @@
 // * API TO FRONT END NORMALIZATION V
 // * ------------------------------ V
 
-import BackgroundColor from "../features/ResumeEditor/TextFormatting/BackgroundColor";
+import { normalizeSectionLayout } from "./normalizeSectionLayout.js";
 
 const normalizeResumeFromApi = (apiResume) => {
   const normalizedResume = {
@@ -71,7 +71,7 @@ const normalizeResumeFromApi = (apiResume) => {
         position: section.position ?? 0,
         value: section.value ?? [],
         showHeading: section.showHeading ?? true,
-        layout: section.layout ?? {},
+        layout: normalizeSectionLayout(section.layout),
         styling: section.styling ?? {},
         subsectionIds: sortedSubsections.map((subsection) => subsection.id),
       };

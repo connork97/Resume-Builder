@@ -1,27 +1,28 @@
-import { Editor, Transforms, Path, Element as SlateElement } from "slate";
-import { LIST_TYPES } from "./blocks";
+import { Editor, Transforms, Path, Range, Element as SlateElement } from "slate";
+import { HistoryEditor } from "slate-history";
+import { LIST_TYPES } from "./blocks.js";
 
 export const addListItem = (editor, listItemEntry) => {
+  if (!editor.selection || !listItemEntry) return;
 
-  const [, listItemPath] = listItemEntry;
+  const splitItem = () => Editor.withoutNormalizing(editor, () => {
+    // Enter replaces selected text before splitting at the resulting caret.
+    if (Range.isExpanded(editor.selection)) Transforms.delete(editor);
 
-  if (!listItemPath) return;
+    // Resolve the item again: deleting a selection may have moved its path.
+    Transforms.splitNodes(editor, {
+      match: (node) => SlateElement.isElement(node) && node.type === "list-item",
+      mode: "lowest",
+      always: true,
+    });
+  });
 
-  const newListItem = {
-    type: "list-item",
-    children: [
-      // {
-      //   type: "paragraph",
-      //   children: [{ text: "" }],
-      // },
-    ],
-  };
-
-  const newPath = Path.next(listItemPath);
-
-  Transforms.insertNodes(editor, newListItem, { at: newPath });
-
-  Transforms.select(editor, Editor.start(editor, newPath));
+  // Keep deletion and splitting together as one undoable Enter action.
+  if (HistoryEditor.isHistoryEditor(editor)) {
+    HistoryEditor.withNewBatch(editor, splitItem);
+  } else {
+    splitItem();
+  }
 };
 
 export const indentList = (editor, listItemEntry) => {

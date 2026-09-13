@@ -183,6 +183,7 @@ const initialState = {
    activeEditorId: null,
    activeEditorSelection: null,
    resumeRef: null,
+   actionStack: [],
 };
 
 const resumeSlice = createSlice({
@@ -213,6 +214,16 @@ const resumeSlice = createSlice({
 
       setResumePrintRef(state, action) {
          state.ref = action.payload;
+      },
+
+      revertToPreviousState(state) {
+         console.log("Attempting to revert to previous state");
+         if (state.actionStack.length > 0) {
+            const previousState = state.actionStack.pop();
+            console.log("Previous state retrieved from action stack: ", previousState);
+            Object.assign(state, previousState);
+            // state = previousState;
+         }
       },
 
       // * ------------ V
@@ -578,6 +589,8 @@ const resumeSlice = createSlice({
 
       dndReorderSections(state, action) {
          const { dndKitDict } = action.payload;
+         const beforeState = JSON.parse(JSON.stringify(state));
+         console.log('BEFORE STATE', beforeState)
          const columnIds = Object.keys(dndKitDict);
          columnIds.forEach(columnId => {
             const column = state.columns.byId[columnId];
@@ -592,6 +605,11 @@ const resumeSlice = createSlice({
                });
             }
          });
+         const afterState = JSON.parse(JSON.stringify(state));
+         console.log('AFTER STATE', afterState);
+
+         state.actionStack.push(beforeState)
+         
       },
 
       dndReorderSubsections(state, action) {
@@ -937,7 +955,9 @@ export const {
    updateFieldValue,
    updateFieldLayout,
    swapFieldPositions,
-   reorderFields
+   reorderFields,
+
+   revertToPreviousState
 
 } = resumeSlice.actions;
 

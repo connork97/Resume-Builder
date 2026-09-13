@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
+import { revertToPreviousState } from "./store/resumeSlice";
 import { setUser } from "./store/userSlice";
 import { checkApi, checkSession } from "./services/sessionServices";
 
@@ -29,6 +30,46 @@ const App = () => {
       }
     };
     runSiteLaunch();
+  }, []);
+
+  // Listener for custom multi-key shortcut: Ctrl + Alt + 1 + 2 + 3
+  // (Using Ctrl + Alt avoids native browser tab switching like Ctrl + 1/2/3)
+  useEffect(() => {
+    const pressedKeys = new Set();
+
+    const handleKeyDown = (e) => {
+      pressedKeys.add(e.code);
+
+      const hasCtrl = e.ctrlKey || pressedKeys.has("ControlLeft") || pressedKeys.has("ControlRight");
+      const hasAlt = e.altKey || pressedKeys.has("AltLeft") || pressedKeys.has("AltRight");
+      const has1 = pressedKeys.has("Digit1") || pressedKeys.has("Numpad1");
+      const has2 = pressedKeys.has("Digit2") || pressedKeys.has("Numpad2");
+      const has3 = pressedKeys.has("Digit3") || pressedKeys.has("Numpad3");
+
+      if (hasCtrl && hasAlt && has1 && has2 && has3) {
+        e.preventDefault();
+        console.log("Shortcut triggered: Ctrl + Alt + 1 + 2 + 3");
+        dispatch(revertToPreviousState());
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      pressedKeys.delete(e.code);
+    };
+
+    const handleBlur = () => {
+      pressedKeys.clear();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("blur", handleBlur);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("blur", handleBlur);
+    };
   }, []);
 //   }, [dispatch]);
 

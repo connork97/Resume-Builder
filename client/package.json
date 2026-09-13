@@ -19,6 +19,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.13.2",
     "react-to-print": "^3.2.0",
+    "redux-undo": "^1.1.0",
     "slate": "^0.123.0",
     "slate-history": "^0.113.1",
     "slate-react": "^0.123.0"

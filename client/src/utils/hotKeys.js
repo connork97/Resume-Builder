@@ -31,6 +31,8 @@ export const handleHotKey = (editor, event) => {
       console.warn("Editor instance is not available.");
       return;
    }
+
+   // * Handle  * //
    
    const [listItemEntry] = Editor.nodes(editor, {
       match: (n) => n.type === "list-item",

@@ -16,6 +16,7 @@ import { useReactToPrint } from 'react-to-print';
 import styles from './ResumeEditor.module.css';
 import MarginRuler from '@/features/ResumeEditor/ResumePaper/components/MarginRuler';
 import { handleGlobalHotKey } from '@/utils/hotKeys';
+import { ActionCreators as UndoActionCreators } from "redux-undo";
 
 const ResumeEditor = () => {
 
@@ -35,6 +36,7 @@ const ResumeEditor = () => {
          }
 
          dispatch(setResume(normalizedResumeData));
+         dispatch(UndoActionCreators.clearHistory());
       }, [dispatch]);
 
    useEffect(() => {

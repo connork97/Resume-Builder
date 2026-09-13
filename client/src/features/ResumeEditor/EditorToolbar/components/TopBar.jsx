@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
 import { setResume, updateResume } from "@/store/resumeSlice.js";
+import { ActionCreators as UndoActionCreators } from "redux-undo";
 import { getResumeFromApi, saveResumeToApi } from "@/services/resumeServices";
 
 import CurrentlyEditing from "./CurrentlyEditing";
@@ -26,6 +27,7 @@ const TopBar = ({ handlePrint }) => {
       }
 
       dispatch(setResume(normalizedResumeData));
+      dispatch(UndoActionCreators.clearHistory());
     },
     [dispatch],
   );

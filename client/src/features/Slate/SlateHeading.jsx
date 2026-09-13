@@ -18,6 +18,7 @@ import {
 import RenderElement from "./RenderElement.jsx";
 
 import { editorRegistry } from "../../helpers/editorRegistry.js";
+import { handleHotKey } from "@/utils/hotKeys.js";
 
 const SlateHeading = ({ section }) => {
   const dispatch = useDispatch();
@@ -95,11 +96,12 @@ const SlateHeading = ({ section }) => {
       onChange={(value) => {
         handleUpdateSection(value);
         dispatch(setActiveEditorSelection([...editor.children]));
-      //   dispatch(setActiveEditorSelection(editor.children));
+        //   dispatch(setActiveEditorSelection(editor.children));
       }}
     >
       <Editable
         onFocus={() => dispatch(setActiveEditorId(editorId))}
+        onKeyDown={(event) => handleHotKey(editor, event)}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={section.label}

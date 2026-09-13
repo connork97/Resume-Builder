@@ -4,15 +4,11 @@
 
 MEDIUM BUGS:
 
--Settings Modal should no longer use "Row", as that is effectively the same as 1 Column
-
 -Dragging Fields is Clunky/Buggy
    -Particularly when dragging within grid layouts
 
 -Margins can look like they're slightly to moderately negative when adjusting the space between columns
    
--Hotkeys don't work in Slate Headings
-
 SMALL BUGS:
 
 -Icons don't center perfectly

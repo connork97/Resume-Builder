@@ -16,7 +16,7 @@ const TopBar = ({ handlePrint }) => {
   const dispatch = useDispatch();
   const { resumeId } = useParams();
 
-  const resume = useSelector((state) => state.resume);
+  const resume = useSelector((state) => state.resume.present);
 
   const fetchResumeById = useCallback(
     async (resumeId) => {

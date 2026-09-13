@@ -8,7 +8,7 @@ import { addSection, addSubsection } from "@/store/resumeSlice";
 
 const AddSection = () => {
   const dispatch = useDispatch();
-  const resume = useSelector(state => state.resume)
+  const resume = useSelector(state => state.resume.present)
 
   const [addSectionDropdownIsOpen, setAddSectionDropdownIsOpen] =
     useState(false);

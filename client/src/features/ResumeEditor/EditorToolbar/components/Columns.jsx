@@ -15,9 +15,9 @@ import { TfiLayoutColumn3Alt } from "react-icons/tfi";
 const Columns = () => {
   const dispatch = useDispatch();
 
-  const resume = useSelector((state) => state.resume);
+  const resume = useSelector((state) => state.resume.present);
 
-  const columns = useSelector((state) => state.resume.columns);
+  const columns = useSelector((state) => state.resume.present.columns);
 
   // const [columnInputValue, setColumnInputValue] = useState(0);
   const [columnInputValue, setColumnInputValue] = useState(

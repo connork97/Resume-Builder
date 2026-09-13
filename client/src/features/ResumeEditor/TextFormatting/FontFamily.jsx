@@ -80,7 +80,7 @@ const FontFamily = () => {
   });
 
   const selectedFontFamily = useSelector(
-    (state) => state.resume.styling.fontFamily ?? fontFamilies[0].value,
+    (state) => state.resume.present.styling.fontFamily ?? fontFamilies[0].value,
   );
   const selectedFontFamilyLabel =
     fontFamilies.find((fontFamily) => fontFamily.value === selectedFontFamily)

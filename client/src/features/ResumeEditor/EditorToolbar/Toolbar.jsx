@@ -25,7 +25,7 @@ const Toolbar = ({ handlePrint }) => {
     setTooltip({ label, left: rect.left + rect.width / 2, top: rect.bottom + 6 });
   };
 
-  const activeEditorId = useSelector((state) => state.resume.activeEditorId);
+  const activeEditorId = useSelector((state) => state.resume.present.activeEditorId);
   const editor = editorRegistry.get(activeEditorId);
 
   return (

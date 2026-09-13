@@ -11,14 +11,14 @@ const FontColor = ({ editor, selection, activeSectionId, activeSectionIds }) => 
 
    const dispatch = useDispatch();
 
-   const resume = useSelector(state => state.resume);
+   const resume = useSelector(state => state.resume.present);
 
-   const activeEditorId = useSelector(state => state.resume.activeEditorId)
+   const activeEditorId = useSelector(state => state.resume.present.activeEditorId)
 
-   const activeField = useSelector(state => state.resume.fields.byId[activeEditorId])
-   const activeSubsection = useSelector(state => state.resume.subsections.byId[activeField?.subsectionId])
-   const activeSection = useSelector(state => state.resume.sections.byId[activeSectionId])
-   const activeColumn = useSelector(state => state.resume.columns.byId[activeSection?.columnId]);
+   const activeField = useSelector(state => state.resume.present.fields.byId[activeEditorId])
+   const activeSubsection = useSelector(state => state.resume.present.subsections.byId[activeField?.subsectionId])
+   const activeSection = useSelector(state => state.resume.present.sections.byId[activeSectionId])
+   const activeColumn = useSelector(state => state.resume.present.columns.byId[activeSection?.columnId]);
 
    const [currentFontColor, setCurrentFontColor] = useState('rgba(0, 0, 0, 1)');
 

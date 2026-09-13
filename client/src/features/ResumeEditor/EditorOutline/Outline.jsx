@@ -15,9 +15,9 @@ import SortableOutlineSection from "@/features/ResumeEditor/EditorOutline/compon
 
 const Outline = () => {
   const dispatch = useDispatch();
-  const resume = useSelector((state) => state.resume);
+  const resume = useSelector((state) => state.resume.present);
   const sections = resume.sections;
-  // const sections = useSelector((state) => state.resume.sections);
+  // const sections = useSelector((state) => state.resume.present.sections);
 
   const [showOutline, setShowOutline] = useState(true);
 

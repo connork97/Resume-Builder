@@ -28,7 +28,7 @@ import styles from "../../TextFormatting/TextFormatting.module.css";
 
 const Borders = ({ activeSectionId, activeSectionIds }) => {
   const dispatch = useDispatch();
-  const sectionsById = useSelector((state) => state.resume.sections.byId);
+  const sectionsById = useSelector((state) => state.resume.present.sections.byId);
   const activeSectionBorder =
     sectionsById[activeSectionId]?.styling?.border || {};
   const hasActiveBorder = ["top", "bottom", "left", "right"].some(

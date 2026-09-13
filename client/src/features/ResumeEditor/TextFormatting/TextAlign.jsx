@@ -19,12 +19,12 @@ import TextFormatDropdown from "./shared/TextFormatDropdown.jsx";
 
 const TextAlign = ({ editor, selection, activeSectionId, activeSectionIds }) => {
   const dispatch = useDispatch();
-  const resumeAlignment = useSelector((state) => state.resume?.styling?.textAlign);
-  const activeEditorSelection = useSelector((state) => state.resume?.activeEditorSelection)
+  const resumeAlignment = useSelector((state) => state.resume.present?.styling?.textAlign);
+  const activeEditorSelection = useSelector((state) => state.resume.present?.activeEditorSelection)
   const activeEditorAlignment = editor ? getActiveAlignment(editor) : null;
 //   const activeEditorAlignment = activeEditorSelection?.[0]?.textAlign;
   const activeEditorChildren = activeEditorSelection?.[0]?.children;
-  const activeSectionAlignment = useSelector((state) => state.resume?.sections?.byId[activeSectionId]?.styling?.textAlign)
+  const activeSectionAlignment = useSelector((state) => state.resume.present?.sections?.byId[activeSectionId]?.styling?.textAlign)
 
   const handleSetTextAlign = (editor, alignment) => {
     if (editor) {

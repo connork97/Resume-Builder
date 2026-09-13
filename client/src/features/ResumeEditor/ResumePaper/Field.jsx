@@ -8,7 +8,7 @@ import { MdDragIndicator } from "react-icons/md";
 // import { getNodeString } from '@/helpers/getNodeString';
 
 const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
-  const field = useSelector((state) => state.resume.fields.byId[fieldId]);
+  const field = useSelector((state) => state.resume.present.fields.byId[fieldId]);
   const activeLayout = layout || parentLayoutDict || {};
 
   // const plainText = getNodeString(field);
@@ -64,9 +64,9 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const reduxFieldsById = useSelector((state) => state.resume.fields.byId);
+  const reduxFieldsById = useSelector((state) => state.resume.present.fields.byId);
   const subsection = useSelector(
-    (state) => state.resume.subsections.byId[field.subsectionId],
+    (state) => state.resume.present.subsections.byId[field.subsectionId],
   );
   const nextField = reduxFieldsById[subsection.fieldIds[index + 1]];
 

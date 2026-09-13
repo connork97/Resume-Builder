@@ -183,7 +183,7 @@ const initialState = {
    activeEditorId: null,
    activeEditorSelection: null,
    resumeRef: null,
-   actionStack: [],
+   // actionStack: [],
 };
 
 const resumeSlice = createSlice({
@@ -213,18 +213,18 @@ const resumeSlice = createSlice({
       },
 
       setResumePrintRef(state, action) {
-         state.ref = action.payload;
+         state.resumeRef = action.payload;
       },
 
-      revertToPreviousState(state) {
-         console.log("Attempting to revert to previous state");
-         if (state.actionStack.length > 0) {
-            const previousState = state.actionStack.pop();
-            console.log("Previous state retrieved from action stack: ", previousState);
-            Object.assign(state, previousState);
-            // state = previousState;
-         }
-      },
+      // revertToPreviousState(state) {
+      //    console.log("Attempting to revert to previous state");
+      //    if (state.actionStack.length > 0) {
+      //       const previousState = state.actionStack.pop();
+      //       console.log("Previous state retrieved from action stack: ", previousState);
+      //       Object.assign(state, previousState);
+      //       // state = previousState;
+      //    }
+      // },
 
       // * ------------ V
       // * ADD TO STATE V
@@ -589,8 +589,8 @@ const resumeSlice = createSlice({
 
       dndReorderSections(state, action) {
          const { dndKitDict } = action.payload;
-         const beforeState = JSON.parse(JSON.stringify(state));
-         console.log('BEFORE STATE', beforeState)
+         // const beforeState = JSON.parse(JSON.stringify(state));
+         // console.log('BEFORE STATE', beforeState)
          const columnIds = Object.keys(dndKitDict);
          columnIds.forEach(columnId => {
             const column = state.columns.byId[columnId];
@@ -605,10 +605,10 @@ const resumeSlice = createSlice({
                });
             }
          });
-         const afterState = JSON.parse(JSON.stringify(state));
-         console.log('AFTER STATE', afterState);
+         // const afterState = JSON.parse(JSON.stringify(state));
+         // console.log('AFTER STATE', afterState);
 
-         state.actionStack.push(beforeState)
+         // state.actionStack.push(beforeState)
          
       },
 
@@ -957,7 +957,7 @@ export const {
    swapFieldPositions,
    reorderFields,
 
-   revertToPreviousState
+   // revertToPreviousState
 
 } = resumeSlice.actions;
 

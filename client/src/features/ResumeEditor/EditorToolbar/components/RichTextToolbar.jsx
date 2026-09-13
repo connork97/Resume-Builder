@@ -21,18 +21,18 @@ import FontFamily from "../../TextFormatting/FontFamily.jsx";
 import AddSection from "./AddSection.jsx";
 
 const RichTextToolbar = ({ editor }) => {
-  const resumeStyling = useSelector((state) => state.resume.styling);
-  const sections = useSelector((state) => state.resume.sections);
-  const columns = useSelector((state) => state.resume.columns);
-  const fields = useSelector((state) => state.resume.fields);
-  const subsections = useSelector((state) => state.resume.subsections);
+  const resumeStyling = useSelector((state) => state.resume.present.styling);
+  const sections = useSelector((state) => state.resume.present.sections);
+  const columns = useSelector((state) => state.resume.present.columns);
+  const fields = useSelector((state) => state.resume.present.fields);
+  const subsections = useSelector((state) => state.resume.present.subsections);
 
   const activeSectionIds = useSelector(
-    (state) => state.resume.activeSectionIds,
+    (state) => state.resume.present.activeSectionIds,
   );
   const activeSectionId = activeSectionIds[0] ?? null;
-  const activeEditorId = useSelector((state) => state.resume.activeEditorId);
-  const selection = useSelector((state) => state.resume.activeEditorSelection);
+  const activeEditorId = useSelector((state) => state.resume.present.activeEditorId);
+  const selection = useSelector((state) => state.resume.present.activeEditorSelection);
 
   return (
     <div className={styles.richTextToolbarContainer}>

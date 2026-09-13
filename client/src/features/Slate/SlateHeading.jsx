@@ -1,9 +1,8 @@
-import React, { useMemo, useCallback, useEffect } from "react";
+import React, { useMemo, useCallback, useEffect, useRef } from "react";
 import { selectOnEditorEntry } from "../../helpers/slateHelpers/selectOnEditorEntry.js";
 import { withInlineVoidIcons } from "../../helpers/slateHelpers/editorSchemaRules.js";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor } from "slate";
-import { withHistory } from "slate-history";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateSection,
@@ -23,9 +22,9 @@ import { handleHotKey } from "@/utils/hotKeys.js";
 
 const SlateHeading = ({ section }) => {
   const dispatch = useDispatch();
-  const resumeStyling = useSelector((state) => state.resume.styling);
+  const resumeStyling = useSelector((state) => state.resume.present.styling);
   const column = useSelector(
-    (state) => state.resume.columns.byId[section.columnId],
+    (state) => state.resume.present.columns.byId[section.columnId],
   );
   const sectionStyling = section?.styling;
   const columnStyling = column?.styling;
@@ -44,10 +43,27 @@ const SlateHeading = ({ section }) => {
   // const editorId = useMemo(() => section?.id)
   const editorId = section?.id;
   const editor = useMemo(
-    () => withReact(withHistory(withInlineVoidIcons(createEditor()))),
+    () => withReact(withInlineVoidIcons(createEditor())),
     [],
   );
   //   const editor = useMemo(() => withReact(createEditor()), []);
+
+  const isRestoringFromRedux = useRef(false);
+
+  useEffect(() => {
+    if (!section.value || editor.children === section.value) return;
+    if (JSON.stringify(editor.children) === JSON.stringify(section.value)) return;
+
+    isRestoringFromRedux.current = true;
+    try {
+      editor.selection = null;
+      editor.marks = null;
+      editor.children = structuredClone(section.value);
+      editor.onChange();
+    } finally {
+      isRestoringFromRedux.current = false;
+    }
+  }, [editor, section.value]);
 
   useEffect(() => {
     editorRegistry.set(editorId, editor);
@@ -102,9 +118,12 @@ const SlateHeading = ({ section }) => {
       editor={editor}
       initialValue={section.value ?? null}
       onChange={(value) => {
-        handleUpdateSection(value);
+        if (isRestoringFromRedux.current) return;
+        const contentChanged = editor.operations.some(
+          operation => operation.type !== "set_selection",
+        );
+        if (contentChanged) handleUpdateSection(value);
         dispatch(setActiveEditorSelection([...editor.children]));
-          dispatch(setActiveEditorSelection(editor.children));
       }}
     >
       <Editable

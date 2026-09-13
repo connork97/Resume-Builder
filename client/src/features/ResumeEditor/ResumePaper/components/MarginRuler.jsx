@@ -10,8 +10,8 @@ import { clearActiveSectionIds, setActiveEditorId, setActiveEditorSelection } fr
 const MarginRuler = ({ pageRef }) => {
 
    const dispatch = useDispatch();
-   const sectionId = useSelector(state => state.resume.activeSectionIds[0] ?? null);
-   const columnId = useSelector(state => state.resume.sections.byId[sectionId]?.columnId);
+   const sectionId = useSelector(state => state.resume.present.activeSectionIds[0] ?? null);
+   const columnId = useSelector(state => state.resume.present.sections.byId[sectionId]?.columnId);
    // Share one measurement and observer set between both rulers.
    const geometry = useMarginGeometry(pageRef, columnId, sectionId);
 
@@ -124,19 +124,19 @@ export default MarginRuler;
 //       }
 //    }
 
-//    const resume = useSelector(state => state.resume);
+//    const resume = useSelector(state => state.resume.present);
 //    const resumePadding = resume?.layout?.padding;
 
-//    const activeSectionId = useSelector(state => state.resume.activeSectionId);
-//    // const sections = useSelector(state => state.resume.sections);
-//    const section = useSelector(state => state.resume.sections.byId[activeSectionId]);
+//    const activeSectionId = useSelector(state => state.resume.present.activeSectionId);
+//    // const sections = useSelector(state => state.resume.present.sections);
+//    const section = useSelector(state => state.resume.present.sections.byId[activeSectionId]);
 //    const sectionPadding = section?.layout?.padding;
 
 //    // const isFirstSection = section?.id === sections?.allIds[0];
 //    // const isLastSection = section?.id === sections?.allIds[sections.allIds.length - 1];
 
-//    const columns = useSelector(state => state.resume.columns);
-//    const column = useSelector(state => state.resume.columns.byId[section?.columnId]);
+//    const columns = useSelector(state => state.resume.present.columns);
+//    const column = useSelector(state => state.resume.present.columns.byId[section?.columnId]);
 //    const columnPadding = column?.layout?.padding;
 
 //    const isFirstColumn = column?.id === columns?.allIds[0];

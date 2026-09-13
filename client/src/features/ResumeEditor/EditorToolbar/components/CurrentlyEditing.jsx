@@ -10,12 +10,12 @@ const CurrentlyEditing = () => {
 
    const dispatch = useDispatch();
 
-   const sections = useSelector(state => state.resume.sections);
-   const reduxSubsections = useSelector(state => state.resume.subsections);
-   const activeSectionIds = useSelector(state => state.resume.activeSectionIds);
+   const sections = useSelector(state => state.resume.present.sections);
+   const reduxSubsections = useSelector(state => state.resume.present.subsections);
+   const activeSectionIds = useSelector(state => state.resume.present.activeSectionIds);
    const activeSectionId = activeSectionIds[0] ?? null;
-   const activeEditorId = useSelector((state) => state.resume.activeEditorId);
-   const reduxField = useSelector(state => state.resume.fields.byId[activeEditorId]);
+   const activeEditorId = useSelector((state) => state.resume.present.activeEditorId);
+   const reduxField = useSelector(state => state.resume.present.fields.byId[activeEditorId]);
    const reduxFieldSubsection = reduxSubsections.byId[reduxField?.subsectionId];
    const reduxFieldIndex = reduxFieldSubsection?.fieldIds?.indexOf(activeEditorId);
    const editor = editorRegistry.get(activeEditorId);

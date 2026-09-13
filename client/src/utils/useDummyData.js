@@ -5,7 +5,7 @@ import { addSection } from "../store/resumeSlice";
 
 export const useDummyData = () => {
    const dispatch = useDispatch();
-   const sections = useSelector((state) => state.resume.sections);
+   const sections = useSelector((state) => state.resume.present.sections);
    const initialized = useRef(false);
 
    useEffect(() => {

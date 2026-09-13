@@ -23,7 +23,7 @@ const ResumeEditor = () => {
    const dispatch = useDispatch();
    const { resumeId } = useParams();
 
-   const resume = useSelector(state => state.resume)
+   const resume = useSelector(state => state.resume.present)
 
    const showNewResumeModal = location.pathname === '/editor/new';
    

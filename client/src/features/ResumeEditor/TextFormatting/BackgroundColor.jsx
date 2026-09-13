@@ -10,7 +10,7 @@ import { BiSolidColorFill } from 'react-icons/bi';
 const BackgroundColor = ({activeSectionId, activeSectionIds}) => {
 
    const dispatch = useDispatch();
-   const sectionBackgroundColor = useSelector(state => state.resume.sections.byId[activeSectionId]?.styling?.backgroundColor);
+   const sectionBackgroundColor = useSelector(state => state.resume.present.sections.byId[activeSectionId]?.styling?.backgroundColor);
 
    const handleSetSectionBackgroundColor = (color) => {
       console.log('setting background color', color)

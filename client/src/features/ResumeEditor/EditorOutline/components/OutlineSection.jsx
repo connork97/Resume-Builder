@@ -26,7 +26,7 @@ const OutlineSection = ({
   setDragItem,
   renderFieldRow,
 }) => {
-  const subsections = useSelector((state) => state.resume.subsections);
+  const subsections = useSelector((state) => state.resume.present.subsections);
 
   // Collapse state for SUBSECTIONS
   const [collapsedSubsections, setCollapsedSubsections] = useState({});

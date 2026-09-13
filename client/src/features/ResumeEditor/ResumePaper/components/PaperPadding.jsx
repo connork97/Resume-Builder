@@ -8,7 +8,7 @@ const PaperPadding = () => {
 
    const dispatch = useDispatch();
 
-   const resume = useSelector(state => state.resume);
+   const resume = useSelector(state => state.resume.present);
    const padding = resume.layout.padding;
 
    const changepadding = (e) => {

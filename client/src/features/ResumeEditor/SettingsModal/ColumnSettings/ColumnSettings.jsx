@@ -8,13 +8,13 @@ import styles from "../SettingsModal.module.css";
 const ColumnSettings = () => {
   const dispatch = useDispatch();
 
-  const activeSectionIds = useSelector((state) => state.resume.activeSectionIds);
+  const activeSectionIds = useSelector((state) => state.resume.present.activeSectionIds);
   const activeSectionId = activeSectionIds[0] ?? null;
   const section = useSelector(
-    (state) => state.resume.sections.byId[activeSectionId],
+    (state) => state.resume.present.sections.byId[activeSectionId],
   );
   const column = useSelector(
-    (state) => state.resume.columns.byId[section.columnId],
+    (state) => state.resume.present.columns.byId[section.columnId],
   );
 
   const [columnWidthInputValue, setColumnWidthInputValue] = useState(

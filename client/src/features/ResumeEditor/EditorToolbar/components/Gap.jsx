@@ -6,7 +6,7 @@ import { RxColumnSpacing, RxRowSpacing } from "react-icons/rx";
 
 const Gap = ({ label, gapType }) => {
   const dispatch = useDispatch();
-  const resumeGap = useSelector((state) => state.resume.layout.gap);
+  const resumeGap = useSelector((state) => state.resume.present.layout.gap);
 
   const updateResumeGap = (incrementOrDecrement) => {
     const parsedCurrentGap = parseFloat(resumeGap[gapType]);

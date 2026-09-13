@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 // Measure indicator offsets in pixels relative to the page.
 export default function useMarginGeometry(pageRef, columnId, sectionId) {
    // Recalculate when Redux column data changes.
-   const columns = useSelector(state => state.resume.columns);
+   const columns = useSelector(state => state.resume.present.columns);
    const [geometry, setGeometry] = useState(null);
    // Observe layout after React updates the DOM.
    useLayoutEffect(() => {

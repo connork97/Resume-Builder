@@ -18,9 +18,9 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
   const localEditorRef = useRef(null);
   const editorRef = props.editorPageRef ?? localEditorRef;
 
-  const resumeStyling = useSelector((state) => state.resume.styling);
-  const columns = useSelector((state) => state.resume.columns);
-  const sectionsById = useSelector((state) => state.resume.sections.byId);
+  const resumeStyling = useSelector((state) => state.resume.present.styling);
+  const columns = useSelector((state) => state.resume.present.columns);
+  const sectionsById = useSelector((state) => state.resume.present.sections.byId);
 
   const [items, setItems] = useState({});
   const previousItems = useRef({});

@@ -7,7 +7,7 @@ import { updateFieldLayout } from '@/store/resumeSlice';
 export const StartNewRow = ({fieldId}) => {
    const dispatch = useDispatch();
 
-   const field = useSelector(state => state.resume.fields.byId[fieldId]);
+   const field = useSelector(state => state.resume.present.fields.byId[fieldId]);
    const [startNewRow, setStartNewRow] = useState(field?.layout?.startNewRow || false)
 
    const handleSetStartNewRow = () => {

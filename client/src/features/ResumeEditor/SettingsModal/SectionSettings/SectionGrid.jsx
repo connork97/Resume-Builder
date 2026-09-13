@@ -30,8 +30,8 @@ const SectionGrid = ({ section }) => {
     ? section.layout?.grid?.columns ?? 1
     : 1;
 
-  const subsectionsById = useSelector((state) => state.resume.subsections.byId);
-  const reduxFieldsById = useSelector((state) => state.resume.fields.byId);
+  const subsectionsById = useSelector((state) => state.resume.present.subsections.byId);
+  const reduxFieldsById = useSelector((state) => state.resume.present.fields.byId);
 
   const updateColumnCount = (newColumnCount) => {
    if (newColumnCount < 1) return;

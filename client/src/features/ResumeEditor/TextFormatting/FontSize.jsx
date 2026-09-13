@@ -26,7 +26,7 @@ const FontSize = ({
 }) => {
 
    const dispatch = useDispatch();
-   const reduxSections = useSelector(state => state.resume.sections);
+   const reduxSections = useSelector(state => state.resume.present.sections);
 
    const getNumericFontSize = (value, fallback = 12) => {
       const parsed = Number(String(value).replace(/[^0-9.]/g, ''));

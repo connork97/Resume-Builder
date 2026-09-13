@@ -25,10 +25,10 @@ const FieldRow = ({
 }) => {
   const dispatch = useDispatch();
 
-  const fields = useSelector((state) => state.resume.fields);
+  const fields = useSelector((state) => state.resume.present.fields);
   const field = fields.byId[fieldId];
   const subsection = useSelector(
-    (state) => state.resume.subsections.byId[subsectionId],
+    (state) => state.resume.present.subsections.byId[subsectionId],
   );
 
   //   const fieldValueText = Node.string(field.value[0]);

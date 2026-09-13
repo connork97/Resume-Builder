@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useCallback } from "react";
+import React, { useEffect, useMemo, useCallback, useRef } from "react";
 import { Slate, Editable, withReact } from "slate-react";
-import { createEditor, Editor, Transforms } from "slate";
+import { createEditor } from "slate";
 import { selectOnEditorEntry } from "../../helpers/slateHelpers/selectOnEditorEntry.js";
 import { withInlineVoidIcons } from "../../helpers/slateHelpers/editorSchemaRules.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,30 +20,29 @@ import {
   getCascadedFontSize,
   getCascadedLineHeight,
 } from "@/helpers/leafHelpers.js";
-import { withHistory } from "slate-history";
 import { handleHotKey } from "@/utils/hotKeys.js";
 
-const SlateField = ({ field, index }) => {
+const SlateField = ({ field }) => {
   // Stable editor instance
   const fieldPlainText = getNodeString(field);
   const fieldMinWidth = !fieldPlainText ? getMinWidth(field.label) : "auto";
 
   const editorId = field.id;
   const editor = useMemo(
-    () => withReact(withHistory(withInlineVoidIcons(createEditor()))),
+    () => withReact(withInlineVoidIcons(createEditor())),
     [],
   );
 
   const dispatch = useDispatch();
-  const resumeStyling = useSelector((state) => state.resume.styling);
+  const resumeStyling = useSelector((state) => state.resume.present.styling);
   const subsection = useSelector(
-    (state) => state.resume.subsections.byId[field.subsectionId],
+    (state) => state.resume.present.subsections.byId[field.subsectionId],
   );
   const section = useSelector(
-    (state) => state.resume.sections.byId[subsection?.sectionId],
+    (state) => state.resume.present.sections.byId[subsection?.sectionId],
   );
   const column = useSelector(
-    (state) => state.resume.columns.byId[section?.columnId],
+    (state) => state.resume.present.columns.byId[section?.columnId],
   );
   const fieldStyling = field?.styling;
   const columnStyling = column?.styling;
@@ -63,6 +62,23 @@ const SlateField = ({ field, index }) => {
     subsectionStyling,
     fieldStyling,
   });
+
+  const isRestoringFromRedux = useRef(false);
+
+  useEffect(() => {
+    if (!field.value || editor.children === field.value) return;
+    if (JSON.stringify(editor.children) === JSON.stringify(field.value)) return;
+
+    isRestoringFromRedux.current = true;
+    try {
+      editor.selection = null;
+      editor.marks = null;
+      editor.children = structuredClone(field.value);
+      editor.onChange();
+    } finally {
+      isRestoringFromRedux.current = false;
+    }
+  }, [editor, field.value]);
 
   useEffect(() => {
     editorRegistry.set(editorId, editor);
@@ -91,7 +107,6 @@ const SlateField = ({ field, index }) => {
     ],
   );
 
-  // Return nothing so Slate still runs its own focus and selection handlers.
   const handleActivateEditor = () => {
     dispatch(setActiveEditorId(editorId));
   };
@@ -133,9 +148,12 @@ const SlateField = ({ field, index }) => {
         editor={editor}
         initialValue={field.value ?? null}
         onChange={(value) => {
-          handleUpdateFieldValue(value);
+          if (isRestoringFromRedux.current) return;
+          const contentChanged = editor.operations.some(
+            operation => operation.type !== "set_selection",
+          );
+          if (contentChanged) handleUpdateFieldValue(value);
           dispatch(setActiveEditorSelection([...editor.children]));
-          //  dispatch(setActiveEditorSelection(editor.children));
         }}
         onMouseDown={(event) => selectOnEditorEntry(editor, event)}
         onClick={handleActivateEditor}

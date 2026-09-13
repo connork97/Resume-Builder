@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
-import { revertToPreviousState } from "./store/resumeSlice";
+// import { revertToPreviousState } from "./store/resumeSlice";
+import { ActionCreators as UndoActionCreators } from "redux-undo";
 import { setUser } from "./store/userSlice";
 import { checkApi, checkSession } from "./services/sessionServices";
 
@@ -42,14 +43,29 @@ const App = () => {
 
       const hasCtrl = e.ctrlKey || pressedKeys.has("ControlLeft") || pressedKeys.has("ControlRight");
       const hasAlt = e.altKey || pressedKeys.has("AltLeft") || pressedKeys.has("AltRight");
+      const hasUndo = pressedKeys.has("KeyZ")
+      //  && (e.ctrlKey || pressedKeys.has("ControlLeft") || pressedKeys.has("ControlRight"));
+      const hasRedo = pressedKeys.has("KeyY")
+      //  && (e.ctrlKey || pressedKeys.has("ControlLeft") || pressedKeys.has("ControlRight"));
       const has1 = pressedKeys.has("Digit1") || pressedKeys.has("Numpad1");
       const has2 = pressedKeys.has("Digit2") || pressedKeys.has("Numpad2");
       const has3 = pressedKeys.has("Digit3") || pressedKeys.has("Numpad3");
 
+      if (e.ctrlKey && e.key === "z") {
+        e.preventDefault();
+        console.log("Shortcut triggered: Ctrl + Z");
+        dispatch(UndoActionCreators.undo());
+      }
+      if (e.ctrlKey && e.key === "y") {
+        e.preventDefault();
+        console.log("Shortcut triggered: Ctrl + Y");
+        dispatch(UndoActionCreators.redo());
+      }
       if (hasCtrl && hasAlt && has1 && has2 && has3) {
         e.preventDefault();
         console.log("Shortcut triggered: Ctrl + Alt + 1 + 2 + 3");
-        dispatch(revertToPreviousState());
+      //   dispatch(revertToPreviousState());
+      dispatch(UndoActionCreators.undo());
       }
     };
 
@@ -74,7 +90,7 @@ const App = () => {
 //   }, [dispatch]);
 
 //   Used for Checking Editor History Undo/Redo Stack
-//   const activeEditorId = useSelector((state) => state.resume.activeEditorId);
+//   const activeEditorId = useSelector((state) => state.resume.present.activeEditorId);
 //   const editor = editorRegistry.get(activeEditorId);
 
 //   useEffect(() => {

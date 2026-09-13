@@ -38,7 +38,7 @@ const collectColorsFromSlateNodes = (nodes = [], colors = new Set()) => {
 };
 
 export const selectUsedResumeColors = (state) => {
-  const resume = state.resume;
+  const resume = state.resume.present;
   const colors = new Set();
 
   collectColorsFromStyle(resume.styling, colors);

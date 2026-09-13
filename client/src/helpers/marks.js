@@ -4,7 +4,7 @@ import { store } from "../store/store.js";
 
 const getResumeStyling = (style) => {
   const state = store.getState();
-  const resumeStyling = state.resume.styling;
+  const resumeStyling = state.resume.present.styling;
   return resumeStyling[style];
 }
 
@@ -16,13 +16,13 @@ const getActiveEditorColor = (editor) => {
   }
 
   const state = store.getState();
-  const activeEditorId = state.resume.activeEditorId;
-  const activeField = state.resume.fields.byId[activeEditorId];
+  const activeEditorId = state.resume.present.activeEditorId;
+  const activeField = state.resume.present.fields.byId[activeEditorId];
   const activeSection =
-    state.resume.sections.byId[activeEditorId] ||
-    state.resume.sections.byId[state.resume.activeSectionIds[0]];
-  const activeSubsection = state.resume.subsections.byId[activeField?.subsectionId];
-  const activeColumn = state.resume.columns.byId[activeSection?.columnId];
+    state.resume.present.sections.byId[activeEditorId] ||
+    state.resume.present.sections.byId[state.resume.present.activeSectionIds[0]];
+  const activeSubsection = state.resume.present.subsections.byId[activeField?.subsectionId];
+  const activeColumn = state.resume.present.columns.byId[activeSection?.columnId];
 
   return (
     activeField?.styling?.color ||

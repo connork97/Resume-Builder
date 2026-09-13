@@ -59,13 +59,13 @@ const Section = ({ id, section, column, index }) => {
     sensors: sectionSensors,
   });
 
-  const resumeLayout = useSelector((state) => state.resume.layout);
-  const reduxSections = useSelector((state) => state.resume.sections);
-  const columns = useSelector((state) => state.resume.columns);
+  const resumeLayout = useSelector((state) => state.resume.present.layout);
+  const reduxSections = useSelector((state) => state.resume.present.sections);
+  const columns = useSelector((state) => state.resume.present.columns);
   const activeSectionIds = useSelector(
-    (state) => state.resume.activeSectionIds,
+    (state) => state.resume.present.activeSectionIds,
   );
-  const subsections = useSelector((state) => state.resume.subsections);
+  const subsections = useSelector((state) => state.resume.present.subsections);
 
   const [isFirstColumn, setIsFirstColumn] = useState(false);
   const [isLastColumn, setIsLastColumn] = useState(false);

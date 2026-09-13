@@ -8,19 +8,19 @@ import { parseRemValue } from "@/utils/formatters";
 const MarginRulerTop = ({ renderMarginRuler, geometry }) => {
   const dispatch = useDispatch();
 
-  const resume = useSelector((state) => state.resume);
+  const resume = useSelector((state) => state.resume.present);
   const resumePadding = resume?.layout?.padding ?? {};
 
-  const activeSectionIds = useSelector((state) => state.resume.activeSectionIds);
+  const activeSectionIds = useSelector((state) => state.resume.present.activeSectionIds);
   const activeSectionId = activeSectionIds[0] ?? null;
   const section = useSelector(
-    (state) => state.resume.sections.byId[activeSectionId],
+    (state) => state.resume.present.sections.byId[activeSectionId],
   );
   const sectionPadding = section?.layout?.padding ?? {};
 
-  const columns = useSelector((state) => state.resume.columns);
+  const columns = useSelector((state) => state.resume.present.columns);
   const column = useSelector(
-    (state) => state.resume.columns.byId[section?.columnId],
+    (state) => state.resume.present.columns.byId[section?.columnId],
   );
   const columnPadding = column?.layout?.padding ?? {};
 

@@ -10,7 +10,7 @@ const SectionPadding = ({ section, column, isFirstColumn, isLastColumn }) => {
 
    const dispatch = useDispatch();
 
-   const resume = useSelector(state => state.resume);
+   const resume = useSelector(state => state.resume.present);
    const resumeLayout = resume.layout;
 
    const [sectionPadding, setSectionPadding] = useState({

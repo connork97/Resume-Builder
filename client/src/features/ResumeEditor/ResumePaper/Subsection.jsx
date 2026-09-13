@@ -11,12 +11,12 @@ import { MdDragIndicator } from "react-icons/md";
 const SubsectionRenderer = ({ subsection }) => {
   const dispatch = useDispatch();
   const section = useSelector(
-    (state) => state.resume.sections.byId[subsection.sectionId],
+    (state) => state.resume.present.sections.byId[subsection.sectionId],
   );
   const sectionLayout = useSelector(
-    (state) => state.resume.sections.byId[subsection.sectionId].layout,
+    (state) => state.resume.present.sections.byId[subsection.sectionId].layout,
   );
-  const fields = useSelector((state) => state.resume.fields);
+  const fields = useSelector((state) => state.resume.present.fields);
   const subsectionLayout = subsection.layout;
 
   let parentLayoutDict = {};

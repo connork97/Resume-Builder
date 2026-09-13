@@ -34,8 +34,8 @@ const LineHeight = ({
   resumeStyling,
 }) => {
   const dispatch = useDispatch();
-  const reduxSections = useSelector((state) => state.resume.sections);
-  const reduxColumns = useSelector((state) => state.resume.columns);
+  const reduxSections = useSelector((state) => state.resume.present.sections);
+  const reduxColumns = useSelector((state) => state.resume.present.columns);
 
   const getResumeLineHeight = useCallback(
     () => roundToTenth(getNumber(resumeStyling?.lineHeight, 1.2)),

@@ -192,10 +192,12 @@ export const setIcon = (editor, icon) => {
     Transforms.collapse(editor, { edge: 'start' });
   }
 
+  const fontSizeOffset = Editor.marks(editor)?.fontSizeOffset ?? 0;
+
   Transforms.insertNodes(editor, {
     type: 'icon',
     iconId: icon,
     iconColor: getActiveEditorColor(editor),
-    children: [{ text: '' }],
+    children: [{ text: '', fontSizeOffset }],
   });
 }

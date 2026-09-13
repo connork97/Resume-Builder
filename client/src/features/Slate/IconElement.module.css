@@ -1,0 +1,18 @@
+.selected {
+  background-color: #316ac5;
+  /* line-height: 1.5; */
+}
+
+.selected > svg {
+   color: HighlightText;
+}
+
+@media print {
+   .selected {
+      background-color: transparent;
+   }
+
+   .selected > svg {
+      color: inherit;
+   }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
-import { getFaIcon } from '@/lib/iconLibrary';
+import IconElement from './IconElement';
 
-const RenderElement = ({ element, attributes, children, type }) => {
+const RenderElement = ({ element, attributes, children, type, inheritedFontSize, inheritedLineHeight }) => {
    
    const stylingObj = {
       textAlign: element.textAlign,
@@ -15,36 +15,17 @@ const RenderElement = ({ element, attributes, children, type }) => {
          return <ol {...attributes} style={stylingObj}>{children}</ol>
       case 'list-item':
          return <li {...attributes} style={stylingObj}>{children}</li>
-      case 'icon': {
-         const Icon = getFaIcon(element.iconId);
-
-         if (!Icon) {
-            return (
-               <span {...attributes} >
-                  {children}
-               </span>
-            );
-         }
-
+      case 'icon':
          return (
-            <span
-               {...attributes}
-               contentEditable={false}
-               style={{
-                  // display: 'inline-flex',
-                  alignItems: 'center',
-                  verticalAlign: 'baseline',
-                  // color: 'inherit',
-                  color: element.iconColor ?? 'currentColor',
-                  fontSize: element.iconSize ?? '1em',
-                  lineHeight: 1,
-               }}
+            <IconElement
+               element={element}
+               attributes={attributes}
+               inheritedFontSize={inheritedFontSize}
+               inheritedLineHeight={inheritedLineHeight}
             >
-               <Icon aria-hidden='true' focusable='false' />
                {children}
-            </span>
-         )
-      }
+            </IconElement>
+         );
       case 'paragraph':
          return <p {...attributes} style={stylingObj}>{children}</p>
       case 'heading':

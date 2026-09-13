@@ -114,6 +114,11 @@ a {
   text-decoration: none;
 }
 
+#editorPage ::selection {
+  background-color: #316ac5;
+  color: white;
+}
+
 /** COMMONLY USED STYLING CLASSES **/
 /* .buttonMain {
   position: relative;

@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback, useEffect } from "react";
+import { selectOnEditorEntry } from "../../helpers/slateHelpers/selectOnEditorEntry.js";
 import { withInlineVoidIcons } from "../../helpers/slateHelpers/editorSchemaRules.js";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor } from "slate";
@@ -67,16 +68,23 @@ const SlateHeading = ({ section }) => {
     [resumeStyling, columnStyling, sectionStyling],
   );
 
+  // Return nothing so Slate still runs its own focus and selection handlers.
+  const handleActivateEditor = () => {
+    dispatch(setActiveEditorId(editorId));
+  };
+
   const renderElement = useCallback((props) => {
     return (
       <RenderElement
+        inheritedFontSize={inheritedFontSize}
+        inheritedLineHeight={inheritedLineHeight}
         element={props.element}
         type={props.element.type}
         attributes={props.attributes}
         children={props.children}
       />
     );
-  }, []);
+  }, [inheritedFontSize, inheritedLineHeight]);
 
   const handleUpdateSection = (newValue) => {
     dispatch(
@@ -96,11 +104,12 @@ const SlateHeading = ({ section }) => {
       onChange={(value) => {
         handleUpdateSection(value);
         dispatch(setActiveEditorSelection([...editor.children]));
-        //   dispatch(setActiveEditorSelection(editor.children));
+          dispatch(setActiveEditorSelection(editor.children));
       }}
     >
       <Editable
-        onFocus={() => dispatch(setActiveEditorId(editorId))}
+        onMouseDown={(event) => selectOnEditorEntry(editor, event)}
+          onFocus={handleActivateEditor}
         onKeyDown={(event) => handleHotKey(editor, event)}
         renderElement={renderElement}
         renderLeaf={renderLeaf}

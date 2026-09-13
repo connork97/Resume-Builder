@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useCallback } from "react";
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, Editor, Transforms } from "slate";
+import { selectOnEditorEntry } from "../../helpers/slateHelpers/selectOnEditorEntry.js";
 import { withInlineVoidIcons } from "../../helpers/slateHelpers/editorSchemaRules.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,12 +13,6 @@ import {
 import Leaf from "./renderLeaf.jsx";
 import RenderElement from "./RenderElement.jsx";
 
-import {
-  addListItem,
-  indentList,
-  outdentList,
-} from "../../helpers/listBehavior.js";
-
 import { editorRegistry } from "../../helpers/editorRegistry.js";
 import { getNodeString } from "@/helpers/getNodeString.js";
 import { getMinWidth } from "@/helpers/getMinWidth.js";
@@ -25,10 +20,7 @@ import {
   getCascadedFontSize,
   getCascadedLineHeight,
 } from "@/helpers/leafHelpers.js";
-import { useSortable } from "@dnd-kit/react/sortable";
 import { withHistory } from "slate-history";
-import { toggleMark } from "@/helpers/marks.js";
-import { toggleList } from "@/helpers/blocks.js";
 import { handleHotKey } from "@/utils/hotKeys.js";
 
 const SlateField = ({ field, index }) => {
@@ -99,16 +91,23 @@ const SlateField = ({ field, index }) => {
     ],
   );
 
+  // Return nothing so Slate still runs its own focus and selection handlers.
+  const handleActivateEditor = () => {
+    dispatch(setActiveEditorId(editorId));
+  };
+
   const renderElement = useCallback((props) => {
     return (
       <RenderElement
+        inheritedFontSize={inheritedFontSize}
+        inheritedLineHeight={inheritedLineHeight}
         element={props.element}
         type={props.element.type}
         attributes={props.attributes}
         children={props.children}
       />
     );
-  }, []);
+  }, [inheritedFontSize, inheritedLineHeight]);
 
   const handleUpdateFieldValue = (newValue) => {
     dispatch(
@@ -138,12 +137,14 @@ const SlateField = ({ field, index }) => {
           dispatch(setActiveEditorSelection([...editor.children]));
           //  dispatch(setActiveEditorSelection(editor.children));
         }}
-        onClick={() => dispatch(setActiveEditorId(editorId))}
+        onMouseDown={(event) => selectOnEditorEntry(editor, event)}
+        onClick={handleActivateEditor}
       >
         <Editable
           onKeyDown={(event) => handleHotKey(editor, event)}
-          onFocus={() => dispatch(setActiveEditorId(editorId))}
-          onClick={() => dispatch(setActiveEditorId(editorId))}
+          onMouseDown={(event) => selectOnEditorEntry(editor, event)}
+          onFocus={handleActivateEditor}
+          onClick={handleActivateEditor}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           placeholder={field.label}

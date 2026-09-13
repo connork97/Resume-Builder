@@ -19,6 +19,7 @@ import RenderElement from "./RenderElement.jsx";
 
 import { editorRegistry } from "../../helpers/editorRegistry.js";
 import { handleHotKey } from "@/utils/hotKeys.js";
+import { useSlateHistoryGrouping } from "@/hooks/useSlateHistoryGrouping.js";
 
 const SlateHeading = ({ section }) => {
   const dispatch = useDispatch();
@@ -48,12 +49,20 @@ const SlateHeading = ({ section }) => {
   );
   //   const editor = useMemo(() => withReact(createEditor()), []);
 
+  const {
+    getHistoryGroup,
+    endHistoryGroup,
+    onKeyDown: groupHistoryKeyDown,
+    editableProps: historyInputProps,
+  } = useSlateHistoryGrouping(editor, editorId);
+
   const isRestoringFromRedux = useRef(false);
 
   useEffect(() => {
     if (!section.value || editor.children === section.value) return;
     if (JSON.stringify(editor.children) === JSON.stringify(section.value)) return;
 
+    endHistoryGroup();
     isRestoringFromRedux.current = true;
     try {
       editor.selection = null;
@@ -63,7 +72,7 @@ const SlateHeading = ({ section }) => {
     } finally {
       isRestoringFromRedux.current = false;
     }
-  }, [editor, section.value]);
+  }, [editor, section.value, endHistoryGroup]);
 
   useEffect(() => {
     editorRegistry.set(editorId, editor);
@@ -86,6 +95,7 @@ const SlateHeading = ({ section }) => {
 
   // Return nothing so Slate still runs its own focus and selection handlers.
   const handleActivateEditor = () => {
+    endHistoryGroup();
     dispatch(setActiveEditorId(editorId));
   };
 
@@ -102,13 +112,11 @@ const SlateHeading = ({ section }) => {
     );
   }, [inheritedFontSize, inheritedLineHeight]);
 
-  const handleUpdateSection = (newValue) => {
-    dispatch(
-      updateSection({
-        id: section.id,
-        changes: { value: newValue },
-      }),
-    );
+  const handleUpdateSection = (newValue, historyGroup) => {
+    dispatch({
+      ...updateSection({ id: section.id, changes: { value: newValue } }),
+      meta: { historyGroup },
+    });
   };
 
   if (!section.value) return null;
@@ -122,14 +130,19 @@ const SlateHeading = ({ section }) => {
         const contentChanged = editor.operations.some(
           operation => operation.type !== "set_selection",
         );
-        if (contentChanged) handleUpdateSection(value);
+        const historyGroup = getHistoryGroup();
+        if (contentChanged) handleUpdateSection(value, historyGroup);
         dispatch(setActiveEditorSelection([...editor.children]));
       }}
     >
       <Editable
+        {...historyInputProps}
         onMouseDown={(event) => selectOnEditorEntry(editor, event)}
           onFocus={handleActivateEditor}
-        onKeyDown={(event) => handleHotKey(editor, event)}
+        onKeyDown={(event) => {
+          groupHistoryKeyDown(event);
+          handleHotKey(editor, event);
+        }}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder={section.label}

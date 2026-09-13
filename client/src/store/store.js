@@ -10,6 +10,7 @@ import undoable, { excludeAction } from "redux-undo";
 export const store = configureStore({
    reducer: {
       resume: undoable(resumeReducer, {
+         groupBy: action => action.meta?.historyGroup ?? null,
          filter: excludeAction([
             // List actions to exclude from undo history here
             "resume/setActiveSectionId",

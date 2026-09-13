@@ -21,6 +21,7 @@ import {
   getCascadedLineHeight,
 } from "@/helpers/leafHelpers.js";
 import { handleHotKey } from "@/utils/hotKeys.js";
+import { useSlateHistoryGrouping } from "@/hooks/useSlateHistoryGrouping.js";
 
 const SlateField = ({ field }) => {
   // Stable editor instance
@@ -63,12 +64,20 @@ const SlateField = ({ field }) => {
     fieldStyling,
   });
 
+  const {
+    getHistoryGroup,
+    endHistoryGroup,
+    onKeyDown: groupHistoryKeyDown,
+    editableProps: historyInputProps,
+  } = useSlateHistoryGrouping(editor, editorId);
+
   const isRestoringFromRedux = useRef(false);
 
   useEffect(() => {
     if (!field.value || editor.children === field.value) return;
     if (JSON.stringify(editor.children) === JSON.stringify(field.value)) return;
 
+    endHistoryGroup();
     isRestoringFromRedux.current = true;
     try {
       editor.selection = null;
@@ -78,7 +87,7 @@ const SlateField = ({ field }) => {
     } finally {
       isRestoringFromRedux.current = false;
     }
-  }, [editor, field.value]);
+  }, [editor, field.value, endHistoryGroup]);
 
   useEffect(() => {
     editorRegistry.set(editorId, editor);
@@ -108,6 +117,7 @@ const SlateField = ({ field }) => {
   );
 
   const handleActivateEditor = () => {
+    endHistoryGroup();
     dispatch(setActiveEditorId(editorId));
   };
 
@@ -124,13 +134,11 @@ const SlateField = ({ field }) => {
     );
   }, [inheritedFontSize, inheritedLineHeight]);
 
-  const handleUpdateFieldValue = (newValue) => {
-    dispatch(
-      updateFieldValue({
-        fieldId: field.id,
-        newValue,
-      }),
-    );
+  const handleUpdateFieldValue = (newValue, historyGroup) => {
+    dispatch({
+      ...updateFieldValue({ fieldId: field.id, newValue }),
+      meta: { historyGroup },
+    });
   };
 
   if (!field.value) return null;
@@ -152,14 +160,19 @@ const SlateField = ({ field }) => {
           const contentChanged = editor.operations.some(
             operation => operation.type !== "set_selection",
           );
-          if (contentChanged) handleUpdateFieldValue(value);
+          const historyGroup = getHistoryGroup();
+          if (contentChanged) handleUpdateFieldValue(value, historyGroup);
           dispatch(setActiveEditorSelection([...editor.children]));
         }}
         onMouseDown={(event) => selectOnEditorEntry(editor, event)}
         onClick={handleActivateEditor}
       >
         <Editable
-          onKeyDown={(event) => handleHotKey(editor, event)}
+          {...historyInputProps}
+          onKeyDown={(event) => {
+            groupHistoryKeyDown(event);
+            handleHotKey(editor, event);
+          }}
           onMouseDown={(event) => selectOnEditorEntry(editor, event)}
           onFocus={handleActivateEditor}
           onClick={handleActivateEditor}

@@ -1,3 +1,4 @@
+import { normalizeSlateValue } from "./normalizeSlateValue.js";
 // * ------------------------------ V
 // * API TO FRONT END NORMALIZATION V
 // * ------------------------------ V
@@ -69,7 +70,7 @@ const normalizeResumeFromApi = (apiResume) => {
         label: section.label ?? '',
         type: section.type ?? 'defaultSection',
         position: section.position ?? 0,
-        value: section.value ?? [],
+        value: normalizeSlateValue(section.value ?? []),
         showHeading: section.showHeading ?? true,
         layout: normalizeSectionLayout(section.layout),
         styling: section.styling ?? {},
@@ -102,7 +103,7 @@ const normalizeResumeFromApi = (apiResume) => {
             subsectionId: field.subsectionId,
             label: field.label ?? '',
             position: field.position ?? 0,
-            value: field.value ?? [],
+            value: normalizeSlateValue(field.value ?? []),
             layout: field.layout ?? {},
             styling: field.styling ?? {},
           };
@@ -137,7 +138,7 @@ const normalizeResumeFromApi = (apiResume) => {
   //       label: section.label ?? '',
   //       type: section.type ?? 'defaultSection',
   //       position: section.position ?? 0,
-  //       value: section.value ?? [],
+  //       value: normalizeSlateValue(section.value ?? []),
   //       styling: section.styling ?? {},
   //       subsectionIds: apiSubsections.map((subsection) => subsection.id)
   //     }
@@ -165,7 +166,7 @@ const normalizeResumeFromApi = (apiResume) => {
   //           subsectionId: field.subsectionId,
   //           label: field.label ?? '',
   //           position: field.position ?? 0,
-  //           value: field.value ?? [],
+  //           value: normalizeSlateValue(field.value ?? []),
   //           styling: field.styling ?? {},
   //         };
 

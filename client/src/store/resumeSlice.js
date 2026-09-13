@@ -1,3 +1,4 @@
+import { normalizeSlateValue } from "../utils/normalizeSlateValue.js";
 import { normalizeSectionLayout } from "../utils/normalizeSectionLayout.js";
 import { createSlice } from '@reduxjs/toolkit';
 
@@ -17,7 +18,7 @@ const insertSubsection = (state, subsectionData) => {
       .subsectionIds.push(subsection.id);
 
    for (const field of sortedFields) {
-      state.fields.byId[field.id] = field;
+      state.fields.byId[field.id] = { ...field, value: normalizeSlateValue(field.value) };
       state.fields.allIds.push(field.id);
    }
 };
@@ -231,6 +232,7 @@ const resumeSlice = createSlice({
 
          state.sections.byId[section.id] = {
             ...section,
+            value: normalizeSlateValue(section.value),
             layout: normalizeSectionLayout(section.layout),
             subsectionIds: [],
          };
@@ -267,7 +269,7 @@ const resumeSlice = createSlice({
       addField(state, action) {
          const { fieldData } = action.payload;
          console.log("Adding field with data: ", fieldData);
-         state.fields.byId[fieldData.id] = fieldData;
+         state.fields.byId[fieldData.id] = { ...fieldData, value: normalizeSlateValue(fieldData.value) };
          state.fields.allIds.push(fieldData.id);
          state.subsections.byId[fieldData.subsectionId].fieldIds.push(fieldData.id);
       },

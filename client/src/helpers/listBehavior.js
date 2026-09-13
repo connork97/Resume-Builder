@@ -54,7 +54,7 @@ export const outdentList = (editor, listItemEntry) => {
   if (LIST_TYPES.includes(grandparentNode.type)) {
     Transforms.liftNodes(editor, { at: listItemPath });
   } else {
-    console.error("Cannot indent list any further.");
+    console.error("Cannot outdent list any further.");
     //  May change to just converting back to paragraph
   }
 };

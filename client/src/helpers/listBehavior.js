@@ -1,6 +1,6 @@
-import { Editor, Transforms, Path, Range, Element as SlateElement } from "slate";
+import { Editor, Transforms, Range, Element as SlateElement } from "slate";
 import { HistoryEditor } from "slate-history";
-import { LIST_TYPES } from "./blocks.js";
+import { editList, selectedBlocks, withBlockRefs, indentItem, outdentItem } from "./listTransforms.js";
 
 export const addListItem = (editor, listItemEntry) => {
   if (!editor.selection || !listItemEntry) return;
@@ -26,35 +26,15 @@ export const addListItem = (editor, listItemEntry) => {
 };
 
 export const indentList = (editor, listItemEntry) => {
-  
-  const [, listItemPath] = listItemEntry;
-
-  if (!listItemPath) return;
-
-  const [parentList] = Editor.parent(editor, listItemPath);
-  const parentListType = parentList.type;
-
-  // Wrap the current list item in a new list based on the parent's list type
-  Transforms.wrapNodes(
-    editor,
-    { type: parentListType, children: [] },
-    { at: listItemPath }
-  );
+  if (!editor.selection || !listItemEntry) return;
+  editList(editor, () => withBlockRefs(editor, selectedBlocks(editor), refs => {
+    for (const ref of refs) if (ref.current) indentItem(editor, ref.current);
+  }));
 };
 
 export const outdentList = (editor, listItemEntry) => {
-
-  const [, listItemPath] = listItemEntry;
-  
-  if (!listItemPath) return;
-
-  const grandparentPath = Path.parent(Path.parent(listItemPath));
-  const [grandparentNode] = Editor.node(editor, grandparentPath);
-  // Check if list item is at the first level before outdenting further
-  if (LIST_TYPES.includes(grandparentNode.type)) {
-    Transforms.liftNodes(editor, { at: listItemPath });
-  } else {
-    console.error("Cannot outdent list any further.");
-    //  May change to just converting back to paragraph
-  }
+  if (!editor.selection || !listItemEntry) return;
+  editList(editor, () => withBlockRefs(editor, selectedBlocks(editor), refs => {
+    for (const ref of refs) if (ref.current) outdentItem(editor, ref.current);
+  }));
 };

@@ -34,6 +34,7 @@ export const handleHotKey = (editor, event) => {
    
    const [listItemEntry] = Editor.nodes(editor, {
       match: (n) => n.type === "list-item",
+      mode: "lowest",
    });
 
    if (listItemEntry) {

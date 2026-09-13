@@ -14,8 +14,6 @@ SMALL BUGS:
 -Border Inputs for left and right sometimes use wrong value
    -It may be defaulting to a predetermined value, unsure of what the issue really is specifically
 
--Bullets don't allow for copy/pasting without breaking up indentation (shift + tab fixes indentation though, but is annoying)
-
 -Margin Ruler Indicators should be touched up to more clearly depict their effects
    -Something like a tiny indicator to show where the section/column starts, and the main indicator to show where it ends up
 

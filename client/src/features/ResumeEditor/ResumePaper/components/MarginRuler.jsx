@@ -26,6 +26,7 @@ const MarginRuler = ({ pageRef }) => {
                   && value != 0 && value != 11;
                return (
                   <span
+                     key={value}
                      className={
                         displayValue
                            ? position === 'top'

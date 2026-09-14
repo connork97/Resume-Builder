@@ -60,11 +60,19 @@
 }
 
 .marginIndicatorLabel {
+   opacity: 0;
+   pointer-events: none;
+   transition: opacity 250ms ease-in;
    position: absolute;
    background-color: var(--background-toolbar);
    padding: 0.25rem 0.5rem;
    border: var(--border-main);
    border-radius: var(--border-radius-main);
+}
+
+.marginIndicatorLabelVisible {
+   opacity: 1;
+   transition-duration: 150ms;
 }
 
 .resumeMarginIndicatorLeft,
@@ -157,4 +165,14 @@
 
 .resumeMarginIndicatorBottom {
    bottom: 0;
+}
+
+.marginIndicatorLabelVisible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marginIndicatorLabel {
+    transition: none;
+  }
 }

@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { useSelector } from "react-redux";
 import styles from "./MarginRuler.module.css";
 import MarginIndicator from "./MarginIndicator";
@@ -9,6 +9,10 @@ export default function MarginRulerSide({
   renderMarginRuler,
   geometry,
   pageRef,
+  visibleMarginLabels,
+  showMarginLabel,
+  delayHideMarginLabel,
+  flashLabel,
 }) {
   const resume = useSelector((state) => state.resume.present);
   const { preview } = useContext(PaddingPreviewContext);
@@ -28,13 +32,6 @@ export default function MarginRulerSide({
   );
 
 
-// ! Need to add change so this stays displayed/gets set again upon any change to padding values
-// ! Particularly for arrow key presses
-  const [marginIndicatorLabelToShow, setMarginIndicatorLabelToShow] =
-    useState(null);
-
-
-
   return (
     <div className={styles.marginRulerSideWrapper} data-prevent-blur="true">
       {renderMarginRuler(11, 0.1, ["0"], "bottom")}
@@ -46,22 +43,23 @@ export default function MarginRulerSide({
         pageRef={pageRef}
         className={styles.resumeMarginIndicatorTop}
         style={{ marginTop: padding.top }}
-        onMouseEnter={() => setMarginIndicatorLabelToShow("resume-top")}
-        onMouseLeave={() => setTimeout(() => setMarginIndicatorLabelToShow(null), 1500)}
+        onLabelShow={() => showMarginLabel("resume-top")}
+        onLabelHide={() => delayHideMarginLabel("resume-top")}
+        onLabelFlash={() => flashLabel("resume-top")}
+
 
       />
-      {marginIndicatorLabelToShow === "resume-top" && (
-         <span
-         className={styles.marginIndicatorLabel}
-         style={{
-            top: padding.top,
-            right: "150%",
-            transform: `translateY(-50%)`,
-         }}
-         >
+      <span
+        className={`${styles.marginIndicatorLabel} ${visibleMarginLabels.has("resume-top") ? styles.marginIndicatorLabelVisible : ""}`}
+        aria-hidden={!visibleMarginLabels.has("resume-top")}
+        style={{
+          top: padding.top,
+          right: "150%",
+          transform: `translateY(-50%)`,
+        }}
+      >
         {parseFloat(padding.top).toFixed(2) + "rem"}
       </span>
-      )}
       {/* <MarginIndicator target="resume" side="bottom" value={resume.layout.padding.bottom} pageRef={pageRef}
       className={styles.resumeMarginIndicatorBottom} style={{ marginBottom: padding.bottom }} />
       <span style={{position: 'absolute', bottom: padding.bottom, right: '150%', transform: `translateY(25%)` }}>{parseFloat(padding.bottom).toFixed(2) + 'rem'}</span> */}
@@ -77,24 +75,21 @@ export default function MarginRulerSide({
             pageRef={pageRef}
             className={styles.sectionMarginIndicatorTop}
             style={{ marginTop: `calc(${geometry.top}px + ${topInset}rem)` }}
-            onMouseEnter={() =>
-              setMarginIndicatorLabelToShow(`${section.id}-top`)
-            }
-            onMouseLeave={() => setTimeout(() => setMarginIndicatorLabelToShow(null), 1500)}
+            onLabelShow={() => showMarginLabel(`${section.id}-top`)}
+            onLabelHide={() => delayHideMarginLabel(`${section.id}-top`)}
+            onLabelFlash={() => flashLabel(`${section.id}-top`)}
           />
-          {marginIndicatorLabelToShow === `${section.id}-top` && (
-
-             <span
-             className={styles.marginIndicatorLabel}
-             style={{
-                top: `calc(${geometry.top}px + ${topInset}rem)`,
-                right: "150%",
-                transform: `translateY(-50%)`,
-               }}
-               >
+          <span
+            className={`${styles.marginIndicatorLabel} ${visibleMarginLabels.has(`${section.id}-top`) ? styles.marginIndicatorLabelVisible : ""}`}
+            aria-hidden={!visibleMarginLabels.has(`${section.id}-top`)}
+            style={{
+              top: `calc(${geometry.top}px + ${topInset}rem)`,
+              right: "150%",
+              transform: `translateY(-50%)`,
+            }}
+          >
             {parseFloat(sectionPadding?.top || 0).toFixed(2) + "rem"}
           </span>
-         )}
         </>
       )}
       {section && geometry && section.id !== column?.sectionIds.at(-1) && (
@@ -108,23 +103,21 @@ export default function MarginRulerSide({
             pageRef={pageRef}
             className={styles.sectionMarginIndicatorBottom}
             style={{ marginTop: geometry.bottom }}
-            onMouseEnter={() =>
-              setMarginIndicatorLabelToShow(`${section.id}-bottom`)
-            }
-            onMouseLeave={() => setTimeout(() => setMarginIndicatorLabelToShow(null), 1500)}
+            onLabelShow={() => showMarginLabel(`${section.id}-bottom`)}
+            onLabelHide={() => delayHideMarginLabel(`${section.id}-bottom`)}
+            onLabelFlash={() => flashLabel(`${section.id}-bottom`)}
           />
-          {marginIndicatorLabelToShow === `${section.id}-bottom` && (
-            <span
-              className={styles.marginIndicatorLabel}
-              style={{
-                marginTop: geometry.bottom,
-                right: "150%",
-                transform: `translateY(-50%)`,
-              }}
-            >
-              {parseFloat(sectionPadding?.bottom || 0).toFixed(2) + "rem"}
-            </span>
-          )}
+          <span
+            className={`${styles.marginIndicatorLabel} ${visibleMarginLabels.has(`${section.id}-bottom`) ? styles.marginIndicatorLabelVisible : ""}`}
+            aria-hidden={!visibleMarginLabels.has(`${section.id}-bottom`)}
+            style={{
+              marginTop: geometry.bottom,
+              right: "150%",
+              transform: `translateY(-50%)`,
+            }}
+          >
+            {parseFloat(sectionPadding?.bottom || 0).toFixed(2) + "rem"}
+          </span>
         </>
       )}
     </div>

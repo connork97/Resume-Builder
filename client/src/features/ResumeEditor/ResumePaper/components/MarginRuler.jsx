@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './MarginRuler.module.css';
 import MarginRulerTop from './MarginRulerTop';
@@ -14,6 +14,44 @@ const MarginRuler = ({ pageRef }) => {
    const columnId = useSelector(state => state.resume.present.sections.byId[sectionId]?.columnId);
    // Share one measurement and observer set between both rulers.
    const geometry = useMarginGeometry(pageRef, columnId, sectionId);
+
+   const [visibleMarginLabels, setVisibleMarginLabels] = useState(() => new Set());
+   const marginLabelDisplayTimers = useRef(new Map());
+
+   const cancelHideMarginLabel = useCallback((id) => {
+      clearTimeout(marginLabelDisplayTimers.current.get(id));
+      marginLabelDisplayTimers.current.delete(id);
+   }, []);
+
+   const showMarginLabel = useCallback((id) => {
+      cancelHideMarginLabel(id);
+      setVisibleMarginLabels(previous => previous.has(id) ? previous : new Set(previous).add(id));
+   }, [cancelHideMarginLabel]);
+
+   const delayHideMarginLabel = useCallback((id) => {
+      cancelHideMarginLabel(id);
+      marginLabelDisplayTimers.current.set(id, setTimeout(() => {
+         marginLabelDisplayTimers.current.delete(id);
+         setVisibleMarginLabels(previous => {
+            const next = new Set(previous);
+            next.delete(id);
+            return next;
+         });
+      }, 1500));
+   }, [cancelHideMarginLabel]);
+
+   const flashLabel = useCallback((id) => {
+      showMarginLabel(id);
+      delayHideMarginLabel(id);
+   }, [showMarginLabel, delayHideMarginLabel]);
+
+   useEffect(() => {
+      const timers = marginLabelDisplayTimers.current;
+      return () => {
+         timers.forEach(timer => clearTimeout(timer));
+         timers.clear();
+      };
+   }, []);
 
    const renderMarginRuler = (target, step, endsWith = [], position) => {
       const count = target / step + 1;
@@ -64,11 +102,19 @@ const MarginRuler = ({ pageRef }) => {
          onClick={(e) => handleEditorBlur(e)}
       >
          <MarginRulerTop
+            visibleMarginLabels={visibleMarginLabels}
+            showMarginLabel={showMarginLabel}
+            delayHideMarginLabel={delayHideMarginLabel}
+            flashLabel={flashLabel}
             geometry={geometry}
             pageRef={pageRef}
             renderMarginRuler={renderMarginRuler}
          />
          <MarginRulerSide
+            visibleMarginLabels={visibleMarginLabels}
+            showMarginLabel={showMarginLabel}
+            delayHideMarginLabel={delayHideMarginLabel}
+            flashLabel={flashLabel}
             geometry={geometry}
             pageRef={pageRef}
             renderMarginRuler={renderMarginRuler}

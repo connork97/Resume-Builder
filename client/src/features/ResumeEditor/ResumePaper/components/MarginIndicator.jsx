@@ -4,11 +4,12 @@ import { updateResume, updateColumn, updateSection } from '@/store/resumeSlice';
 import { PaddingPreviewContext } from '../PaddingPreviewContext';
 import { parseRemValue } from '@/utils/formatters';
 
-export default function MarginIndicator({ target, id = null, side, value, pageRef, ...props }) {
+export default function MarginIndicator({ target, id = null, side, value, pageRef, onLabelShow, onLabelHide, onLabelFlash, ...props }) {
   const dispatch = useDispatch();
   const resumePadding = useSelector(state => state.resume.present.layout.padding);
   const { setPreview } = useContext(PaddingPreviewContext);
   const drag = useRef(null);
+  const hovered = useRef(false);
   const horizontal = side === 'left' || side === 'right';
   // Section bottom handles grow the section down; page bottom moves inward.
   const direction = side === 'right' || (side === 'bottom' && target === 'resume') ? -1 : 1;
@@ -28,6 +29,7 @@ export default function MarginIndicator({ target, id = null, side, value, pageRe
       if (next !== drag.current.startValue) commit(next);
     }
     drag.current = null;
+    if (!hovered.current) onLabelHide?.();
     setPreview(null);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   };
@@ -37,6 +39,14 @@ export default function MarginIndicator({ target, id = null, side, value, pageRe
     aria-label={`Adjust ${target === 'resume' ? 'page' : target} ${side} padding`}
     title={`Drag to adjust ${side} padding, or use arrow keys`}
     onClick={event => event.stopPropagation()}
+    onMouseEnter={() => {
+      hovered.current = true;
+      onLabelShow?.();
+    }}
+    onMouseLeave={() => {
+      hovered.current = false;
+      if (!drag.current) onLabelHide?.();
+    }}
     onPointerDown={event => {
       event.stopPropagation();
       if (event.button !== 0 || drag.current) return;
@@ -51,6 +61,7 @@ export default function MarginIndicator({ target, id = null, side, value, pageRe
       if (!(pixelsPerRem > 0)) return;
       event.currentTarget.focus();
       drag.current = { startValue: parseRemValue(value), start: horizontal ? event.clientX : event.clientY, pixelsPerRem, pointerId: event.pointerId };
+      onLabelShow?.();
       event.currentTarget.setPointerCapture(event.pointerId);
     }}
     onPointerMove={event => {
@@ -69,7 +80,11 @@ export default function MarginIndicator({ target, id = null, side, value, pageRe
       if (drag.current) return;
       const current = parseRemValue(value);
       const next = Math.max(0, Math.round((current + direction * (event.key === keys[1] ? 0.1 : -0.1)) * 1000) / 1000);
-      if (next !== current) commit(next);
+      if (next !== current) {
+        commit(next);
+        if (hovered.current) onLabelShow?.();
+        else onLabelFlash?.();
+      }
     }}
   />;
 }

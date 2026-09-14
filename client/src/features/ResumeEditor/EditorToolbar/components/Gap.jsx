@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "@/features/ResumeEditor/TextFormatting/TextFormatting.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateResume } from "@/store/resumeSlice";
 import { RxColumnSpacing, RxRowSpacing } from "react-icons/rx";
+import TextFormatDropdown from "../../TextFormatting/shared/TextFormatDropdown";
+import { MdArrowDropDown } from "react-icons/md";
 
-const Gap = ({ label, gapType }) => {
+const Gap = () => {
   const dispatch = useDispatch();
   const resumeGap = useSelector((state) => state.resume.present.layout.gap);
 
-  const updateResumeGap = (incrementOrDecrement) => {
+  const updateResumeGap = (incrementOrDecrement, gapType) => {
     const parsedCurrentGap = parseFloat(resumeGap[gapType]);
     const updatedGap =
       parseFloat(
@@ -33,32 +35,87 @@ const Gap = ({ label, gapType }) => {
     );
   };
 
-  return (
-    <div className={styles.toolbarFlexWrapper}>
-      <button className='buttonMain' onClick={() => updateResumeGap('decrement')}>-</button>
-      {/* <button className={styles.textFormatButton}> */}
-      <button className='buttonMain'>
-        {gapType === "horizontal" && (
-          <>
-            <RxColumnSpacing style={{ position: "relative", top: "0.1em" }} />{" "}
-            {resumeGap[gapType]}
-          </>
-        )}
-        {gapType === "vertical" && (
-          <>
-            <RxRowSpacing style={{ position: "relative", top: "0.1em" }} />{" "}
-            {resumeGap[gapType]}
-          </>
-        )}
-      </button>
-      {/* <ToolbarInput
-            value={columnInputValue}
-            handleChange={setColumnInputValue}
-            commitChange={() => updateColumns()}
-            onBlur={() => updateColumns()}
-            /> */}
-      <button className='buttonMain' onClick={() => updateResumeGap('increment')}>+</button>
+  const [gapDropdownIsOpen, setGapDropdownIsOpen] = useState(false);
+
+  const gapOptions = [
+    {
+      label: "Horizontal Gap",
+      value: resumeGap.horizontal,
+      icon: <RxColumnSpacing />,
+      gapType: "horizontal",
+    },
+    {
+      label: "Vertical Gap",
+      value: resumeGap.vertical,
+      icon: <RxRowSpacing />,
+      gapType: "vertical",
+    },
+  ];
+
+  const gapOptionsArr = gapOptions.map((option) => (
+    <div
+      key={option.gapType}
+      className={styles.toolbarFlexWrapper}
+      style={{ justifyContent: "space-between" }}
+    >
+      <span>{option.label}</span>
+      <div className={styles.toolbarFlexWrapper}>
+        <button
+          className="buttonMain"
+          onClick={() => updateResumeGap("decrement", option.gapType)}
+        >
+          -
+        </button>
+        <button key={option.gapType} className="buttonMain">
+          {option.icon} {option.value}
+        </button>
+        <button
+          className="buttonMain"
+          onClick={() => updateResumeGap("increment", option.gapType)}
+        >
+          +
+        </button>
+      </div>
     </div>
+  ));
+
+  return (
+    <div>
+      <button
+        className="buttonMain"
+        data-id="open-close-dropdown-button"
+        onClick={() => setGapDropdownIsOpen(!gapDropdownIsOpen)}
+      >
+        Gap & Spacing{" "}
+        <MdArrowDropDown style={{ margin: "auto -0.25rem auto 0.25rem" }} />
+      </button>
+      {gapDropdownIsOpen && (
+        <TextFormatDropdown
+          isOpen={gapDropdownIsOpen}
+          setIsOpen={setGapDropdownIsOpen}
+          dropdownOptions={gapOptionsArr}
+          wrapperStyling={{ display: "flex", flexDirection: "column" }}
+        />
+      )}
+    </div>
+    //  <div className={styles.toolbarFlexWrapper}>
+    //    <button className='buttonMain' onClick={() => updateResumeGap('decrement')}>-</button>
+    //    <button className='buttonMain'>
+    //      {gapType === "horizontal" && (
+    //        <>
+    //          <RxColumnSpacing style={{ position: "relative", top: "0.1em" }} />{" "}
+    //          {resumeGap[gapType]}
+    //        </>
+    //      )}
+    //      {gapType === "vertical" && (
+    //        <>
+    //          <RxRowSpacing style={{ position: "relative", top: "0.1em" }} />{" "}
+    //          {resumeGap[gapType]}
+    //        </>
+    //      )}
+    //    </button>
+    //    <button className='buttonMain' onClick={() => updateResumeGap('increment')}>+</button>
+    //  </div>
   );
 };
 

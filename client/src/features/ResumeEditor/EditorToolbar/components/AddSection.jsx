@@ -8,7 +8,7 @@ import { addSection, addSubsection } from "@/store/resumeSlice";
 
 const AddSection = () => {
   const dispatch = useDispatch();
-  const resume = useSelector(state => state.resume.present)
+  const resume = useSelector((state) => state.resume.present);
 
   const [addSectionDropdownIsOpen, setAddSectionDropdownIsOpen] =
     useState(false);
@@ -71,14 +71,17 @@ const AddSection = () => {
   return (
     <div ref={dropdownRef}>
       <button
+        data-id="open-close-dropdown-button"
         className="buttonMain"
-        style={{whiteSpace: 'nowrap'}}
+        style={{ whiteSpace: "nowrap" }}
         onClick={() => setAddSectionDropdownIsOpen(!addSectionDropdownIsOpen)}
       >
         + Add Section
       </button>
       {addSectionDropdownIsOpen && (
         <TextFormatDropdown
+          isOpen={addSectionDropdownIsOpen}
+          setIsOpen={setAddSectionDropdownIsOpen}
           dropdownOptions={sectionOptionsArr}
           wrapperClassName="flexColumn"
         />

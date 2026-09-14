@@ -89,6 +89,7 @@ const FontFamily = () => {
   return (
     <div style={{ whiteSpace: "nowrap" }}>
       <button
+        data-id="open-close-dropdown-button"
         className="buttonMain"
         onClick={() => setShowDropdown(!showDropdown)}
       >

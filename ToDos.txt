@@ -7,8 +7,6 @@ MEDIUM BUGS:
 -Dragging Fields is Clunky/Buggy
    -Particularly when dragging within grid layouts
 
--Margins can look like they're slightly to moderately negative when adjusting the space between columns
-
 -Undo/Redo functionality is buggy when adding/deleting primary content (fields, subsections, sections, and columns)
    
 SMALL BUGS:
@@ -51,10 +49,10 @@ BIGGER FEATURES:
    -Likely a dropdown with checkboxes for font size, margin/padding, etc etc
    -Potentially show which sections, fields, etc are NOT default to even more clearly allow resets
 
+MEDIUM FEATURES:
+
 -Column Setup/Organization
    -Need to add a way to have multiple columns on page, but also allowing particular sections to span multiple columns
-
-MEDIUM FEATURES:
 
 -Improved Keyboard Shortcuts
    -Ease of life, the more intuitive the better

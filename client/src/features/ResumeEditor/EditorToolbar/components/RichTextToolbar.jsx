@@ -114,13 +114,15 @@ const RichTextToolbar = ({ editor }) => {
           <Columns label="Columns:" />
         </div>
 
-        <div data-toolbar-label="Section Gap" style={{ display: "contents" }}>
+        <Gap />
+
+        {/* <div data-toolbar-label="Section Gap" style={{ display: "contents" }}>
           <Gap label="Section Gap:" gapType="vertical" />
         </div>
 
         <div data-toolbar-label="Column Gap" style={{ display: "contents" }}>
           <Gap label="Column Gap:" gapType="horizontal" />
-        </div>
+        </div> */}
 
         <div data-toolbar-label="Borders" style={{ display: "contents" }}>
           <Borders

@@ -11,6 +11,7 @@ function useClickOutside(onOutsideClick, enabled = true, excludeSlateEditors = f
 
          if (container && container.contains(event.target)) return;
          if (excludeSlateEditors && event.target.closest('[data-slate-editor="true"]')) return;
+         if (event.target.closest('[data-id="open-close-dropdown-button"]')) return;
 
          onOutsideClick();
       }

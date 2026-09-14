@@ -12,8 +12,8 @@ const TextFormatDropdown = ({
   containerClassName = "",
   wrapperClassName = "",
 }) => {
-  const [showTest, setShowTest] = useState(false);
-  const dropdownRows = dropdownOptions?.map((option) => {
+
+   const dropdownRows = dropdownOptions?.map((option) => {
     if (option.elements) {
       return (
         <div style={option.styling}>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import styles from './MarginRuler.module.css';
 import MarginRulerTop from './MarginRulerTop';
@@ -18,17 +18,17 @@ const MarginRuler = ({ pageRef }) => {
    const [visibleMarginLabels, setVisibleMarginLabels] = useState(() => new Set());
    const marginLabelDisplayTimers = useRef(new Map());
 
-   const cancelHideMarginLabel = useCallback((id) => {
+   const cancelHideMarginLabel = (id) => {
       clearTimeout(marginLabelDisplayTimers.current.get(id));
       marginLabelDisplayTimers.current.delete(id);
-   }, []);
+   };
 
-   const showMarginLabel = useCallback((id) => {
+   const showMarginLabel = (id) => {
       cancelHideMarginLabel(id);
       setVisibleMarginLabels(previous => previous.has(id) ? previous : new Set(previous).add(id));
-   }, [cancelHideMarginLabel]);
+   };
 
-   const delayHideMarginLabel = useCallback((id) => {
+   const delayHideMarginLabel = (id) => {
       cancelHideMarginLabel(id);
       marginLabelDisplayTimers.current.set(id, setTimeout(() => {
          marginLabelDisplayTimers.current.delete(id);
@@ -38,12 +38,12 @@ const MarginRuler = ({ pageRef }) => {
             return next;
          });
       }, 1500));
-   }, [cancelHideMarginLabel]);
+   };
 
-   const flashLabel = useCallback((id) => {
+   const flashLabel = (id) => {
       showMarginLabel(id);
       delayHideMarginLabel(id);
-   }, [showMarginLabel, delayHideMarginLabel]);
+   };
 
    useEffect(() => {
       const timers = marginLabelDisplayTimers.current;

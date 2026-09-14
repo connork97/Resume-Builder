@@ -15,6 +15,7 @@ import SettingsModal from "../SettingsModal/SettingsModal.jsx";
 import SubsectionRenderer from "./Subsection.jsx";
 import { parseRemValue } from "@/utils/formatters.js";
 import SectionBorder from "./components/SectionBorder.jsx";
+import useSectionPaddingResize from "./useSectionPaddingResize.js";
 import { useSortable } from "@dnd-kit/react/sortable";
 import {
   DragDropProvider,
@@ -39,7 +40,8 @@ const sectionPointerSensor = PointerSensor.configure({
 
 const sectionSensors = [sectionPointerSensor, KeyboardSensor];
 
-const Section = ({ id, section, column, index }) => {
+const Section = ({ id, section, column, index, hasNextSection }) => {
+  const { previewBottom, handleProps } = useSectionPaddingResize(section);
   useEffect(() => {
     if (!section) {
       console.error("Section component rendered without a valid section prop.");
@@ -220,6 +222,9 @@ const Section = ({ id, section, column, index }) => {
       style={{
         ...section.styling,
         ...sectionPadding,
+        ...(previewBottom !== null && {
+          paddingBottom: `${Math.max(0, previewBottom + parseRemValue(resumeLayout?.gap?.vertical))}rem`,
+        }),
         outlineColor: section.styling?.color,
         cursor: "all-scroll",
       }}
@@ -293,6 +298,15 @@ const Section = ({ id, section, column, index }) => {
       )}
       {sectionBorder?.right && (
         <SectionBorder sectionBorder={sectionBorder.right} borderSide="right" />
+      )}
+      {hasNextSection && (
+        <button
+          type="button"
+          className={styles.sectionResizeHandle}
+          aria-label="Adjust section bottom padding"
+          data-section-dnd-exclude="true"
+          {...handleProps}
+        />
       )}
     </div>
   );

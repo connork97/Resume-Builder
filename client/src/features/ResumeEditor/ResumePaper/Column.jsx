@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { useDroppable } from "@dnd-kit/react";
 
 import Section from "./Section.jsx";
-import ColumnResizeHandle from "./components/ColumnResizeHandle.jsx";
 
 import styles from "./ResumePaper.module.css";
 import { CollisionPriority } from "@dnd-kit/abstract";
@@ -67,6 +66,7 @@ const Column = ({
           section={section}
           column={column}
           index={index}
+          hasNextSection={Boolean(sectionById[sectionIds[index + 1]])}
         />
       );
     }
@@ -83,11 +83,13 @@ const Column = ({
     >
       {renderedSections}
       {!isLastColumn && (
-         
-        <ColumnResizeHandle
-          onPointerDown={(event) => onStartResize(column.id, event)}
-          onKeyDown={(event) => onResizeWithKeyboard(column.id, event)}
-        />
+           <button
+             type="button"
+             className={styles.columnResizeHandle}
+             aria-label="Resize adjacent columns"
+             onPointerDown={(event) => onStartResize(column.id, event)}
+             onKeyDown={(event) => onResizeWithKeyboard(column.id, event)}
+           />
       )}
     </div>
   );

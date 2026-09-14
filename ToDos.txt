@@ -54,18 +54,14 @@ BIGGER FEATURES:
 -Column Setup/Organization
    -Need to add a way to have multiple columns on page, but also allowing particular sections to span multiple columns
 
--Dragging for Column Widths
-   -In between columns there should be a grabbable and draggable line that drags and adjusts the width of each column around that line
-
--Dragging for Margin Indicators
-   -Much nicer than clicking and pressing keys
-
 MEDIUM FEATURES:
 
 -Improved Keyboard Shortcuts
    -Ease of life, the more intuitive the better
    -Also App-Specific Hotkeys like ctrl + enter while in a field automatically adding a new field to that subsection
 
+-Indentation
+   -For things like bullets
 
 SMALL FEATURES:
 
@@ -83,7 +79,6 @@ TINY FEATURES:
 
 MAYBES:
 
--Indentation
 
 -Font Family
    -Allowing different font families to be applied to different sections, subsections, fields, and slate leaves

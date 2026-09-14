@@ -27,6 +27,9 @@ export default function MarginRulerSide({
       parseRemValue(resume.layout.gap?.vertical),
   );
 
+
+// ! Need to add change so this stays displayed/gets set again upon any change to padding values
+// ! Particularly for arrow key presses
   const [marginIndicatorLabelToShow, setMarginIndicatorLabelToShow] =
     useState(null);
 

@@ -36,10 +36,13 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
   };
 
   const handleCopyResume = async () => {
-   const copiedResume = copyResumeToApi(resume.id);
-   console.log(copiedResume);
+   const copiedResume = await copyResumeToApi(resume.id);
+   if (!copiedResume) {
+      alert("An error occured when copying your resume.");
+     return;
+   }
    fetchUserResumes(user.id);
-  }
+  };
 
   return (
     <div className={styles.userResumeRow}>

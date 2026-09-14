@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "./MarginRuler.module.css";
 import MarginIndicator from "./MarginIndicator";
@@ -33,6 +33,8 @@ export default function MarginRulerSide({
   const [marginIndicatorLabelToShow, setMarginIndicatorLabelToShow] =
     useState(null);
 
+
+
   return (
     <div className={styles.marginRulerSideWrapper} data-prevent-blur="true">
       {renderMarginRuler(11, 0.1, ["0"], "bottom")}
@@ -40,6 +42,7 @@ export default function MarginRulerSide({
         target="resume"
         side="top"
         value={resume.layout.padding.top}
+
         pageRef={pageRef}
         className={styles.resumeMarginIndicatorTop}
         style={{ marginTop: padding.top }}

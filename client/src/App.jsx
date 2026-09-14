@@ -110,6 +110,7 @@ const App = () => {
         </Route>
 
         <Route path="/account" element={<AccountPage />}>
+          <Route index element={<Navigate to="my-resumes" replace />} />
           <Route path="my-resumes" element={<UserResumes />} />
           <Route path="settings" element={<AccountSettings />} />
         </Route>

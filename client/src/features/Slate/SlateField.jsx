@@ -35,7 +35,9 @@ const SlateField = ({ field }) => {
   );
 
   const dispatch = useDispatch();
-  const resumeStyling = useSelector((state) => state.resume.present.styling);
+  const reduxResume = useSelector((state) => state.resume.present);
+  const resumeGap = reduxResume.layout.gap;
+  const resumeStyling = useSelector((state) => reduxResume.styling);
   const subsection = useSelector(
     (state) => state.resume.present.subsections.byId[field.subsectionId],
   );

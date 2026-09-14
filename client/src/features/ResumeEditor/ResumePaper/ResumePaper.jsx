@@ -143,6 +143,7 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
         sectionById={sectionsById}
         previewWidth={previewWidths?.[column.id]}
         onStartResize={startResize}
+        columnPreviewWidths={previewWidths}
         onResizeWithKeyboard={resizeWithKeyboard}
       />
     );

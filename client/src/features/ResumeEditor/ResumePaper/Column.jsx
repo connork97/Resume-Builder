@@ -12,16 +12,19 @@ const Column = ({
   sectionIds,
   sectionById,
   previewWidth,
+  columnPreviewWidths,
   onStartResize,
   onResizeWithKeyboard,
 }) => {
-  const reduxColumns = useSelector((state) => state.resume.present.columns.allIds);
-   const isFirstColumn = reduxColumns[0] === column.id;
-   const isLastColumn = reduxColumns[reduxColumns.length - 1] === column.id;
+  const reduxColumns = useSelector(
+    (state) => state.resume.present.columns.allIds,
+  );
+  const isFirstColumn = reduxColumns[0] === column.id;
+  const isLastColumn = reduxColumns[reduxColumns.length - 1] === column.id;
   const { ref } = useDroppable({
     id: column.id,
-    type: 'column',
-    accept: 'section',
+    type: "column",
+    accept: "section",
     collisionPriority: CollisionPriority.High,
   });
 
@@ -39,8 +42,8 @@ const Column = ({
     flex: previewWidth
       ? `0 0 ${previewWidth}%`
       : column?.layout?.width?.auto
-      ? "1 1 0%"
-      : `0 0 ${column?.layout?.width?.value}`,
+        ? "1 1 0%"
+        : `0 0 ${column?.layout?.width?.value}`,
     // paddingLeft: column?.layout?.padding?.left ?? resumeLayout.padding.left,
     // paddingRight: column?.layout?.padding?.right ?? resumeLayout.padding.right,
   };
@@ -72,24 +75,38 @@ const Column = ({
     }
   });
 
+  let previewWidthStrings = [];
+  if (columnPreviewWidths) {
+
+      previewWidthStrings.push(String(Object.values(columnPreviewWidths)[0]).slice(0, 4) + "%");
+      previewWidthStrings.push(String(Object.values(columnPreviewWidths)[1]).slice(0, 4) + "%");
+   //   previewWidthStrings = columnPreviewWidths && String(Object.values(columnPreviewWidths).map(width => width)).slice(0, 4);
+
+   }
+
+   console.log("STRING FORM", previewWidthStrings)
   return (
     <div
       key={column.id}
       id={column.id}
       className={styles.columnWrapperDiv}
-      style={{ ...columnStyling, position: 'relative' }}
+      style={{ ...columnStyling, position: "relative" }}
       ref={ref}
       // style={{borderLeft: '1px solid red'}}
     >
       {renderedSections}
       {!isLastColumn && (
-           <button
-             type="button"
-             className={styles.columnResizeHandle}
-             aria-label="Resize adjacent columns"
-             onPointerDown={(event) => onStartResize(column.id, event)}
-             onKeyDown={(event) => onResizeWithKeyboard(column.id, event)}
-           />
+        <div>
+            {columnPreviewWidths?.[column.id] && <p className={styles.columnPreviewWidthLeft}>{previewWidthStrings[0]}</p>}
+          <button
+            type="button"
+            className={styles.columnResizeHandle}
+            aria-label="Resize adjacent columns"
+            onPointerDown={(event) => onStartResize(column.id, event)}
+            onKeyDown={(event) => onResizeWithKeyboard(column.id, event)}
+          />
+          {columnPreviewWidths?.[column.id] && <p className={styles.columnPreviewWidthRight}>{previewWidthStrings[1]}</p>}
+        </div>
       )}
     </div>
   );

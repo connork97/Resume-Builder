@@ -61,6 +61,27 @@
   transition: opacity 120ms ease;
 }
 
+.columnPreviewWidthLeft, .columnPreviewWidthRight {
+  position: absolute;
+  top: -5%;
+  font-size: 12px;
+  background-color: var(--background-toolbar);
+  border: var(--border-toolbar-button);
+  border-radius: var(--border-radius-main);
+  padding: 0.5rem 1rem;
+  color: white;
+  z-index: 10;
+}
+
+.columnPreviewWidthLeft {
+  right: 5%;
+}
+
+.columnPreviewWidthRight {
+  right: -5%;
+  transform: translateX(100%);
+}
+
 .columnResizeHandle:hover svg,
 .columnResizeHandle:focus-visible svg {
   opacity: 1;

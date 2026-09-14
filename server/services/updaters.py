@@ -28,11 +28,34 @@ def update_column_widths(resume_id):
 
     remaining_width = max(0, 100 - manual_width_total)
 
-    new_auto_width = (
-        remaining_width / len(auto_width_columns)
-        if auto_width_columns
-        else 0
-    )
+    remaining_width_required = 10 * len(auto_width_columns) if auto_width_columns else 0
+    
+    if remaining_width < remaining_width_required:
+        new_auto_width = 10
+        available_manual_width = 100 - remaining_width_required
+        scale = available_manual_width / manual_width_total if manual_width_total else 0
+
+        for column in manual_width_columns:
+            layout = deepcopy(column.layout or {})
+            layout.setdefault("width", {
+                "value": "100%",
+                "auto": False,
+            })
+            current_value = float(str(get_width(column).get("value", "0%")).strip("%"))
+            new_value = current_value * scale
+            layout["width"]["value"] = f"{new_value:.1f}%"
+            layout["width"]["auto"] = False
+            column.layout = layout
+    else:
+        new_auto_width = remaining_width / len(auto_width_columns) if auto_width_columns else 0
+    
+    
+        
+    # new_auto_width = (
+        # remaining_width / len(auto_width_columns)
+        # if auto_width_columns
+        # else 0
+    # )
 
     for column in auto_width_columns:
         layout = deepcopy(column.layout or {})

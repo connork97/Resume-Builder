@@ -36,6 +36,13 @@ def add_column(resume_id):
 
         column_count = len(resume.columns)
         
+        if column_count >= 10:
+            return generate_error(
+                error_type="FORBIDDEN",
+                code="MAX_COLUMN_COUNT_REACHED",
+                message="Resumes cannot have more than 10 columns.",
+            )
+        
         new_column = Column(
             resume_id=resume_id,
             position=column_count,

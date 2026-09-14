@@ -29,6 +29,10 @@ const Columns = () => {
   }, [columns.allIds]);
 
   const addColumn = async () => {
+   if (columns.allIds.length >= 10) {
+     alert("Resumes cannot have more than 10 columns.");
+     return;
+   }
     const saved = await saveResumeToApi(resume);
    
     if (!saved) return;

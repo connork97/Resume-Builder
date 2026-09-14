@@ -74,110 +74,29 @@ const Section = ({ id, section, column, index, hasNextSection }) => {
   );
   const subsections = useSelector((state) => state.resume.present.subsections);
 
-  const [isFirstColumn, setIsFirstColumn] = useState(false);
-  const [isLastColumn, setIsLastColumn] = useState(false);
-  const [isFirstRow, setIsFirstRow] = useState(false);
-  const [isLastRow, setIsLastRow] = useState(false);
-  const [sectionPadding, setSectionPadding] = useState({
-    paddingLeft: "0",
-    paddingRight: "0",
-    paddingTop: "0",
-    paddingBottom: "0",
-  });
-
-  useEffect(() => {
-    if (!section || !column) return;
-
-    // Determine if section is in the first column
-    const columnIndex = columns.allIds.indexOf(column.id);
-    if (columnIndex === 0) setIsFirstColumn(true);
-    else if (columnIndex !== 0) setIsFirstColumn(false);
-
-    // Determine if section is in the last column
-    const totalColumns = columns.allIds.length;
-    if (columnIndex === totalColumns - 1) setIsLastColumn(true);
-    else if (columnIndex !== totalColumns - 1) setIsLastColumn(false);
-
-    // Determine if section is in the first row of column
-    const sectionIndex = column.sectionIds.indexOf(section.id);
-    if (sectionIndex === 0) setIsFirstRow(true);
-    else if (sectionIndex !== 0) setIsFirstRow(false);
-
-    // Determine if section is in the last row of column
-    const totalSectionsInColumn = column.sectionIds.length;
-    if (sectionIndex === totalSectionsInColumn - 1) setIsLastRow(true);
-    else if (sectionIndex !== totalSectionsInColumn - 1) setIsLastRow(false);
-  }, [
-    resumeLayout,
-    section.columnId,
-    column.sectionIds,
-    column.id,
-    columns.allIds,
-  ]);
-
-  useEffect(() => {
-    setSectionPadding((prevStyling) => {
-      const parsedSectionPadding = {
-        top: parseRemValue(sectionLayout?.padding?.top),
-        bottom: parseRemValue(sectionLayout?.padding?.bottom),
-        left: parseRemValue(columnLayout?.padding?.left),
-        right: parseRemValue(columnLayout?.padding?.right),
-      };
-
-      const parsedResumeGap = {
-        vertical: parseRemValue(resumeLayout?.gap?.vertical) ?? 0,
-        horizontal: parseRemValue(resumeLayout?.gap?.horizontal) ?? 0,
-      };
-
-      const actualSectionPadding = {
-        top:
-          parsedSectionPadding.top + parsedResumeGap.vertical > 0
-            ? parsedSectionPadding.top + parsedResumeGap.vertical
-            : 0,
-        bottom:
-          parsedSectionPadding.bottom + parsedResumeGap.vertical > 0
-            ? parsedSectionPadding.bottom + parsedResumeGap.vertical
-            : 0,
-        left:
-          parsedSectionPadding.left + parsedResumeGap.horizontal > 0
-            ? parsedSectionPadding.left + parsedResumeGap.horizontal
-            : 0,
-        right:
-          parsedSectionPadding.right + parsedResumeGap.horizontal > 0
-            ? parsedSectionPadding.right + parsedResumeGap.horizontal
-            : 0,
-      };
-      return {
-        ...prevStyling,
-        paddingLeft: isFirstColumn
-          ? resumeLayout.padding.left
-          : actualSectionPadding.left + "rem",
-        //  : `${parsedSectionPadding.left + parsedResumeGap.horizontal}rem`,
-        paddingRight: isLastColumn
-          ? resumeLayout.padding.right
-          : actualSectionPadding.right + "rem",
-        //  : `${parsedSectionPadding.right + parsedResumeGap.horizontal}rem`,
-        paddingTop: isFirstRow
-          ? resumeLayout?.padding?.top
-          : actualSectionPadding.top + "rem",
-        //  : `${parsedSectionPadding.top + parsedResumeGap.vertical}rem`,
-        paddingBottom: isLastRow ? resumeLayout.padding.bottom : actualSectionPadding.bottom + "rem",
-        //  `${parsedSectionPadding.bottom + parsedResumeGap.vertical}rem`,
-        flex: isLastRow ? "1" : "none",
-      };
-    });
-  }, [
-    isFirstColumn,
-    isLastColumn,
-    isFirstRow,
-    isLastRow,
-    resumeLayout.padding,
-    resumeLayout.gap,
-    sectionLayout?.padding,
-    columnLayout?.padding,
-    section,
-    paddingPreview,
-  ]);
+  // Derive layout during rendering so clearing a drag preview never exposes
+  // padding cached from before the Redux update.
+  const isFirstColumn = columns.allIds[0] === column.id;
+  const isLastColumn = columns.allIds.at(-1) === column.id;
+  const isFirstRow = column.sectionIds[0] === section.id;
+  const isLastRow = column.sectionIds.at(-1) === section.id;
+  const verticalGap = parseRemValue(resumeLayout?.gap?.vertical);
+  const horizontalGap = parseRemValue(resumeLayout?.gap?.horizontal);
+  const sectionPadding = {
+    paddingLeft: isFirstColumn
+      ? resumeLayout.padding.left
+      : `${Math.max(0, parseRemValue(columnLayout?.padding?.left) + horizontalGap)}rem`,
+    paddingRight: isLastColumn
+      ? resumeLayout.padding.right
+      : `${Math.max(0, parseRemValue(columnLayout?.padding?.right) + horizontalGap)}rem`,
+    paddingTop: isFirstRow
+      ? resumeLayout.padding.top
+      : `${Math.max(0, parseRemValue(sectionLayout?.padding?.top) + verticalGap)}rem`,
+    paddingBottom: isLastRow
+      ? resumeLayout.padding.bottom
+      : `${Math.max(0, parseRemValue(sectionLayout?.padding?.bottom) + verticalGap)}rem`,
+    flex: isLastRow ? "1" : "none",
+  };
 
   const renderedSubsections = section.subsectionIds?.map((subId) => {
     const subsection = subsections.byId[subId];

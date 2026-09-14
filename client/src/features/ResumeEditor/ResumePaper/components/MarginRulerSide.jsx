@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./MarginRuler.module.css";
 import MarginIndicator from "./MarginIndicator";
@@ -26,6 +26,10 @@ export default function MarginRulerSide({
     parseRemValue(sectionPadding?.top) +
       parseRemValue(resume.layout.gap?.vertical),
   );
+
+  const [marginIndicatorLabelToShow, setMarginIndicatorLabelToShow] =
+    useState(null);
+
   return (
     <div className={styles.marginRulerSideWrapper} data-prevent-blur="true">
       {renderMarginRuler(11, 0.1, ["0"], "bottom")}
@@ -36,17 +40,22 @@ export default function MarginRulerSide({
         pageRef={pageRef}
         className={styles.resumeMarginIndicatorTop}
         style={{ marginTop: padding.top }}
+        onMouseEnter={() => setMarginIndicatorLabelToShow("resume-top")}
+        onMouseLeave={() => setTimeout(() => setMarginIndicatorLabelToShow(null), 1500)}
+
       />
-      <span
-            className={styles.marginIndicatorLabel}
-        style={{
-          top: padding.top,
-          right: "150%",
-          transform: `translateY(-50%)`,
-        }}
-      >
+      {marginIndicatorLabelToShow === "resume-top" && (
+         <span
+         className={styles.marginIndicatorLabel}
+         style={{
+            top: padding.top,
+            right: "150%",
+            transform: `translateY(-50%)`,
+         }}
+         >
         {parseFloat(padding.top).toFixed(2) + "rem"}
       </span>
+      )}
       {/* <MarginIndicator target="resume" side="bottom" value={resume.layout.padding.bottom} pageRef={pageRef}
       className={styles.resumeMarginIndicatorBottom} style={{ marginBottom: padding.bottom }} />
       <span style={{position: 'absolute', bottom: padding.bottom, right: '150%', transform: `translateY(25%)` }}>{parseFloat(padding.bottom).toFixed(2) + 'rem'}</span> */}
@@ -62,42 +71,54 @@ export default function MarginRulerSide({
             pageRef={pageRef}
             className={styles.sectionMarginIndicatorTop}
             style={{ marginTop: `calc(${geometry.top}px + ${topInset}rem)` }}
+            onMouseEnter={() =>
+              setMarginIndicatorLabelToShow(`${section.id}-top`)
+            }
+            onMouseLeave={() => setTimeout(() => setMarginIndicatorLabelToShow(null), 1500)}
           />
-          <span
-            className={styles.marginIndicatorLabel}
-            style={{
-              top: `calc(${geometry.top}px + ${topInset}rem)`,
-              right: "150%",
-              transform: `translateY(-50%)`,
-            }}
-          >
-            {parseFloat(sectionPadding?.top || 0).toFixed(2) + 'rem'}
+          {marginIndicatorLabelToShow === `${section.id}-top` && (
 
+             <span
+             className={styles.marginIndicatorLabel}
+             style={{
+                top: `calc(${geometry.top}px + ${topInset}rem)`,
+                right: "150%",
+                transform: `translateY(-50%)`,
+               }}
+               >
+            {parseFloat(sectionPadding?.top || 0).toFixed(2) + "rem"}
           </span>
+         )}
         </>
       )}
       {section && geometry && section.id !== column?.sectionIds.at(-1) && (
-         <>
-        <MarginIndicator
-          key={`${section.id}-bottom`}
-          target="section"
-          id={section.id}
-          side="bottom"
-          value={section.layout?.padding?.bottom}
-          pageRef={pageRef}
-          className={styles.sectionMarginIndicatorBottom}
-          style={{ marginTop: geometry.bottom }}
+        <>
+          <MarginIndicator
+            key={`${section.id}-bottom`}
+            target="section"
+            id={section.id}
+            side="bottom"
+            value={section.layout?.padding?.bottom}
+            pageRef={pageRef}
+            className={styles.sectionMarginIndicatorBottom}
+            style={{ marginTop: geometry.bottom }}
+            onMouseEnter={() =>
+              setMarginIndicatorLabelToShow(`${section.id}-bottom`)
+            }
+            onMouseLeave={() => setTimeout(() => setMarginIndicatorLabelToShow(null), 1500)}
           />
-          <span
-            className={styles.marginIndicatorLabel}
-            style={{
-              marginTop: geometry.bottom,
-              right: "150%",
-              transform: `translateY(-50%)`,
-            }}
-          >
-            {parseFloat(sectionPadding?.bottom || 0).toFixed(2) + 'rem'}
-          </span>
+          {marginIndicatorLabelToShow === `${section.id}-bottom` && (
+            <span
+              className={styles.marginIndicatorLabel}
+              style={{
+                marginTop: geometry.bottom,
+                right: "150%",
+                transform: `translateY(-50%)`,
+              }}
+            >
+              {parseFloat(sectionPadding?.bottom || 0).toFixed(2) + "rem"}
+            </span>
+          )}
         </>
       )}
     </div>

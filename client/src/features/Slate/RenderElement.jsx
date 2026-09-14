@@ -2,10 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import IconElement from './IconElement';
 
-const RenderElement = ({ element, attributes, children, type, inheritedFontSize, inheritedLineHeight }) => {
+const RenderElement = ({ element, attributes, children, type, inheritedFontSize, inheritedLineHeight, field }) => {
    
    const reduxResume = useSelector((state) => state.resume.present);
    const resumeGap = reduxResume.layout.gap;
+   console.log('RENDER ELEMENT FIELD: ', field);
+   const fieldSubsection = reduxResume.subsections.byId[field?.subsectionId];
+   const isLastFieldInSubsection = field?.id === fieldSubsection?.fieldIds?.slice[fieldSubsection.fieldIds.length - 1];
 
    const stylingObj = {
       textAlign: element.textAlign,
@@ -18,7 +21,7 @@ const RenderElement = ({ element, attributes, children, type, inheritedFontSize,
       case 'ordered-list':
          return <ol {...attributes} style={stylingObj}>{children}</ol>
       case 'list-item':
-         return <li {...attributes} style={{...stylingObj, marginBottom: resumeGap.field || '0rem'}}>{children}</li>
+         return <li {...attributes} style={{...stylingObj, marginBottom: !isLastFieldInSubsection ? (resumeGap.field || '0rem') : '0rem'}}>{children}</li>
       case 'icon':
          return (
             <IconElement

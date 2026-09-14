@@ -20,8 +20,10 @@ DEFAULT_RESUME_LAYOUT = {
         "left": "2.5rem",
     },
     "gap": {
-        "horizontal": "1rem",
+        "horizontal": "1.0rem",
         "vertical": "0.5rem",
+        "subsection": '0.0rem',
+        "field": '0.0rem',
     },
 }
 

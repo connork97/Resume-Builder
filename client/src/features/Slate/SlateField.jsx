@@ -128,6 +128,7 @@ const SlateField = ({ field }) => {
       <RenderElement
         inheritedFontSize={inheritedFontSize}
         inheritedLineHeight={inheritedLineHeight}
+        field={field}
         element={props.element}
         type={props.element.type}
         attributes={props.attributes}

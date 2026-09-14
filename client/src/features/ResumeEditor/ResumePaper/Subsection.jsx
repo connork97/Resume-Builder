@@ -21,6 +21,8 @@ const SubsectionRenderer = ({ subsection }) => {
   const fields = useSelector((state) => state.resume.present.fields);
   const subsectionLayout = subsection.layout;
 
+  const isLastSubsection = section.subsectionIds.indexOf(subsection.id) === section.subsectionIds.length - 1;
+
   let parentLayoutDict = {};
 
   if (sectionLayout.display === "flex") {
@@ -58,7 +60,7 @@ const SubsectionRenderer = ({ subsection }) => {
     <div
       style={{
         ...parentLayoutDict,
-        marginBottom: resumeGap?.subsection || "0rem",
+        marginBottom: isLastSubsection ? "0rem" : resumeGap?.subsection || "0rem",
         position: "relative",
         boxSizing: "border-box",
       }}

@@ -8,9 +8,12 @@ import { MdDragIndicator } from "react-icons/md";
 // import { getNodeString } from '@/helpers/getNodeString';
 
 const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
-   const reduxResume = useSelector((state) => state.resume.present);
-   const resumeGap = reduxResume.layout.gap;
-  const field = useSelector((state) => state.resume.present.fields.byId[fieldId]);
+  const reduxResume = useSelector((state) => state.resume.present);
+  const field = reduxResume.fields.byId[fieldId];
+  const resumeGap = reduxResume.layout.gap;
+  const subsection = reduxResume.subsections.byId[field.subsectionId];
+  const isLastFieldInSubsection =
+    subsection.fieldIds.indexOf(fieldId) === subsection.fieldIds.length - 1;
   const activeLayout = layout || parentLayoutDict || {};
 
   // const plainText = getNodeString(field);
@@ -66,10 +69,8 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const reduxFieldsById = useSelector((state) => state.resume.present.fields.byId);
-  const subsection = useSelector(
-    (state) => state.resume.present.subsections.byId[field.subsectionId],
-  );
+  const reduxFieldsById = reduxResume.fields.byId;
+
   const nextField = reduxFieldsById[subsection.fieldIds[index + 1]];
 
   const totalColumns = Math.max(1, Number(columnCount) || 1);
@@ -109,7 +110,7 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
     !isOnlyItemInRow &&
     !isLastItemInIncompleteRow &&
     totalColumns > 1 &&
-    fieldLayoutDict.display === 'grid'
+    fieldLayoutDict.display === "grid"
   ) {
     if (isLastColumn) autoTextAlign = "right";
     else if (isFirstColumn) autoTextAlign = "left";
@@ -133,12 +134,12 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-         ...fieldWrapperStyling,
-         position: "relative",
-         marginBottom: resumeGap.field || '0rem',
+        ...fieldWrapperStyling,
+        position: "relative",
+        marginBottom: !isLastFieldInSubsection ? resumeGap.field || "0rem" : "0rem",
         outline: `1px solid ${isHovered ? "rgba(0, 0, 0, 0.5)" : "transparent"}`,
-        borderRadius: '2px',
-        outlineOffset: '1px',
+        borderRadius: "2px",
+        outlineOffset: "1px",
         textAlign: autoTextAlign,
       }}
     >

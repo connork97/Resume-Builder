@@ -15,6 +15,7 @@ import { useReactToPrint } from 'react-to-print';
 
 import styles from './ResumeEditor.module.css';
 import MarginRuler from '@/features/ResumeEditor/ResumePaper/components/MarginRuler';
+import { PaddingPreviewContext } from '@/features/ResumeEditor/ResumePaper/PaddingPreviewContext';
 import { handleGlobalHotKey } from '@/utils/hotKeys';
 import { ActionCreators as UndoActionCreators } from "redux-undo";
 
@@ -77,6 +78,7 @@ const ResumeEditor = () => {
    const editorPageRef = useRef(null);
 
    const [isPrinting, setIsPrinting] = useState(false);
+   const [paddingPreview, setPaddingPreview] = useState(null);
 
    const pageStyle = `
       @page {
@@ -122,8 +124,10 @@ const ResumeEditor = () => {
       <div className={styles.resumeEditorContainer}>
          <Toolbar handlePrint={handlePrint} />
          <Outline />
-         <ResumePaper ref={resumeRef} editorPageRef={editorPageRef} isPrinting={isPrinting} />
-         <MarginRuler pageRef={editorPageRef} />
+         <PaddingPreviewContext.Provider value={{ preview: paddingPreview, setPreview: setPaddingPreview }}>
+            <ResumePaper ref={resumeRef} editorPageRef={editorPageRef} isPrinting={isPrinting} />
+            <MarginRuler pageRef={editorPageRef} />
+         </PaddingPreviewContext.Provider>
          {showNewResumeModal &&
             <NewResumeModal />
          }

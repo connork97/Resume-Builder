@@ -24,13 +24,15 @@ export default function useMarginGeometry(pageRef, columnId, sectionId) {
             const pageRect = page.getBoundingClientRect();
             const columnRect = column.getBoundingClientRect();
             const sectionRect = section.getBoundingClientRect();
+            const scaleX = pageRect.width / page.offsetWidth || 1;
+            const scaleY = pageRect.height / page.offsetHeight || 1;
             next = {
                columnId,
                sectionId,
-               left: columnRect.left - pageRect.left,
-               right: columnRect.right - pageRect.left,
-               top: sectionRect.top - pageRect.top,
-               bottom: sectionRect.bottom - pageRect.top,
+               left: (columnRect.left - pageRect.left) / scaleX,
+               right: (columnRect.right - pageRect.left) / scaleX,
+               top: (sectionRect.top - pageRect.top) / scaleY,
+               bottom: (sectionRect.bottom - pageRect.top) / scaleY,
             };
          }
          // Skip state updates when positions are unchanged.

@@ -1,187 +1,30 @@
-import React, { useState } from "react";
+import { useContext } from 'react';
+import { useSelector } from 'react-redux';
+import styles from './MarginRuler.module.css';
+import MarginIndicator from './MarginIndicator';
+import { PaddingPreviewContext, previewLayout } from '../PaddingPreviewContext';
+import { parseRemValue } from '@/utils/formatters';
 
-import styles from "./MarginRuler.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { updateColumn, updateResume, updateSection } from "@/store/resumeSlice";
-import { parseRemValue } from "@/utils/formatters";
-
-const MarginRulerTop = ({ renderMarginRuler, geometry }) => {
-  const dispatch = useDispatch();
-
-  const resume = useSelector((state) => state.resume.present);
-  const resumePadding = resume?.layout?.padding ?? {};
-
-  const activeSectionIds = useSelector((state) => state.resume.present.activeSectionIds);
-  const activeSectionId = activeSectionIds[0] ?? null;
-  const section = useSelector(
-    (state) => state.resume.present.sections.byId[activeSectionId],
-  );
-  const sectionPadding = section?.layout?.padding ?? {};
-
-  const columns = useSelector((state) => state.resume.present.columns);
-  const column = useSelector(
-    (state) => state.resume.present.columns.byId[section?.columnId],
-  );
-  const columnPadding = column?.layout?.padding ?? {};
-
-  const isFirstColumn = column?.id === columns?.allIds[0];
-  const isLastColumn =
-    column?.id === columns?.allIds[columns.allIds.length - 1];
-
-  const getSectionMargin = (name) => {
-    const parsedColumnPadding = parseRemValue(columnPadding?.[name]);
-    const parsedSectionPadding = parseRemValue(sectionPadding?.[name]);
-
-    return `${(parsedColumnPadding + parsedSectionPadding).toFixed(1)}rem`;
-  };
-
-  const [isEditing, setIsEditing] = useState(false);
-
-  const handleClick = (e) => {
-    setIsEditing(true);
-    e.currentTarget.focus();
-  };
-
-  const handleKeyDown = (e) => {
-    if (!isEditing || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
-
-    const { name, value } = e.currentTarget.dataset;
-
-    let parsedOldPaddingVal;
-    let paddingToParse;
-
-    if (name === "resume") {
-      paddingToParse = resumePadding;
-    } else if (name === "column") {
-      paddingToParse = columnPadding;
-    }
-    // Shouldn't be 'section' at any point, but leaving this for now just in case
-    // else if (name === 'section') {
-    // paddingToParse = sectionPadding;
-    // }
-
-    parsedOldPaddingVal = parseRemValue(paddingToParse?.[value]).toFixed(1);
-    let newPaddingVal = parsedOldPaddingVal;
-
-    let adjustmentValue = 0.1;
-
-    if (e.key === "ArrowLeft" && value === "left") adjustmentValue = -0.1;
-    if (e.key === "ArrowRight" && value === "right") adjustmentValue = -0.1;
-    
-    let parsedResumeGap = parseRemValue(resume?.layout?.gap?.horizontal);
-    newPaddingVal = parseFloat(newPaddingVal) + adjustmentValue;
-   if (name === 'column' && adjustmentValue === -0.1 && (newPaddingVal + parsedResumeGap) < 0) {
-      alert('Cannot have a negative margin.');
-      return;
-   }
-    newPaddingVal = parseFloat(newPaddingVal).toFixed(1) + "rem";
-   console.log('NEW PADDING VAL: ', newPaddingVal)
-    if (name === "resume") {
-       if (parseFloat(newPaddingVal) < 0) {
-         alert('Cannot have a negative margin.');
-         return;
-       }
-      dispatch(
-        updateResume({
-          key: "layout",
-          changes: {
-            padding: {
-              ...resumePadding,
-              [value]: newPaddingVal,
-            },
-          },
-        }),
-      );
-    } else if (name === "column") {
-      dispatch(
-        updateColumn({
-          id: column.id,
-          changes: {
-            layout: {
-              padding: {
-                [value]: newPaddingVal,
-              },
-            },
-          },
-        }),
-      );
-    } else if (name === "section") {
-      dispatch(
-        updateSection({
-          id: section.id,
-          changes: {
-            layout: {
-              padding: {
-                [value]: newPaddingVal,
-              },
-            },
-          },
-        }),
-      );
-    }
-    if (e.key === "Enter") {
-      setIsEditing(false);
-      e.currentTarget.blur();
-    }
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-  };
-
-  return (
-    <div className={styles.marginRulerTopWrapper} data-prevent-blur={true}>
-      <div
-        data-name="resume"
-        data-value="left"
-        className={styles.resumeMarginIndicatorLeft}
-        style={{ marginLeft: resumePadding.left ?? "0rem" }}
-        tabIndex={0}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        onBlur={handleBlur}
-      />
-      <div
-        data-name="resume"
-        data-value="right"
-        className={styles.resumeMarginIndicatorRight}
-        style={{ marginRight: resumePadding.right ?? "0rem" }}
-        tabIndex={0}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        onBlur={handleBlur}
-      />
-      {column && geometry && !isFirstColumn && (
-        <div
-          data-name="column"
-          data-value="left"
-          className={styles.sectionMarginIndicatorLeft}
-          style={{
-            marginLeft: `calc(${geometry.left}px + ${getSectionMargin("left")})`,
-          }}
-          tabIndex={0}
-          onClick={handleClick}
-          onKeyDown={handleKeyDown}
-          onBlur={handleBlur}
-        />
-      )}
-      {column && geometry && !isLastColumn && (
-        <div
-          data-name="column"
-          data-value="right"
-          className={styles.sectionMarginIndicatorRight}
-          style={{
-            marginLeft: `calc(${geometry.right}px - ${columnPadding.right ?? "0rem"})`,
-          }}
-          tabIndex={0}
-          onClick={handleClick}
-          onKeyDown={handleKeyDown}
-          onBlur={handleBlur}
-        />
-      )}
-      {renderMarginRuler(8.5, 0.1, ["0"], "top")}
-    </div>
-  );
-};
-
-export default MarginRulerTop;
+export default function MarginRulerTop({ renderMarginRuler, geometry, pageRef }) {
+  const resume = useSelector(state => state.resume.present);
+  const { preview } = useContext(PaddingPreviewContext);
+  const section = resume.sections.byId[resume.activeSectionIds[0]];
+  const column = resume.columns.byId[section?.columnId];
+  const padding = previewLayout(resume.layout, preview, 'resume', null).padding;
+  const columnPadding = previewLayout(column?.layout, preview, 'column', column?.id)?.padding;
+  const gap = parseRemValue(resume.layout.gap?.horizontal);
+  const inset = side => Math.max(0, parseRemValue(columnPadding?.[side]) + gap);
+  return <div className={styles.marginRulerTopWrapper} data-prevent-blur="true">
+    <MarginIndicator target="resume" side="left" value={resume.layout.padding.left} pageRef={pageRef}
+      className={styles.resumeMarginIndicatorLeft} style={{ marginLeft: padding.left }} />
+    <MarginIndicator target="resume" side="right" value={resume.layout.padding.right} pageRef={pageRef}
+      className={styles.resumeMarginIndicatorRight} style={{ marginRight: padding.right }} />
+    {column && geometry && column.id !== resume.columns.allIds[0] &&
+      <MarginIndicator key={`${column.id}-left`} target="column" id={column.id} side="left" value={column.layout?.padding?.left} pageRef={pageRef}
+        className={styles.sectionMarginIndicatorLeft} style={{ marginLeft: `calc(${geometry.left}px + ${inset('left')}rem)` }} />}
+    {column && geometry && column.id !== resume.columns.allIds.at(-1) &&
+      <MarginIndicator key={`${column.id}-right`} target="column" id={column.id} side="right" value={column.layout?.padding?.right} pageRef={pageRef}
+        className={styles.sectionMarginIndicatorRight} style={{ marginLeft: `calc(${geometry.right}px - ${inset('right')}rem)` }} />}
+    {renderMarginRuler(8.5, 0.1, ['0'], 'top')}
+  </div>;
+}

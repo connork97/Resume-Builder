@@ -1,147 +1,29 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { updateResume, updateSection } from '@/store/resumeSlice';
-
+import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import styles from './MarginRuler.module.css';
+import MarginIndicator from './MarginIndicator';
+import { PaddingPreviewContext, previewLayout } from '../PaddingPreviewContext';
+import { parseRemValue } from '@/utils/formatters';
 
-const MarginRulerSide = ({ renderMarginRuler, geometry }) => {
-
-   const dispatch = useDispatch()
-
-   const resume = useSelector(state => state.resume.present);
-   const resumePadding = resume?.layout?.padding;
-
-   const activeSectionIds = useSelector(state => state.resume.present.activeSectionIds);
-   const activeSectionId = activeSectionIds[0] ?? null;
-
-   const section = useSelector(state => state.resume.present.sections.byId[activeSectionId]);
-   const sectionPadding = section?.layout?.padding;
-
-   const column = useSelector(state => state.resume.present.columns.byId[section?.columnId]);
-   const isFirstSectionInColumn = activeSectionId === column?.sectionIds[0];
-
-   const [isEditing, setIsEditing] = useState(false);
-
-   const handleClick = (e) => {
-      setIsEditing(true);
-      e.currentTarget.focus();
-   };
-
-   const handleKeyDown = (e) => {
-      if (!isEditing || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) return;
-      e.preventDefault()
-
-      const { name, value } = e.currentTarget.dataset;
-
-      let parsedOldPaddingVal;
-      let paddingToParse;
-
-      if (name === 'resume') {
-         paddingToParse = resumePadding;
-      }  else if (name === 'section') {
-         paddingToParse = sectionPadding;
-      }
-
-      const parsedPaddingVal = parseFloat(paddingToParse?.[value]);
-      const defaultPaddingVal = parseFloat(resume?.layout?.gap?.vertical);
-      parsedOldPaddingVal = Number.isNaN(parsedPaddingVal)
-         ? defaultPaddingVal
-         : parsedPaddingVal
-
-      const adjustmentValue = e.key === 'ArrowUp' ? -0.1 : 0.1
-
-      if (name === 'resume') {
-         if (parseFloat(parsedOldPaddingVal + adjustmentValue).toFixed(1) < 0) {
-            alert('Cannot have a negative margin.');
-            return;
-         }
-      } else if (name === 'section' && adjustmentValue === -0.1) {
-         if (parseFloat(parsedOldPaddingVal + adjustmentValue + defaultPaddingVal).toFixed(1) < 0) {
-            alert('Cannot have a negative margin.');
-            return;
-         }
-      }
-      const newPaddingVal = (parsedOldPaddingVal + adjustmentValue).toFixed(1) + 'rem';
-
-      if (name === 'resume') {
-         dispatch(updateResume({
-            key: 'layout',
-            changes: {
-               padding: {
-                  ...resumePadding,
-                  [value]: newPaddingVal
-               }
-            }
-         }))
-      } else if (name === 'section') {
-         dispatch(updateSection({
-            id: section.id,
-            changes: {
-               layout: {
-                  padding: {
-                     [value]: newPaddingVal
-                  }
-               }
-            }
-         }))
-      }
-      if (e.key === "Enter") {
-         setIsEditing(false);
-         e.currentTarget.blur();
-      }
-   };
-
-   const handleBlur = () => {
-      setIsEditing(false);
-   };
-
-   return (
-      // <div className={styles.marginsContainer}>
-         <div
-            className={styles.marginRulerSideWrapper}
-            data-prevent-blur={true}
-         >
-            {renderMarginRuler(11, 0.1, ['0'], 'bottom')}
-            <div
-               data-name='resume'
-               data-value='top'
-               className={styles.resumeMarginIndicatorTop}
-               style={{ marginTop: resumePadding?.top }}
-               tabIndex={0}
-               onClick={handleClick}
-               onKeyDown={handleKeyDown}
-               onBlur={handleBlur}
-            />
-
-            {section && geometry && !isFirstSectionInColumn &&
-                  <div
-                  data-name='section'
-                  data-value='top'
-                  className={styles.sectionMarginIndicatorTop}
-                  style={{ marginTop: geometry.top }}
-                  tabIndex={0}
-                  onClick={handleClick}
-                  onKeyDown={handleKeyDown}
-                  onBlur={handleBlur}
-                  />
-               }
-            {section && geometry &&
-                  <div
-                     data-name='section'
-                     data-value='bottom'
-                     className={styles.sectionMarginIndicatorBottom}
-                     style={{ marginTop: geometry.bottom }}
-                     tabIndex={0}
-                     onClick={handleClick}
-                     onKeyDown={handleKeyDown}
-                     onBlur={handleBlur}
-                  />
-            }
-         </div>
-
-      // </div>
-   )
+export default function MarginRulerSide({ renderMarginRuler, geometry, pageRef }) {
+  const resume = useSelector(state => state.resume.present);
+  const { preview } = useContext(PaddingPreviewContext);
+  const section = resume.sections.byId[resume.activeSectionIds[0]];
+  const column = resume.columns.byId[section?.columnId];
+  const padding = previewLayout(resume.layout, preview, 'resume', null).padding;
+  const sectionPadding = previewLayout(section?.layout, preview, 'section', section?.id)?.padding;
+  const topInset = Math.max(0, parseRemValue(sectionPadding?.top) + parseRemValue(resume.layout.gap?.vertical));
+  return <div className={styles.marginRulerSideWrapper} data-prevent-blur="true">
+    {renderMarginRuler(11, 0.1, ['0'], 'bottom')}
+    <MarginIndicator target="resume" side="top" value={resume.layout.padding.top} pageRef={pageRef}
+      className={styles.resumeMarginIndicatorTop} style={{ marginTop: padding.top }} />
+    <MarginIndicator target="resume" side="bottom" value={resume.layout.padding.bottom} pageRef={pageRef}
+      className={styles.resumeMarginIndicatorBottom} style={{ marginBottom: padding.bottom }} />
+    {section && geometry && section.id !== column?.sectionIds[0] &&
+      <MarginIndicator key={`${section.id}-top`} target="section" id={section.id} side="top" value={section.layout?.padding?.top} pageRef={pageRef}
+        className={styles.sectionMarginIndicatorTop} style={{ marginTop: `calc(${geometry.top}px + ${topInset}rem)` }} />}
+    {section && geometry && section.id !== column?.sectionIds.at(-1) &&
+      <MarginIndicator key={`${section.id}-bottom`} target="section" id={section.id} side="bottom" value={section.layout?.padding?.bottom} pageRef={pageRef}
+        className={styles.sectionMarginIndicatorBottom} style={{ marginTop: geometry.bottom }} />}
+  </div>;
 }
-
-export default MarginRulerSide;

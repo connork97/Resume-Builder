@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext, useMemo } from "react";
+import { PaddingPreviewContext, previewLayout } from "./PaddingPreviewContext";
 import { useDispatch, useSelector } from "react-redux";
 import {
   dndReorderSubsections,
@@ -41,6 +42,9 @@ const sectionPointerSensor = PointerSensor.configure({
 const sectionSensors = [sectionPointerSensor, KeyboardSensor];
 
 const Section = ({ id, section, column, index, hasNextSection }) => {
+  const paddingPreview = useContext(PaddingPreviewContext)?.preview;
+  const sectionLayout = useMemo(() => previewLayout(section.layout, paddingPreview, 'section', section.id), [section.layout, section.id, paddingPreview]);
+  const columnLayout = useMemo(() => previewLayout(column.layout, paddingPreview, 'column', column.id), [column.layout, column.id, paddingPreview]);
   const { previewBottom, handleProps } = useSectionPaddingResize(section);
   useEffect(() => {
     if (!section) {
@@ -61,7 +65,8 @@ const Section = ({ id, section, column, index, hasNextSection }) => {
     sensors: sectionSensors,
   });
 
-  const resumeLayout = useSelector((state) => state.resume.present.layout);
+  const storedResumeLayout = useSelector((state) => state.resume.present.layout);
+  const resumeLayout = useMemo(() => previewLayout(storedResumeLayout, paddingPreview, 'resume', null), [storedResumeLayout, paddingPreview]);
   const reduxSections = useSelector((state) => state.resume.present.sections);
   const columns = useSelector((state) => state.resume.present.columns);
   const activeSectionIds = useSelector(
@@ -113,10 +118,10 @@ const Section = ({ id, section, column, index, hasNextSection }) => {
   useEffect(() => {
     setSectionPadding((prevStyling) => {
       const parsedSectionPadding = {
-        top: parseRemValue(section?.layout?.padding?.top) ?? 0,
-        bottom: parseRemValue(section?.layout?.padding?.bottom) ?? 0,
-        left: parseRemValue(column?.layout?.padding?.left) ?? 0,
-        right: parseRemValue(column?.layout?.padding?.right) ?? 0,
+        top: parseRemValue(sectionLayout?.padding?.top),
+        bottom: parseRemValue(sectionLayout?.padding?.bottom),
+        left: parseRemValue(columnLayout?.padding?.left),
+        right: parseRemValue(columnLayout?.padding?.right),
       };
 
       const parsedResumeGap = {
@@ -156,7 +161,7 @@ const Section = ({ id, section, column, index, hasNextSection }) => {
           ? resumeLayout?.padding?.top
           : actualSectionPadding.top + "rem",
         //  : `${parsedSectionPadding.top + parsedResumeGap.vertical}rem`,
-        paddingBottom: !isLastRow && actualSectionPadding.bottom + "rem",
+        paddingBottom: isLastRow ? resumeLayout.padding.bottom : actualSectionPadding.bottom + "rem",
         //  `${parsedSectionPadding.bottom + parsedResumeGap.vertical}rem`,
         flex: isLastRow ? "1" : "none",
       };
@@ -168,9 +173,10 @@ const Section = ({ id, section, column, index, hasNextSection }) => {
     isLastRow,
     resumeLayout.padding,
     resumeLayout.gap,
-    section.layout?.padding,
-    column.layout?.padding,
+    sectionLayout?.padding,
+    columnLayout?.padding,
     section,
+    paddingPreview,
   ]);
 
   const renderedSubsections = section.subsectionIds?.map((subId) => {

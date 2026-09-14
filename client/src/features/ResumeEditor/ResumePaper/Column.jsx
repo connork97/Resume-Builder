@@ -77,14 +77,14 @@ const Column = ({
 
   let previewWidthStrings = [];
   if (columnPreviewWidths) {
+    previewWidthStrings.push(
+      String(Object.values(columnPreviewWidths)[0]).slice(0, 4) + "%",
+    );
+    previewWidthStrings.push(
+      String(Object.values(columnPreviewWidths)[1]).slice(0, 4) + "%",
+    );
+  }
 
-      previewWidthStrings.push(String(Object.values(columnPreviewWidths)[0]).slice(0, 4) + "%");
-      previewWidthStrings.push(String(Object.values(columnPreviewWidths)[1]).slice(0, 4) + "%");
-   //   previewWidthStrings = columnPreviewWidths && String(Object.values(columnPreviewWidths).map(width => width)).slice(0, 4);
-
-   }
-
-   console.log("STRING FORM", previewWidthStrings)
   return (
     <div
       key={column.id}
@@ -92,12 +92,15 @@ const Column = ({
       className={styles.columnWrapperDiv}
       style={{ ...columnStyling, position: "relative" }}
       ref={ref}
-      // style={{borderLeft: '1px solid red'}}
     >
       {renderedSections}
       {!isLastColumn && (
         <div>
-            {columnPreviewWidths?.[column.id] && <p className={styles.columnPreviewWidthLeft}>{previewWidthStrings[0]}</p>}
+          {columnPreviewWidths?.[column.id] && (
+            <p className={styles.columnPreviewWidthLeft}>
+              {previewWidthStrings[0]}
+            </p>
+          )}
           <button
             type="button"
             className={styles.columnResizeHandle}
@@ -105,7 +108,11 @@ const Column = ({
             onPointerDown={(event) => onStartResize(column.id, event)}
             onKeyDown={(event) => onResizeWithKeyboard(column.id, event)}
           />
-          {columnPreviewWidths?.[column.id] && <p className={styles.columnPreviewWidthRight}>{previewWidthStrings[1]}</p>}
+          {columnPreviewWidths?.[column.id] && (
+            <p className={styles.columnPreviewWidthRight}>
+              {previewWidthStrings[1]}
+            </p>
+          )}
         </div>
       )}
     </div>

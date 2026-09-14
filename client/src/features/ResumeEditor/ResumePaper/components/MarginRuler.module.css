@@ -58,6 +58,15 @@
   width: 0.25rem;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.25);
 }
+
+.marginIndicatorLabel {
+   position: absolute;
+   background-color: var(--background-toolbar);
+   padding: 0.25rem 0.5rem;
+   border: var(--border-main);
+   border-radius: var(--border-radius-main);
+}
+
 .resumeMarginIndicatorLeft,
 .resumeMarginIndicatorRight,
 .resumeMarginIndicatorTop,

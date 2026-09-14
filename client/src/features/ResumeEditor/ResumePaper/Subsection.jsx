@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 
 import Field from "./Field";
@@ -10,6 +9,9 @@ import { MdDragIndicator } from "react-icons/md";
 
 const SubsectionRenderer = ({ subsection }) => {
   const dispatch = useDispatch();
+
+  const reduxResume = useSelector((state) => state.resume.present);
+  const resumeGap = reduxResume.layout.gap;
   const section = useSelector(
     (state) => state.resume.present.sections.byId[subsection.sectionId],
   );
@@ -56,6 +58,7 @@ const SubsectionRenderer = ({ subsection }) => {
     <div
       style={{
         ...parentLayoutDict,
+        marginBottom: resumeGap?.subsection || "0rem",
         position: "relative",
         boxSizing: "border-box",
       }}

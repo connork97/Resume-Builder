@@ -8,6 +8,8 @@ import { MdDragIndicator } from "react-icons/md";
 // import { getNodeString } from '@/helpers/getNodeString';
 
 const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
+   const reduxResume = useSelector((state) => state.resume.present);
+   const resumeGap = reduxResume.layout.gap;
   const field = useSelector((state) => state.resume.present.fields.byId[fieldId]);
   const activeLayout = layout || parentLayoutDict || {};
 
@@ -133,7 +135,8 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
       style={{
          ...fieldWrapperStyling,
          position: "relative",
-        outline: `1px solid ${isHovered ? "black" : "transparent"}`,
+         marginBottom: resumeGap.field || '0rem',
+        outline: `1px solid ${isHovered ? "rgba(0, 0, 0, 0.5)" : "transparent"}`,
         borderRadius: '2px',
         outlineOffset: '1px',
         textAlign: autoTextAlign,

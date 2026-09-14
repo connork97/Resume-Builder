@@ -11,7 +11,8 @@ const Gap = () => {
   const resumeGap = useSelector((state) => state.resume.present.layout.gap);
 
   const updateResumeGap = (incrementOrDecrement, gapType) => {
-    const parsedCurrentGap = parseFloat(resumeGap[gapType]);
+    let parsedCurrentGap = 0;
+    if (resumeGap[gapType]) parsedCurrentGap = parseFloat(resumeGap[gapType]);
     const updatedGap =
       parseFloat(
         parsedCurrentGap + (incrementOrDecrement == "increment" ? 0.1 : -0.1),
@@ -39,17 +40,29 @@ const Gap = () => {
 
   const gapOptions = [
     {
-      label: "Horizontal Gap",
-      value: resumeGap.horizontal,
+      label: "Column Gap",
+      value: resumeGap.horizontal || '0rem',
       icon: <RxColumnSpacing />,
       gapType: "horizontal",
     },
     {
-      label: "Vertical Gap",
-      value: resumeGap.vertical,
+      label: "Section Gap",
+      value: resumeGap.vertical || '0rem',
       icon: <RxRowSpacing />,
       gapType: "vertical",
     },
+    {
+      label: "Subsection Gap",
+      value: resumeGap.subsection || '0rem',
+      icon: <RxRowSpacing />,
+      gapType: "subsection",
+    },
+    {
+      label: "Field Gap",
+      value: resumeGap.field || '0rem',
+      icon: <RxRowSpacing />,
+      gapType: "field",
+    }
   ];
 
   const gapOptionsArr = gapOptions.map((option) => (

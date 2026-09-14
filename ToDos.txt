@@ -8,6 +8,8 @@ MEDIUM BUGS:
    -Particularly when dragging within grid layouts
 
 -Margins can look like they're slightly to moderately negative when adjusting the space between columns
+
+-Undo/Redo functionality is buggy when adding/deleting primary content (fields, subsections, sections, and columns)
    
 SMALL BUGS:
 
@@ -42,10 +44,6 @@ BIGGER FEATURES:
 
 -Adding Margin Bottom to Section Headings, Subsections, Fields, etc
    -Need to be able to streamline it as well so keep the resume looking uniform even with small changes
-
--Undo/Redo should stack across multiple fields/sections/subsections/etc.
-   -Need to create some sort of call stack that can be traced backwards/forwards strikeThrough 
-      -With some cut off probably, baseline of 10?  Since last save?  TBD.
 
 -Reset of Styling, Layout, etc Accross the Board
    -Ex: Reset individualized margin/padding to defaults

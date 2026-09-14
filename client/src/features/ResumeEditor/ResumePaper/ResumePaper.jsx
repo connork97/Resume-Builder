@@ -10,7 +10,7 @@ import EndPageMarker from "./components/EndPageMarker.jsx";
 
 
 import styles from "./ResumePaper.module.css";
-import { dndReorderSections } from "@/store/resumeSlice.js";
+import { dndReorderSections, resizeColumnPair } from "@/store/resumeSlice.js";
 
 const ResumePaper = forwardRef(function ResumePaper(props, ref) {
 
@@ -25,6 +25,93 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
   const [items, setItems] = useState({});
   const previousItems = useRef({});
   const [columnOrder, setColumnOrder] = useState([]);
+  const [previewWidths, setPreviewWidths] = useState(null);
+  const resizeState = useRef(null);
+  const previewWidthsRef = useRef(null);
+
+  const getColumnWidth = (columnId) =>
+    parseFloat(columns.byId[columnId]?.layout?.width?.value) || 0;
+
+  const finishResize = () => {
+    const resize = resizeState.current;
+    if (!resize) return;
+
+    const widths = previewWidthsRef.current ?? resize.startWidths;
+    const leftWidth = widths[resize.leftColumnId];
+    const rightWidth = widths[resize.rightColumnId];
+    resize.handle.removeEventListener("pointermove", resize.onPointerMove);
+
+    if (leftWidth !== resize.startWidths[resize.leftColumnId]) {
+      dispatch(resizeColumnPair({
+        leftColumnId: resize.leftColumnId,
+        rightColumnId: resize.rightColumnId,
+        leftWidth,
+        rightWidth,
+      }));
+    }
+
+    resizeState.current = null;
+    previewWidthsRef.current = null;
+    setPreviewWidths(null);
+  };
+
+  const startResize = (leftColumnId, event) => {
+    const leftIndex = columnOrder.indexOf(leftColumnId);
+    const rightColumnId = columnOrder[leftIndex + 1];
+    const pageWidth = editorRef.current?.getBoundingClientRect().width;
+    const leftWidth = getColumnWidth(leftColumnId);
+    const rightWidth = getColumnWidth(rightColumnId);
+    if (!rightColumnId || !pageWidth || !leftWidth || !rightWidth) return;
+
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const startWidths = { [leftColumnId]: leftWidth, [rightColumnId]: rightWidth };
+    const onPointerMove = (moveEvent) => {
+      const resize = resizeState.current;
+      if (!resize) return;
+
+      const pairWidth = leftWidth + rightWidth;
+      const delta = ((moveEvent.clientX - resize.startX) / pageWidth) * 100;
+      const nextLeftWidth = Math.min(Math.max(leftWidth + delta, 10), pairWidth - 10);
+      const widths = {
+        [leftColumnId]: nextLeftWidth,
+        [rightColumnId]: pairWidth - nextLeftWidth,
+      };
+      previewWidthsRef.current = widths;
+      setPreviewWidths(widths);
+    };
+
+    resizeState.current = {
+      leftColumnId,
+      rightColumnId,
+      startX: event.clientX,
+      startWidths,
+      handle: event.currentTarget,
+      onPointerMove,
+    };
+    event.currentTarget.addEventListener("pointermove", onPointerMove);
+    event.currentTarget.addEventListener("pointerup", finishResize, { once: true });
+    event.currentTarget.addEventListener("pointercancel", finishResize, { once: true });
+  };
+
+  const resizeWithKeyboard = (leftColumnId, event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    const leftIndex = columnOrder.indexOf(leftColumnId);
+    const rightColumnId = columnOrder[leftIndex + 1];
+    const leftWidth = getColumnWidth(leftColumnId);
+    const rightWidth = getColumnWidth(rightColumnId);
+    const adjustment = event.key === "ArrowRight" ? 1 : -1;
+    const nextLeftWidth = leftWidth + adjustment;
+    if (!rightColumnId || nextLeftWidth < 10 || rightWidth - adjustment < 10) return;
+
+    event.preventDefault();
+    dispatch(resizeColumnPair({
+      leftColumnId,
+      rightColumnId,
+      leftWidth: nextLeftWidth,
+      rightWidth: rightWidth - adjustment,
+    }));
+  };
 
   useEffect(() => {
     const nextItems = {};
@@ -54,6 +141,9 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
         column={column}
         sectionIds={items[column.id] ?? []}
         sectionById={sectionsById}
+        previewWidth={previewWidths?.[column.id]}
+        onStartResize={startResize}
+        onResizeWithKeyboard={resizeWithKeyboard}
       />
     );
   });

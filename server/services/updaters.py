@@ -35,7 +35,7 @@ def update_column_widths(resume_id):
     )
 
     for column in auto_width_columns:
-        layout = column.layout or {}
+        layout = deepcopy(column.layout or {})
 
         layout.setdefault("width", {
             "value": "100%",

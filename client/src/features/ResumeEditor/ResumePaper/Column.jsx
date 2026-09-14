@@ -1,13 +1,31 @@
 import React from "react";
-
+import { useSelector } from "react-redux";
 import { useDroppable } from "@dnd-kit/react";
 
 import Section from "./Section.jsx";
+import ColumnResizeHandle from "./components/ColumnResizeHandle.jsx";
 
 import styles from "./ResumePaper.module.css";
 import { CollisionPriority } from "@dnd-kit/abstract";
 
-const Column = ({ column, sectionIds, sectionById }) => {
+const Column = ({
+  column,
+  sectionIds,
+  sectionById,
+  previewWidth,
+  onStartResize,
+  onResizeWithKeyboard,
+}) => {
+  const reduxColumns = useSelector((state) => state.resume.present.columns.allIds);
+   const isFirstColumn = reduxColumns[0] === column.id;
+   const isLastColumn = reduxColumns[reduxColumns.length - 1] === column.id;
+  const { ref } = useDroppable({
+    id: column.id,
+    type: 'column',
+    accept: 'section',
+    collisionPriority: CollisionPriority.High,
+  });
+
   if (!sectionIds) {
     console.error(`Column with ID ${column.id} is missing sectionIds.`);
     return (
@@ -19,7 +37,9 @@ const Column = ({ column, sectionIds, sectionById }) => {
 
   // If the column doesn't have a valid width, set it to a default value that splits remaining space evenly.
   let columnStyling = {
-    flex: column?.layout?.width?.auto
+    flex: previewWidth
+      ? `0 0 ${previewWidth}%`
+      : column?.layout?.width?.auto
       ? "1 1 0%"
       : `0 0 ${column?.layout?.width?.value}`,
     // paddingLeft: column?.layout?.padding?.left ?? resumeLayout.padding.left,
@@ -52,21 +72,23 @@ const Column = ({ column, sectionIds, sectionById }) => {
     }
   });
 
-  const { ref } = useDroppable({
-    id: column.id,
-    type: 'column',
-    accept: 'section',
-    collisionPriority: CollisionPriority.High,
-  });
   return (
     <div
       key={column.id}
       id={column.id}
       className={styles.columnWrapperDiv}
-      style={columnStyling}
+      style={{ ...columnStyling, position: 'relative' }}
       ref={ref}
+      // style={{borderLeft: '1px solid red'}}
     >
       {renderedSections}
+      {!isLastColumn && (
+         
+        <ColumnResizeHandle
+          onPointerDown={(event) => onStartResize(column.id, event)}
+          onKeyDown={(event) => onResizeWithKeyboard(column.id, event)}
+        />
+      )}
     </div>
   );
 };

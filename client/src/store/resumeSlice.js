@@ -301,6 +301,7 @@ const resumeSlice = createSlice({
       deleteColumn(state, action) {
          const id = action.payload;
          deleteColumnById(state, id);
+         updateAutoColumnWidths(state);
       },
 
       deleteSection(state, action) {
@@ -369,6 +370,27 @@ const resumeSlice = createSlice({
             ...changes,
             layout: column.layout,
          });
+      },
+      resizeColumnPair(state, action) {
+         const { leftColumnId, rightColumnId, leftWidth, rightWidth } = action.payload;
+         const leftColumn = state.columns.byId[leftColumnId];
+         const rightColumn = state.columns.byId[rightColumnId];
+
+         if (!leftColumn || !rightColumn) {
+            console.error('Cannot resize columns. One or both columns were not found.');
+            return;
+         }
+
+         leftColumn.layout.width = {
+            ...leftColumn.layout.width,
+            auto: false,
+            value: `${leftWidth.toFixed(2)}%`,
+         };
+         rightColumn.layout.width = {
+            ...rightColumn.layout.width,
+            auto: false,
+            value: `${rightWidth.toFixed(2)}%`,
+         };
       },
 
       updateSection(state, action) {
@@ -934,6 +956,7 @@ export const {
    // addColumn,
    deleteColumn,
    updateColumn,
+   resizeColumnPair,
 
    addSection,
    updateSection,

@@ -47,7 +47,7 @@ const CurrentlyEditing = () => {
       dispatch(setActiveSectionId(null));
    }
    return (
-      <button data-toolbar-label="Edit Full Resume" className='buttonMain' onClick={() => clearToolbarSelection()}>{`Currently Editing: ${currentlyEditingText}`}</button>
+      <button data-toolbar-label="Edit Full Resume" className='buttonMain' onClick={() => clearToolbarSelection()}>{`Currently Editing: ${currentlyEditingText || "Unknown Error"}`}</button>
    )
 }
 

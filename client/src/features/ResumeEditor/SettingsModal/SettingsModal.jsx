@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import ColumnSettings from "./ColumnSettings/ColumnSettings";
 import SectionSettings from "./SectionSettings/SectionSettings";
 
@@ -13,6 +12,22 @@ const SettingsModal = ({ isSettingsModalOpen, setIsSettingsModalOpen }) => {
   let translateY = 0;
 
   const [modalStylingDict, setModalStylingDict] = useState({});
+
+  useEffect(() => {
+    if (!isSettingsModalOpen) return;
+
+    const handleOutsideClick = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setIsSettingsModalOpen(false);
+      }
+    };
+
+    // Capture clicks before toolbar or editor handlers can stop propagation.
+    document.addEventListener("click", handleOutsideClick, true);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick, true);
+    };
+  }, [isSettingsModalOpen, setIsSettingsModalOpen]);
 
   useEffect(() => {
     if (!modalRef.current) return;
@@ -41,10 +56,7 @@ const SettingsModal = ({ isSettingsModalOpen, setIsSettingsModalOpen }) => {
       <div
         data-section-dnd-exclude="true"
         className={styles.settingsModalOverlayDiv}
-        styles={
-          isSettingsModalOpen ? { display: "block" } : { display: "none" }
-        }
-        onClick={() => setIsSettingsModalOpen(false)}
+        style={{ display: isSettingsModalOpen ? 'block' : 'none' }}            
       />
       <div
         data-section-dnd-exclude="true"

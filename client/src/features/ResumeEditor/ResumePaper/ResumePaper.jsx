@@ -11,9 +11,61 @@ import EndPageMarker from "./components/EndPageMarker.jsx";
 
 import styles from "./ResumePaper.module.css";
 import { dndReorderSections, resizeColumnPair } from "@/store/resumeSlice.js";
+import { ActionCreators as UndoActionCreators } from "redux-undo";
 
 const ResumePaper = forwardRef(function ResumePaper(props, ref) {
+  useEffect(() => {
+    const pressedKeys = new Set();
 
+    const handleKeyDown = (e) => {
+      pressedKeys.add(e.code);
+
+      const hasCtrl = e.ctrlKey || pressedKeys.has("ControlLeft") || pressedKeys.has("ControlRight");
+      const hasAlt = e.altKey || pressedKeys.has("AltLeft") || pressedKeys.has("AltRight");
+      const hasUndo = pressedKeys.has("KeyZ")
+      //  && (e.ctrlKey || pressedKeys.has("ControlLeft") || pressedKeys.has("ControlRight"));
+      const hasRedo = pressedKeys.has("KeyY")
+      //  && (e.ctrlKey || pressedKeys.has("ControlLeft") || pressedKeys.has("ControlRight"));
+      const has1 = pressedKeys.has("Digit1") || pressedKeys.has("Numpad1");
+      const has2 = pressedKeys.has("Digit2") || pressedKeys.has("Numpad2");
+      const has3 = pressedKeys.has("Digit3") || pressedKeys.has("Numpad3");
+
+      if (e.ctrlKey && e.key === "z") {
+        e.preventDefault();
+        console.log("Shortcut triggered: Ctrl + Z");
+        dispatch(UndoActionCreators.undo());
+      }
+      if (e.ctrlKey && e.key === "y") {
+        e.preventDefault();
+        console.log("Shortcut triggered: Ctrl + Y");
+        dispatch(UndoActionCreators.redo());
+      }
+      if (hasCtrl && hasAlt && has1 && has2 && has3) {
+        e.preventDefault();
+        console.log("Shortcut triggered: Ctrl + Alt + 1 + 2 + 3");
+      //   dispatch(revertToPreviousState());
+      dispatch(UndoActionCreators.undo());
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      pressedKeys.delete(e.code);
+    };
+
+    const handleBlur = () => {
+      pressedKeys.clear();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("blur", handleBlur);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("blur", handleBlur);
+    };
+  }, []);
    const dispatch = useDispatch();
   const localEditorRef = useRef(null);
   const editorRef = props.editorPageRef ?? localEditorRef;

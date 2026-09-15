@@ -169,10 +169,10 @@ export const initialState = {
 
    layout: {
       padding: {
-         top: '2.5rem',
-         right: '2.5rem',
-         bottom: '2.5rem',
-         left: '2.5rem'
+         top: '2.0rem',
+         right: '2.0rem',
+         bottom: '2.0rem',
+         left: '2.0rem'
       },
       gap: {
          horizontal: '1rem',

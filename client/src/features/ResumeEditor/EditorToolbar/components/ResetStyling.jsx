@@ -39,6 +39,14 @@ export default function ResetStyling() {
     console.log("Saved styling reset options:", checkedResetOptions);
     checkedResetOptions.forEach((resetOption) => {
       console.log(`Resetting styling for: ${resetOption}`);
+      if (resetOption === "resumeMargins") {
+         dispatch(updateResume({
+            key: "layout",
+            changes: {
+              padding: { ...initialState.layout.padding },
+            },
+         }))
+      }
       if (resetOption === "columnSpacing") {
         dispatch(
           updateResume({
@@ -218,6 +226,10 @@ export default function ResetStyling() {
     {
       label: "Reset Section Gap/Spacing",
       value: "sectionSpacing",
+    },
+    {
+      label: "Reset Resume Margins",
+      value: "resumeMargins",
     }
   ];
 

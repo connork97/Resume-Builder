@@ -20,7 +20,7 @@ export default function ResetStyling() {
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
   const [checkedResetOptions, setCheckedResetOptions] = useState([]);
 
-  const resetFontSizeOffsets = (nodes, resetOption) => {
+  const resetNodeOffsets = (nodes, resetOption) => {
     nodes.forEach((node) => {
       if (resetOption === "fontSize" && node.fontSizeOffset !== undefined) {
         node.fontSizeOffset = 0;
@@ -30,7 +30,7 @@ export default function ResetStyling() {
       }
 
       if (node.children) {
-        resetFontSizeOffsets(node.children, resetOption);
+        resetNodeOffsets(node.children, resetOption);
       }
     });
   };
@@ -39,6 +39,93 @@ export default function ResetStyling() {
     console.log("Saved styling reset options:", checkedResetOptions);
     checkedResetOptions.forEach((resetOption) => {
       console.log(`Resetting styling for: ${resetOption}`);
+      if (resetOption === "columnSpacing") {
+        dispatch(
+          updateResume({
+            key: "layout",
+            changes: {
+              gap: {
+                horizontal: initialState.layout.gap.horizontal,
+              },
+            },
+          }),
+        );
+        const columns = reduxResume.columns.allIds;
+        columns.forEach((columnId) => {
+          dispatch(
+            updateColumn({
+              id: columnId,
+              changes: {
+                layout: {
+                  padding: {
+                    left: "0rem",
+                    right: "0rem",
+                  },
+                },
+              },
+            }),
+          );
+        });
+        const sections = reduxResume.sections.allIds;
+        sections.forEach((sectionId) => {
+          dispatch(
+            updateSection({
+              id: sectionId,
+              changes: {
+                layout: {
+                  padding: {
+                    left: "0rem",
+                    right: "0rem",
+                  },
+                },
+              },
+            }),
+          );
+        });
+      }
+      if (resetOption === "sectionSpacing") {
+        dispatch(
+          updateResume({
+            key: "layout",
+            changes: {
+              gap: {
+                vertical: initialState.layout.gap.vertical,
+              },
+            },
+          }),
+        );
+        reduxResume.columns.allIds.forEach((columnId) => {
+          dispatch(
+            updateColumn({
+              id: columnId,
+              changes: {
+                layout: {
+                  padding: {
+                    top: "0rem",
+                    bottom: "0rem",
+                  },
+                },
+              },
+            }),
+          );
+        });
+        const sections = reduxResume.sections.allIds;
+        sections.forEach((sectionId) => {
+          dispatch(
+            updateSection({
+              id: sectionId,
+              changes: {
+                layout: {
+                  padding: {
+                    top: "0rem",
+                    bottom: "0rem",
+                  },
+                },
+              },
+            }),
+          );
+        });
+      }
       if (resetOption === "fontSize" || resetOption === "lineHeight") {
         dispatch(
           updateResume({
@@ -64,7 +151,7 @@ export default function ResetStyling() {
           const section = reduxResume.sections.byId[sectionId];
           const fieldValueCopy = structuredClone(section.value);
           checkedResetOptions.forEach((option) => {
-            resetFontSizeOffsets(fieldValueCopy, option);
+            resetNodeOffsets(fieldValueCopy, option);
           });
           dispatch(
             updateSection({
@@ -94,7 +181,7 @@ export default function ResetStyling() {
           const field = reduxResume.fields.byId[fieldId];
           const fieldValueCopy = structuredClone(field.value);
           checkedResetOptions.forEach((option) => {
-            resetFontSizeOffsets(fieldValueCopy, option);
+            resetNodeOffsets(fieldValueCopy, option);
           });
 
           dispatch(
@@ -123,6 +210,14 @@ export default function ResetStyling() {
     {
       label: "Reset Line Height",
       value: "lineHeight",
+    },
+    {
+      label: "Reset Column Gap/Spacing",
+      value: "columnSpacing",
+    },
+    {
+      label: "Reset Section Gap/Spacing",
+      value: "sectionSpacing",
     }
   ];
 

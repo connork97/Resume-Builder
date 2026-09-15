@@ -176,7 +176,9 @@ export const initialState = {
       },
       gap: {
          horizontal: '1rem',
-         vertical: '0.5rem'
+         vertical: '0.5rem',
+         subsection: '0.0rem',
+         field: '0.0rem',
       }
    },
    activeSectionIds: [],
@@ -330,8 +332,23 @@ const resumeSlice = createSlice({
             state.title = changes;
             return;
          }
+         if (key === "layout") {
+            state.layout = {
+               ...state.layout,
+               ...changes,
+               gap: { ...state.layout.gap, ...changes.gap },
+            };
+            return;
+         }
+         if (key === "styling") {
+            state.styling = {
+               ...state.styling,
+               ...changes,
+            };
+            return;
+         }
 
-         state[key] = {
+         else state[key] = {
             ...state[key],
             ...changes,
          };

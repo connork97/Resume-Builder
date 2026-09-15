@@ -20,7 +20,8 @@ export default function ResetStyling() {
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
   const [checkedResetOptions, setCheckedResetOptions] = useState([]);
 
-  const resetNodeOffsets = (nodes, resetOption) => {
+  const resetNodeStyling = (nodes, resetOption) => {
+    if (!Array.isArray(nodes)) return;
     nodes.forEach((node) => {
       if (resetOption === "fontSize" && node.fontSizeOffset !== undefined) {
         node.fontSizeOffset = 0;
@@ -28,9 +29,16 @@ export default function ResetStyling() {
       if (resetOption === "lineHeight" && node.lineHeightOffset !== undefined) {
         node.lineHeightOffset = 0;
       }
+      if (resetOption === "color") {
+        delete node.color;
+        delete node.iconColor;
+      }
+      if (resetOption === "highlightColor") {
+        delete node.highlightColor;
+      }
 
       if (node.children) {
-        resetNodeOffsets(node.children, resetOption);
+        resetNodeStyling(node.children, resetOption);
       }
     });
   };
@@ -134,71 +142,74 @@ export default function ResetStyling() {
           );
         });
       }
-      if (resetOption === "fontSize" || resetOption === "lineHeight") {
-        dispatch(
-          updateResume({
-            key: "styling",
-            changes: {
-              [resetOption]: initialResumeStyling[resetOption],
-            },
-          }),
-        );
-        reduxResume.columns.allIds.forEach((columnId) => {
+      if (["fontSize", "lineHeight", "color", "highlightColor"].includes(resetOption)) {
+        // Null clears the local color override so text inherits the resume color.
+        const stylingChanges = resetOption === "color"
+          ? { color: null }
+          : resetOption === "highlightColor"
+            ? {}
+            : { [resetOption + "Offset"]: 0 };
+
+        if (resetOption !== "highlightColor") {
           dispatch(
-            updateColumn({
-              id: columnId,
+            updateResume({
+              key: "styling",
               changes: {
-                styling: {
-                  [resetOption + 'Offset']: 0,
-                },
+                [resetOption]: initialResumeStyling[resetOption],
               },
             }),
           );
-        });
+          reduxResume.columns.allIds.forEach((columnId) => {
+            dispatch(
+              updateColumn({
+                id: columnId,
+                changes: {
+                  styling: stylingChanges,
+                },
+              }),
+            );
+          });
+        }
         reduxResume.sections.allIds.forEach((sectionId) => {
           const section = reduxResume.sections.byId[sectionId];
           const fieldValueCopy = structuredClone(section.value);
           checkedResetOptions.forEach((option) => {
-            resetNodeOffsets(fieldValueCopy, option);
+            resetNodeStyling(fieldValueCopy, option);
           });
           dispatch(
             updateSection({
               id: sectionId,
               changes: {
-                styling: {
-                  [resetOption + 'Offset']: 0,
-                },
+                styling: stylingChanges,
                 value: fieldValueCopy,
               },
             }),
           );
         });
-        reduxResume.subsections.allIds.forEach((subsectionId) => {
-          dispatch(
-            updateSubsection({
-              subsectionId: subsectionId,
-              changes: {
-                styling: {
-                  [resetOption + 'Offset']: 0,
+        if (resetOption !== "highlightColor") {
+          reduxResume.subsections.allIds.forEach((subsectionId) => {
+            dispatch(
+              updateSubsection({
+                subsectionId: subsectionId,
+                changes: {
+                  styling: stylingChanges,
                 },
-              },
-            }),
-          );
-        });
+              }),
+            );
+          });
+        }
         reduxResume.fields.allIds.forEach((fieldId) => {
           const field = reduxResume.fields.byId[fieldId];
           const fieldValueCopy = structuredClone(field.value);
           checkedResetOptions.forEach((option) => {
-            resetNodeOffsets(fieldValueCopy, option);
+            resetNodeStyling(fieldValueCopy, option);
           });
 
           dispatch(
             updateField({
               id: fieldId,
               changes: {
-                styling: {
-                  [resetOption + 'Offset']: 0,
-                },
+                styling: stylingChanges,
                 value: fieldValueCopy,
               },
             }),
@@ -218,6 +229,14 @@ export default function ResetStyling() {
     {
       label: "Reset Line Height",
       value: "lineHeight",
+    },
+    {
+      label: "Reset Text Color",
+      value: "color",
+    },
+    {
+      label: "Remove Highlights",
+      value: "highlightColor",
     },
     {
       label: "Reset Column Gap/Spacing",

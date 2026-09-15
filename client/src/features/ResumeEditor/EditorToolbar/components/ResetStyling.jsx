@@ -58,6 +58,21 @@ export default function ResetStyling() {
     };
     checkedResetOptions.forEach((resetOption) => {
       console.log(`Resetting styling for: ${resetOption}`);
+      if (resetOption === "borders") {
+         const reduxSections = reduxResume.sections.allIds;
+         reduxSections.forEach((sectionId) => {
+           dispatchReset(
+             updateSection({
+               id: sectionId,
+               changes: {
+                 styling: {
+                   border: {},
+                 },
+               },
+             }),
+           );
+         });
+      }
       if (resetOption === "resumeMargins") {
         dispatchReset(
           updateResume({
@@ -267,6 +282,10 @@ export default function ResetStyling() {
     {
       label: "Reset Resume Margins",
       value: "resumeMargins",
+    },
+    {
+      label: "Reset Borders",
+      value: "borders",
     },
   ];
 

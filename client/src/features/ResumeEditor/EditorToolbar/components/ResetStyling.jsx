@@ -20,14 +20,17 @@ export default function ResetStyling() {
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
   const [checkedResetOptions, setCheckedResetOptions] = useState([]);
 
-  const resetFontSizeOffsets = (nodes) => {
+  const resetFontSizeOffsets = (nodes, resetOption) => {
     nodes.forEach((node) => {
-      if (node.fontSizeOffset !== undefined) {
+      if (resetOption === "fontSize" && node.fontSizeOffset !== undefined) {
         node.fontSizeOffset = 0;
+      }
+      if (resetOption === "lineHeight" && node.lineHeightOffset !== undefined) {
+        node.lineHeightOffset = 0;
       }
 
       if (node.children) {
-        resetFontSizeOffsets(node.children);
+        resetFontSizeOffsets(node.children, resetOption);
       }
     });
   };
@@ -36,7 +39,7 @@ export default function ResetStyling() {
     console.log("Saved styling reset options:", checkedResetOptions);
     checkedResetOptions.forEach((resetOption) => {
       console.log(`Resetting styling for: ${resetOption}`);
-      if (resetOption === "fontSize") {
+      if (resetOption === "fontSize" || resetOption === "lineHeight") {
         dispatch(
           updateResume({
             key: "styling",
@@ -51,7 +54,7 @@ export default function ResetStyling() {
               id: columnId,
               changes: {
                 styling: {
-                  fontSizeOffset: 0,
+                  [resetOption + 'Offset']: 0,
                 },
               },
             }),
@@ -60,13 +63,15 @@ export default function ResetStyling() {
         reduxResume.sections.allIds.forEach((sectionId) => {
           const section = reduxResume.sections.byId[sectionId];
           const fieldValueCopy = structuredClone(section.value);
-          resetFontSizeOffsets(fieldValueCopy);
+          checkedResetOptions.forEach((option) => {
+            resetFontSizeOffsets(fieldValueCopy, option);
+          });
           dispatch(
             updateSection({
               id: sectionId,
               changes: {
                 styling: {
-                  fontSizeOffset: 0,
+                  [resetOption + 'Offset']: 0,
                 },
                 value: fieldValueCopy,
               },
@@ -79,7 +84,7 @@ export default function ResetStyling() {
               subsectionId: subsectionId,
               changes: {
                 styling: {
-                  fontSizeOffset: 0,
+                  [resetOption + 'Offset']: 0,
                 },
               },
             }),
@@ -88,14 +93,16 @@ export default function ResetStyling() {
         reduxResume.fields.allIds.forEach((fieldId) => {
           const field = reduxResume.fields.byId[fieldId];
           const fieldValueCopy = structuredClone(field.value);
-          resetFontSizeOffsets(fieldValueCopy);
+          checkedResetOptions.forEach((option) => {
+            resetFontSizeOffsets(fieldValueCopy, option);
+          });
 
           dispatch(
             updateField({
               id: fieldId,
               changes: {
                 styling: {
-                  fontSizeOffset: 0,
+                  [resetOption + 'Offset']: 0,
                 },
                 value: fieldValueCopy,
               },
@@ -112,12 +119,15 @@ export default function ResetStyling() {
     {
       label: "Reset Font Size",
       value: "fontSize",
-      action: () => console.log("Reset All"),
     },
+    {
+      label: "Reset Line Height",
+      value: "lineHeight",
+    }
   ];
 
   const dropdownOptionElements = dropdownOptions.map((option, index) => (
-    <div key={index}>
+    <div key={index} style={{ display: 'flex', justifyContent: 'space-between'}}>
       <span>{option.label}</span>
       <input
         type="checkbox"

@@ -12,8 +12,12 @@ const SectionSettings = () => {
 
   const activeSectionIds = useSelector((state) => state.resume.present.activeSectionIds);
   const section = useSelector(
-    (state) => state.resume.present.sections.byId[activeSectionIds[0]],
+    (state) => state.resume.present.sections.byId[activeSectionIds?.[0]],
   );
+
+  if (!section) {
+    return null;
+  }
 
   const hideOrShowHeading = () => {
     const newShowHeadingValue = !section.showHeading;

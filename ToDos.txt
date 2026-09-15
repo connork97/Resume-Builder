@@ -24,6 +24,11 @@ TINY BUGS:
    -Updating fields is split into several reducers
    -Column/Section/Subsection/Field updates could be much more uniform
 
+OTHER BUGS:
+
+-Session Cookie storage in incognito sites doesn't works 
+   -Considered "Third Party" since the front end is making requests to a different URL with the API, needs configuration
+
 !------------!
    FEATURES
 !------------!

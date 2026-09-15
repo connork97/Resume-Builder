@@ -14,14 +14,14 @@ const ColumnSettings = () => {
     (state) => state.resume.present.sections.byId[activeSectionId],
   );
   const column = useSelector(
-    (state) => state.resume.present.columns.byId[section.columnId],
+    (state) => state.resume.present.columns.byId[section?.columnId],
   );
 
   const [columnWidthInputValue, setColumnWidthInputValue] = useState(
-    column.layout.width.value.replace("%", "") || "auto",
+    column?.layout?.width?.value.replace("%", "") || "auto",
   );
   const [autoWidthInputValue, setAutoWidthInputValue] = useState(
-    column.layout.width.auto || false,
+    column?.layout?.width?.auto || false,
   );
 
   const handleColumnWidthSubmit = (e) => {
@@ -32,7 +32,7 @@ const ColumnSettings = () => {
 
     dispatch(
       updateColumn({
-        id: column.id,
+        id: column?.id,
         changes: {
           layout: {
             width: {
@@ -50,7 +50,7 @@ const ColumnSettings = () => {
     // e.preventDefault();
     dispatch(
       updateColumn({
-        id: column.id,
+        id: column?.id,
         changes: {
           layout: {
             width: {
@@ -69,7 +69,7 @@ const ColumnSettings = () => {
   return (
     <div className={styles.settingsModalWrapper}>
       <h2 className={styles.settingsModalHeader}>
-        Column {column.position + 1} Settings:
+        Column {column?.position + 1} Settings:
       </h2>
       <div className="flexRow spaceBetween">
         <form className="flexRow" onSubmit={handleColumnWidthSubmit}>

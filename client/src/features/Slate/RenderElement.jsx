@@ -6,7 +6,6 @@ const RenderElement = ({ element, attributes, children, type, inheritedFontSize,
    
    const reduxResume = useSelector((state) => state.resume.present);
    const resumeGap = reduxResume.layout.gap;
-   console.log('RENDER ELEMENT FIELD: ', field);
    const fieldSubsection = reduxResume.subsections.byId[field?.subsectionId];
    const isLastFieldInSubsection = field?.id === fieldSubsection?.fieldIds?.slice[fieldSubsection.fieldIds.length - 1];
 

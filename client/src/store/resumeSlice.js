@@ -137,7 +137,7 @@ const updateAutoColumnWidths = (state) => {
 // * INITIAL STATE V
 // * ------------- V
 
-const initialState = {
+export const initialState = {
    id: null,
    title: '',
    userId: null,
@@ -366,8 +366,16 @@ const resumeSlice = createSlice({
             }
          }
 
+         if (changes.styling) {
+            column.styling = {
+               ...column.styling,
+               ...changes.styling,
+            };
+         }
+
          Object.assign(column, {
             ...changes,
+            styling: column.styling,
             layout: column.layout,
          });
       },
@@ -475,6 +483,10 @@ const resumeSlice = createSlice({
                   .filter(Boolean)
                   .sort((a, b) => a.position - b.position)
                   .map(subsection => subsection.id);
+            } else if (key === "styling") {
+               subsection.styling = { ...subsection.styling, ...changes.styling };
+            } else if (key === "layout") {
+               subsection.layout = { ...subsection.layout, ...changes.layout };
             } else {
                subsection[key] = changes[key];
             }
@@ -501,6 +513,26 @@ const resumeSlice = createSlice({
          subsection.layout.flexDirection = flexDirection;
       },
 
+      updateField(state, action) {
+         const { id, changes } = action.payload;
+         const field = state.fields.byId[id];
+         if (!field) {
+            console.error(`Cannot update field. ID of ${id} not found.`);
+            return;
+         }
+         for (const key in changes) {
+            if (key === "styling") {
+               field.styling = { ...field.styling, ...changes.styling };
+            } else if (key === "value") {
+               field.value = changes.value;
+            }
+             else {
+               alert('This reducer only handles styling changes for now.');
+               return;
+               // field[key] = changes[key];
+            }
+         }
+      },
       updateFieldValue(state, action) {
          const { fieldId, newValue } = action.payload;
          const field = state.fields.byId[fieldId];
@@ -975,6 +1007,7 @@ export const {
 
    addField,
    deleteField,
+   updateField,
    updateFieldValue,
    updateFieldLayout,
    swapFieldPositions,

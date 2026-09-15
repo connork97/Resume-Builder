@@ -19,6 +19,7 @@ import Borders from "./Borders.jsx";
 import styles from "../Toolbar.module.css";
 import FontFamily from "../../TextFormatting/FontFamily.jsx";
 import AddSection from "./AddSection.jsx";
+import ResetStyling from "./ResetStyling.jsx";
 
 const RichTextToolbar = ({ editor }) => {
   const resumeStyling = useSelector((state) => state.resume.present.styling);
@@ -31,8 +32,12 @@ const RichTextToolbar = ({ editor }) => {
     (state) => state.resume.present.activeSectionIds,
   );
   const activeSectionId = activeSectionIds[0] ?? null;
-  const activeEditorId = useSelector((state) => state.resume.present.activeEditorId);
-  const selection = useSelector((state) => state.resume.present.activeEditorSelection);
+  const activeEditorId = useSelector(
+    (state) => state.resume.present.activeEditorId,
+  );
+  const selection = useSelector(
+    (state) => state.resume.present.activeEditorSelection,
+  );
 
   return (
     <div className={styles.richTextToolbarContainer}>
@@ -59,11 +64,17 @@ const RichTextToolbar = ({ editor }) => {
           />
         </div>
 
-        <div data-toolbar-label="Highlight Color" style={{ display: "contents" }}>
+        <div
+          data-toolbar-label="Highlight Color"
+          style={{ display: "contents" }}
+        >
           <HighlightColor editor={editor} selection={selection} />
         </div>
 
-        <div data-toolbar-label="Background Color" style={{ display: "contents" }}>
+        <div
+          data-toolbar-label="Background Color"
+          style={{ display: "contents" }}
+        >
           <BackgroundColor
             activeSectionId={activeSectionId}
             activeSectionIds={activeSectionIds}
@@ -91,7 +102,10 @@ const RichTextToolbar = ({ editor }) => {
 
         <Marks editor={editor} />
 
-        <div data-toolbar-label="Text Alignment" style={{ display: "contents" }}>
+        <div
+          data-toolbar-label="Text Alignment"
+          style={{ display: "contents" }}
+        >
           <TextAlign
             editor={editor}
             selection={selection}
@@ -114,26 +128,31 @@ const RichTextToolbar = ({ editor }) => {
           <Columns label="Columns:" />
         </div>
 
-        <Gap />
-
         {/* <div data-toolbar-label="Section Gap" style={{ display: "contents" }}>
           <Gap label="Section Gap:" gapType="vertical" />
-        </div>
-
-        <div data-toolbar-label="Column Gap" style={{ display: "contents" }}>
+          </div>
+          
+          <div data-toolbar-label="Column Gap" style={{ display: "contents" }}>
           <Gap label="Column Gap:" gapType="horizontal" />
         </div> */}
 
-        <div data-toolbar-label="Borders" style={{ display: "contents" }}>
+        <div
+          data-toolbar-label="Borders"
+          data-id="open-close-dropdown-button"
+          style={{ display: "contents" }}
+        >
           <Borders
             activeSectionId={activeSectionId}
             activeSectionIds={activeSectionIds}
           />
         </div>
 
+        <Gap />
+
         <div data-toolbar-label="Add Section" style={{ display: "contents" }}>
           <AddSection />
         </div>
+        <ResetStyling />
       </div>
     </div>
   );

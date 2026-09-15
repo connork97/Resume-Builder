@@ -45,18 +45,31 @@ export default function ResetStyling() {
 
   const handleSaveStylingReset = () => {
     console.log("Saved styling reset options:", checkedResetOptions);
+    const historyGroup = `reset-styling:${crypto.randomUUID()}`;
+
+    const dispatchReset = (action) => {
+      dispatch({
+        ...action,
+        meta: {
+          ...action.meta,
+          historyGroup,
+        },
+      });
+    };
     checkedResetOptions.forEach((resetOption) => {
       console.log(`Resetting styling for: ${resetOption}`);
       if (resetOption === "resumeMargins") {
-         dispatch(updateResume({
+        dispatchReset(
+          updateResume({
             key: "layout",
             changes: {
               padding: { ...initialState.layout.padding },
             },
-         }))
+          }),
+        );
       }
       if (resetOption === "columnSpacing") {
-        dispatch(
+        dispatchReset(
           updateResume({
             key: "layout",
             changes: {
@@ -68,7 +81,7 @@ export default function ResetStyling() {
         );
         const columns = reduxResume.columns.allIds;
         columns.forEach((columnId) => {
-          dispatch(
+          dispatchReset(
             updateColumn({
               id: columnId,
               changes: {
@@ -84,7 +97,7 @@ export default function ResetStyling() {
         });
         const sections = reduxResume.sections.allIds;
         sections.forEach((sectionId) => {
-          dispatch(
+          dispatchReset(
             updateSection({
               id: sectionId,
               changes: {
@@ -100,7 +113,7 @@ export default function ResetStyling() {
         });
       }
       if (resetOption === "sectionSpacing") {
-        dispatch(
+        dispatchReset(
           updateResume({
             key: "layout",
             changes: {
@@ -111,7 +124,7 @@ export default function ResetStyling() {
           }),
         );
         reduxResume.columns.allIds.forEach((columnId) => {
-          dispatch(
+          dispatchReset(
             updateColumn({
               id: columnId,
               changes: {
@@ -127,7 +140,7 @@ export default function ResetStyling() {
         });
         const sections = reduxResume.sections.allIds;
         sections.forEach((sectionId) => {
-          dispatch(
+          dispatchReset(
             updateSection({
               id: sectionId,
               changes: {
@@ -142,16 +155,21 @@ export default function ResetStyling() {
           );
         });
       }
-      if (["fontSize", "lineHeight", "color", "highlightColor"].includes(resetOption)) {
+      if (
+        ["fontSize", "lineHeight", "color", "highlightColor"].includes(
+          resetOption,
+        )
+      ) {
         // Null clears the local color override so text inherits the resume color.
-        const stylingChanges = resetOption === "color"
-          ? { color: null }
-          : resetOption === "highlightColor"
-            ? {}
-            : { [resetOption + "Offset"]: 0 };
+        const stylingChanges =
+          resetOption === "color"
+            ? { color: null }
+            : resetOption === "highlightColor"
+              ? {}
+              : { [resetOption + "Offset"]: 0 };
 
         if (resetOption !== "highlightColor") {
-          dispatch(
+          dispatchReset(
             updateResume({
               key: "styling",
               changes: {
@@ -160,7 +178,7 @@ export default function ResetStyling() {
             }),
           );
           reduxResume.columns.allIds.forEach((columnId) => {
-            dispatch(
+            dispatchReset(
               updateColumn({
                 id: columnId,
                 changes: {
@@ -176,7 +194,7 @@ export default function ResetStyling() {
           checkedResetOptions.forEach((option) => {
             resetNodeStyling(fieldValueCopy, option);
           });
-          dispatch(
+          dispatchReset(
             updateSection({
               id: sectionId,
               changes: {
@@ -188,7 +206,7 @@ export default function ResetStyling() {
         });
         if (resetOption !== "highlightColor") {
           reduxResume.subsections.allIds.forEach((subsectionId) => {
-            dispatch(
+            dispatchReset(
               updateSubsection({
                 subsectionId: subsectionId,
                 changes: {
@@ -205,7 +223,7 @@ export default function ResetStyling() {
             resetNodeStyling(fieldValueCopy, option);
           });
 
-          dispatch(
+          dispatchReset(
             updateField({
               id: fieldId,
               changes: {
@@ -249,11 +267,14 @@ export default function ResetStyling() {
     {
       label: "Reset Resume Margins",
       value: "resumeMargins",
-    }
+    },
   ];
 
   const dropdownOptionElements = dropdownOptions.map((option, index) => (
-    <div key={index} style={{ display: 'flex', justifyContent: 'space-between'}}>
+    <div
+      key={index}
+      style={{ display: "flex", justifyContent: "space-between" }}
+    >
       <span>{option.label}</span>
       <input
         type="checkbox"

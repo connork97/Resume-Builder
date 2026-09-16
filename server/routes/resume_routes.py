@@ -124,10 +124,32 @@ def resume(resume_id):
 def get_official_resume_templates():
     print_pending_request("GET", "/resumes/templates")
     template_count = request.args.get("templateCount", 10, type=int)
+    order_by = request.args.get("orderBy", None)
 
-    official_resume_templates = Resume.query.filter_by(
-        is_official_template=True
-    ).order_by(Resume.id.asc()).limit(template_count).all()
+    if order_by == "copyCount":
+        copy_counts = (
+            db.session.query(
+                Resume.source_resume_id,
+                db.func.count(Resume.id).label("copy_count"),
+            )
+            .filter(Resume.source_resume_id.isnot(None))
+            .group_by(Resume.source_resume_id)
+            .subquery()
+        )
+        official_resume_templates = (
+            Resume.query.filter_by(is_official_template=True)
+            .outerjoin(copy_counts, copy_counts.c.source_resume_id == Resume.id)
+            .order_by(
+                db.func.coalesce(copy_counts.c.copy_count, 0).desc(),
+                Resume.id.asc(),
+            )
+            .limit(template_count)
+            .all()
+        )
+    else:
+        official_resume_templates = Resume.query.filter_by(
+            is_official_template=True
+        ).order_by(Resume.id.asc()).limit(template_count).all()
 
     if len(official_resume_templates) == 0:
         return generate_error(

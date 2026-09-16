@@ -245,7 +245,6 @@ def build_resume_with_defaults(title, user_id, sections_data):
 def build_resume_copy(resume_id, *, user_id):
     original_resume = Resume.query.get(resume_id)
     
-
     if original_resume is None:
         return None
 
@@ -266,6 +265,8 @@ def build_resume_copy(resume_id, *, user_id):
     )
     resume_copy.user_id = user_id
     resume_copy.is_official_template = False
+    # ! Potentially need to change to account for copying a resume that's already a copy of another
+    # ! Concerns about who the "credit" goes to
     resume_copy.source_resume_id = original_resume.id
     resume_copy.title = f"{original_resume.title} (Copy)"
     

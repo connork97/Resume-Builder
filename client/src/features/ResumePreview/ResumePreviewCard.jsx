@@ -9,8 +9,13 @@ import { TbExternalLink } from "react-icons/tb";
 
 // styling.width/height size the paper; the caption adds its own height.
 // Other styling properties apply to the outer card. Width wins if both are set.
-export default function ResumePreviewCard({ resumeId, styling = {}, caption = true, hoverPreview = false }) {
-   const navigate = useNavigate();
+export default function ResumePreviewCard({
+  resumeId,
+  styling = {},
+  caption = true,
+  hoverPreview = false,
+}) {
+  const navigate = useNavigate();
   const [result, setResult] = useState(null);
   const [zoomOpen, setZoomOpen] = useState(false);
   const viewportRef = useRef(null);
@@ -64,48 +69,79 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
   const title = resume?.title || "Resume template";
   const { width, height, ...cardStyling } = styling;
   const cssHeight = typeof height === "number" ? `${height}px` : height;
-  const cardWidth = width ?? (cssHeight ? `calc(${cssHeight} * 8.5 / 11)` : undefined);
+  const cardWidth =
+    width ?? (cssHeight ? `calc(${cssHeight} * 8.5 / 11)` : undefined);
   return (
-   <Link to={`/editor/${resumeId}`} target="_blank" rel="noopener noreferrer"> 
-    <figure className={styles.resumePreviewCard} style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}
-   //   onClick={() => navigate(`/editor/${resumeId}`)}
-     >
+    <figure
+      className={styles.resumePreviewCard}
+      style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}
+      //   onClick={() => navigate(`/editor/${resumeId}`)}
+    >
       <div
         ref={viewportRef}
         className={styles.viewport}
         aria-busy={loading}
         tabIndex={hoverPreview ? 0 : undefined}
-        aria-label={hoverPreview ? `${title}. Focus to enlarge preview; Escape to dismiss.` : undefined}
-        onMouseEnter={() => { if (hoverPreview) setZoomOpen(true); }}
+        aria-label={
+          hoverPreview
+            ? `${title}. Focus to enlarge preview; Escape to dismiss.`
+            : undefined
+        }
+        onMouseEnter={() => {
+          if (hoverPreview) setZoomOpen(true);
+        }}
         onMouseLeave={() => setZoomOpen(false)}
-        onFocus={() => { if (hoverPreview) setZoomOpen(true); }}
+        onFocus={() => {
+          if (hoverPreview) setZoomOpen(true);
+        }}
         onBlur={() => setZoomOpen(false)}
-        onKeyDown={(event) => { if (event.key === "Escape") setZoomOpen(false); }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") setZoomOpen(false);
+        }}
       >
-        <div
-          ref={paperRef}
-          className={styles.resumePaper}
-          role="img"
-          aria-label={`${title}, first page preview`}
-          aria-hidden={!resume}
-          style={{
-            ...resume?.styling,
-            transform: `scale(${paperScale})`,
-            visibility: resume && paperScale ? "visible" : "hidden",
-          }}
+        <Link
+          to={`/editor/${resumeId}`}
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          {resume && <PreviewPaper resume={resume} />}
-        </div>
-        {!resume && (
-          <p role="status" className={styles.status}>
-            {loading ? "Loading preview…" : "Preview unavailable"}
-          </p>
-        )}
-
+          <div
+            ref={paperRef}
+            className={styles.resumePaper}
+            role="img"
+            aria-label={`${title}, first page preview`}
+            aria-hidden={!resume}
+            style={{
+              ...resume?.styling,
+              transform: `scale(${paperScale})`,
+              visibility: resume && paperScale ? "visible" : "hidden",
+            }}
+          >
+            {resume && <PreviewPaper resume={resume} />}
+          </div>
+          {!resume && (
+            <p role="status" className={styles.status}>
+              {loading ? "Loading preview…" : "Preview unavailable"}
+            </p>
+          )}
+        </Link>
       </div>
-      {caption && <figcaption className={styles.resumeTitle}>{title}<TbExternalLink style={{ marginLeft: "0.5rem", verticalAlign: '-10%' }} /></figcaption>}
-      {hoverPreview && zoomOpen && resume && <PreviewZoom resume={resume} anchorRef={viewportRef} />}
+      <Link
+        to={`/editor/${resumeId}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {caption && (
+          <figcaption className={styles.resumeTitle}>
+            {title}
+            <TbExternalLink
+              style={{ marginLeft: "0.5rem", verticalAlign: "-10%" }}
+            />
+          </figcaption>
+        )}
+      </Link>
+      {hoverPreview && zoomOpen && resume && (
+        <PreviewZoom resume={resume} anchorRef={viewportRef} />
+      )}
     </figure>
-   </Link>
   );
 }

@@ -77,32 +77,32 @@ export default function ResumePreviewCard({
       style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}
       //   onClick={() => navigate(`/editor/${resumeId}`)}
     >
-      <div
-        ref={viewportRef}
-        className={styles.viewport}
-        aria-busy={loading}
-        tabIndex={hoverPreview ? 0 : undefined}
-        aria-label={
-          hoverPreview
-            ? `${title}. Focus to enlarge preview; Escape to dismiss.`
-            : undefined
-        }
-        onMouseEnter={() => {
-          if (hoverPreview) setZoomOpen(true);
-        }}
-        onMouseLeave={() => setZoomOpen(false)}
-        onFocus={() => {
-          if (hoverPreview) setZoomOpen(true);
-        }}
-        onBlur={() => setZoomOpen(false)}
-        onKeyDown={(event) => {
-          if (event.key === "Escape") setZoomOpen(false);
-        }}
+      <Link
+        to={`/editor/${resumeId}`}
+        target="_blank"
+        rel="noopener noreferrer"
       >
-        <Link
-          to={`/editor/${resumeId}`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <div
+          ref={viewportRef}
+          className={styles.viewport}
+          aria-busy={loading}
+          tabIndex={hoverPreview ? 0 : undefined}
+          aria-label={
+            hoverPreview
+              ? `${title}. Focus to enlarge preview; Escape to dismiss.`
+              : undefined
+          }
+          onMouseEnter={() => {
+            if (hoverPreview) setZoomOpen(true);
+          }}
+          onMouseLeave={() => setZoomOpen(false)}
+          onFocus={() => {
+            if (hoverPreview) setZoomOpen(true);
+          }}
+          onBlur={() => setZoomOpen(false)}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") setZoomOpen(false);
+          }}
         >
           <div
             ref={paperRef}
@@ -123,13 +123,7 @@ export default function ResumePreviewCard({
               {loading ? "Loading preview…" : "Preview unavailable"}
             </p>
           )}
-        </Link>
-      </div>
-      <Link
-        to={`/editor/${resumeId}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+        </div>
         {caption && (
           <figcaption className={styles.resumeTitle}>
             {title}

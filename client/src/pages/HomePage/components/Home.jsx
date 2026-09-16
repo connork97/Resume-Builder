@@ -85,16 +85,18 @@ const Home = () => {
             <Link className={styles.tryDemoButton}>Create an Account</Link> */}
         {/* <ResumePreviews /> */}
         <div>
-          <h1
+          <h2
+           className={styles.homeH2}
             style={{
-              fontSize: "2rem",
-              textAlign: "center",
+            //   fontSize: "2rem",
+            //   textAlign: "center",
               marginTop: "10rem",
-              marginBottom: "5rem",
+            //   marginBottom: "5rem",
             }}
           >
             Official Resume Templates
-          </h1>
+          </h2>
+          <Link to="/templates" className={styles.templatesPageLink}>Browse All Resume Templates</Link>
           <div
             style={{
               display: "grid",

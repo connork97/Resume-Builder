@@ -1,17 +1,12 @@
 .homePageContainer {
   min-height: 100%;
-  /* min-height: 'max-content'; */
-  /* height: 100vh; */
   width: 100%;
   position: relative;
-  /* padding-inline: var(--padding-x-main); */
   overflow-x: hidden;
-  /* margin-bottom: 100rem; */
   
   background-image: url("@/assets/backgrounds/resumeBuilderHeroImage.png");
   background-size: cover;
   background-position: center;
-  /* background-repeat: no-repeat; */
 
   color: var(--color-main);
   font-size: var(--font-size-main);
@@ -21,8 +16,6 @@
 
 /* Overlay */
 .homePageContainer::before {
-  /* height: 100vh; */
-
   height: 100%;
   content: "";
   position: absolute;
@@ -32,7 +25,6 @@
     rgba(15, 15, 15, 0.4),
     rgba(10, 10, 15, 0.6)
   );
-  
 }
 
 .homePageContent {
@@ -87,4 +79,13 @@
   background: rgba(0, 0, 0, 0.2);
 
   cursor: pointer;
+}
+
+.templatesPageLink {
+  display: block;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 5rem;
+  text-decoration: underline;
+  font-style: italic;
 }

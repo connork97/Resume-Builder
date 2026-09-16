@@ -15,10 +15,7 @@ import AccountPage from "./pages/AccountPage/AccountPage";
 import ResumeEditorPage from "./pages/ResumeEditorPage/ResumeEditorPage";
 import UserResumes from "./pages/AccountPage/components/UserResumes.jsx";
 import AccountSettings from "./pages/AccountPage/components/AccountSettings.jsx";
-import { editorRegistry } from "./helpers/editorRegistry";
-import { getUserResumesFromApi } from "./services/userServices";
-import ResumePaper from "./features/ResumeEditor/ResumePaper/ResumePaper";
-import ResumeEditor from "./pages/ResumeEditorPage/components/ResumeEditor";
+import Templates from "./pages/TemplatesPage/Templates";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,70 +33,6 @@ const App = () => {
     runSiteLaunch();
   }, []);
 
-//   const user = useSelector((state) => state.user);
-
-//   const [tempResumeId, setTempResumeId] = useState(null);
-
-//   const [tempResumeData, setTempResumeData] = useState({});
-
-//   const fetchResumeById = async (resumeId) => {
-//     const normalizedResumeData = await getResumeFromApi(resumeId);
-//     if (!normalizedResumeData) {
-//       return;
-//     }
-//     setTempResumeData(normalizedResumeData);
-//   };
-//   //   const fetchResumeById = useCallback(
-//   //     async (resumeId) => {
-//   //       const normalizedResumeData = await getResumeFromApi(resumeId);
-//   //       if (!normalizedResumeData) {
-//   //         return;
-//   //       }
-
-//   //       dispatch(setResume(normalizedResumeData));
-//   //       dispatch(UndoActionCreators.clearHistory());
-//   //     },
-//   //     [dispatch],
-//   //   );
-
-//   useEffect(() => {
-//     if (!tempResumeId) return;
-//     fetchResumeById(tempResumeId);
-//   }, [tempResumeId]);
-
-//   useEffect(() => {
-//     console.log("TEMP RESUME DATA: ", tempResumeData);
-//   }, [tempResumeData]);
-
-//   const getResumes = async (userId) => {
-//     const userData = await getUserResumesFromApi(userId);
-//     console.log(userData.resumes);
-//     setTempResumeId(userData.resumes[0]?.id || null);
-//   };
-
-//   useEffect(() => {
-//     if (!user.id) {
-//       return;
-//     }
-//     getResumes(user.id);
-//     // console.log(user)
-//   }, [user]);
-
-  // Listener for custom multi-key shortcut: Ctrl + Alt + 1 + 2 + 3
-  // (Using Ctrl + Alt avoids native browser tab switching like Ctrl + 1/2/3)
-
-  //   }, [dispatch]);
-
-  //   Used for Checking Editor History Undo/Redo Stack
-  //   const activeEditorId = useSelector((state) => state.resume.present.activeEditorId);
-  //   const editor = editorRegistry.get(activeEditorId);
-
-  //   useEffect(() => {
-  //      if (editor) {
-  //       console.log('EDITOR FROM APP: ', editor.history);
-  //    }
-  //   }, [activeEditorId, editor]);
-
   return (
     <BrowserRouter>
       {/* {tempResumeData && (
@@ -111,6 +44,7 @@ const App = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/signup" element={<AuthPage />} />
           <Route path="/login" element={<AuthPage />} />
+          <Route path="/templates" element={<Templates />} />
         </Route>
 
         <Route path="/account" element={<AccountPage />}>

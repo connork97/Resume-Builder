@@ -1,3 +1,4 @@
+from utils.authorization import check_resume_access
 from flask import Blueprint, request, jsonify, session
 from models import db, Resume, Column, Section, Subsection, Field
 
@@ -33,6 +34,10 @@ def add_column(resume_id):
                 code="RESUME_NOT_FOUND",
                 message=f"Could not find resume of ID {resume_id} to add a column to.",
             )
+
+        error = check_resume_access(session.get("user_id"), resume_id, request.method)
+        if error is not None:
+            return error
 
         column_count = len(resume.columns)
         
@@ -74,6 +79,10 @@ def delete_last_column(resume_id):
                 code="RESUME_NOT_FOUND",
                 message=f"Could not find resume of ID {resume_id}.",
             )
+
+        error = check_resume_access(session.get("user_id"), resume_id, request.method)
+        if error is not None:
+            return error
 
         column_to_delete = (
             Column.query.filter_by(resume_id=resume_id)
@@ -153,6 +162,10 @@ def update_column(column_id):
                 code="COLUMN_NOT_FOUND",
                 message=f"Could not find column of ID {column_id}.",
             )
+
+        error = check_resume_access(session.get("user_id"), column.resume_id, request.method)
+        if error is not None:
+            return error
 
         data = request.get_json() or {}
         if not data:

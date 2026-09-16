@@ -1,3 +1,4 @@
+from utils.authorization import check_resume_access
 from flask import Blueprint, request, jsonify, session
 from models import db, Resume, Column, Section, Subsection, Field
 
@@ -42,6 +43,10 @@ def add_section_to_resume(resume_id):
                 code="RESUME_NOT_FOUND",
                 message=f"Resume of ID {resume_id} not found.",
             )
+
+        error = check_resume_access(session.get("user_id"), resume_id, request.method)
+        if error is not None:
+            return error
 
         section_type = form_data.get("type")
 
@@ -117,6 +122,10 @@ def delete_section_from_resume(section_id):
             )
 
         resume = section_to_delete.column.resume
+        error = check_resume_access(session.get("user_id"), resume.id, request.method)
+        if error is not None:
+            return error
+
         column_id = section_to_delete.column_id
         deleted_position = section_to_delete.position
 

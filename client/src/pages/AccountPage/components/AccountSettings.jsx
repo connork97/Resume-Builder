@@ -18,6 +18,7 @@ const AccountSettings = () => {
       firstName: '',
       lastName: '',
       email: '',
+      currentPassword: '',
       createdAt: '',
       updatedAt: '',
    });
@@ -28,6 +29,7 @@ const AccountSettings = () => {
             firstName: user.firstName || '',
             lastName: user.lastName || '',
             email: user.email || '',
+            currentPassword: '',
             createdAt: user.createdAt || '',
             updatedAt: user.updatedAt || '',
          });
@@ -84,6 +86,17 @@ const AccountSettings = () => {
                value={userFormData.email}
                placeholder='Email'
                onChange={changeUserFormData}
+            />
+            <label htmlFor='currentPassword'>Current password (required to change your email)</label>
+            <input
+               id='currentPassword'
+               className={styles.accountSettingsInput}
+               type='password'
+               name='currentPassword'
+               autoComplete='current-password'
+               value={userFormData.currentPassword}
+               onChange={changeUserFormData}
+               required={userFormData.email.trim().toLowerCase() !== user.email}
             />
             <span className={styles.accountTimeStampsSpan}>
                Your account was created on {formatDateTime(userFormData.createdAt)}

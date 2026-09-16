@@ -242,7 +242,7 @@ def build_resume_with_defaults(title, user_id, sections_data):
 
     return resume
 
-def build_resume_copy(resume_id):
+def build_resume_copy(resume_id, *, user_id):
     original_resume = Resume.query.get(resume_id)
     
 
@@ -262,8 +262,10 @@ def build_resume_copy(resume_id):
     resume_copy = copy_instance(
         original_resume,
         Resume,
-        {"id", "title", "created_at", "updated_at"},
+        {"id", "title", "user_id", "is_official_template", "created_at", "updated_at"},
     )
+    resume_copy.user_id = user_id
+    resume_copy.is_official_template = False
     resume_copy.title = f"{original_resume.title} (Copy)"
     
     db.session.add(resume_copy)

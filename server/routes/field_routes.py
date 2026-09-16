@@ -1,3 +1,4 @@
+from utils.authorization import check_resume_access
 from flask import Blueprint, request, jsonify, session
 from sqlalchemy import func
 
@@ -24,6 +25,10 @@ def add_field_to_resume(subsection_id):
          )
       
       resume = subsection.section.column.resume
+      error = check_resume_access(session.get("user_id"), resume.id, request.method)
+      if error is not None:
+          return error
+
       
       max_position = (
          db.session.query(func.max(Field.position))
@@ -72,6 +77,10 @@ def delete_field_from_resume(field_id):
          )
          
       resume = field_to_delete.subsection.section.column.resume
+      error = check_resume_access(session.get("user_id"), resume.id, request.method)
+      if error is not None:
+          return error
+
       subsection_id = field_to_delete.subsection_id
       deleted_position = field_to_delete.position
       

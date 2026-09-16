@@ -14,7 +14,10 @@ def delete_existing_demo_resume():
         db.session.flush()
 
 def build_new_demo_resume():
-    new_demo_resume = build_resume_copy(28)
+    source = db.session.get(Resume, 28)
+    if source is None:
+        raise ValueError("Demo source resume 28 does not exist.")
+    new_demo_resume = build_resume_copy(28, user_id=source.user_id)
 
     for column in new_demo_resume.columns:
         column.resume_id = 0

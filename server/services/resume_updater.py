@@ -3,6 +3,7 @@ from models import db, Resume, Column, Section, Subsection, Field
 from services.updaters import update_column_widths
 
 def update_resume_with_form_data(resume_id, data):
+    # ! Condiser potentially mismatched form data, where incoming column/section/subsection IDs may not match those actually belonging to the resume..
     resume = Resume.query.filter(Resume.id == resume_id).one_or_none()
 
     if not resume:

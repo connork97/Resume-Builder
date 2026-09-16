@@ -120,6 +120,24 @@ def resume(resume_id):
     response = jsonify(resume.to_dict()), 200
     return response
 
+@resume_bp.route("/templates/official", methods=["GET"])
+def get_official_resume_templates():
+    print_pending_request("GET", "/resumes/templates")
+    template_count = request.args.get("templateCount", 10, type=int)
+
+    official_resume_templates = Resume.query.filter_by(
+        is_official_template=True
+    ).limit(template_count).all()
+
+    if len(official_resume_templates) == 0:
+        return generate_error(
+            error_type="NOT_FOUND",
+            code="NO_OFFICIAL_TEMPLATES",
+            message="No official resume templates found.",
+        )
+        
+    print_successful_request(f"Fetched {len(official_resume_templates)} official resume templates.")
+    return jsonify([template.to_dict() for template in official_resume_templates]), 200
 
 @resume_bp.route("/<int:resume_id>", methods=["DELETE"])
 def delete_resume(resume_id):

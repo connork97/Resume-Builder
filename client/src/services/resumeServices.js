@@ -180,6 +180,26 @@ export const deleteLastColumnFromApi = async (resumeId) => {
    }
 }
 
+export const getOfficialResumeTemplatesFromApi = async (templateCount = 10) => {
+   try {
+      const data = await fetchApi({
+         endpoint: `/resumes/templates/official?templateCount=${templateCount}`
+      })
+
+      return data;
+
+   } catch (error) {
+      console.error(`Error fetching official resume templates: `, error);
+      alert(
+         error?.code && error?.message
+            ? `${error.code}\n${error.message}`
+            : `Error fetching official resume templates.`
+      );
+
+      return null;
+   }
+}
+
 export const getResumeFromApi = async (resumeId) => {
    try {
       const data = await fetchApi({

@@ -18,7 +18,7 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
   const loading = Boolean(resumeId) && !current;
 
   useEffect(() => {
-    if (!resumeId) return;
+    if (resumeId == null) return;
     const controller = new AbortController();
     // Same normalization as getResumeFromApi, but failures stay in the tile
     // rather than opening that service's blocking alert.
@@ -64,7 +64,6 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
   const cardWidth = width ?? (cssHeight ? `calc(${cssHeight} * 8.5 / 11)` : undefined);
   return (
     <figure className={styles.card} style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}>
-      {caption && <figcaption className={styles.caption}>{title}</figcaption>}
       <div
         ref={viewportRef}
         className={styles.viewport}
@@ -96,7 +95,9 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
             {loading ? "Loading preview…" : "Preview unavailable"}
           </p>
         )}
+
       </div>
+      {caption && <figcaption className={styles.resumeTitle}>{title}</figcaption>}
       {hoverPreview && zoomOpen && resume && <PreviewZoom resume={resume} anchorRef={viewportRef} />}
     </figure>
   );

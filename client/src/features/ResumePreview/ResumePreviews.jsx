@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ResumePaper from "@/features/ResumeEditor/ResumePaper/ResumePaper";
 
-export default function ResumePreviews({ previewTemplateCount = 4 }) {
+export default function ResumePreviews({ previewTemplateCount = 9 }) {
   const [previewResumes, setPreviewResumes] = useState([]);
 
 //   const user = useSelector((state) => state.user);
@@ -30,10 +30,10 @@ export default function ResumePreviews({ previewTemplateCount = 4 }) {
 
   return (
     <div>
-      <h1>Resume Previews</h1>
-      <div className="flexRow">
+      <h1 style={{ fontSize: '2rem', textAlign: 'center', marginTop: '10rem', marginBottom: '5rem' }}>Official Resume Templates</h1>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gridRowGap: '5rem' }}>
         {previewResumes.map((resume) => (
-          <ResumePreviewCard resumeId={resume.id} key={resume.id} />
+          <ResumePreviewCard resumeId={resume.id} styling={{ width: '75%', margin: 'auto' }} key={resume.id} />
         ))}
       </div>
     </div>

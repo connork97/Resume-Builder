@@ -23,7 +23,10 @@ import { useSlateHistoryGrouping } from "@/hooks/useSlateHistoryGrouping.js";
 
 const SlateHeading = ({ section }) => {
   const dispatch = useDispatch();
-  const resumeStyling = useSelector((state) => state.resume.present.styling);
+  const reduxResume = useSelector((state) => state.resume.present);
+  const resumeStyling = reduxResume?.styling;
+  const resumeLayout = reduxResume?.layout;
+
   const column = useSelector(
     (state) => state.resume.present.columns.byId[section.columnId],
   );
@@ -149,6 +152,7 @@ const SlateHeading = ({ section }) => {
         style={{
           fontSize: `${inheritedFontSize}px`,
           lineHeight: inheritedLineHeight,
+          marginBottom: resumeLayout?.gap?.sectionHeader || '0rem',
         }}
       />
     </Slate>

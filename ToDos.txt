@@ -4,9 +4,6 @@
 
 MEDIUM BUGS:
 
--Field Gap doesn't apply to Slate Headings
-   -Potentially should be its own gap item, 
-
 -Dragging Fields is Clunky/Buggy
    -Particularly when dragging within grid layouts
 
@@ -58,6 +55,10 @@ MAIN FEATURES:
 
 
 MEDIUM FEATURES:
+
+-Picture Additions to Resumes
+   -Need to figure out if I'm storing the actual images in my DB, or if I'll be requiring links
+   -Then need to figure out spacing and resizing
 
 -Subsection and Field Gap/Spacing works resume wide, but not for individual parts of resume
    -Would be nice to have a drag feature for these too, or maybe margin indicator.

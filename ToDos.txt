@@ -2,6 +2,7 @@
    BUGS
 !--------!
 
+
 MEDIUM BUGS:
 
 -Dragging Fields is Clunky/Buggy
@@ -37,8 +38,6 @@ OTHER BUGS:
 !------------!
 
 STRETCH FEATURES:
-
--Resume Templates
 
 -Sharing Resumes Publicly
 

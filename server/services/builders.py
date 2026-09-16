@@ -266,13 +266,14 @@ def build_resume_copy(resume_id, *, user_id):
     )
     resume_copy.user_id = user_id
     resume_copy.is_official_template = False
+    resume_copy.source_resume_id = original_resume.id
     resume_copy.title = f"{original_resume.title} (Copy)"
     
     db.session.add(resume_copy)
     db.session.flush()
 
     # Copy columns from the original resume to the new resume.
-    # Ordered by position, though probably not necessary, to catch edge cases of conflicting position values
+    # Ordered by position to catch edge cases of conflicting position values
     # This happens for sections, subsections, and fields as well
     original_columns = (
         Column.query.filter_by(resume_id=original_resume.id)

@@ -91,6 +91,7 @@ class Resume(db.Model):
 
     id = id_column()
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    source_resume_id = db.Column(db.Integer, nullable=True)
     title = db.Column(db.String, nullable=False, default="Untitled Resume")
     styling = db.Column(db.JSON, nullable=False, default=dict)
     layout = db.Column(db.JSON, nullable=False, default=dict)
@@ -112,6 +113,7 @@ class Resume(db.Model):
         return {
             "id": self.id,
             "userId": self.user_id,
+            "sourceResumeId": self.source_resume_id,
             "title": self.title,
             "styling": self.styling,
             "layout": self.layout,

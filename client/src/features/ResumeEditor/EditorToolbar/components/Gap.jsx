@@ -65,9 +65,9 @@ const Gap = () => {
     },
     {
       label: "Section Header Gap",
-      value: resumeGap.sectionHeader || '0rem',
+      value: resumeGap.header || '0rem',
       icon: <RxRowSpacing />,
-      gapType: "sectionHeader",
+      gapType: "header",
     }
   ];
 

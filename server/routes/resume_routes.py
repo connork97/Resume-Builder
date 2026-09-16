@@ -123,8 +123,26 @@ def resume(resume_id):
 @resume_bp.route("/templates/official", methods=["GET"])
 def get_official_resume_templates():
     print_pending_request("GET", "/resumes/templates")
-    template_count = request.args.get("templateCount", 10, type=int)
-    order_by = request.args.get("orderBy", None)
+    try:
+        template_count = int(request.args.get("templateCount", 10))
+        offset = int(request.args.get("offset", 0))
+    except (TypeError, ValueError):
+        return generate_error(
+            error_type="BAD_REQUEST",
+            code="INVALID_PAGINATION",
+            message="templateCount and offset must be integers.",
+        )
+
+    if not 1 <= template_count <= 100 or offset < 0:
+        return generate_error(
+            error_type="BAD_REQUEST",
+            code="INVALID_PAGINATION",
+            message="templateCount must be between 1 and 100, and offset must be nonnegative.",
+        )
+
+    order_by = request.args.get("orderBy")
+    query = Resume.query.filter_by(is_official_template=True)
+    total_count = query.count()
 
     if order_by == "copyCount":
         copy_counts = (
@@ -136,30 +154,24 @@ def get_official_resume_templates():
             .group_by(Resume.source_resume_id)
             .subquery()
         )
-        official_resume_templates = (
-            Resume.query.filter_by(is_official_template=True)
-            .outerjoin(copy_counts, copy_counts.c.source_resume_id == Resume.id)
-            .order_by(
-                db.func.coalesce(copy_counts.c.copy_count, 0).desc(),
-                Resume.id.asc(),
-            )
-            .limit(template_count)
-            .all()
+        query = query.outerjoin(
+            copy_counts, copy_counts.c.source_resume_id == Resume.id
+        ).order_by(
+            db.func.coalesce(copy_counts.c.copy_count, 0).desc(),
+            Resume.id.asc(),
         )
+    elif order_by == "recent":
+        query = query.order_by(Resume.created_at.desc(), Resume.id.asc())
     else:
-        official_resume_templates = Resume.query.filter_by(
-            is_official_template=True
-        ).order_by(Resume.id.asc()).limit(template_count).all()
+        query = query.order_by(Resume.id.asc())
 
-    if len(official_resume_templates) == 0:
-        return generate_error(
-            error_type="NOT_FOUND",
-            code="NO_OFFICIAL_TEMPLATES",
-            message="No official resume templates found.",
-        )
-        
+    official_resume_templates = query.offset(offset).limit(template_count).all()
+
     print_successful_request(f"Fetched {len(official_resume_templates)} official resume templates.")
-    return jsonify([template.to_dict() for template in official_resume_templates]), 200
+    return jsonify({
+        "templates": [template.to_dict() for template in official_resume_templates],
+        "totalCount": total_count,
+    }), 200
 
 @resume_bp.route("/<int:resume_id>", methods=["DELETE"])
 def delete_resume(resume_id):

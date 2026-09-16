@@ -1,13 +1,16 @@
 import styles from "./ResumePreviewCard.module.css";
 import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchApi } from "@/lib/fetch";
 import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi";
 import PreviewPaper from "./components/PreviewPaper";
 import PreviewZoom from "./components/PreviewZoom";
+import { TbExternalLink } from "react-icons/tb";
 
 // styling.width/height size the paper; the caption adds its own height.
 // Other styling properties apply to the outer card. Width wins if both are set.
 export default function ResumePreviewCard({ resumeId, styling = {}, caption = true, hoverPreview = false }) {
+   const navigate = useNavigate();
   const [result, setResult] = useState(null);
   const [zoomOpen, setZoomOpen] = useState(false);
   const viewportRef = useRef(null);
@@ -63,7 +66,10 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
   const cssHeight = typeof height === "number" ? `${height}px` : height;
   const cardWidth = width ?? (cssHeight ? `calc(${cssHeight} * 8.5 / 11)` : undefined);
   return (
-    <figure className={styles.card} style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}>
+   <Link to={`/editor/${resumeId}`}> 
+    <figure className={styles.resumePreviewCard} style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}
+   //   onClick={() => navigate(`/editor/${resumeId}`)}
+     >
       <div
         ref={viewportRef}
         className={styles.viewport}
@@ -78,7 +84,7 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
       >
         <div
           ref={paperRef}
-          className={styles.paper}
+          className={styles.resumePaper}
           role="img"
           aria-label={`${title}, first page preview`}
           aria-hidden={!resume}
@@ -97,8 +103,9 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
         )}
 
       </div>
-      {caption && <figcaption className={styles.resumeTitle}>{title}</figcaption>}
+      {caption && <figcaption className={styles.resumeTitle}>{title}<TbExternalLink style={{ marginLeft: "0.5rem", verticalAlign: '-10%' }} /></figcaption>}
       {hoverPreview && zoomOpen && resume && <PreviewZoom resume={resume} anchorRef={viewportRef} />}
     </figure>
+   </Link>
   );
 }

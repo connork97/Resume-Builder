@@ -21,7 +21,7 @@ export default function RichText({ value, styling, gap }) {
       // Preserve link styling without introducing a navigation target.
       if (node.link)
         text = (
-          <a
+          <span
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -29,7 +29,7 @@ export default function RichText({ value, styling, gap }) {
             }}
           >
             {text}
-          </a>
+          </span>
         );
       return (
         <span

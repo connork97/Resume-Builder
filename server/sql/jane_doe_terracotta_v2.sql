@@ -1,0 +1,90 @@
+WITH
+content AS (
+    SELECT $resume_data$
+[
+{"label": "Header", "type": "header", "columnPosition": 0, "showHeading": false, "styling": {"backgroundColor": "#FFFFFF", "color": "#30343B", "border": {"bottom": {"display": true, "width": "86%", "height": "1px", "style": "solid", "color": "#D9B3A1"}}}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "HEADER", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#A64E35"}]}], "subsections": [{"label": "Jane Doe", "fields": [{"label": "Name", "value": [{"type": "paragraph", "label": "Name", "children": [{"text": "Jane Doe", "fontSizeOffset": 19, "lineHeightOffset": 0, "bold": true, "color": "#A64E35"}], "textAlign": "left"}], "layout": {}}, {"label": "Title", "value": [{"type": "paragraph", "label": "Title", "children": [{"text": "Customer Success Manager", "fontSizeOffset": 1, "lineHeightOffset": 0, "bold": false, "color": "#30343B"}], "textAlign": "left"}], "layout": {}}, {"label": "Contact", "value": [{"type": "paragraph", "label": "Contact", "children": [{"text": "Phoenix, AZ | (602) 555-0146 | jane.doe@example.com", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "bold": false, "color": "#65605D"}], "textAlign": "left"}], "layout": {}}]}]},
+{"label": "Customer Focus", "type": "summary", "columnPosition": 0, "showHeading": true, "styling": {}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "CUSTOMER FOCUS", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#A64E35"}]}], "subsections": [{"label": "Profile", "fields": [{"label": "Summary", "value": [{"type": "paragraph", "label": "Summary", "children": [{"text": "Customer success manager with 7 years of experience helping customers adopt new tools and achieve practical results. Builds strong relationships, clear success plans, and repeatable team workflows.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}], "layout": {}}]}]},
+{"label": "Customer Impact", "type": "custom", "columnPosition": 0, "showHeading": true, "styling": {"backgroundColor": "#FFF4ED", "color": "#A64E35"}, "layout": {"display": "grid", "grid": {"columns": 3}, "padding": {"top": "0.2rem", "bottom": "0.2rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "CUSTOMER IMPACT", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#A64E35"}]}], "subsections": [{"label": "Highlights", "fields": [{"label": "Retention", "value": [{"type": "paragraph", "textAlign": "center", "children": [{"text": "96%", "fontSizeOffset": 5, "lineHeightOffset": 0, "bold": true, "color": "#A64E35"}]}, {"type": "paragraph", "textAlign": "center", "children": [{"text": "retention", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#68584F"}]}], "layout": {}}, {"label": "Accounts", "value": [{"type": "paragraph", "textAlign": "center", "children": [{"text": "45", "fontSizeOffset": 5, "lineHeightOffset": 0, "bold": true, "color": "#A64E35"}]}, {"type": "paragraph", "textAlign": "center", "children": [{"text": "accounts", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#68584F"}]}], "layout": {}}, {"label": "Satisfaction", "value": [{"type": "paragraph", "textAlign": "center", "children": [{"text": "4.8/5", "fontSizeOffset": 5, "lineHeightOffset": 0, "bold": true, "color": "#A64E35"}]}, {"type": "paragraph", "textAlign": "center", "children": [{"text": "satisfaction", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#68584F"}]}], "layout": {}}]}]},
+{"label": "Experience", "type": "workHistory", "columnPosition": 0, "showHeading": true, "styling": {}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "EXPERIENCE", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#A64E35"}]}], "subsections": [{"label": "Bright Acre Software", "fields": [{"label": "Job Title", "value": [{"type": "paragraph", "label": "Job Title", "children": [{"text": "Customer Success Manager", "fontSizeOffset": 1, "lineHeightOffset": 0, "bold": true}]}], "layout": {}}, {"label": "Company", "value": [{"type": "paragraph", "label": "Company", "children": [{"text": "Bright Acre Software | 2022 - Present", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#606873"}]}], "layout": {}}, {"label": "Description", "value": [{"type": "unordered-list", "children": [{"type": "list-item", "children": [{"text": "Managed a portfolio of 45 business accounts and maintained 96% annual retention.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}, {"type": "list-item", "children": [{"text": "Built onboarding plans that shortened time to first value by 30%.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}, {"type": "list-item", "children": [{"text": "Partnered with product teams to turn recurring feedback into 6 shipped improvements.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}]}], "layout": {}}]}, {"label": "Kindred Desk", "fields": [{"label": "Job Title", "value": [{"type": "paragraph", "label": "Job Title", "children": [{"text": "Customer Success Specialist", "fontSizeOffset": 1, "lineHeightOffset": 0, "bold": true}]}], "layout": {}}, {"label": "Company", "value": [{"type": "paragraph", "label": "Company", "children": [{"text": "Kindred Desk | 2019 - 2022", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#606873"}]}], "layout": {}}, {"label": "Description", "value": [{"type": "unordered-list", "children": [{"type": "list-item", "children": [{"text": "Delivered training sessions for 200 customers with an average satisfaction score of 4.8/5.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}, {"type": "list-item", "children": [{"text": "Created a help center that reduced repetitive support requests by 22%.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}]}], "layout": {}}]}]},
+{"label": "Playbook", "type": "projects", "columnPosition": 0, "showHeading": true, "styling": {"backgroundColor": "#FFFFFF", "color": "#30343B"}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "PLAYBOOK", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#A64E35"}]}], "subsections": [{"label": "Enablement", "fields": [{"label": "Project Title", "value": [{"type": "paragraph", "label": "Project Title", "children": [{"text": "Customer Growth Workshop Series", "fontSizeOffset": 1, "lineHeightOffset": 0, "bold": true}]}], "layout": {}}, {"label": "Description", "value": [{"type": "paragraph", "label": "Description", "children": [{"text": "Designed a 4-part workshop covering setup, reporting, and team adoption. Reached 120 customer teams and lifted advanced feature usage by 26%.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}], "layout": {}}]}]},
+{"label": "Strengths & Tools", "type": "skills", "columnPosition": 0, "showHeading": true, "styling": {}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "STRENGTHS & TOOLS", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#A64E35"}]}], "subsections": [{"label": "Skills", "fields": [{"label": "Skills", "value": [{"type": "paragraph", "label": "Skills", "children": [{"text": "Account planning / Customer training / Renewal strategy", "fontSizeOffset": 0, "lineHeightOffset": 0}]}], "layout": {}}, {"label": "Tools", "value": [{"type": "paragraph", "label": "Tools", "children": [{"text": "CRM reporting / Feedback analysis / Knowledge management", "fontSizeOffset": 0, "lineHeightOffset": 0}]}], "layout": {}}]}]},
+{"label": "Education", "type": "education", "columnPosition": 0, "showHeading": true, "styling": {}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "EDUCATION", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#A64E35"}]}], "subsections": [{"label": "College", "fields": [{"label": "Degree", "value": [{"type": "paragraph", "label": "Degree", "children": [{"text": "B.A. Business Communication", "fontSizeOffset": 1, "lineHeightOffset": 0, "bold": true}]}], "layout": {}}, {"label": "School", "value": [{"type": "paragraph", "label": "School", "children": [{"text": "Desert Willow College | 2015 - 2019", "fontSizeOffset": 0, "lineHeightOffset": 0}]}], "layout": {}}]}]}
+]
+$resume_data$::jsonb AS sections
+),
+new_resume AS (
+    INSERT INTO resumes (user_id, title, styling, layout, created_at, updated_at)
+    VALUES (
+        1,
+        'Jane Doe - Terracotta Impact v2',
+        '{"display": "flex", "fontFamily": "Arial, Helvetica, sans-serif", "fontSize": "11.5px", "lineHeight": 1.3, "color": "#30343B", "backgroundColor": "#FFFFFF"}'::json,
+        '{"padding": {"top": "1.8rem", "right": "1.8rem", "bottom": "1.8rem", "left": "1.8rem"}, "gap": {"horizontal": "0.3rem", "vertical": "0.4rem", "subsection": "0.6rem", "field": "0.13rem"}}'::json,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    )
+    RETURNING id, title
+),
+new_columns AS (
+    INSERT INTO columns (resume_id, position, styling, layout, created_at, updated_at)
+    SELECT r.id, c.position, '{}'::json, c.layout,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    FROM new_resume r
+    CROSS JOIN (VALUES
+        (0, '{"width": {"auto": false, "value": "100%"}, "padding": {"top": "0rem", "bottom": "0rem", "left": "0.8rem", "right": "0.8rem"}}'::json)
+    ) AS c(position, layout)
+    RETURNING id, position
+),
+section_data AS (
+    SELECT (s.ordinality - 1)::integer AS position, s.item
+    FROM content
+    CROSS JOIN LATERAL jsonb_array_elements(content.sections)
+        WITH ORDINALITY AS s(item, ordinality)
+),
+new_sections AS (
+    INSERT INTO sections (
+        column_id, label, type, value, show_heading, position,
+        styling, layout, created_at, updated_at
+    )
+    SELECT c.id, s.item->>'label', s.item->>'type',
+        (s.item->'value')::json,
+        (s.item->>'showHeading')::boolean, s.position,
+        (s.item->'styling')::json, (s.item->'layout')::json,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    FROM section_data s
+    JOIN new_columns c ON c.position = (s.item->>'columnPosition')::integer
+    RETURNING id, position
+),
+subsection_data AS (
+    SELECT s.id AS section_id, (sub.ordinality - 1)::integer AS position, sub.item
+    FROM new_sections s
+    JOIN section_data d ON d.position = s.position
+    CROSS JOIN LATERAL jsonb_array_elements(d.item->'subsections')
+        WITH ORDINALITY AS sub(item, ordinality)
+),
+new_subsections AS (
+    INSERT INTO subsections (
+        section_id, label, type, position, styling, layout, created_at, updated_at
+    )
+    SELECT d.section_id, d.item->>'label', s.item->>'type', d.position,
+        '{"fontSizeOffset":0,"lineHeightOffset":0}'::json, '{}'::json,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    FROM subsection_data d
+    JOIN new_sections n ON n.id = d.section_id
+    JOIN section_data s ON s.position = n.position
+    RETURNING id, section_id, position
+),
+new_fields AS (
+    INSERT INTO fields (
+        subsection_id, label, value, position, styling, layout, created_at, updated_at
+    )
+    SELECT sub.id, f.item->>'label', (f.item->'value')::json,
+        (f.ordinality - 1)::integer,
+        '{"fontSizeOffset":0,"lineHeightOffset":0}'::json, COALESCE((f.item->'layout')::json, '{}'::json),
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    FROM new_subsections sub
+    JOIN subsection_data d ON d.section_id = sub.section_id AND d.position = sub.position
+    CROSS JOIN LATERAL jsonb_array_elements(d.item->'fields')
+        WITH ORDINALITY AS f(item, ordinality)
+    RETURNING id
+)
+SELECT id AS resume_id, title, (SELECT count(*) FROM new_fields) AS fields_created
+FROM new_resume

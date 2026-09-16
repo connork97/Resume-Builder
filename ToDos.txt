@@ -35,7 +35,12 @@ OTHER BUGS:
 
 STRETCH FEATURES:
 
--Resume Templates Sharing Publicly
+-Resume Templates
+
+-Sharing Resumes Publicly
+
+-Prefilled Resume Info, for Auto Filling Purposes
+   -Probably goes into account settings, maybe a new tab, with option for various job title information that can be plugged into resume templates or blank resumes
 
 MAIN FEATURES:
 

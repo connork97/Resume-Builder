@@ -1,0 +1,89 @@
+WITH
+content AS (
+    SELECT $resume_data$
+[
+{"label": "Header", "type": "header", "columnPosition": 0, "showHeading": false, "styling": {"fontFamily": "Courier New, Courier, monospace", "backgroundColor": "#FFFFFF", "color": "#26323A", "border": {"bottom": {"display": true, "width": "86%", "height": "1px", "style": "solid", "color": "#9AA5AC"}}}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0.3rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "HEADER", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#26323A"}]}], "subsections": [{"label": "John Doe", "fields": [{"label": "Name", "value": [{"type": "paragraph", "label": "Name", "children": [{"text": "JOHN DOE", "fontSizeOffset": 16, "lineHeightOffset": 0, "bold": true, "color": "#26323A"}], "textAlign": "right"}], "layout": {}}, {"label": "Title", "value": [{"type": "paragraph", "label": "Title", "children": [{"text": "DATA ENGINEER", "fontSizeOffset": 0, "lineHeightOffset": 0, "bold": true, "color": "#46545F"}], "textAlign": "right"}], "layout": {}}, {"label": "Contact", "value": [{"type": "paragraph", "label": "Contact", "children": [{"text": "Raleigh, NC | (919) 555-0127", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "bold": false, "color": "#596873"}], "textAlign": "right"}], "layout": {}}, {"label": "Email", "value": [{"type": "paragraph", "label": "Email", "children": [{"text": "john.doe@example.com", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "bold": false, "color": "#596873"}], "textAlign": "right"}], "layout": {}}]}]},
+{"label": "Profile", "type": "summary", "columnPosition": 0, "showHeading": true, "styling": {}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "PROFILE", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#26323A"}]}], "subsections": [{"label": "Summary", "fields": [{"label": "Summary", "value": [{"type": "paragraph", "label": "Summary", "children": [{"text": "Data engineer with 5 years of experience building reliable pipelines and useful analytical models. Focuses on clear documentation, predictable operations, and data that teams can trust.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}], "layout": {}}]}]},
+{"label": "Experience", "type": "workHistory", "columnPosition": 0, "showHeading": true, "styling": {}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "EXPERIENCE", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#26323A"}]}], "subsections": [{"label": "Signal Pine Analytics", "fields": [{"label": "Job Title", "value": [{"type": "paragraph", "label": "Job Title", "children": [{"text": "Data Engineer", "fontSizeOffset": 1, "lineHeightOffset": 0, "bold": true}]}], "layout": {}}, {"label": "Company", "value": [{"type": "paragraph", "label": "Company", "children": [{"text": "Signal Pine Analytics | 2023 - Present", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#606873"}]}], "layout": {}}, {"label": "Description", "value": [{"type": "unordered-list", "children": [{"type": "list-item", "children": [{"text": "Built ingestion pipelines processing 2 million records daily with 99.8% scheduled completion.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}, {"type": "list-item", "children": [{"text": "Reduced warehouse query costs by 27% through partitioning and model cleanup.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}, {"type": "list-item", "children": [{"text": "Introduced validation checks that caught schema changes before dashboard refreshes.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}]}], "layout": {}}]}, {"label": "Metric Harbor", "fields": [{"label": "Job Title", "value": [{"type": "paragraph", "label": "Job Title", "children": [{"text": "Analytics Engineer", "fontSizeOffset": 1, "lineHeightOffset": 0, "bold": true}]}], "layout": {}}, {"label": "Company", "value": [{"type": "paragraph", "label": "Company", "children": [{"text": "Metric Harbor | 2021 - 2023", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#606873"}]}], "layout": {}}, {"label": "Description", "value": [{"type": "unordered-list", "children": [{"type": "list-item", "children": [{"text": "Created shared reporting models for sales and support teams.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}, {"type": "list-item", "children": [{"text": "Replaced spreadsheet exports with scheduled workflows, saving 10 hours each week.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}]}], "layout": {}}]}]},
+{"label": "Selected Project", "type": "projects", "columnPosition": 0, "showHeading": true, "styling": {}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "SELECTED PROJECT", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#26323A"}]}], "subsections": [{"label": "Pulse", "fields": [{"label": "Project Title", "value": [{"type": "paragraph", "label": "Project Title", "children": [{"text": "Pipeline Health Monitor", "fontSizeOffset": 1, "lineHeightOffset": 0, "bold": true}]}], "layout": {}}, {"label": "Description", "value": [{"type": "paragraph", "label": "Description", "children": [{"text": "Built a lightweight dashboard for job freshness, failures, and ownership. Gave 4 teams a shared view of pipeline status and reduced incident triage time by 35%.", "fontSizeOffset": 0, "lineHeightOffset": 0}]}], "layout": {}}]}]},
+{"label": "Technical Stack", "type": "skills", "columnPosition": 0, "showHeading": true, "styling": {"backgroundColor": "#F3F5F6", "fontFamily": "Courier New, Courier, monospace", "color": "#26323A"}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0.1rem", "bottom": "0.1rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "TECHNICAL STACK", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#26323A"}]}], "subsections": [{"label": "Stack", "fields": [{"label": "Languages", "value": [{"type": "paragraph", "label": "Languages", "children": [{"text": "LANGUAGES / Python / SQL", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#374650"}]}], "layout": {}}, {"label": "Data", "value": [{"type": "paragraph", "label": "Data", "children": [{"text": "DATA / PostgreSQL / dbt / Airflow", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#374650"}]}], "layout": {}}, {"label": "Delivery", "value": [{"type": "paragraph", "label": "Delivery", "children": [{"text": "DELIVERY / Docker / Git / CI checks", "fontSizeOffset": -0.5, "lineHeightOffset": 0, "color": "#374650"}]}], "layout": {}}]}]},
+{"label": "Education", "type": "education", "columnPosition": 0, "showHeading": true, "styling": {}, "layout": {"display": "grid", "grid": {"columns": 1}, "padding": {"top": "0rem", "bottom": "0rem"}}, "value": [{"type": "heading", "textAlign": "left", "children": [{"text": "EDUCATION", "bold": true, "fontSizeOffset": 0, "lineHeightOffset": 0, "color": "#26323A"}]}], "subsections": [{"label": "College", "fields": [{"label": "Degree", "value": [{"type": "paragraph", "label": "Degree", "children": [{"text": "B.S. Information Systems", "fontSizeOffset": 1, "lineHeightOffset": 0, "bold": true}]}], "layout": {}}, {"label": "School", "value": [{"type": "paragraph", "label": "School", "children": [{"text": "Oakbridge College | 2017 - 2021", "fontSizeOffset": 0, "lineHeightOffset": 0}]}], "layout": {}}]}]}
+]
+$resume_data$::jsonb AS sections
+),
+new_resume AS (
+    INSERT INTO resumes (user_id, title, styling, layout, created_at, updated_at)
+    VALUES (
+        1,
+        'John Doe - Terminal Minimal v2',
+        '{"display": "flex", "fontFamily": "Arial, Helvetica, sans-serif", "fontSize": "11.5px", "lineHeight": 1.3, "color": "#303C44", "backgroundColor": "#FFFFFF"}'::json,
+        '{"padding": {"top": "1.8rem", "right": "1.8rem", "bottom": "1.8rem", "left": "1.8rem"}, "gap": {"horizontal": "0.3rem", "vertical": "0.4rem", "subsection": "0.6rem", "field": "0.13rem"}}'::json,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    )
+    RETURNING id, title
+),
+new_columns AS (
+    INSERT INTO columns (resume_id, position, styling, layout, created_at, updated_at)
+    SELECT r.id, c.position, '{}'::json, c.layout,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    FROM new_resume r
+    CROSS JOIN (VALUES
+        (0, '{"width": {"auto": false, "value": "100%"}, "padding": {"top": "0rem", "bottom": "0rem", "left": "0.8rem", "right": "0.8rem"}}'::json)
+    ) AS c(position, layout)
+    RETURNING id, position
+),
+section_data AS (
+    SELECT (s.ordinality - 1)::integer AS position, s.item
+    FROM content
+    CROSS JOIN LATERAL jsonb_array_elements(content.sections)
+        WITH ORDINALITY AS s(item, ordinality)
+),
+new_sections AS (
+    INSERT INTO sections (
+        column_id, label, type, value, show_heading, position,
+        styling, layout, created_at, updated_at
+    )
+    SELECT c.id, s.item->>'label', s.item->>'type',
+        (s.item->'value')::json,
+        (s.item->>'showHeading')::boolean, s.position,
+        (s.item->'styling')::json, (s.item->'layout')::json,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    FROM section_data s
+    JOIN new_columns c ON c.position = (s.item->>'columnPosition')::integer
+    RETURNING id, position
+),
+subsection_data AS (
+    SELECT s.id AS section_id, (sub.ordinality - 1)::integer AS position, sub.item
+    FROM new_sections s
+    JOIN section_data d ON d.position = s.position
+    CROSS JOIN LATERAL jsonb_array_elements(d.item->'subsections')
+        WITH ORDINALITY AS sub(item, ordinality)
+),
+new_subsections AS (
+    INSERT INTO subsections (
+        section_id, label, type, position, styling, layout, created_at, updated_at
+    )
+    SELECT d.section_id, d.item->>'label', s.item->>'type', d.position,
+        '{"fontSizeOffset":0,"lineHeightOffset":0}'::json, '{}'::json,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    FROM subsection_data d
+    JOIN new_sections n ON n.id = d.section_id
+    JOIN section_data s ON s.position = n.position
+    RETURNING id, section_id, position
+),
+new_fields AS (
+    INSERT INTO fields (
+        subsection_id, label, value, position, styling, layout, created_at, updated_at
+    )
+    SELECT sub.id, f.item->>'label', (f.item->'value')::json,
+        (f.ordinality - 1)::integer,
+        '{"fontSizeOffset":0,"lineHeightOffset":0}'::json, COALESCE((f.item->'layout')::json, '{}'::json),
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    FROM new_subsections sub
+    JOIN subsection_data d ON d.section_id = sub.section_id AND d.position = sub.position
+    CROSS JOIN LATERAL jsonb_array_elements(d.item->'fields')
+        WITH ORDINALITY AS f(item, ordinality)
+    RETURNING id
+)
+SELECT id AS resume_id, title, (SELECT count(*) FROM new_fields) AS fields_created
+FROM new_resume

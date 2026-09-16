@@ -1,0 +1,45 @@
+.card {
+  margin: 0;
+  width: 17rem;
+  max-width: 100%;
+  flex: 0 1 17rem;
+  min-width: 0;
+}
+
+.caption {
+  margin-bottom: 0.5rem;
+  overflow-wrap: anywhere;
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 17 / 22;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
+}
+
+.paper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--width-editor-page, 5.95in);
+  height: var(--height-editor-page, 7.7in);
+  display: flex;
+  word-break: break-word;
+  transform-origin: top left;
+  pointer-events: none;
+  user-select: none;
+}
+
+.status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  margin: 0;
+  color: #555;
+  text-align: center;
+}

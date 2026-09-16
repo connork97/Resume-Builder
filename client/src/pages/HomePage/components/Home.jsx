@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import ResumePreviews from "../../../features/ResumePreview/ResumePreviews";
+
 import styles from "./Home.module.css";
 
 const Home = () => {
@@ -39,6 +41,7 @@ const Home = () => {
             </Link>
             <p className={styles.homeP} style={{margin: '1rem auto'}}>Or</p>
             <Link className={styles.tryDemoButton}>Create an Account</Link> */}
+        <ResumePreviews />
       </div>
     </div>
   );

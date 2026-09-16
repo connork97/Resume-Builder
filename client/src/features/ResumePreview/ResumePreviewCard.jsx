@@ -3,14 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import { fetchApi } from "@/lib/fetch";
 import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi";
 import PreviewPaper from "./components/PreviewPaper";
+import PreviewZoom from "./components/PreviewZoom";
 
 // styling.width/height size the paper; the caption adds its own height.
 // Other styling properties apply to the outer card. Width wins if both are set.
-export default function ResumePreviewCard({ resumeId, styling = {}, caption = true }) {
+export default function ResumePreviewCard({ resumeId, styling = {}, caption = true, hoverPreview = false }) {
   const [result, setResult] = useState(null);
+  const [zoomOpen, setZoomOpen] = useState(false);
   const viewportRef = useRef(null);
   const paperRef = useRef(null);
-  const [scale, setScale] = useState(0);
+  const [paperScale, setPaperScale] = useState(0);
   const current = result?.id === resumeId ? result : null;
   const resume = current?.resume;
   const loading = Boolean(resumeId) && !current;
@@ -44,7 +46,7 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
     // Observe the unscaled editor dimensions so rem spacing and line wrapping
     // stay identical as the thumbnail shrinks to fit its container.
     const observer = new ResizeObserver(() => {
-      setScale(
+      setPaperScale(
         Math.min(
           viewport.clientWidth / paper.offsetWidth,
           viewport.clientHeight / paper.offsetHeight,
@@ -63,7 +65,18 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
   return (
     <figure className={styles.card} style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}>
       {caption && <figcaption className={styles.caption}>{title}</figcaption>}
-      <div ref={viewportRef} className={styles.viewport} aria-busy={loading}>
+      <div
+        ref={viewportRef}
+        className={styles.viewport}
+        aria-busy={loading}
+        tabIndex={hoverPreview ? 0 : undefined}
+        aria-label={hoverPreview ? `${title}. Focus to enlarge preview; Escape to dismiss.` : undefined}
+        onMouseEnter={() => { if (hoverPreview) setZoomOpen(true); }}
+        onMouseLeave={() => setZoomOpen(false)}
+        onFocus={() => { if (hoverPreview) setZoomOpen(true); }}
+        onBlur={() => setZoomOpen(false)}
+        onKeyDown={(event) => { if (event.key === "Escape") setZoomOpen(false); }}
+      >
         <div
           ref={paperRef}
           className={styles.paper}
@@ -72,8 +85,8 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
           aria-hidden={!resume}
           style={{
             ...resume?.styling,
-            transform: `scale(${scale})`,
-            visibility: resume && scale ? "visible" : "hidden",
+            transform: `scale(${paperScale})`,
+            visibility: resume && paperScale ? "visible" : "hidden",
           }}
         >
           {resume && <PreviewPaper resume={resume} />}
@@ -84,6 +97,7 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
           </p>
         )}
       </div>
+      {hoverPreview && zoomOpen && resume && <PreviewZoom resume={resume} anchorRef={viewportRef} />}
     </figure>
   );
 }

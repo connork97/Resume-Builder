@@ -94,6 +94,8 @@ class Resume(db.Model):
     title = db.Column(db.String, nullable=False, default="Untitled Resume")
     styling = db.Column(db.JSON, nullable=False, default=dict)
     layout = db.Column(db.JSON, nullable=False, default=dict)
+    is_official_template = db.Column(db.Boolean, nullable=False, default=False, server_default=db.false())
+    
     created_at = created_at_column()
     updated_at = updated_at_column()
 
@@ -113,6 +115,7 @@ class Resume(db.Model):
             "title": self.title,
             "styling": self.styling,
             "layout": self.layout,
+            "isOfficialTemplate": self.is_official_template,
             "createdAt": serialize_datetime(self.created_at),
             "updatedAt": serialize_datetime(self.updated_at),
             "columns": [column.to_dict() for column in self.columns],

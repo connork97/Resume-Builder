@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -48,11 +47,17 @@ const UserResumeRow = ({ resume, fetchUserResumes }) => {
     fetchUserResumes(user.id);
   };
 
+
   return (
     <div className={styles.userResumeRow}>
       <div className="flexRow">
 
-        <ResumePreviewCard styling={{ height: "4rem" }} resumeId={resume.id} caption={false} />
+        <ResumePreviewCard
+          hoverPreview
+          styling={{ height: "4rem" }}
+          resumeId={resume.id}
+          caption={false}
+        />
       <div className={styles.resumeInfoWrapper}>
         <h2 className={styles.resumeTitle}>{resume.title}</h2>
         <p className={styles.resumeDetails}>

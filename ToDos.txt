@@ -4,12 +4,18 @@
 
 MEDIUM BUGS:
 
+-Field Gap doesn't apply to Slate Headings
+   -Potentially should be its own gap item, 
+
 -Dragging Fields is Clunky/Buggy
    -Particularly when dragging within grid layouts
 
 -Undo/Redo functionality is buggy when adding/deleting primary content (fields, subsections, sections, and columns)
    
 SMALL BUGS:
+
+-Sections go off the page even if there isn't enough content to justify doing so
+   -Looks like a mandatory minimum margin, or potentially something to do with the flex wrap CSS to make sections fill to the bottom of the page
 
 -Indenting bullets can only go to a second level
    -Should continue, at least 3 levels deep
@@ -47,9 +53,6 @@ MAIN FEATURES:
 -Multi Page Resume
 
 -Autosave Functionality
-
--Resume Templates
-   -Ideally even have it where you can plug in default profile(s) info to auto fill resumes templates
 
 -Demo Editor Tutorial/Walk Through
 

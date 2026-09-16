@@ -11,6 +11,8 @@ import EndPageMarker from "./components/EndPageMarker.jsx";
 
 import styles from "./ResumePaper.module.css";
 import { dndReorderSections, resizeColumnPair } from "@/store/resumeSlice.js";
+import { ActionCreators as UndoActionCreators } from "redux-undo";
+
 
 const ResumePaper = forwardRef(function ResumePaper(props, ref) {
 
@@ -112,7 +114,41 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
       rightWidth: rightWidth - adjustment,
     }));
   };
+  useEffect(() => {
+    const pressedKeys = new Set();
 
+    const handleKeyDown = (e) => {
+
+      if (e.ctrlKey && e.key === "z") {
+        e.preventDefault();
+        console.log("Shortcut triggered: Ctrl + Z");
+        dispatch(UndoActionCreators.undo());
+      }
+      if (e.ctrlKey && e.key === "y") {
+        e.preventDefault();
+        console.log("Shortcut triggered: Ctrl + Y");
+        dispatch(UndoActionCreators.redo());
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      pressedKeys.delete(e.code);
+    };
+
+    const handleBlur = () => {
+      pressedKeys.clear();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("blur", handleBlur);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("blur", handleBlur);
+    };
+  }, []);
   useEffect(() => {
     const nextItems = {};
 

@@ -180,10 +180,16 @@ export const deleteLastColumnFromApi = async (resumeId) => {
    }
 }
 
-export const getOfficialResumeTemplatesFromApi = async (templateCount = 10) => {
+export const getOfficialResumeTemplatesFromApi = async (templateCount = 10, orderBy) => {
+   const orderByOptions = ["copyCount"];
    try {
+      const query = new URLSearchParams({ templateCount });
+      if (orderBy && !orderByOptions.includes(orderBy)) {
+         console.error(`Invalid orderBy value: ${orderBy}. Ignoring it.`)
+      } else if (orderBy && orderByOptions.includes(orderBy)) query.set('orderBy', orderBy);
+
       const data = await fetchApi({
-         endpoint: `/resumes/templates/official?templateCount=${templateCount}`
+         endpoint: `/resumes/templates/official?${query.toString()}`
       })
 
       return data;

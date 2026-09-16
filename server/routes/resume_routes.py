@@ -127,7 +127,7 @@ def get_official_resume_templates():
 
     official_resume_templates = Resume.query.filter_by(
         is_official_template=True
-    ).limit(template_count).all()
+    ).order_by(Resume.id.asc()).limit(template_count).all()
 
     if len(official_resume_templates) == 0:
         return generate_error(

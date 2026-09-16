@@ -1,5 +1,21 @@
 # Resume template preferences
 
+## Latest feedback and batch: September 16, 2026
+
+The user's current kept set is **Modern Teal, Midnight Sidebar, Editorial Classic,
+Sage Portfolio, Terminal Minimal, Copper Rail, and Burgundy Executive**. Terminal
+Minimal is now an approved reference; the user did not specify which version was
+kept. Blueprint and Terracotta are not in this latest kept list; do not infer a
+new explicit rejection from their omission.
+
+The current delivery is [10 new official templates](9-16-2026/README.md). All use
+`user_id = 1`, `is_official_template = TRUE`, and `source_resume_id = NULL` under
+the current schema. The user now prefers short design-only file names and resume
+titles, while Jane Doe / John Doe remain in the actual resume content.
+
+Continue using one result-returning PostgreSQL insert statement per file, without
+comments, `DO` blocks, or a trailing semicolon, for the Railway query editor.
+
 ## User feedback: source of truth
 
 The user reviewed these templates in the application. These are explicit judgments,

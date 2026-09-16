@@ -17,15 +17,17 @@ const Home = () => {
 
   useEffect(() => {
     const fetchTemplates = async () => {
-      const templates =
-        (await getOfficialResumeTemplatesFromApi(3, "copyCount")) ?? [];
+      const templateData = (await getOfficialResumeTemplatesFromApi(3, "copyCount")) ?? [];
+      const templates = templateData.templates ?? [];
 
       if (!templates.length) {
         setPreviewResumes([]);
         return;
       }
 
-      const connorResumeIndex = templates.findIndex((resume) => resume.id === 0);
+      const connorResumeIndex = templates.findIndex(
+        (resume) => resume.id === 0,
+      );
 
       if (connorResumeIndex === 0) {
         setPreviewResumes(templates);
@@ -86,17 +88,19 @@ const Home = () => {
         {/* <ResumePreviews /> */}
         <div>
           <h2
-           className={styles.homeH2}
+            className={styles.homeH2}
             style={{
-            //   fontSize: "2rem",
-            //   textAlign: "center",
+              //   fontSize: "2rem",
+              //   textAlign: "center",
               marginTop: "10rem",
-            //   marginBottom: "5rem",
+              //   marginBottom: "5rem",
             }}
           >
             Official Resume Templates
           </h2>
-          <Link to="/templates" className={styles.templatesPageLink}>Browse All Resume Templates</Link>
+          <Link to="/templates" className={styles.templatesPageLink}>
+            Browse All Resume Templates
+          </Link>
           <div
             style={{
               display: "grid",

@@ -37,24 +37,102 @@
 
 .templatesPageContentWrapper {
    position: relative;
-   margin-top: 10rem;
-   margin-bottom: 10rem;
+   width: 80%;
+   margin: 10rem auto;
 
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: center;
-
 }
+
 .templatesPageTitle {
    font-size: 2.5rem;
-   margin-bottom: 2rem;
 }
+
+.templatePreviewSortingWrapper {
+   position: relative;
+   margin: 2.5rem auto 5rem auto;
+
+   z-index: 1;
+   display: flex;
+   justify-content: space-around;
+   font-size: 1.5rem;
+}
+
+.templatePreviewSortingSelect {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 2rem;
+   width: max-content;
+   min-width: 10rem;
+   padding: 0.75rem 1rem;
+   border: var(--border-main);
+   border-radius: var(--border-radius-main);
+   background: var(--background-main);
+   color: inherit;
+   cursor: pointer;
+}
+
+.sortMenu {
+   position: absolute;
+   top: calc(100% + 0.5rem);
+   left: 0;
+   min-width: 100%;
+   width: max-content;
+
+   padding: 0.25rem;
+   border: var(--border-main);
+   border-radius: var(--border-radius-main);
+   background: var(--background-main);
+   box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35);
+}
+
+.sortOption {
+   display: flex;
+   justify-content: space-between;
+   width: 100%;
+   padding: 0.75rem;
+   border: 0;
+   border-radius: 0.25rem;
+   background: transparent;
+   color: inherit;
+   text-align: left;
+   cursor: pointer;
+}
+
+.sortOption:hover {
+   background: rgba(255, 255, 255, 0.12);
+}
+
+/* .templatePreviewSortingSelect:focus-visible,
+.sortOption:focus-visible {
+   outline: 2px solid currentColor;
+   outline-offset: 2px;
+} */
+
 .templatePreviewsGridWrapper {
    display: grid;
    margin: auto;
-   /* width: 100%; */
-   grid-template-columns: repeat(4, minmax(300px, 1fr));
-   justify-items: center;
+   width: 100%;
+   justify-items: space-between;
    gap: 6rem 2rem;
+}
+
+.navigateTemplatePageInfoWrapper {
+   position: relative;
+   margin: 10rem auto 10rem 0;
+}
+
+.navigateTemplatePageButtonWrapper {
+   display: flex;
+}
+
+.navigateTemplatePageButton {
+   text-decoration: underline;
+   background: none;
+   border: none;
+   color: inherit;
+   cursor: pointer;
 }

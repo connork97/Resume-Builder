@@ -4,7 +4,9 @@ import { fetchApi } from "@/lib/fetch";
 import normalizeResumeFromApi from "@/utils/normalizeResumeFromApi";
 import PreviewPaper from "./components/PreviewPaper";
 
-export default function ResumePreviewCard({ resumeId }) {
+// styling.width/height size the paper; the caption adds its own height.
+// Other styling properties apply to the outer card. Width wins if both are set.
+export default function ResumePreviewCard({ resumeId, styling = {}, caption = true }) {
   const [result, setResult] = useState(null);
   const viewportRef = useRef(null);
   const paperRef = useRef(null);
@@ -55,9 +57,12 @@ export default function ResumePreviewCard({ resumeId }) {
   }, []);
 
   const title = resume?.title || "Resume template";
+  const { width, height, ...cardStyling } = styling;
+  const cssHeight = typeof height === "number" ? `${height}px` : height;
+  const cardWidth = width ?? (cssHeight ? `calc(${cssHeight} * 8.5 / 11)` : undefined);
   return (
-    <figure className={styles.card}>
-      <figcaption className={styles.caption}>{title}</figcaption>
+    <figure className={styles.card} style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}>
+      {caption && <figcaption className={styles.caption}>{title}</figcaption>}
       <div ref={viewportRef} className={styles.viewport} aria-busy={loading}>
         <div
           ref={paperRef}

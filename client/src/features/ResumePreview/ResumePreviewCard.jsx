@@ -66,7 +66,7 @@ export default function ResumePreviewCard({ resumeId, styling = {}, caption = tr
   const cssHeight = typeof height === "number" ? `${height}px` : height;
   const cardWidth = width ?? (cssHeight ? `calc(${cssHeight} * 8.5 / 11)` : undefined);
   return (
-   <Link to={`/editor/${resumeId}`}> 
+   <Link to={`/editor/${resumeId}`} target="_blank" rel="noopener noreferrer"> 
     <figure className={styles.resumePreviewCard} style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}
    //   onClick={() => navigate(`/editor/${resumeId}`)}
      >

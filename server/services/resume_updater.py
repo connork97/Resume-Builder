@@ -1,6 +1,7 @@
 from models import db, Resume, Column, Section, Subsection, Field
 
 from services.updaters import update_column_widths
+from services.plain_text import build_resume_plain_text
 
 def update_resume_with_form_data(resume_id, data):
     # ! Condiser potentially mismatched form data, where incoming column/section/subsection IDs may not match those actually belonging to the resume..
@@ -204,5 +205,8 @@ def update_resume_with_form_data(resume_id, data):
 
         if "subsectionId" in field_data:
             field.subsection_id = field_data["subsectionId"]
+
+    db.session.flush()
+    resume.plain_text = build_resume_plain_text(resume)
 
     return resume

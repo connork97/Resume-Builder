@@ -2,6 +2,7 @@ from copy import deepcopy
 from models import Column, Field, Section, Subsection, db, Resume
 
 from services.updaters import update_column_widths
+from services.plain_text import build_resume_plain_text
 from utils.formatting import format_label
 
 DEFAULT_RESUME_STYLING = {
@@ -240,6 +241,9 @@ def build_resume_with_defaults(title, user_id, sections_data):
 
         section_position += 1
 
+    db.session.flush()
+    resume.plain_text = build_resume_plain_text(resume)
+
     return resume
 
 def build_resume_copy(resume_id, *, user_id):
@@ -342,6 +346,9 @@ def build_resume_copy(resume_id, *, user_id):
                     field_copy.subsection_id = subsection_copy.id
                     
                     db.session.add(field_copy)
+
+    db.session.flush()
+    resume_copy.plain_text = build_resume_plain_text(resume_copy)
 
     db.session.commit()
     return resume_copy

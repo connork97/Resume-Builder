@@ -153,6 +153,7 @@ const SlateHeading = ({ section }) => {
           fontSize: `${inheritedFontSize}px`,
           lineHeight: inheritedLineHeight,
           marginBottom: resumeLayout?.gap?.header || '0rem',
+          marginLeft: section.layout?.marginLeft || '0rem',
         }}
       />
     </Slate>

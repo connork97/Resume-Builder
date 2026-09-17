@@ -25,6 +25,7 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
     alignSelf: field?.alignSelf,
     textAlign: field?.textAlign,
     gridColumn: field?.label === "Description" ? "1 / -1" : field?.gridColumn,
+
   };
 
   const isGrid = activeLayout?.display === "grid";
@@ -137,6 +138,7 @@ const Field = ({ index, fieldId, layout, parentLayoutDict }) => {
         ...fieldWrapperStyling,
         position: "relative",
         marginBottom: !isLastFieldInSubsection ? resumeGap.field || "0rem" : "0rem",
+      //   marginLeft: '-0.25rem',
         outline: `1px solid ${isHovered ? "rgba(0, 0, 0, 0.5)" : "transparent"}`,
         borderRadius: "2px",
         outlineOffset: "1px",

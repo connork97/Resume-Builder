@@ -20,6 +20,7 @@ import styles from "../Toolbar.module.css";
 import FontFamily from "../../TextFormatting/FontFamily.jsx";
 import AddSection from "./AddSection.jsx";
 import ResetStyling from "./ResetStyling.jsx";
+import Indentation from "../../TextFormatting/Indentation.jsx";
 
 const RichTextToolbar = ({ editor }) => {
   const resumeStyling = useSelector((state) => state.resume.present.styling);
@@ -116,6 +117,8 @@ const RichTextToolbar = ({ editor }) => {
 
         <Lists editor={editor} />
 
+        <Indentation />
+
         <div data-toolbar-label="Link" style={{ display: "contents" }}>
           <Links editor={editor} selection={selection} />
         </div>
@@ -153,6 +156,7 @@ const RichTextToolbar = ({ editor }) => {
           <AddSection />
         </div>
         <ResetStyling />
+
       </div>
     </div>
   );

@@ -542,6 +542,8 @@ const resumeSlice = createSlice({
                field.styling = { ...field.styling, ...changes.styling };
             } else if (key === "value") {
                field.value = changes.value;
+            } else if (key === "layout") {
+               field.layout = { ...field.layout, ...changes.layout };
             }
              else {
                alert('This reducer only handles styling changes for now.');

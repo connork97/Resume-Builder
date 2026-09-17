@@ -123,19 +123,22 @@ const SlateField = ({ field }) => {
     dispatch(setActiveEditorId(editorId));
   };
 
-  const renderElement = useCallback((props) => {
-    return (
-      <RenderElement
-        inheritedFontSize={inheritedFontSize}
-        inheritedLineHeight={inheritedLineHeight}
-        field={field}
-        element={props.element}
-        type={props.element.type}
-        attributes={props.attributes}
-        children={props.children}
-      />
-    );
-  }, [inheritedFontSize, inheritedLineHeight]);
+  const renderElement = useCallback(
+    (props) => {
+      return (
+        <RenderElement
+          inheritedFontSize={inheritedFontSize}
+          inheritedLineHeight={inheritedLineHeight}
+          field={field}
+          element={props.element}
+          type={props.element.type}
+          attributes={props.attributes}
+          children={props.children}
+        />
+      );
+    },
+    [inheritedFontSize, inheritedLineHeight],
+  );
 
   const handleUpdateFieldValue = (newValue, historyGroup) => {
     dispatch({
@@ -161,7 +164,7 @@ const SlateField = ({ field }) => {
         onChange={(value) => {
           if (isRestoringFromRedux.current) return;
           const contentChanged = editor.operations.some(
-            operation => operation.type !== "set_selection",
+            (operation) => operation.type !== "set_selection",
           );
           const historyGroup = getHistoryGroup();
           if (contentChanged) handleUpdateFieldValue(value, historyGroup);
@@ -187,6 +190,8 @@ const SlateField = ({ field }) => {
             minWidth: fieldMinWidth,
             fontSize: `${inheritedFontSize}px`,
             lineHeight: inheritedLineHeight,
+            marginLeft: field.layout?.marginLeft || "0rem",
+
             cursor: "text",
           }}
         />

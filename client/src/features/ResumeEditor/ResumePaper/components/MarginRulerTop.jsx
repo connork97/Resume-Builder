@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { useSelector } from "react-redux";
+import { PiHouseSimpleFill } from "react-icons/pi";
 import styles from "./MarginRuler.module.css";
 import MarginIndicator from "./MarginIndicator";
 import { PaddingPreviewContext, previewLayout } from "../PaddingPreviewContext";
@@ -28,6 +29,20 @@ export default function MarginRulerTop({
   const gap = parseRemValue(resume.layout.gap?.horizontal);
   const inset = (side) =>
     Math.max(0, parseRemValue(columnPadding?.[side]) + gap);
+  const columnLeft = geometry
+    ? `calc(${geometry.left}px + ${inset("left")}rem)`
+    : null;
+  const contentLeft = column?.id === resume.columns.allIds[0]
+    ? padding.left
+    : columnLeft;
+  const activeTarget = resume.activeEditorId === section?.id
+    ? section
+    : resume.fields.byId[resume.activeEditorId];
+  const indentation = parseRemValue(activeTarget?.layout?.marginLeft);
+  const showIndentation = Boolean(
+    resume.activeEditorId && section && column && contentLeft != null &&
+    Number.isFinite(indentation) && indentation !== 0,
+  );
 
   return (
     <div className={styles.marginRulerTopWrapper} data-prevent-blur="true">
@@ -86,7 +101,7 @@ export default function MarginRulerTop({
             pageRef={pageRef}
             className={styles.sectionMarginIndicatorLeft}
             style={{
-              marginLeft: `calc(${geometry.left}px + ${inset("left")}rem)`,
+              marginLeft: columnLeft,
             }}
             onLabelShow={() => showMarginLabel(`${column.id}-left`)}
             onLabelHide={() => delayHideMarginLabel(`${column.id}-left`)}
@@ -97,7 +112,7 @@ export default function MarginRulerTop({
             aria-hidden={!visibleMarginLabels.has(`${column.id}-left`)}
             style={{
               top: "150%",
-              left: `calc(${geometry.left}px + ${inset("left")}rem)`,
+              left: columnLeft,
               transform: `translateX(-50%)`,
             }}
           >
@@ -134,6 +149,15 @@ export default function MarginRulerTop({
             {parseFloat(inset("right")).toFixed(2) + "rem"}
           </span>
         </>
+      )}
+      {showIndentation && (
+        <PiHouseSimpleFill
+          className={styles.indentationIndicator}
+          role="img"
+          aria-label={`Active ${activeTarget === section ? "heading" : "field"} indentation: ${indentation}rem`}
+          title={`Indentation: ${indentation}rem`}
+          style={{ left: `calc(${contentLeft} + ${indentation}rem)` }}
+        />
       )}
       {renderMarginRuler(8.5, 0.1, ["0"], "top")}
     </div>

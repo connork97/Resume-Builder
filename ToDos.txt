@@ -18,9 +18,6 @@ SMALL BUGS:
 -Indenting bullets can only go to a second level
    -Should continue, at least 3 levels deep
 
--Border Inputs for left and right sometimes use wrong value
-   -It may be defaulting to a predetermined value, unsure of what the issue really is specifically
-
 TINY BUGS:
 
 -Resume Slice reducers need some cleaning up
@@ -69,9 +66,6 @@ MEDIUM FEATURES:
 -Improved Keyboard Shortcuts
    -Ease of life, the more intuitive the better
    -Also App-Specific Hotkeys like ctrl + enter while in a field automatically adding a new field to that subsection
-
--Indentation
-   -For things like bullets
 
 SMALL FEATURES:
 

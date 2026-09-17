@@ -25,6 +25,7 @@ export default function Indentation() {
     if (isSectionHeading) {
       activeTarget = reduxSections?.byId[activeSectionId];
     }
+    if (!activeTarget) return;
     let currentMarginLeft = parseFloat(activeTarget.layout?.marginLeft || 0);
     const indentationStep = 0.25;
 

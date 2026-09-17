@@ -34,6 +34,18 @@
   background-color: grey;
 }
 
+.indentationIndicator {
+  position: absolute;
+  top: 100%;
+  width: 0.75rem;
+  height: 0.75rem;
+  /* color: var(--border-color-main); */
+  /* The roof tip sits 24 units down in the icon's 256-unit viewBox. */
+  transform: translate(-50%, -9.375%);
+  z-index: var(--z-sticky);
+  cursor: default;
+}
+
 .topMarginRulerSpan {
   font-size: 0.5rem;
   width: 0px;

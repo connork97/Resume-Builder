@@ -40,6 +40,10 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
   const handleBorderUpdate = (type, value) => {
     for (let sectionId of activeSectionIds) {
       const currentSectionBorder = sectionsById[sectionId]?.styling?.border;
+      const currentSide = currentSectionBorder?.[type];
+      const borderChanges = value.display === true
+        ? { ...getBorderDefaults(currentSide, type), ...value }
+        : value;
       dispatch(
         updateSection({
           id: sectionId,
@@ -48,8 +52,8 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
               border: {
                 ...currentSectionBorder,
                 [type]: {
-                  ...currentSectionBorder?.[type],
-                  ...value,
+                  ...currentSide,
+                  ...borderChanges,
                 },
               },
             },
@@ -63,13 +67,11 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
     return {
       ...borderData,
       width:
-        (borderData.width ?? (borderSide === "top" || borderSide === "bottom"))
-          ? "100%"
-          : "1px",
+        borderData.width ??
+        (borderSide === "top" || borderSide === "bottom" ? "100%" : "1px"),
       height:
-        (borderData.height ?? (borderSide === "top" || borderSide === "bottom"))
-          ? "1px"
-          : "100%",
+        borderData.height ??
+        (borderSide === "top" || borderSide === "bottom" ? "1px" : "100%"),
       style: borderData.style ?? "solid",
       color: borderData.color ?? "rgba(0, 0, 0, 1)",
       display: true,
@@ -303,10 +305,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
               return;
             }
 
-            handleBorderUpdate(
-              "top",
-              getBorderDefaults(activeSectionBorder?.top, "top"),
-            );
+            handleBorderUpdate("top", { display: true });
           }}
         >
           <CgBorderTop style={{ scale: "1.75" }} />
@@ -332,10 +331,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
               return;
             }
 
-            handleBorderUpdate(
-              "bottom",
-              getBorderDefaults(activeSectionBorder?.bottom, "bottom"),
-            );
+            handleBorderUpdate("bottom", { display: true });
           }}
         >
           <CgBorderBottom style={{ scale: "1.75" }} />
@@ -360,10 +356,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
               return;
             }
 
-            handleBorderUpdate(
-              "left",
-              getBorderDefaults(activeSectionBorder?.left, "left"),
-            );
+            handleBorderUpdate("left", { display: true });
           }}
         >
           <CgBorderLeft style={{ scale: "1.75" }} />
@@ -388,10 +381,7 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
               return;
             }
 
-            handleBorderUpdate(
-              "right",
-              getBorderDefaults(activeSectionBorder?.right, "right"),
-            );
+            handleBorderUpdate("right", { display: true });
           }}
         >
           <CgBorderRight style={{ scale: "1.75" }} />

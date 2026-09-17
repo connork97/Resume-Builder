@@ -46,7 +46,7 @@ export default function PreviewZoom({ resume, anchorRef }) {
       top: placement?.top,
       visibility: placement ? "visible" : "hidden",
     }}>
-      <div ref={paperRef} className={styles.paper} style={{
+      <div ref={paperRef} className={styles.resumePaper} style={{
         ...resume.styling,
         transform: `scale(${placement?.scale ?? 0})`,
       }}>

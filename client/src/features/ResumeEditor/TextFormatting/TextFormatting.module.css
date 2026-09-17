@@ -180,6 +180,6 @@
 .linkButton[aria-pressed="true"],
 .borderButton[aria-pressed="true"], 
 .indentButton[aria-pressed="true"],
-.outdentButton {
+.outdentButton[aria-pressed="true"] {
   background: color-mix(in srgb, var(--background-button-main), white 12%);
 }

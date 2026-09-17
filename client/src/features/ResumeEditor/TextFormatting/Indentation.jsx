@@ -59,10 +59,14 @@ export default function Indentation() {
     }
   };
 
-  const isIndented = parseFloat(activeField?.layout?.marginLeft || 0) > 0 || parseFloat(reduxSections?.byId[activeSectionId]?.layout?.marginLeft || 0) > 0; 
-  const isOutdented = parseFloat(activeField?.layout?.marginLeft) < 0 || parseFloat(reduxSections?.byId[activeSectionId]?.layout?.marginLeft) < 0; 
+  const isSectionHeading = activeEditorId == activeSectionId;
+  const activeTarget = isSectionHeading
+    ? reduxSections?.byId[activeSectionId]
+    : activeField;
 
-
+  const marginLeft = parseFloat(activeTarget?.layout?.marginLeft || 0);
+  const isIndented = marginLeft > 0;
+  const isOutdented = marginLeft < 0;
 
   return (
     <>
@@ -70,7 +74,7 @@ export default function Indentation() {
         data-toolbar-label="Indent"
         aria-label="Indent"
         aria-pressed={isIndented}
-      //   aria-pressed={!!editor?.selection && isBlockActive(editor, "Indent")}
+        //   aria-pressed={!!editor?.selection && isBlockActive(editor, "Indent")}
         className={`buttonMain ${styles.indentButton}`}
         onClick={() => handleFieldIndentationChange("indent")}
       >

@@ -67,6 +67,9 @@ MEDIUM FEATURES:
    -Ease of life, the more intuitive the better
    -Also App-Specific Hotkeys like ctrl + enter while in a field automatically adding a new field to that subsection
 
+-Font Family
+   -Allowing different font families to be applied to different sections, subsections, fields, and slate leaves
+
 SMALL FEATURES:
 
 -Borders Customization
@@ -79,10 +82,3 @@ TINY FEATURES:
 
 -Allowing the adjustment of grid column widths within subsections
    -Gap too probably
-
-
-MAYBES:
-
-
--Font Family
-   -Allowing different font families to be applied to different sections, subsections, fields, and slate leaves

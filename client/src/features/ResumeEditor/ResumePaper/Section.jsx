@@ -93,7 +93,8 @@ const Section = ({ id, section, column, index, hasNextSection }) => {
       ? resumeLayout.padding.top
       : `${Math.max(0, parseRemValue(sectionLayout?.padding?.top) + verticalGap)}rem`,
     paddingBottom: isLastRow
-      ? resumeLayout.padding.bottom
+      ? 0
+      // ? resumeLayout.padding.bottom
       : `${Math.max(0, parseRemValue(sectionLayout?.padding?.bottom) + verticalGap)}rem`,
     flex: isLastRow ? "1" : "none",
   };

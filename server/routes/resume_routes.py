@@ -104,6 +104,7 @@ def copy_resume(resume_id):
     return jsonify(copied_resume.to_dict()), 200
 
 
+
 @resume_bp.route("/<int:resume_id>", methods=["GET"])
 def resume(resume_id):
     print_pending_request("GET", f"/resumes/{resume_id}")
@@ -172,6 +173,92 @@ def get_official_resume_templates():
         "templates": [template.to_dict() for template in official_resume_templates],
         "totalCount": total_count,
     }), 200
+
+@resume_bp.route("/search", methods=["GET"])
+def search_resumes():
+    print_pending_request("GET", "/resumes/search")
+
+    search_term = (request.args.get("query") or "").strip()
+    if not search_term:
+        return generate_error(
+            error_type="BAD_REQUEST",
+            code="MISSING_SEARCH_TERM",
+            message="A search term (query) is required.",
+        )
+    
+    try:
+        result_count = int(request.args.get("count", 10))
+        offset = int(request.args.get("offset", 0))
+        
+    except (TypeError, ValueError):
+        return generate_error(
+            error_type="BAD_REQUEST",
+            code="INVALID_PAGINATION",
+            message="count and offset must be integers.",
+        )
+
+    if not 1 <= result_count <= 100 or offset < 0:
+        return generate_error(
+            error_type="BAD_REQUEST",
+            code="INVALID_PAGINATION",
+            message="count must be between 1 and 100, and offset must be nonnegative.",
+        )
+        
+    # * resumeTypes accepts none, one, or multiple repeated params (?resumeTypes=personal&resumeTypes=officialTemplate);
+    # * defaults to the user's personal resumes
+    requested_resume_types = [
+        resume_type.strip()
+        for resume_type in request.args.getlist("resumeTypes")
+        if resume_type.strip()
+    ] or ["personal"]
+
+    valid_resume_types = {"personal", "officialTemplate"}
+    invalid_resume_types = [
+        resume_type
+        for resume_type in requested_resume_types
+        if resume_type not in valid_resume_types
+    ]
+    if invalid_resume_types:
+        return generate_error(
+            error_type="BAD_REQUEST",
+            code="INVALID_RESUME_TYPE",
+            message=(
+                f"Invalid resumeTypes: {', '.join(invalid_resume_types)}. "
+                f"Valid options are: {', '.join(valid_resume_types)}."
+            ),
+        )
+
+    print_pending_request("GET", f"/resumes/search?query={search_term}&count={result_count}&offset={offset}&resumeTypes={'&resumeTypes='.join(requested_resume_types)}")
+
+    # * Search only resumes the requester is allowed to view, based on the requested resume type(s)
+    user_id = session.get("user_id")
+    resume_type_filters = []
+    if "personal" in requested_resume_types:
+        resume_type_filters.append(Resume.user_id == user_id if user_id is not None else False)
+    if "officialTemplate" in requested_resume_types:
+        resume_type_filters.append(Resume.is_official_template == True)
+
+    accessible_resumes_filter = db.or_(*resume_type_filters)
+
+    search_term_pattern = f"%{search_term.lower()}%"
+    query = Resume.query.filter(accessible_resumes_filter).filter(
+        db.func.lower(Resume.plain_text).like(search_term_pattern)
+    )
+
+    total_count = query.count()
+    matching_resumes = (
+        query.order_by(Resume.updated_at.desc(), Resume.id.asc())
+        .offset(offset)
+        .limit(result_count)
+        .all()
+    )
+
+    print_successful_request(f"Found {len(matching_resumes)} resumes matching search term.")
+    return jsonify({
+        "results": [resume.to_dict() for resume in matching_resumes],
+        "totalCount": total_count,
+    }), 200
+
 
 @resume_bp.route("/<int:resume_id>", methods=["DELETE"])
 def delete_resume(resume_id):

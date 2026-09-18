@@ -180,8 +180,9 @@ export const deleteLastColumnFromApi = async (resumeId) => {
    }
 }
 
-export const getResumesBySearchFromApi = async (query="", count = 10, offset = 0, resumeTypes = ["personal"]) => {
+export const getResumesBySearchFromApi = async (query = "", sortBy, count = 10, offset = 0, resumeTypes = ["personal"]) => {
    const resumeTypeOptions = ["personal", "officialTemplate"]
+   const sortByOptions = ["recent", "copyCount"];
    try {
       const searchParams = new URLSearchParams({ query, count, offset });
       resumeTypes.forEach(type => {
@@ -189,6 +190,10 @@ export const getResumesBySearchFromApi = async (query="", count = 10, offset = 0
             searchParams.append('resumeTypes', type);
          }
       });
+
+      if (sortBy && !sortByOptions.includes(sortBy)) {
+         console.error(`Invalid sortBy value: ${sortBy}. Ignoring it.`)
+      } else if (sortBy && sortByOptions.includes(sortBy)) searchParams.set('sortBy', sortBy);
 
       const data = await fetchApi({
          endpoint: `/resumes/search?${searchParams.toString()}`

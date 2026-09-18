@@ -1,7 +1,7 @@
 import styles from "./Templates.module.css";
 import { useState, useEffect } from "react";
 import ResumePreviewCard from "@/features/ResumePreview/ResumePreviewCard";
-import { getOfficialResumeTemplatesFromApi } from "@/services/resumeServices";
+import { getOfficialResumeTemplatesFromApi, getResumesBySearchFromApi } from "@/services/resumeServices";
 import { MdArrowDropDown } from "react-icons/md";
 export default function Templates() {
 
@@ -18,11 +18,12 @@ export default function Templates() {
   useEffect(() => {
     // Fetch resume templates from API or other source
     const fetchTemplates = async () => {
-      const templateData = await getOfficialResumeTemplatesFromApi(
-        templatesPerPage,
-        sortBy,
-        offset,
-      );
+      const templateData = await getResumesBySearchFromApi("", templatesPerPage, offset, ["officialTemplate"]);
+      // const templateData = await getOfficialResumeTemplatesFromApi(
+      //   templatesPerPage,
+      //   sortBy,
+      //   offset,
+      // );
       console.log("template data", templateData);
       setResumeTemplates(templateData.templates ?? []);
       setTotalTemplates(templateData.totalCount ?? 0);
@@ -34,7 +35,7 @@ export default function Templates() {
   return (
     <div className={styles.templatesPageContainer}>
       <div className={styles.templatesPageContentWrapper}>
-        <h1 className={styles.templatesPageTitle}>Templates Page</h1>
+        <h1 className={styles.templatesPageTitle}>Resume Browsing Page</h1>
         <div className={styles.templatePreviewSortingWrapper}>
           <button
             type="button"

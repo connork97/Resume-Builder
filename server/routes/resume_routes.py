@@ -14,6 +14,7 @@ from services.builders import (
     add_default_fields,
 )
 from services.resume_updater import update_resume_with_form_data
+from services.resume_sorting import apply_resume_sort
 
 from utils.authorization import check_resume_access
 from utils.responses import (
@@ -145,26 +146,7 @@ def get_official_resume_templates():
     query = Resume.query.filter_by(is_official_template=True)
     total_count = query.count()
 
-    if order_by == "copyCount":
-        copy_counts = (
-            db.session.query(
-                Resume.source_resume_id,
-                db.func.count(Resume.id).label("copy_count"),
-            )
-            .filter(Resume.source_resume_id.isnot(None))
-            .group_by(Resume.source_resume_id)
-            .subquery()
-        )
-        query = query.outerjoin(
-            copy_counts, copy_counts.c.source_resume_id == Resume.id
-        ).order_by(
-            db.func.coalesce(copy_counts.c.copy_count, 0).desc(),
-            Resume.id.asc(),
-        )
-    elif order_by == "recent":
-        query = query.order_by(Resume.created_at.desc(), Resume.id.asc())
-    else:
-        query = query.order_by(Resume.id.asc())
+    query = apply_resume_sort(query, order_by)
 
     official_resume_templates = query.offset(offset).limit(template_count).all()
 
@@ -178,14 +160,9 @@ def get_official_resume_templates():
 def search_resumes():
     print_pending_request("GET", "/resumes/search")
 
+    # * An empty/missing query matches all accessible resumes, rather than being an error
     search_term = (request.args.get("query") or "").strip()
-    if not search_term:
-        return generate_error(
-            error_type="BAD_REQUEST",
-            code="MISSING_SEARCH_TERM",
-            message="A search term (query) is required.",
-        )
-    
+
     try:
         result_count = int(request.args.get("count", 10))
         offset = int(request.args.get("offset", 0))
@@ -240,18 +217,19 @@ def search_resumes():
 
     accessible_resumes_filter = db.or_(*resume_type_filters)
 
-    search_term_pattern = f"%{search_term.lower()}%"
-    query = Resume.query.filter(accessible_resumes_filter).filter(
-        db.func.lower(Resume.plain_text).like(search_term_pattern)
-    )
+    query = Resume.query.filter(accessible_resumes_filter)
+    if search_term:
+        search_term_pattern = f"%{search_term.lower()}%"
+        query = query.filter(db.func.lower(Resume.plain_text).like(search_term_pattern))
 
     total_count = query.count()
-    matching_resumes = (
-        query.order_by(Resume.updated_at.desc(), Resume.id.asc())
-        .offset(offset)
-        .limit(result_count)
-        .all()
+
+    sort_by = request.args.get("sortBy")
+    query = apply_resume_sort(
+        query, sort_by, default_order_by=[Resume.updated_at.desc(), Resume.id.asc()]
     )
+
+    matching_resumes = query.offset(offset).limit(result_count).all()
 
     print_successful_request(f"Found {len(matching_resumes)} resumes matching search term.")
     return jsonify({

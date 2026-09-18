@@ -180,6 +180,34 @@ export const deleteLastColumnFromApi = async (resumeId) => {
    }
 }
 
+export const getResumesBySearchFromApi = async (query="", count = 10, offset = 0, resumeTypes = ["personal"]) => {
+   const resumeTypeOptions = ["personal", "officialTemplate"]
+   try {
+      const searchParams = new URLSearchParams({ query, count, offset });
+      resumeTypes.forEach(type => {
+         if (resumeTypeOptions.includes(type)) {
+            searchParams.append('resumeTypes', type);
+         }
+      });
+
+      const data = await fetchApi({
+         endpoint: `/resumes/search?${searchParams.toString()}`
+      });
+
+      return data;
+
+   } catch (error) {
+      console.error(`Error searching resumes with term "${query}": `, error);
+      alert(
+         error?.code && error?.message
+            ? `${error.code}\n${error.message}`
+            : `Error searching resumes with term "${query}".`
+      );
+
+      return null;
+   }
+}
+
 export const getOfficialResumeTemplatesFromApi = async (templateCount = 10, orderBy, offset = 0) => {
    const orderByOptions = ["copyCount", "recent"];
    try {

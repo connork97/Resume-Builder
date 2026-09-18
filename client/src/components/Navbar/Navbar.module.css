@@ -28,7 +28,7 @@
 }
 
 .navbarGroup {
-  gap: 2.5rem;
+  gap: 5rem;
   display: flex;
   justify-content: space-between;
 }

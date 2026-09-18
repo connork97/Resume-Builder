@@ -1,62 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 
-import { useSelector } from 'react-redux';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { Outlet, Link, useLocation } from "react-router-dom";
 
-import styles from './Navbar.module.css';
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+
+import styles from "./Navbar.module.css";
 
 const Navbar = () => {
+  const location = useLocation();
+  const [screenType, setScreenType] = useState(useMediaQuery());
 
-   const location = useLocation();
+  useEffect(() => {
+    if (screenType !== useMediaQuery()) {
+      setScreenType(useMediaQuery());
+    }
+  }, [screenType]);
 
-   const user = useSelector(state => state.user);
+  const user = useSelector((state) => state.user);
 
-   return (
-      <div className={styles.navbarContainer}>
-         <div className={styles.navbarContent}>
-            <Link
-               to='/'
-               exact='true'
-               className={`${styles.navbarLink} ${styles.homeNavLink}`}
-            >
-               {location.pathname === '/' || location.pathname === '/home' ? 'ActuallyFreeResume.com' : 'Home'}
+  return (
+    <div className={styles.navbarContainer}>
+      <div className={styles.navbarContent}>
+        {screenType === "desktop" && (
+          <Link
+            to="/"
+            exact="true"
+            className={`${styles.navbarLink} ${styles.homeNavLink}`}
+          >
+            {location.pathname === "/" || location.pathname === "/home"
+              ? screenType === "desktop"
+                ? "ActuallyFreeResume.com"
+                : "Home"
+              : "Home"}
+          </Link>
+        )}
+
+        <div className={styles.navbarGroup}>
+          {!user.id && (
+            <Link to="/browse" className={styles.navbarLink}>
+              Browse
             </Link>
-
-            <div className={styles.navbarGroup}>
-               {location.pathname !== '/login' && !user.id
-                  &&
-                  <Link
-                     to='/login'
-                     exact='true'
-                     className={styles.navbarLink}
-                  >
-                     Login
-                  </Link>
-               }
-               {location.pathname !== '/signup' && !user.id
-                  &&
-                  <Link
-                     to='/signup'
-                     exact='true'
-                     className={styles.navbarLink}
-                  >
-                     Sign Up
-                  </Link>
-               }
-            </div>
-            {
-               user.id && location.pathname !== '/account'
-               &&
-               <Link
-                  to='/account'
-                  className={styles.navbarLink}
-               >
-                  Account
-               </Link>
-            }
-         </div>
+          )}
+          {location.pathname !== "/login" && !user.id && (
+            <Link to="/login" exact="true" className={styles.navbarLink}>
+              Login
+            </Link>
+          )}
+          {location.pathname !== "/signup" && !user.id && (
+            <Link to="/signup" exact="true" className={styles.navbarLink}>
+              Sign Up
+            </Link>
+          )}
+        </div>
+        {user.id && (
+          <div className={styles.navbarGroup}>
+            {location.pathName !== "/browse" && (
+              <Link to="/browse" className={styles.navbarLink}>
+                Browse
+              </Link>
+            )}
+            {location.pathname !== "/account" && (
+              <Link to="/account" className={styles.navbarLink}>
+                Account
+              </Link>
+            )}
+          </div>
+        )}
       </div>
-   );
+    </div>
+  );
 };
 
 export default Navbar;

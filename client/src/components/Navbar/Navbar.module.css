@@ -28,14 +28,17 @@
 }
 
 .navbarGroup {
-  gap: 5rem;
+  gap: 3rem;
   display: flex;
+  /* justify-content: flex-end; */
+  /* margin: auto; */
   justify-content: space-between;
 }
 
 .navbarLink,
 .navbarLinkActive,
 .navbarLink:hover {
+   /* flex-basis: 100%; */
   width: max-content;
   font-weight: lighter;
 }

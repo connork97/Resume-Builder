@@ -36,26 +36,55 @@ const Navbar = () => {
           </Link>
         )}
 
-        <div className={styles.navbarGroup}>
-          {!user.id && (
-            <Link to="/browse" className={styles.navbarLink}>
-              Browse
-            </Link>
-          )}
-          {location.pathname !== "/login" && !user.id && (
-            <Link to="/login" exact="true" className={styles.navbarLink}>
-              Login
-            </Link>
-          )}
-          {location.pathname !== "/signup" && !user.id && (
-            <Link to="/signup" exact="true" className={styles.navbarLink}>
-              Sign Up
-            </Link>
-          )}
-        </div>
+        {!user.id && (
+          <div
+            className={styles.navbarGroup}
+            style={{ margin: screenType !== "desktop" ? "auto" : "initial", width: '100%' }}
+          >
+            {location.pathname !== "/" && location.pathname !== "/home" && (
+              <Link
+                to="/"
+                exact="true"
+                className={`${styles.navbarLink} ${styles.homeNavLink}`}
+              >
+                Home
+              </Link>
+            )}
+
+            {!user.id && (
+              <Link to="/browse" className={styles.navbarLink}>
+                Browse
+              </Link>
+            )}
+            {location.pathname !== "/login" && !user.id && (
+              <Link to="/login" exact="true" className={styles.navbarLink}>
+                Login
+              </Link>
+            )}
+            {location.pathname !== "/signup" && !user.id && (
+              <Link to="/signup" exact="true" className={styles.navbarLink}>
+                Sign Up
+              </Link>
+            )}
+          </div>
+        )}
         {user.id && (
-          <div className={styles.navbarGroup}>
-            {location.pathName !== "/browse" && (
+          <div
+            className={styles.navbarGroup}
+            style={{ margin: screenType !== "desktop" ? "auto" : "initial", width: '100%' }}
+          >
+            {screenType !== "desktop" &&
+              location.pathname !== "/" &&
+              location.pathname !== "/home" && (
+                <Link
+                  to="/"
+                  exact="true"
+                  className={`${styles.navbarLink} ${styles.homeNavLink}`}
+                >
+                  Home
+                </Link>
+              )}
+            {location.pathname !== "/browse" && (
               <Link to="/browse" className={styles.navbarLink}>
                 Browse
               </Link>

@@ -98,20 +98,25 @@ const Home = () => {
           >
             Official Resume Templates
           </h2>
-          <Link to="/templates" className={styles.templatesPageLink}>
+          <Link to="/browse" className={styles.templatesPageLink}>
             Browse All Resume Templates
           </Link>
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gridRowGap: "5rem",
+               width: '100%',
+               display: "flex",
+               flexWrap: "wrap",
+               justifyContent: "space-evenly",
+            //   display: "grid",
+            //   gridTemplateColumns: "repeat(3, 1fr)",
+            //   gridRowGap: "5rem",
             }}
           >
             {previewResumes.map((resume) => (
               <ResumePreviewCard
                 resumeId={resume.id}
-                styling={{ width: "75%", margin: "auto" }}
+               //  styling={{ width: "75%", margin: "auto" }}
+                styling={{ width: "15rem", margin: '1rem 1rem 5rem 1rem' }}
                 key={resume.id}
               />
             ))}

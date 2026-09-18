@@ -125,7 +125,7 @@ export default function ResumePreviewCard({
           )}
         </div>
         {caption && (
-          <figcaption className={styles.resumeTitle}>
+          <figcaption className={styles.resumeTitle} style={{ fontSize: styling.fontSize || '1.5rem'}}>
             {title}
             <TbExternalLink
               style={{ marginLeft: "0.5rem", verticalAlign: "-10%" }}

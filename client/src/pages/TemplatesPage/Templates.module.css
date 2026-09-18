@@ -37,8 +37,8 @@
 
 .templatesPageContentWrapper {
   position: relative;
-  width: 80%;
-  margin: 10rem auto;
+  width: 60%;
+  margin: 10rem auto 6rem auto;
 
   display: flex;
   flex-direction: column;
@@ -48,61 +48,91 @@
 
 .templatesPageTitle {
   font-size: 2.5rem;
+  margin-bottom: 2.5rem;
 }
 
-.templatePreviewSortingWrapper {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-around;
-  font-size: 1.5rem;
+.resumeSearchWrapper,
+.templatePreviewsGridWrapper {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
 }
 
 .resumeSearchWrapper {
+  /* * Shared height keeps the input, dropdown toggles, and search button visually aligned */
+  --control-height: 3.75rem;
+
   position: relative;
-  width: 100%;
+  z-index: 1;
   display: flex;
-  margin-top: 2.5rem;
-  margin-bottom: 5rem;
-  justify-content: space-between;
-  align-items: last baseline;
-  position: relative;
-  gap: 2.5rem;
-  /* height: -content; */
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: stretch;
+  margin-bottom: 4rem;
+  font-size: 1.25rem;
 }
 
 .resumeSearchForm {
-  width: 50%;
+  flex: 1 1 calc(50% - 0.75rem);
+  min-width: 0;
 }
 
 .resumeSearchInput {
-  position: relative;
   width: 100%;
-  padding: 0.5rem 1rem;
+  height: var(--control-height);
+  padding: 0.75rem 1rem;
+  border: var(--border-main);
+  border-radius: var(--border-radius-main);
+  /* background: var(--background-main); */
   color: black;
+  font-size: inherit;
+  box-sizing: border-box;
+  outline: none;
 }
 
-.templatePreviewSortingSelect {
+.searchControlsWrapper {
+  /* Let controls wrap across the full search row, including below the input. */
+  display: contents;
+}
+
+.dropdownWrapper {
+  position: relative;
+  flex: 1 1 8rem;
+  min-width: 0;
+}
+
+.dropdownToggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
-  width: max-content;
-  min-width: 10rem;
+  gap: 1rem;
+  width: 100%;
+  height: var(--control-height);
   padding: 0.75rem 1rem;
   border: var(--border-main);
   border-radius: var(--border-radius-main);
   background: var(--background-main);
+  /* color: black; */
   color: inherit;
+  /* font-size: inherit; */
+  font-size: 80%;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
-.sortMenu {
+.dropdownToggleLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdownMenu {
   position: absolute;
   top: calc(100% + 0.5rem);
   left: 0;
   min-width: 100%;
   width: max-content;
+  z-index: 2;
 
   padding: 0.25rem;
   border: var(--border-main);
@@ -111,7 +141,7 @@
   box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35);
 }
 
-.sortOption {
+.dropdownOption {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -120,49 +150,143 @@
   border-radius: 0.25rem;
   background: transparent;
   color: inherit;
+  font-size: inherit;
   text-align: left;
   cursor: pointer;
 }
 
-.sortOption:hover {
+.dropdownOption:hover {
   background: rgba(255, 255, 255, 0.12);
 }
 
-.submitResumeSearchButton {
-  padding: 0.5rem 1.5rem;
-  border: var(--border-main);
-  border-radius: var(--border-radius-main);
-  background: var(--background-main);
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35);
+.resumeTypeCheckboxOption {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: inherit;
+  cursor: pointer;
 }
 
-/* .templatePreviewSortingSelect:focus-visible,
-.sortOption:focus-visible {
-   outline: 2px solid currentColor;
-   outline-offset: 2px;
-} */
+.resumeTypeCheckboxOption:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.searchButton {
+  flex: 1 1 8rem;
+  height: var(--control-height);
+  padding: 0.75rem 1.5rem;
+  border: 0;
+  border-radius: var(--border-radius-main);
+  background: #0d6efd;
+  color: white;
+  font-size: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.searchButton:hover {
+  background: #0b5ed7;
+}
+
+.applyButton {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: 0;
+  border-radius: var(--border-radius-main);
+  background: #0d6efd;
+  color: white;
+  cursor: pointer;
+}
+
+.applyButton:hover {
+  background: #0b5ed7;
+}
 
 .templatePreviewsGridWrapper {
   display: grid;
-  margin: auto;
+  grid-template-columns: repeat(4, minmax(0, 15rem));
+  justify-content: space-between;
+  align-items: start;
+  gap: 5rem 2%;
+}
+
+/* Keep the paper's aspect ratio and captions within their grid track. */
+.templatePreviewsGridWrapper > figure > a {
+  display: block;
   width: 100%;
-  justify-items: space-between;
-  gap: 6rem 2rem;
+  min-width: 0;
+}
+
+.templatePreviewsGridWrapper > figure > a > div:first-child {
+  width: 100%;
+  height: auto;
+}
+
+.templatePreviewsGridWrapper figcaption {
+  height: auto;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 90rem) {
+  .resumeSearchForm {
+    flex-basis: 100%;
+  }
+
+  .templatePreviewsGridWrapper {
+    grid-template-columns: repeat(3, minmax(0, 15rem));
+  }
+}
+
+@media (max-width: 60rem) {
+
+  .templatePreviewsGridWrapper {
+    grid-template-columns: repeat(2, minmax(0, 12.5rem));
+  }
+}
+
+
+@media (max-width: 30rem) {
+  .templatePreviewsGridWrapper {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .navigateTemplatePageInfoWrapper {
-  position: relative;
-  margin: 10rem auto 10rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 4rem;
+}
+
+.navigateTemplatePageText {
+  font-size: 1rem;
+  opacity: 0.85;
 }
 
 .navigateTemplatePageButtonWrapper {
   display: flex;
+  gap: 1rem;
+}
+
+.navigateTemplatePageButtonWrapper button {
+   font-size: 50%;
 }
 
 .navigateTemplatePageButton {
-  text-decoration: underline;
-  background: none;
-  border: none;
+  padding: 0.5rem 1.25rem;
+  border: var(--border-main);
+  border-radius: var(--border-radius-main);
+  background: var(--background-main);
   color: inherit;
   cursor: pointer;
+}
+
+.navigateTemplatePageButton:hover {
+  background: rgba(255, 255, 255, 0.12);
 }

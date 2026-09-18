@@ -1,22 +1,34 @@
 import styles from "./Templates.module.css";
 import { useState, useEffect } from "react";
 import ResumePreviewCard from "@/features/ResumePreview/ResumePreviewCard";
-import {
-  getOfficialResumeTemplatesFromApi,
-  getResumesBySearchFromApi,
-} from "@/services/resumeServices";
+import { getResumesBySearchFromApi } from "@/services/resumeServices";
 import { MdArrowDropDown } from "react-icons/md";
 export default function Templates() {
   // ! Convert to URL Params/Routing
   // ! Look into storage of resume templates to prevent unnecessary additional requests
 
-  const templatesPerPage = 8;
+  const templatesPerPage = 12;
   const [totalTemplates, setTotalTemplates] = useState(0);
   const [offset, setOffset] = useState(0);
   const [resumeTemplates, setResumeTemplates] = useState([]);
   const [sortBy, setSortBy] = useState("copyCount");
   const [sortOpen, setSortOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [resumeTypes, setResumeTypes] = useState(["officialTemplate"]);
+  const [resumeTypesOpen, setResumeTypesOpen] = useState(false);
+
+  const resumeTypeCheckboxOptions = [
+    { value: "officialTemplate", label: "Official Templates" },
+    { value: "personal", label: "My Resumes" },
+  ];
+
+  const toggleResumeType = (value) => {
+    setResumeTypes((currentResumeTypes) =>
+      currentResumeTypes.includes(value)
+        ? currentResumeTypes.filter((type) => type !== value)
+        : [...currentResumeTypes, value],
+    );
+  };
 
   const fetchTemplates = async () => {
     const templateData = await getResumesBySearchFromApi(
@@ -24,9 +36,8 @@ export default function Templates() {
       sortBy,
       templatesPerPage,
       offset,
-      ["officialTemplate"],
+      resumeTypes,
     );
-    console.log("template data", templateData);
     setResumeTemplates(templateData.results ?? []);
     setTotalTemplates(templateData.totalCount ?? 0);
   };
@@ -34,74 +45,130 @@ export default function Templates() {
     fetchTemplates();
   }, [offset, sortBy]);
 
+  const sortLabel =
+    sortBy === "copyCount"
+      ? "Most Copied"
+      : sortBy === "recent"
+        ? "Most Recent"
+        : "Sort by...";
+
   return (
     <div className={styles.templatesPageContainer}>
       <div className={styles.templatesPageContentWrapper}>
         <h1 className={styles.templatesPageTitle}>Resume Browsing Page</h1>
+
         <div className={styles.resumeSearchWrapper}>
-          <form className={styles.resumeSearchForm} onSubmit={(e) => { e.preventDefault(); setOffset(0); fetchTemplates(); }}>
+          <form
+            id="resumeSearchForm"
+            className={styles.resumeSearchForm}
+            onSubmit={(e) => {
+              e.preventDefault();
+              setOffset(0);
+              fetchTemplates();
+            }}
+          >
             <input
               className={styles.resumeSearchInput}
               type="text"
               placeholder="Search templates..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-            ></input>
+            />
           </form>
-          <div className={styles.templatePreviewSortingWrapper}>
-            <button
-              type="button"
-              className={styles.templatePreviewSortingSelect}
-              onClick={() => setSortOpen(!sortOpen)}
-              aria-expanded={sortOpen}
-            >
-              {sortBy === "copyCount"
-                ? "Most Copied"
-                : sortBy === "recent"
-                  ? "Most Recent"
-                  : "Sort by..."}
-              <MdArrowDropDown />
-            </button>
-            {sortOpen && (
-              <div className={styles.sortMenu}>
-                <button
-                  type="button"
-                  className={styles.sortOption}
-                  onClick={() => {
-                    setSortBy("copyCount");
-                    setOffset(0);
-                    setSortOpen(false);
-                  }}
-                >
-                  Most Copied
-                </button>
-                <button
-                  type="button"
-                  className={styles.sortOption}
-                  onClick={() => {
-                    setSortBy("recent");
-                    setOffset(0);
-                    setSortOpen(false);
-                  }}
-                >
-                  Most Recent
-                </button>
-              </div>
-            )}
-          </div>
-            <button className={`${styles.submitResumeSearchButton}`} type="submit" onClick={() => { setOffset(0); fetchTemplates(); }}>Search</button>
 
+          <div className={styles.searchControlsWrapper}>
+            <div className={styles.dropdownWrapper}>
+              <button
+                type="button"
+                className={styles.dropdownToggle}
+                onClick={() => setSortOpen(!sortOpen)}
+                aria-expanded={sortOpen}
+              >
+                <span className={styles.dropdownToggleLabel}>{sortLabel}</span>
+                <MdArrowDropDown />
+              </button>
+              {sortOpen && (
+                <div className={styles.dropdownMenu}>
+                  <button
+                    type="button"
+                    className={styles.dropdownOption}
+                    onClick={() => {
+                      setSortBy("copyCount");
+                      setOffset(0);
+                      setSortOpen(false);
+                    }}
+                  >
+                    Most Copied
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.dropdownOption}
+                    onClick={() => {
+                      setSortBy("recent");
+                      setOffset(0);
+                      setSortOpen(false);
+                    }}
+                  >
+                    Most Recent
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.dropdownWrapper}>
+              <button
+                type="button"
+                className={styles.dropdownToggle}
+                onClick={() => setResumeTypesOpen(!resumeTypesOpen)}
+                aria-expanded={resumeTypesOpen}
+              >
+                <span className={styles.dropdownToggleLabel}>Resume Types</span>
+                <MdArrowDropDown />
+              </button>
+              {resumeTypesOpen && (
+                <div className={styles.dropdownMenu}>
+                  {resumeTypeCheckboxOptions.map(({ value, label }) => (
+                    <label key={value} className={styles.resumeTypeCheckboxOption}>
+                      <input
+                        type="checkbox"
+                        checked={resumeTypes.includes(value)}
+                        onChange={() => toggleResumeType(value)}
+                      />
+                      {label}
+                    </label>
+                  ))}
+                  <button
+                    type="button"
+                    className={styles.applyButton}
+                    onClick={() => {
+                      setOffset(0);
+                      fetchTemplates();
+                      setResumeTypesOpen(false);
+                    }}
+                  >
+                    Apply
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              form="resumeSearchForm"
+              className={styles.searchButton}
+            >
+              Search
+            </button>
+          </div>
         </div>
-        <div
-          className={styles.templatePreviewsGridWrapper}
-          style={{
-            gridTemplateColumns: `repeat(${templatesPerPage / 2}, minmax(200px, 1fr))`,
-          }}
-        >
+
+        <div className={styles.templatePreviewsGridWrapper}>
           {resumeTemplates.map((template) => (
             <ResumePreviewCard
               key={template.id}
-              styling={{ height: "20rem" }}
+              styling={{
+                width: "100%",
+              }}
               resumeId={template.id}
             />
           ))}
@@ -109,10 +176,7 @@ export default function Templates() {
         {resumeTemplates.length === 0 && <p>No templates available.</p>}
         {resumeTemplates.length > 0 && (
           <div className={styles.navigateTemplatePageInfoWrapper}>
-            <p
-              className={styles.navigateTemplatePageButton}
-              style={{ textDecoration: "none" }}
-            >
+            <p className={styles.navigateTemplatePageText}>
               Showing {offset + 1} - {offset + resumeTemplates.length} of{" "}
               {totalTemplates} templates.
             </p>
@@ -124,7 +188,6 @@ export default function Templates() {
                   onClick={() =>
                     setOffset(Math.max(offset - templatesPerPage, 0))
                   }
-                  style={{ marginRight: "1rem" }}
                 >
                   Previous
                 </button>

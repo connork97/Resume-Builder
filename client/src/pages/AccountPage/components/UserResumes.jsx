@@ -48,7 +48,7 @@ const UserResumes = () => {
 
    return (
       <div className={styles.userResumesWrapper}>
-         <h1 style={{fontSize: '1.5rem'}}>My Resumes</h1>
+         <h1 className={styles.myResumesH1}>Your Resumes</h1>
          <div className={styles.userResumeRowsWrapper}>
             {renderResumes()}
          </div>

@@ -5,12 +5,14 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import AccountOutline from './AccountOutline';
 
-import styles from './Account.module.css';
 import { logUserOutOfApi } from '@/services/userServices';
 import { clearUser } from '@/store/userSlice';
 
+import styles from './Account.module.css';
+
 const Account = () => {
 
+   const isMobile = window.innerWidth <= 768;
    const location = useLocation();
 
    const user = useSelector(state => state.user);
@@ -47,7 +49,7 @@ const Account = () => {
                      className={styles.accountTabLink}
                      to='/account/my-resumes'
                   >
-                     My Resumes
+                     {!isMobile && "My "}Resumes
                   </Link>
                </div>
                <div className={styles.accountTab}>

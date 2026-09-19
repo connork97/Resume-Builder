@@ -13,6 +13,7 @@ import TextFormatDropdown from "../../TextFormatting/shared/TextFormatDropdown";
 import { initialState } from "@/store/resumeSlice";
 
 export default function ResetStyling() {
+   const isMobile = window.innerWidth <= 768;
   const dispatch = useDispatch();
   const initialResumeStyling = initialState.styling;
   const reduxResume = useSelector((state) => state.resume.present);
@@ -331,7 +332,7 @@ export default function ResetStyling() {
         data-id="open-close-dropdown-button"
         onClick={() => setDropdownIsOpen(!dropdownIsOpen)}
       >
-        Reset Styling{" "}
+        Reset {!isMobile && "Styling"}{" "}
         <MdArrowDropDown
           style={{ marginLeft: "0.25rem", marginRight: "-0.25rem" }}
         />

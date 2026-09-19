@@ -7,6 +7,7 @@ import TextFormatDropdown from "../../TextFormatting/shared/TextFormatDropdown";
 import { MdArrowDropDown } from "react-icons/md";
 
 const Gap = () => {
+   const isMobile = window.innerWidth <= 768;
   const dispatch = useDispatch();
   const resumeGap = useSelector((state) => state.resume.present.layout.gap);
 
@@ -106,7 +107,7 @@ const Gap = () => {
       //   data-toolbar-label="Gap & Spacing"
         onClick={() => setGapDropdownIsOpen(!gapDropdownIsOpen)}
       >
-        Gap & Spacing{" "}
+        Gap {!isMobile && "& Spacing"}{" "}
         <MdArrowDropDown style={{ margin: "auto -0.25rem auto 0.25rem" }} />
       </button>
       {gapDropdownIsOpen && (

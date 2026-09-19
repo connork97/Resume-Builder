@@ -23,6 +23,7 @@ import ResetStyling from "./ResetStyling.jsx";
 import Indentation from "../../TextFormatting/Indentation.jsx";
 
 const RichTextToolbar = ({ editor }) => {
+  const isMobile = window.innerWidth <= 768;
   const resumeStyling = useSelector((state) => state.resume.present.styling);
   const sections = useSelector((state) => state.resume.present.sections);
   const columns = useSelector((state) => state.resume.present.columns);

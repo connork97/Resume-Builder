@@ -8,6 +8,7 @@ import { getNodeString } from '@/helpers/getNodeString';
 
 const CurrentlyEditing = () => {
 
+   const isMobile = window.innerWidth <= 768;
    const dispatch = useDispatch();
 
    const sections = useSelector(state => state.resume.present.sections);
@@ -47,7 +48,7 @@ const CurrentlyEditing = () => {
       dispatch(setActiveSectionId(null));
    }
    return (
-      <button data-toolbar-label="Edit Full Resume" className='buttonMain' onClick={() => clearToolbarSelection()}>{`Currently Editing: ${currentlyEditingText || "Unknown Error"}`}</button>
+      <button data-toolbar-label="Edit Full Resume" className='buttonMain' onClick={() => clearToolbarSelection()}>{`${!isMobile ? `Currently Editing: ${currentlyEditingText || "Unknown Error"}` : currentlyEditingText || "Unknown Error"}`}</button>
    )
 }
 

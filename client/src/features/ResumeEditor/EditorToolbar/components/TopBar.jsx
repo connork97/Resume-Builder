@@ -5,7 +5,11 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { setResume, updateResume } from "@/store/resumeSlice.js";
 import { ActionCreators as UndoActionCreators } from "redux-undo";
-import { getResumeFromApi, saveResumeToApi, copyResumeToApi } from "@/services/resumeServices";
+import {
+  getResumeFromApi,
+  saveResumeToApi,
+  copyResumeToApi,
+} from "@/services/resumeServices";
 
 import CurrentlyEditing from "./CurrentlyEditing";
 import AddSection from "./AddSection";
@@ -46,19 +50,19 @@ const TopBar = ({ handlePrint }) => {
 
     alert("Resume saved successfully!");
   };
-  
-    const copyResume = async () => {
-      // Implement the logic to copy the resume here
-      if (user?.id == null) {
-        return alert("You must be logged in to copy the resume.");
-      }
-      const newResume = await copyResumeToApi(resume.id);
-      if (!newResume) {
-        return alert("Failed to copy the resume.");
-      }
-      alert("Resume copied successfully! Happy editing.");
-      navigate(`/editor/${newResume.id}`);
-    };
+
+  const copyResume = async () => {
+    // Implement the logic to copy the resume here
+    if (user?.id == null) {
+      return alert("You must be logged in to copy the resume.");
+    }
+    const newResume = await copyResumeToApi(resume.id);
+    if (!newResume) {
+      return alert("Failed to copy the resume.");
+    }
+    alert("Resume copied successfully! Happy editing.");
+    navigate(`/editor/${newResume.id}`);
+  };
 
   const [resumeTitle, setResumeTitle] = useState(resume.title);
 
@@ -79,53 +83,58 @@ const TopBar = ({ handlePrint }) => {
     );
   };
 
+  const isMobile = window.innerWidth <= 768;
+
+  //   const resumeTitleString = !isMobile
+  //     ? resumeTitle
+  //     : resumeTitle.slice(0, 10) + "...";
+
   return (
     <div className={styles.topBarContainer}>
-      <CurrentlyEditing />
+      {isMobile && (
+        <Link to="/home" data-toolbar-label="Home" className={styles.homeLink}>
+          Home
+        </Link>
+      )}
       <div
-        className="buttonMain"
+        className={`buttonMain ${styles.resumeTitle}`}
+        // className="buttonMain"
         contentEditable
         data-toolbar-label="Resume Title"
         suppressContentEditableWarning
         onBlur={handleSetResumeTitle}
-        style={{
-          width: "fit-content",
-          // position: 'relative',
-          // left: "0",
-          margin: "auto 15% auto 10%",
-          //   textAlign: 'center',
-          //   translate: '-45% 25%',
-        }}
       >
-        {resumeTitle}
+        <span className={styles.resumeTitleSpan}>{resumeTitle}</span>
       </div>
+      {!isMobile && <CurrentlyEditing />}
+      {/* <CurrentlyEditing /> */}
       {/* <AddSection /> */}
-      <div className="flexRow">
-        {user?.id === resume?.userId ? (
-          <button
-            data-toolbar-label="Save Resume"
-            className="buttonMain"
-            onClick={saveResume}
-          >
-            Save Resume
-          </button>
-        ) : (
-         <button
-           data-toolbar-label="Copy Resume"
-           className="buttonMain"
-           onClick={copyResume}
-         >
-           Copy Resume
-         </button>
-        )}
+      {/* <div className={styles.saveCopyPrintButtonsWrapper}> */}
+      {user?.id === resume?.userId ? (
         <button
-          data-toolbar-label="Print Resume"
+          data-toolbar-label="Save Resume"
           className="buttonMain"
-          onClick={handlePrint}
+          onClick={saveResume}
         >
-          Print
+          Save {!isMobile && "Resume"}
         </button>
-      </div>
+      ) : (
+        <button
+          data-toolbar-label="Copy Resume"
+          className="buttonMain"
+          onClick={copyResume}
+        >
+          Copy {!isMobile && "Resume"}
+        </button>
+      )}
+      <button
+        data-toolbar-label="Print Resume"
+        className="buttonMain"
+        onClick={handlePrint}
+      >
+        Print
+      </button>
+      {/* </div> */}
     </div>
   );
 };

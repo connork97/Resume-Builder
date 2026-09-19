@@ -13,7 +13,6 @@
   display: flex;
   flex-direction: column;
   padding: 0 7.5vw;
-
 }
 
 .homeLink {
@@ -36,35 +35,46 @@
   gap: 0.5vh;
 }
 
-
 .topBarContainer {
-   height: calc(var(--height-toolbar) / 2);
-   width: 100%;
+  height: calc(var(--height-toolbar) / 2);
+  width: 100%;
 
-   display: flex;
-   align-items: center;
-   justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resumeTitle {
+  /* width: fit-content; */
+  /* margin: auto 15% auto 10%; */
+}
+
+.saveCopyPrintButtonsWrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 0.5rem;
 }
 
 .dropdownContainer {
-   padding: 0.25em 1em;
-   background-color: var(--background-main);
-   border: 1px solid rgba(255, 255, 255, 0.1);
-   border-radius: var(--border-radius-main);
-   position: absolute;
-   padding: 0;
-   margin-top: 1rem;
-   z-index: var(--z-dropdown);
+  padding: 0.25em 1em;
+  background-color: var(--background-main);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-main);
+  position: absolute;
+  padding: 0;
+  margin-top: 1rem;
+  z-index: var(--z-dropdown);
 }
 
 .dropdownOption {
-   background-color: var(--background-main);
-   border-radius: var(--border-radius-main);
-   padding: 0.5em 1em;
+  background-color: var(--background-main);
+  border-radius: var(--border-radius-main);
+  padding: 0.5em 1em;
 }
 .dropdownOption:hover {
-   cursor: pointer;
-   filter: brightness(1.1);
+  cursor: pointer;
+  filter: brightness(1.1);
 }
 
 .tooltip {
@@ -87,4 +97,63 @@
   .tooltip {
     display: none;
   }
+}
+
+  @media (max-width: 768px) {
+    .toolbarContainer {
+      height: fit-content;
+   }
+   .toolbarContent {
+       gap: 0.5rem;
+      padding: 0 0.5rem;
+    }
+    .homeLink {
+      top: 0;
+      left: 0;
+      position: relative;
+      font-size: 1.5rem;
+    }
+
+    .richTextToolbarContainer {
+      height: fit-content;
+      width: 100%;
+    }
+    .richTextToolbarWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.1rem;
+    }
+    .topBarContainer {
+      width: 100%;
+      gap: 0.5rem;
+    }
+    .topBarContainer .buttonMain {
+      margin: 0;
+      padding: 0;
+      font-size: 1rem;
+      width: fit-content;
+    }
+ 
+
+    .resumeTitle {
+      /* max-width: 50%; */
+      max-width: max-content;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    .resumeTitle span {
+      width: 100%;
+    }
+
+    .saveCopyPrintButtonsWrapper {
+      gap: 0;
+    }
+    /* .resumeTitle { */
+    /* margin: auto 5% auto 5%; */
+    /* } */
 }

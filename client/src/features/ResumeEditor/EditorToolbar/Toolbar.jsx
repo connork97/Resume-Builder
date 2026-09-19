@@ -11,21 +11,31 @@ import TopBar from "./components/TopBar";
 import styles from "./Toolbar.module.css";
 
 const Toolbar = ({ handlePrint }) => {
+  const isMobile = window.innerWidth <= 768;
 
   const [tooltip, setTooltip] = useState(null);
 
   const showTooltip = (event) => {
-    const control = event.target.closest('button, input, a, [contenteditable="true"]');
-    const label = control?.closest('[data-toolbar-label]')?.dataset.toolbarLabel;
+    const control = event.target.closest(
+      'button, input, a, [contenteditable="true"]',
+    );
+    const label = control?.closest("[data-toolbar-label]")?.dataset
+      .toolbarLabel;
     if (!label) {
       setTooltip(null);
       return;
     }
     const rect = control.getBoundingClientRect();
-    setTooltip({ label, left: rect.left + rect.width / 2, top: rect.bottom + 6 });
+    setTooltip({
+      label,
+      left: rect.left + rect.width / 2,
+      top: rect.bottom + 6,
+    });
   };
 
-  const activeEditorId = useSelector((state) => state.resume.present.activeEditorId);
+  const activeEditorId = useSelector(
+    (state) => state.resume.present.activeEditorId,
+  );
   const editor = editorRegistry.get(activeEditorId);
 
   return (
@@ -38,24 +48,22 @@ const Toolbar = ({ handlePrint }) => {
       onMouseDown={() => setTooltip(null)}
       onKeyDown={(event) => event.key === "Escape" && setTooltip(null)}
     >
-
-      <Link
-        to='/home'
-        data-toolbar-label="Home"
-        className={styles.homeLink}
-      >
-        Home
-      </Link>
-      {tooltip && createPortal(
-        <div
-          role="tooltip"
-          className={styles.tooltip}
-          style={{ left: tooltip.left, top: tooltip.top }}
-        >
-          {tooltip.label}
-        </div>,
-        document.body,
+      {!isMobile && (
+        <Link to="/home" data-toolbar-label="Home" className={styles.homeLink}>
+          Home
+        </Link>
       )}
+      {tooltip &&
+        createPortal(
+          <div
+            role="tooltip"
+            className={styles.tooltip}
+            style={{ left: tooltip.left, top: tooltip.top }}
+          >
+            {tooltip.label}
+          </div>,
+          document.body,
+        )}
       <div className={styles.toolbarContent}>
         <TopBar handlePrint={handlePrint} />
         <RichTextToolbar editor={editor} />

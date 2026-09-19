@@ -35,3 +35,11 @@
    cursor: pointer;
 }
 
+@media (max-width: 768px) {
+   .accountSettingsForm {
+      width: 100%;
+   }
+   .accountSubmitButton {
+      margin: 5rem auto;
+   }
+}

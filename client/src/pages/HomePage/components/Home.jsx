@@ -17,10 +17,12 @@ const Home = () => {
   const [previewResumes, setPreviewResumes] = useState([]);
 
   const screenSize = useMediaQuery();
+  const isMobile = screenSize === "mobile";
 
   useEffect(() => {
     const fetchTemplates = async () => {
-      const templateData = (await getOfficialResumeTemplatesFromApi(3, "copyCount")) ?? [];
+      const templateData =
+        (await getOfficialResumeTemplatesFromApi(3, "copyCount")) ?? [];
       const templates = templateData.templates ?? [];
 
       if (!templates.length) {
@@ -59,62 +61,51 @@ const Home = () => {
     <div className={styles.homePageContainer}>
       <div className={styles.homePageContent}>
         <h2 className={styles.homeH2}>
-          Hi {user.firstName || "there"}. Welcome {user.id && " back"}
-          {screenSize !== 'desktop' ? "!" : " to ActuallyFreeResume.com."}
+          Hi {user.firstName || "there"}. Welcome{user.id && " back"}
+          {screenSize !== "desktop" ? "!" : " to ActuallyFreeResume.com."}
         </h2>
         {/* <p className={styles.homeP}> */}
         {/* Welcome {user.id && " back"} to ActuallyFreeResume.com */}
         {/* </p> */}
         {!user.id && (
           <>
-            <p className={styles.homeP}>
-              New here?&nbsp; Try out our&nbsp;
-              <Link className={styles.homeLink} to="/demo">
-                demo
-              </Link>
-              &nbsp;or&nbsp;
-              <Link className={styles.homeLink} to="/signup">
-                create an account
-              </Link>
-              .
+            <p className={styles.newHereP}>
+              <span>New here?&nbsp; </span>
+              {isMobile && (
+                <>
+                  {/* <br /> */}
+                  {/* <br /> */}
+                </>
+              )}{" "}
+              <span>
+                Try out our&nbsp;
+                <Link className={styles.homeLink} to="/demo">
+                  demo
+                </Link>
+                &nbsp;or&nbsp;
+                <Link className={styles.homeLink} to="/signup">
+                  create an account
+                </Link>
+                .
+              </span>
             </p>
           </>
         )}
-
-        {/* <p className={styles.homeP}>New here?</p> */}
-        {/* <Link className={styles.tryDemoButton} to='/demo'>
-               New here?&nbsp;
-               Try out our demo!
-            </Link>
-            <p className={styles.homeP} style={{margin: '1rem auto'}}>Or</p>
-            <Link className={styles.tryDemoButton}>Create an Account</Link> */}
-        {/* <ResumePreviews /> */}
         <div>
-          <h2 className={styles.templatesH2}>
-            Official Resume Templates
-          </h2>
+          <h2 className={styles.templatesH2}>Official Resume Templates</h2>
           <Link to="/browse" className={styles.templatesPageLink}>
             Browse All Resume Templates
           </Link>
-          <div className={styles.templatesWrapper}
-            style={{
-               // width: '100%',
-               // display: "flex",
-               // flexWrap: "wrap",
-               // justifyContent: "space-evenly",
-            //   display: "grid",
-            //   gridTemplateColumns: "repeat(3, 1fr)",
-            //   gridRowGap: "5rem",
-            }}
-          >
+          <div className={styles.templatesWrapper}>
             {previewResumes.map((resume) => (
               <ResumePreviewCard
                 resumeId={resume.id}
-               //  styling={{ width: "75%", margin: "auto" }}
-               width="15rem"
-               //  styling={{ width: "15rem"
-                  // , margin: '1rem 1rem 5rem 1rem'
-               //  }}
+                //  styling={{ width: "75%", margin: "auto" }}
+                width="15rem"
+                styling={{ marginBottom: isMobile && "1rem"}}
+                //  styling={{ width: "15rem"
+                // , margin: '1rem 1rem 5rem 1rem'
+                //  }}
                 key={resume.id}
               />
             ))}

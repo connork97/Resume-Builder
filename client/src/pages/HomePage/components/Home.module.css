@@ -3,7 +3,7 @@
   width: 100%;
   position: relative;
   overflow-x: hidden;
-  
+
   background-image: url("@/assets/backgrounds/resumeBuilderHeroImage.png");
   background-size: cover;
   background-position: center;
@@ -41,26 +41,24 @@
   font-weight: 300;
 }
 
-
-.homeH2, .homeP, .tryDemoButton, .templatesH2 {
-   font-weight: inherit;
-   margin: auto;
-   text-align: center;
+.homeH2,
+.newHereP,
+.tryDemoButton,
+.templatesH2 {
+  font-weight: inherit;
+  margin: auto;
+  text-align: center;
 }
 
 .homeH2 {
-   font-size: 3rem;
-   margin-bottom: 5rem;
-}
-
-.templatesH2 {
-   margin-bottom: 2.5rem;
+  font-size: 3rem;
+  margin-bottom: 5rem;
 }
 
 .templatesWrapper {
-   /* display: grid; */
-   /* grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); */
-   /* grid-gap: 2rem; */
+  /* display: grid; */
+  /* grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); */
+  /* grid-gap: 2rem; */
   margin: auto;
   display: flex;
   flex-wrap: wrap;
@@ -68,23 +66,9 @@
   /* gap: 5rem 2.5rem; */
 }
 
-
-@media (max-width: 1024px) {
-   .homePageContent {
-      width: 90%;
-      padding-top: calc(var(--height-navbar) + 2.5rem);
-     /* padding-top: calc(var(--height-navbar) + .5rem); */
-   }
-   .homeH2, .templatesH2 {
-     font-size: 2rem;
-   }
-}
-
-.homeP {
+.newHereP {
   font-size: 2rem;
-  margin: 1rem 0;
-  
-  /* margin-bottom: 2rem; */
+  margin: 1rem auto 5rem auto;
 }
 
 .homeLink {
@@ -95,17 +79,10 @@
 
 .tryDemoButton {
   display: inline-block;
-  /* margin-top: 3rem; */
   padding: 0.5rem 2.5rem;
-  /* margin: 1rem auto; */
-
-  /* font-size: 1.75rem; */
-  
   border: 1px solid rgba(255, 255, 255, 0.75);
   border-radius: 5rem;
-  
   background: rgba(0, 0, 0, 0.2);
-
   cursor: pointer;
 }
 
@@ -113,7 +90,29 @@
   display: block;
   text-align: center;
   margin: auto;
-  margin-bottom: 5rem;
+  margin: 2.5rem auto 5rem auto;
   text-decoration: underline;
   font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .homePageContent {
+    width: 90%;
+    padding-top: calc(var(--height-navbar) + 2.5rem);
+    /* padding-top: calc(var(--height-navbar) + .5rem); */
+  }
+  .homeH2,
+  .templatesH2 {
+    font-size: 2rem;
+  }
+  .newHereP {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.25rem;
+    margin: 0 auto 3rem auto;
+  }
+  .templatesPageLink {
+   margin: 1rem auto 2rem auto;
+  }
 }

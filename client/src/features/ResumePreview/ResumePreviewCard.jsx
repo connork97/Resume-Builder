@@ -74,7 +74,7 @@ export default function ResumePreviewCard({
   return (
     <figure
       className={styles.resumePreviewCard}
-      style={{ ...cardStyling, ...(cardWidth != null && { width: cardWidth }) }}
+      style={{ ...cardStyling, marginBottom: styling.marginBottom, ...(cardWidth != null && { width: cardWidth }) }}
       //   onClick={() => navigate(`/editor/${resumeId}`)}
     >
       <Link

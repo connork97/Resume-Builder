@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Link } from "react-router-dom";
 import {
   getOfficialResumeTemplatesFromApi,
@@ -14,6 +15,8 @@ import styles from "./Home.module.css";
 const Home = () => {
   const user = useSelector((state) => state.user);
   const [previewResumes, setPreviewResumes] = useState([]);
+
+  const screenSize = useMediaQuery();
 
   useEffect(() => {
     const fetchTemplates = async () => {
@@ -56,8 +59,8 @@ const Home = () => {
     <div className={styles.homePageContainer}>
       <div className={styles.homePageContent}>
         <h2 className={styles.homeH2}>
-          Hi {user.firstName || "there"}. Welcome {user.id && " back"} to
-          ActuallyFreeResume.com.
+          Hi {user.firstName || "there"}. Welcome {user.id && " back"}
+          {screenSize !== 'desktop' ? "!" : " to ActuallyFreeResume.com."}
         </h2>
         {/* <p className={styles.homeP}> */}
         {/* Welcome {user.id && " back"} to ActuallyFreeResume.com */}
@@ -87,26 +90,18 @@ const Home = () => {
             <Link className={styles.tryDemoButton}>Create an Account</Link> */}
         {/* <ResumePreviews /> */}
         <div>
-          <h2
-            className={styles.homeH2}
-            style={{
-              //   fontSize: "2rem",
-              //   textAlign: "center",
-              marginTop: "10rem",
-              //   marginBottom: "5rem",
-            }}
-          >
+          <h2 className={styles.templatesH2}>
             Official Resume Templates
           </h2>
           <Link to="/browse" className={styles.templatesPageLink}>
             Browse All Resume Templates
           </Link>
-          <div
+          <div className={styles.templatesWrapper}
             style={{
-               width: '100%',
-               display: "flex",
-               flexWrap: "wrap",
-               justifyContent: "space-evenly",
+               // width: '100%',
+               // display: "flex",
+               // flexWrap: "wrap",
+               // justifyContent: "space-evenly",
             //   display: "grid",
             //   gridTemplateColumns: "repeat(3, 1fr)",
             //   gridRowGap: "5rem",
@@ -116,7 +111,10 @@ const Home = () => {
               <ResumePreviewCard
                 resumeId={resume.id}
                //  styling={{ width: "75%", margin: "auto" }}
-                styling={{ width: "15rem", margin: '1rem 1rem 5rem 1rem' }}
+               width="15rem"
+               //  styling={{ width: "15rem"
+                  // , margin: '1rem 1rem 5rem 1rem'
+               //  }}
                 key={resume.id}
               />
             ))}

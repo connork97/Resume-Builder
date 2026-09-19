@@ -30,15 +30,26 @@
 .navbarGroup {
   gap: 3rem;
   display: flex;
-  /* justify-content: flex-end; */
-  /* margin: auto; */
   justify-content: space-between;
 }
 
 .navbarLink,
 .navbarLinkActive,
 .navbarLink:hover {
-   /* flex-basis: 100%; */
   width: max-content;
   font-weight: lighter;
+}
+
+@media (max-width: 768px) {
+   .navbarContent {
+      width: 80%;
+   }
+   .navbarGroup {
+      width: 100%;
+   }
+
+   .navbarLink {
+      width: 100%;
+      text-align: center;
+   }
 }

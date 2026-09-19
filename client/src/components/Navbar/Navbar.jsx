@@ -9,89 +9,156 @@ import styles from "./Navbar.module.css";
 
 const Navbar = () => {
   const location = useLocation();
-  const [screenType, setScreenType] = useState(useMediaQuery());
+  const isMobile = useMediaQuery() === "mobile";
+  const isDesktop = useMediaQuery() === "desktop";
 
-  useEffect(() => {
-    if (screenType !== useMediaQuery()) {
-      setScreenType(useMediaQuery());
-    }
-  }, [screenType]);
+  const isHomePage = location.pathname === "/" || location.pathname === "/home";
+  const isBrowsePage = location.pathname === "/browse";
+  const isLoginPage = location.pathname === "/login";
+  const isSignupPage = location.pathname === "/signup";
+  const isAccountPage = location.pathname === "/account";
+  //   const [screenType, setScreenType] = useState(useMediaQuery());
+
+  //   useEffect(() => {
+  //     if (screenType !== useMediaQuery()) {
+  //       setScreenType(useMediaQuery());
+  //     }
+  //   }, [screenType]);
 
   const user = useSelector((state) => state.user);
 
   return (
     <div className={styles.navbarContainer}>
       <div className={styles.navbarContent}>
-        {screenType === "desktop" && (
-          <Link
-            to="/"
-            exact="true"
-            className={`${styles.navbarLink} ${styles.homeNavLink}`}
-          >
-            {location.pathname === "/" || location.pathname === "/home"
-              ? screenType === "desktop"
-                ? "ActuallyFreeResume.com"
-                : "Home"
-              : "Home"}
-          </Link>
+        {isDesktop && user.id && (
+          <>
+            <Link
+              to="/"
+              exact="true"
+              className={`${styles.navbarLink} ${styles.homeNavLink}`}
+              onClick={(e) => {
+                if (isHomePage) {
+                  e.preventDefault();
+                }
+              }}
+            >
+              {isHomePage ? "ActuallyFreeResume.com" : "Home"}
+            </Link>
+            {!isBrowsePage && !isAccountPage ? (
+              <div className={styles.navbarGroup}>
+                <Link to="/browse" className={styles.navbarLink}>
+                  Browse
+                </Link>
+                <Link to="/account" className={styles.navbarLink}>
+                  Account
+                </Link>
+              </div>
+            ) : (
+              <>
+                {!isBrowsePage && (
+                  <Link to="/browse" className={styles.navbarLink}>
+                    Browse
+                  </Link>
+                )}
+                {!isAccountPage && (
+                  <Link to="/account" className={styles.navbarLink}>
+                    Account
+                  </Link>
+                )}
+              </>
+            )}
+          </>
         )}
-
-        {!user.id && (
-          <div
-            className={styles.navbarGroup}
-            style={{ margin: screenType !== "desktop" ? "auto" : "initial", width: '100%' }}
-          >
-            {location.pathname !== "/" && location.pathname !== "/home" && (
+        {!isDesktop && user.id && (
+          <div className={styles.navbarGroup}>
+            {!isHomePage && (
               <Link
                 to="/"
                 exact="true"
                 className={`${styles.navbarLink} ${styles.homeNavLink}`}
+                onClick={(e) => {
+                  if (isHomePage) {
+                    e.preventDefault();
+                  }
+                }}
               >
                 Home
               </Link>
             )}
-
-            {!user.id && (
+            {!isBrowsePage && (
               <Link to="/browse" className={styles.navbarLink}>
                 Browse
               </Link>
             )}
-            {location.pathname !== "/login" && !user.id && (
-              <Link to="/login" exact="true" className={styles.navbarLink}>
-                Login
-              </Link>
-            )}
-            {location.pathname !== "/signup" && !user.id && (
-              <Link to="/signup" exact="true" className={styles.navbarLink}>
-                Sign Up
+            {!isAccountPage && (
+              <Link to="/account" className={styles.navbarLink}>
+                Account
               </Link>
             )}
           </div>
         )}
-        {user.id && (
-          <div
-            className={styles.navbarGroup}
-            style={{ margin: screenType !== "desktop" ? "auto" : "initial", width: '100%' }}
-          >
-            {screenType !== "desktop" &&
-              location.pathname !== "/" &&
-              location.pathname !== "/home" && (
-                <Link
-                  to="/"
-                  exact="true"
-                  className={`${styles.navbarLink} ${styles.homeNavLink}`}
-                >
-                  Home
+        {isDesktop && !user.id && (
+          <>
+            <Link
+              to="/"
+              exact="true"
+              className={`${styles.navbarLink} ${styles.homeNavLink}`}
+              onClick={(e) => {
+                if (isHomePage) {
+                  e.preventDefault();
+                }
+              }}
+            >
+              {isHomePage ? "ActuallyFreeResume.com" : "Home"}
+            </Link>
+            <div className={styles.navbarGroup}>
+              {!isBrowsePage && (
+                <Link to="/browse" className={styles.navbarLink}>
+                  Browse
                 </Link>
               )}
-            {location.pathname !== "/browse" && (
+              {!isSignupPage && (
+                <Link to="/signup" className={styles.navbarLink}>
+                  Sign Up
+                </Link>
+              )}
+              {!isLoginPage && (
+                <Link to="/login" className={styles.navbarLink}>
+                  Login
+                </Link>
+              )}
+            </div>
+          </>
+        )}
+        {!isDesktop && !user.id && (
+          <div className={styles.navbarGroup}>
+            {!isHomePage && (
+              <Link
+                to="/"
+                exact="true"
+                className={styles.navbarLink}
+                onClick={(e) => {
+                  if (isHomePage) {
+                    e.preventDefault();
+                  }
+                }}
+              >
+                Home
+              </Link>
+            )}
+            {!isBrowsePage && (
               <Link to="/browse" className={styles.navbarLink}>
                 Browse
               </Link>
             )}
-            {location.pathname !== "/account" && (
-              <Link to="/account" className={styles.navbarLink}>
-                Account
+            {!isSignupPage && (
+              <Link to="/signup" className={styles.navbarLink}>
+                Sign Up
+              </Link>
+            )}
+            {!isLoginPage && (
+              <Link to="/login" className={styles.navbarLink}>
+                Login
               </Link>
             )}
           </div>

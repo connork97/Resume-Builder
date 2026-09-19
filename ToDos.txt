@@ -5,6 +5,9 @@
 
 MEDIUM BUGS:
 
+-Check Nav Links for bugginess on mobile when deployed.
+   -Click events seem like they act as drags on mobile device dev tools
+
 -Dragging Fields is Clunky/Buggy
    -Particularly when dragging within grid layouts
 

@@ -10,9 +10,10 @@
 }
 
 .resumeTitle {
+   position: relative;
    font-size: 1.5rem;
   margin-top: 0.5rem;
-  height: 1.5rem;
+  /* height: 1.5rem; */
   /* overflow-wrap: anywhere; */
   /* position: absolute; */
   /* top: 0; */
@@ -21,8 +22,9 @@
 
 .viewport {
   position: relative;
-  height: 100%;
+  /* height: 100%; */
   /* width: 100%; */
+  margin-bottom: 10%;
   aspect-ratio: 8.5 / 11;
   overflow: hidden;
   background-color: white;
@@ -31,7 +33,6 @@
 
 .resumePaper {
   position: absolute;
-  top: 0;
   left: 0;
   width: var(--width-editor-page, 5.95in);
   height: var(--height-editor-page, 7.7in);

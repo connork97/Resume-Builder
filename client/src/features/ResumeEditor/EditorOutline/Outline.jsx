@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { reorderSections, deleteSection } from "@/store/resumeSlice.js";
+import { reorderSections } from "@/store/resumeSlice.js";
 
-import OutlineSection from "./components/OutlineSection.jsx";
 import FieldRow from "./components/FieldRow.jsx";
 
 import styles from "./Outline.module.css";
 import { Node } from "slate";
-import { deleteSectionFromApi } from "@/services/resumeServices.js";
-import { StartNewRow } from "./components/StartNewRow.jsx";
 
 import { DragDropProvider } from "@dnd-kit/react";
 import SortableOutlineSection from "@/features/ResumeEditor/EditorOutline/components/SortableOutlineSection.jsx";
@@ -58,28 +55,6 @@ const Outline = () => {
   const getSectionById = (sectionId) => {
     return sections.byId[sectionId];
   };
-
-//   const handleDeleteSection = async (sectionId) => {
-//     const section = getSectionById(sectionId);
-//     const sectionTitle = getNodeString(section.value[0]);
-//     if (
-//       !confirm(
-//         `Are you sure you want to delete the entire ${sectionTitle} section?`,
-//       )
-//     ) {
-//       return;
-//     }
-
-//     const autoSave = false;
-
-//     if (autoSave) {
-//       const sectionIsDeleted = await deleteSectionFromApi(sectionId);
-//       if (!sectionIsDeleted) {
-//         return;
-//       }
-//     }
-//     dispatch(deleteSection(sectionId));
-//   };
 
   const getNodeString = (slateValue) => {
     return Node.string(slateValue);

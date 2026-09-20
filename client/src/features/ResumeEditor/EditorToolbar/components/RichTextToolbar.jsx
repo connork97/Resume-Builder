@@ -21,6 +21,7 @@ import FontFamily from "../../TextFormatting/FontFamily.jsx";
 import AddSection from "./AddSection.jsx";
 import ResetStyling from "./ResetStyling.jsx";
 import Indentation from "../../TextFormatting/Indentation.jsx";
+import UndoRedo from "./UndoRedo.jsx";
 
 const RichTextToolbar = ({ editor }) => {
   const isMobile = window.innerWidth <= 768;
@@ -157,6 +158,7 @@ const RichTextToolbar = ({ editor }) => {
           <AddSection />
         </div>
         <ResetStyling />
+        <UndoRedo />
 
       </div>
     </div>

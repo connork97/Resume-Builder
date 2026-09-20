@@ -165,7 +165,7 @@
 @media (max-width: 768px) {
   .printPageRef {
     width: 100%;
-    height: auto;
+    /* height: auto; */
     /* height: fit-content; */
     --baseline-editor-page-width: 571px;
     --scale-factor: calc(90vw / var(--baseline-editor-page-width));

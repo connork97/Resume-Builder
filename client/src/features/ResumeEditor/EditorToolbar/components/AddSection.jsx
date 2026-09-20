@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addSection, addSubsection } from "@/store/resumeSlice";
 
 const AddSection = () => {
+   const isMobile = window.innerWidth <= 768;
   const dispatch = useDispatch();
   const resume = useSelector((state) => state.resume.present);
 
@@ -76,7 +77,7 @@ const AddSection = () => {
         style={{ whiteSpace: "nowrap" }}
         onClick={() => setAddSectionDropdownIsOpen(!addSectionDropdownIsOpen)}
       >
-        + Add Section
+        + Add {!isMobile && "Section"}
       </button>
       {addSectionDropdownIsOpen && (
         <TextFormatDropdown

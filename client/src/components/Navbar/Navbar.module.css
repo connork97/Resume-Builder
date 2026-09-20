@@ -44,12 +44,16 @@
    .navbarContent {
       width: 80%;
    }
+   .navbarGroup .navbarLink {
+      width: 100%;
+   }
    .navbarGroup {
       width: 100%;
    }
 
    .navbarLink {
-      width: 100%;
+      /* width: 100%; */
+      min-width: fit-content;
       text-align: center;
    }
 }

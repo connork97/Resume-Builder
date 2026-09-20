@@ -73,7 +73,7 @@
 }
 
 .resumeSearchForm {
-   flex: 1 1 40%;
+  flex: 1 1 40%;
   /* flex: 1 1 calc(50% - 0.75rem); */
   min-width: 0;
 }
@@ -214,10 +214,19 @@
   width: 100%;
   box-sizing: border-box;
 }
-  /* grid-template-columns: repeat(4, minmax(0, 15rem)); */
-  /* justify-content: space-between; */
-  /* align-items: start; */
-  /* gap: 5rem 2%; */
+
+@media (max-width: 768px) {
+  .templatePreviewsGridWrapper {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .templatesPageTitle {
+    font-size: 1.25rem;
+  }
+}
+/* grid-template-columns: repeat(4, minmax(0, 15rem)); */
+/* justify-content: space-between; */
+/* align-items: start; */
+/* gap: 5rem 2%; */
 /* } */
 
 /* Keep the paper's aspect ratio and captions within their grid track. */
@@ -241,9 +250,6 @@
   .resumeSearchForm {
     flex-basis: 100%;
   }
-  .templatesPageTitle {
-   font-size: 1.5rem;
-  }
 }
 
 .navigateTemplatePageInfoWrapper {
@@ -266,7 +272,7 @@
 }
 
 .navigateTemplatePageButtonWrapper button {
-   font-size: 50%;
+  font-size: 50%;
 }
 
 .navigateTemplatePageButton {

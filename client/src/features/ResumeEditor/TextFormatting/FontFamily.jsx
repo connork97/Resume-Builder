@@ -87,7 +87,7 @@ const FontFamily = () => {
       ?.label ?? selectedFontFamily;
 
   return (
-    <div style={{ whiteSpace: "nowrap" }}>
+    <div style={{ whiteSpace: "nowrap" }} data-toolbar-label="Font Family">
       <button
         data-id="open-close-dropdown-button"
         className="buttonMain"

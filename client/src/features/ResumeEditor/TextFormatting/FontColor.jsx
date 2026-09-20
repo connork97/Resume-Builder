@@ -70,6 +70,7 @@ const FontColor = ({ editor, selection, activeSectionId, activeSectionIds }) => 
          selection={selection}
          currentEditorColor={currentFontColor}
          handleSetColor={setNewFontColor}
+         toolbarLabel="Font Color"
       />
    )
 }

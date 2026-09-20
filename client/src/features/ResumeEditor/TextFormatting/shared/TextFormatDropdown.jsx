@@ -42,9 +42,11 @@ const TextFormatDropdown = ({
   const handleDropdownOverflow = (ref) => {
     const rect = ref.current.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
+    console.log('VIEWPORT WIDTH', viewportWidth);
+    console.log('DROPDOWN RECT', rect);
 
     // If the right edge goes past the screen, shift it left by the overflow amount
-    if (rect.right > viewportWidth) {
+    if (rect.right >= viewportWidth) {
       ref.current.style.left = "auto";
       ref.current.style.right = "0px";
     } else {

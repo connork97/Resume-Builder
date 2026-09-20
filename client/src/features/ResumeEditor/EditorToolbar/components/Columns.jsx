@@ -15,29 +15,28 @@ import { TfiLayoutColumn3Alt } from "react-icons/tfi";
 const Columns = () => {
   const dispatch = useDispatch();
 
-  const resume = useSelector((state) => state.resume.present);
+  const reduxResume = useSelector((state) => state.resume.present);
 
-  const columns = useSelector((state) => state.resume.present.columns);
+  const reduxColumns = useSelector((state) => state.resume.present.columns);
 
-  // const [columnInputValue, setColumnInputValue] = useState(0);
   const [columnInputValue, setColumnInputValue] = useState(
-    columns.allIds.length || 0,
+    reduxColumns.allIds.length || 0,
   );
 
   useEffect(() => {
-    setColumnInputValue(columns.allIds.length);
-  }, [columns.allIds]);
+    setColumnInputValue(reduxColumns.allIds.length);
+  }, [reduxColumns.allIds]);
 
   const addColumn = async () => {
-   if (columns.allIds.length >= 10) {
+   if (reduxColumns.allIds.length >= 10) {
      alert("Resumes cannot have more than 10 columns.");
      return;
    }
-    const saved = await saveResumeToApi(resume);
+    const saved = await saveResumeToApi(reduxResume);
    
     if (!saved) return;
     
-    const updatedNormalizedResumeData = await addColumnToApi(resume.id);
+    const updatedNormalizedResumeData = await addColumnToApi(reduxResume.id);
 
     if (!updatedNormalizedResumeData) {
       return;
@@ -48,11 +47,11 @@ const Columns = () => {
   const removeLastColumn = async () => {
     const autoSave = false;
 
-    const lastColumnId = columns.allIds.at(-1);
+    const lastColumnId = reduxColumns.allIds.at(-1);
 
     if (autoSave) {
       const updatedNormalizedResumeData = await deleteLastColumnFromApi(
-        resume.id,
+        reduxResume.id,
       );
       if (!updatedNormalizedResumeData) {
         return;
@@ -65,25 +64,16 @@ const Columns = () => {
 
   return (
     <div className={styles.toolbarFlexWrapper}>
-      {/* <label className={styles.toolbarLabelSpan}>
-        {columnInputValue + " " + columnInputLabel}:
-      </label> */}
-      <button className="buttonMain" onClick={() => removeLastColumn()}>
+      <button className="buttonMain" data-toolbar-label="Remove Column" onClick={() => removeLastColumn()}>
         -
       </button>
-      <button className="buttonMain">
+      <button className="buttonMain" data-toolbar-label="Columns">
         <TfiLayoutColumn3Alt style={{ marginRight: "0.5rem" }} />
         {columnInputValue}
       </button>
-      <button className="buttonMain" onClick={() => addColumn()}>
+      <button className="buttonMain" data-toolbar-label="Add Column" onClick={() => addColumn()}>
         +
       </button>
-      {/* <ToolbarInput
-            value={columnInputValue}
-            handleChange={setColumnInputValue}
-            commitChange={() => updateColumns()}
-            onBlur={() => updateColumns()}
-         /> */}
     </div>
   );
 };

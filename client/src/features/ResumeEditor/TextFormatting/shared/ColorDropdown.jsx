@@ -7,7 +7,7 @@ import { BASE_COLORS } from '@/lib/baseColors';
 
 import styles from "../TextFormatting.module.css";
 
-const ColorDropdown = ({ currentEditorColor, text=false, handleSetColor }) => {
+const ColorDropdown = ({ currentEditorColor, text=false, handleSetColor, toolbarLabel="" }) => {
 
   const usedColors = useSelector(selectUsedResumeColors);
 
@@ -33,7 +33,7 @@ const ColorDropdown = ({ currentEditorColor, text=false, handleSetColor }) => {
   const dropdownRef = useClickOutside(closeDropdown, isOpen);
 
   return (
-    <div className={styles.colorDropdownContainer}  ref={dropdownRef}>
+    <div className={styles.colorDropdownContainer}  ref={dropdownRef} data-toolbar-label={toolbarLabel}>
       <button className='buttonMain' style={{...textFormatButtonStyling}} onClick={() => setIsOpen(o => !o)}>{text}</button>
 
 

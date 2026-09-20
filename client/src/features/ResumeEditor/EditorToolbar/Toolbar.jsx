@@ -17,7 +17,7 @@ const Toolbar = ({ handlePrint }) => {
 
   const showTooltip = (event) => {
     const control = event.target.closest(
-      'button, input, a, [contenteditable="true"]',
+      'button, input, a, [contenteditable="true"], svg',
     );
     const label = control?.closest("[data-toolbar-label]")?.dataset
       .toolbarLabel;

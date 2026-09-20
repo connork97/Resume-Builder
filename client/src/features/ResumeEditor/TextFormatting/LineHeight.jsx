@@ -306,7 +306,7 @@ const LineHeight = ({
   };
 
   return (
-    <div className={styles.toolbarFlexWrapper}>
+    <div className={styles.toolbarFlexWrapper} data-toolbar-label="Line Height" >
       <button className="buttonMain">
         <MdFormatLineSpacing
           style={{

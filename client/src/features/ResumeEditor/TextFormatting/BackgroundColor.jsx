@@ -37,6 +37,7 @@ const BackgroundColor = ({activeSectionId, activeSectionIds}) => {
          // text="BC"
          currentEditorColor={sectionBackgroundColor}
          handleSetColor={handleSetSectionBackgroundColor}
+         toolbarLabel="Background Color"
       />
    )
 }

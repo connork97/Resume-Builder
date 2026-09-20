@@ -240,8 +240,8 @@ const FontSize = ({
    }
 
    return (
-      <div className={styles.toolbarFlexWrapper}>
-         <button className='buttonMain' onClick={() => setNewFontSize('decrement')}>-</button>
+      <div className={styles.toolbarFlexWrapper} data-toolbar-label="Font Size">
+         <button data-toolbar-label="Decrease Font Size" className='buttonMain' onClick={() => setNewFontSize('decrement')}>-</button>
          <input
             className='inputMain'
             type='number'
@@ -252,7 +252,7 @@ const FontSize = ({
             onKeyDown={(e) => e.key === 'Enter' && setNewFontSize(fontSizeInputValue)}
             style={{width: '3rem'}}
             />
-         <button className='buttonMain' onClick={() => setNewFontSize('increment')}>+</button>
+         <button data-toolbar-label="Increase Font Size" className='buttonMain' onClick={() => setNewFontSize('increment')}>+</button>
       </div>
    )
 }

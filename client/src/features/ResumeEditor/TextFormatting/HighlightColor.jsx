@@ -36,6 +36,7 @@ const HighlightColor = ({ editor, selection }) => {
       selection={selection}
       currentEditorColor={currentEditorHighlightColor}
       handleSetColor={setNewHighlightColor}
+      toolbarLabel="Highlight Color"
     />
   )
 }

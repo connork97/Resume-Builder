@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, createElement } from "react";
 import { FaRegSmile } from "react-icons/fa";
 
 import { ICON_GROUPS } from "@/lib/iconLibrary";
@@ -28,11 +28,15 @@ const Icons = ({ editor }) => {
 
   const iconGroupsToRender = ICON_GROUPS.map(({ label, icons }) => {
     const iconsToRender = Object.entries(icons).map(([id, Icon]) => {
-      return React.createElement(Icon, {
+      const iconIdString = id.charAt(0).toUpperCase() + id.slice(1);
+      // Capitalize the first letter of the icon ID for display purposes in the toolbar label, and also split camelCase into separate words for readability, and also split at numbers for better readability
+      const iconIdStringFormatted = iconIdString.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([a-zA-Z])([0-9])/g, '$1 $2');
+      return createElement(Icon, {
         key: id,
-        style: { cursor: 'pointer' },
+        style: { cursor: 'pointer', height: '1.5rem', width: '1.5rem' },
         onMouseDown: preserveEditorSelection,
         onClick: () => addIcon(id),
+        'data-toolbar-label': `${iconIdStringFormatted}`
       });
     });
 
@@ -50,7 +54,7 @@ const Icons = ({ editor }) => {
 
   const dropdownRef = useClickOutside(closeDropdown, showIcons);
   return (
-    <div>
+    <div data-toolbar-label="Icons">
       <button
         className='buttonMain'
         onMouseDown={preserveEditorSelection}

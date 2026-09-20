@@ -60,7 +60,7 @@ const Links = ({ editor, selection }) => {
   const dropdownRef = useClickOutside(closeDropdown, showLinkInput, true);
 
   return (
-    <div className={styles.toolbarFlexWrapper}>
+    <div className={styles.toolbarFlexWrapper} data-toolbar-label="Link">
       <button
         aria-label="Link"
         aria-pressed={!!editor && !!getActiveMark(editor, "link")}

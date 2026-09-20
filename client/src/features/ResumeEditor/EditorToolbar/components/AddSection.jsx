@@ -70,7 +70,7 @@ const AddSection = () => {
   ));
 
   return (
-    <div ref={dropdownRef}>
+    <div ref={dropdownRef} data-toolbar-label="Add Section">
       <button
         data-id="open-close-dropdown-button"
         className="buttonMain"
@@ -86,19 +86,6 @@ const AddSection = () => {
           dropdownOptions={sectionOptionsArr}
           wrapperClassName="flexColumn"
         />
-        // <div className={styles.dropdownContainer}>
-        //   <div className={styles.dropdownMenuWrapper}>
-        //     {sectionOptions.map((option) => (
-        //       <div
-        //         key={option.type}
-        //         className={styles.dropdownOption}
-        //         onClick={() => handleAddSection(option.type)}
-        //       >
-        //         {option.label}
-        //       </div>
-        //     ))}
-        //   </div>
-        // </div>
       )}
     </div>
   );

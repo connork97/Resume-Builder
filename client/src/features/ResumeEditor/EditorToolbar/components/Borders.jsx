@@ -28,7 +28,9 @@ import styles from "../../TextFormatting/TextFormatting.module.css";
 
 const Borders = ({ activeSectionId, activeSectionIds }) => {
   const dispatch = useDispatch();
-  const sectionsById = useSelector((state) => state.resume.present.sections.byId);
+  const sectionsById = useSelector(
+    (state) => state.resume.present.sections.byId,
+  );
   const activeSectionBorder =
     sectionsById[activeSectionId]?.styling?.border || {};
   const hasActiveBorder = ["top", "bottom", "left", "right"].some(
@@ -41,9 +43,10 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
     for (let sectionId of activeSectionIds) {
       const currentSectionBorder = sectionsById[sectionId]?.styling?.border;
       const currentSide = currentSectionBorder?.[type];
-      const borderChanges = value.display === true
-        ? { ...getBorderDefaults(currentSide, type), ...value }
-        : value;
+      const borderChanges =
+        value.display === true
+          ? { ...getBorderDefaults(currentSide, type), ...value }
+          : value;
       dispatch(
         updateSection({
           id: sectionId,
@@ -81,9 +84,8 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
   const renderRepeatBorderElements = (borderSide) => {
     const sectionBorder =
       sectionsById[activeSectionId]?.styling?.border?.[borderSide] || {};
-    const activeBorderStyle = sectionBorder.display === true
-      ? sectionBorder.style || "solid"
-      : null;
+    const activeBorderStyle =
+      sectionBorder.display === true ? sectionBorder.style || "solid" : null;
 
     return [
       <>
@@ -393,9 +395,10 @@ const Borders = ({ activeSectionId, activeSectionIds }) => {
   ];
 
   return (
-    <div>
+    <div data-toolbar-label="Borders">
       <button
         aria-label="Borders"
+        data-id="open-close-dropdown-button"
         aria-pressed={hasActiveBorder}
         aria-expanded={showBorderDropdown}
         className={`buttonMain ${styles.borderButton}`}

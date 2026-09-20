@@ -105,7 +105,7 @@ const TextAlign = ({ editor, selection, activeSectionId, activeSectionIds }) => 
   ]
 
   return (
-    <div className={styles.toolbarFlexWrapper}>
+    <div className={styles.toolbarFlexWrapper} data-toolbar-label="Text Alignment">
 
       <button
         className='buttonMain'

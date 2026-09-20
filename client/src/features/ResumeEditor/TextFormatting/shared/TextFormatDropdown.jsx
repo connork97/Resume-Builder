@@ -12,8 +12,7 @@ const TextFormatDropdown = ({
   containerClassName = "",
   wrapperClassName = "",
 }) => {
-
-   const dropdownRows = dropdownOptions?.map((option) => {
+  const dropdownRows = dropdownOptions?.map((option) => {
     if (option.elements) {
       return (
         <div style={option.styling}>
@@ -40,11 +39,28 @@ const TextFormatDropdown = ({
 
   const dropdownRef = useClickOutside(closeDropdown, isOpen);
 
+  const handleDropdownOverflow = (ref) => {
+    const rect = ref.current.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+
+    // If the right edge goes past the screen, shift it left by the overflow amount
+    if (rect.right > viewportWidth) {
+      ref.current.style.left = "auto";
+      ref.current.style.right = "0px";
+    } else {
+      // Reset if it fits normally
+      ref.current.style.left = "";
+      ref.current.style.right = "";
+    }
+  };
   return (
     <div
       className={styles.textFormatDropdownContainer}
       style={{ ...containerStyling }}
-      ref={dropdownRef}
+      ref={(ref) => {
+        dropdownRef.current = ref;
+        if (ref) handleDropdownOverflow({ current: ref });
+      }}
     >
       <div
         className={`${styles.textFormatDropdownWrapper} ${wrapperClassName}`}

@@ -3,6 +3,7 @@
   margin: auto;
   height: var(--height-editor-page);
   width: var(--width-editor-page);
+  padding-bottom: -20vh;
   /* height: 7.7in; */
   /* width: 5.95in; */
   /* height: 11in; */
@@ -162,35 +163,27 @@
 }
 
 @media (max-width: 768px) {
-   .printPageRef {
-      /* display: flex; */
-      /* justify-content: center; */
-      /* align-items: center; */
-      /* align-content: center; */
-      width: 100%;
-      /* overflow: hidden; */
-      --baseline-editor-page-width: 571px;
-      --scale-factor: calc(90vw / var(--baseline-editor-page-width));
-      --new-editor-page-width: calc(var(--baseline-editor-page-width) * var(--scale-factor));
-      .editingPageContainer {
-         position: absolute;
-         width: var(--width-editor-page);
-         
-         scale: min(var(--scale-factor), 1);
-         /* margin-left: 0%; */
-         margin: 0;
-         /* margin-top: 25vh; */
-         top: 0;
-         bottom: 0;
-         left: 50%;
-         right: auto;
-         transform-origin: top center;
-         translate: -50% 0;
-         /* transform: translateX(calc(var(--scale-factor) * -50%)) translateY(calc(var(--scale-factor) * 100%)); */
-         /* transform: translateX(calc(var(--scale-factor) * -50%)) translateY(calc(var(--scale-factor) * 100%)); */
-         /* transform: scale(min(var(--scale-factor), 1)); */
-         
-         /* transform: translateX(calc((1 - var(--scale-factor)) * -75%)); */
-      }
-   }
+  .printPageRef {
+    width: 100%;
+    height: auto;
+    /* height: fit-content; */
+    --baseline-editor-page-width: 571px;
+    --scale-factor: calc(90vw / var(--baseline-editor-page-width));
+    --new-editor-page-width: calc(
+       var(--baseline-editor-page-width) * var(--scale-factor)
+       );
+       .editingPageContainer {
+       height: var(--height-editor-page);
+      position: absolute;
+      width: var(--width-editor-page);
+      scale: min(var(--scale-factor), 1);
+      margin: 0;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      right: auto;
+      transform-origin: top center;
+      translate: -50% 0;
+    }
+  }
 }

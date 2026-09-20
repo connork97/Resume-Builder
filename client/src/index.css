@@ -42,6 +42,8 @@
   --height-toolbar: clamp(2rem, 5rem, 10rem);
   --height-editor-page: 7.7in;
   --width-editor-page: 5.95in;
+
+  --bootstrap-blue: #0d6efd;
   
   --width-navbar: var(--width-main);
 

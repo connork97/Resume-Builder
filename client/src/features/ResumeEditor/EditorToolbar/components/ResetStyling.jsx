@@ -318,7 +318,7 @@ export default function ResetStyling() {
   dropdownOptionElements.push(
     <button
       className="buttonMain"
-      style={{ margin: "auto" }}
+      style={{ margin: "auto", backgroundColor: "var(--bootstrap-blue)" }}
       onClick={handleSaveStylingReset}
     >
       Save

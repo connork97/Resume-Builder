@@ -307,6 +307,13 @@ const LineHeight = ({
 
   return (
     <div className={styles.toolbarFlexWrapper} data-toolbar-label="Line Height" >
+      <button
+        className="buttonMain"
+        onClick={() => setNewLineHeight("decrement")}
+        data-toolbar-label="Decrease Line Height"
+      >
+        -
+      </button>
       <button className="buttonMain">
         <MdFormatLineSpacing
           style={{
@@ -335,24 +342,13 @@ const LineHeight = ({
           }
         />
       </button>
-      {/* <div className="flexColumn" style={{height: '2rem', gap: 0}}>
-        <button
-          className="buttonMain"
-          style={{height: '50%'}}
-          onClick={() => setNewLineHeight("decrement")}
-        >
-          -
-        </button>
-
-        <button
-          className="buttonMain"
-          style={{height: '50%'}}
-
-          onClick={() => setNewLineHeight("increment")}
-        >
-          +
-        </button>
-      </div> */}
+      <button
+        className="buttonMain"
+        onClick={() => setNewLineHeight("increment")}
+        data-toolbar-label="Increase Line Height"
+      >
+        +
+      </button>
     </div>
   );
 };

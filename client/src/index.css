@@ -41,8 +41,8 @@
   --height-navbar: clamp(1rem, 10dvh, 15rem);
   --height-toolbar: clamp(2rem, 5rem, 10rem);
   --height-editor-page: 7.7in;
-
   --width-editor-page: 5.95in;
+  
   --width-navbar: var(--width-main);
 
   --padding-x-navbar: var(--padding-x-main);

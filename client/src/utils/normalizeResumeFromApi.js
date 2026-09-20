@@ -1,12 +1,13 @@
-import { normalizeSlateValue } from "./normalizeSlateValue.js";
+import resizeResumeForMobile from './resizeResumeForMobile';
 // * ------------------------------ V
 // * API TO FRONT END NORMALIZATION V
 // * ------------------------------ V
+import { normalizeSlateValue } from "./normalizeSlateValue.js";
 
 import { normalizeSectionLayout } from "./normalizeSectionLayout.js";
 
 const normalizeResumeFromApi = (apiResume) => {
-  const normalizedResume = {
+  let normalizedResume = {
     id: apiResume.id ?? null,
     title: apiResume.title ?? '',
     userId: apiResume.userId ?? null,
@@ -175,6 +176,10 @@ const normalizeResumeFromApi = (apiResume) => {
   //     });
   //   });
   // });
+//   console.log(window.location.pathname.slice(0, 7))
+//   if (window.innerWidth <= 768 && window.location.pathname.slice(0, 7) === '/editor') {
+//     normalizedResume = resizeResumeForMobile(normalizedResume);
+//   }
 
   return normalizedResume;
 };

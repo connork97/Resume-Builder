@@ -16,6 +16,7 @@ import { ActionCreators as UndoActionCreators } from "redux-undo";
 
 const ResumePaper = forwardRef(function ResumePaper(props, ref) {
 
+   const isMobile = window.innerWidth <= 768;
    const dispatch = useDispatch();
   const localEditorRef = useRef(null);
   const editorRef = props.editorPageRef ?? localEditorRef;
@@ -186,7 +187,9 @@ const ResumePaper = forwardRef(function ResumePaper(props, ref) {
   });
 
   return (
-    <div className={styles.printPageRef} ref={ref}>
+    <div className={styles.printPageRef} ref={ref}
+   //  style={{ scale: Math.min(1, window.innerWidth / parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--width-editor-page'))) }}
+    >
       <div
         className={`${props.isPrinting ? styles.printingPageContainer : styles.editingPageContainer}`}
         style={{ ...resumeStyling }}

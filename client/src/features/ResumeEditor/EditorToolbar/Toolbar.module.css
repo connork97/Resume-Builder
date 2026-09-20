@@ -102,6 +102,9 @@
   @media (max-width: 768px) {
     .toolbarContainer {
       height: fit-content;
+      position: relative;
+      padding-bottom: 2.5%;
+      margin-bottom: 5%;
    }
    .toolbarContent {
        gap: 0.5rem;

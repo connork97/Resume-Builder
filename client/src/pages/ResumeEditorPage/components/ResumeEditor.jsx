@@ -21,6 +21,7 @@ import { ActionCreators as UndoActionCreators } from "redux-undo";
 
 const ResumeEditor = () => {
 
+   const isMobile = window.innerWidth <= 768;
    const location = useLocation();
    const dispatch = useDispatch();
    const { resumeId } = useParams();
@@ -126,7 +127,7 @@ const ResumeEditor = () => {
          <Outline />
          <PaddingPreviewContext.Provider value={{ preview: paddingPreview, setPreview: setPaddingPreview }}>
             <ResumePaper ref={resumeRef} editorPageRef={editorPageRef} isPrinting={isPrinting} />
-            <MarginRuler pageRef={editorPageRef} />
+            {!isMobile && <MarginRuler pageRef={editorPageRef} />}
          </PaddingPreviewContext.Provider>
          {showNewResumeModal &&
             <NewResumeModal />

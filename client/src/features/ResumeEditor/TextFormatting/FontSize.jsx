@@ -24,6 +24,7 @@ const FontSize = ({
    activeEditorId,
    resumeStyling
 }) => {
+   const isMobile = window.innerWidth <= 768;
 
    const dispatch = useDispatch();
    const reduxSections = useSelector(state => state.resume.present.sections);
@@ -250,7 +251,7 @@ const FontSize = ({
             value={fontSizeInputValue}
             onChange={(e) => setFontSizeInputValue(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && setNewFontSize(fontSizeInputValue)}
-            style={{width: '3rem'}}
+            style={!isMobile ? {width: '3rem'} : undefined}
             />
          <button data-toolbar-label="Increase Font Size" className='buttonMain' onClick={() => setNewFontSize('increment')}>+</button>
       </div>

@@ -70,7 +70,7 @@ export default function Indentation() {
   const isOutdented = marginLeft < 0;
 
   return (
-    <>
+    <div className={styles.toolbarFlexRow}>
       <button
         data-toolbar-label="Indent"
         aria-label="Indent"
@@ -90,6 +90,6 @@ export default function Indentation() {
       >
         <BiLeftIndent style={{ position: "relative", top: "0.1em" }} />
       </button>
-    </>
+    </div>
   );
 }

@@ -33,6 +33,7 @@ const LineHeight = ({
   activeEditorId,
   resumeStyling,
 }) => {
+  const isMobile = window.innerWidth <= 768;
   const dispatch = useDispatch();
   const reduxSections = useSelector((state) => state.resume.present.sections);
   const reduxColumns = useSelector((state) => state.resume.present.columns);
@@ -306,7 +307,7 @@ const LineHeight = ({
   };
 
   return (
-    <div className={styles.toolbarFlexWrapper} data-toolbar-label="Line Height" >
+    <div className={styles.toolbarFlexWrapper} data-toolbar-label="Line Height">
       <button
         className="buttonMain"
         onClick={() => setNewLineHeight("decrement")}
@@ -314,26 +315,13 @@ const LineHeight = ({
       >
         -
       </button>
-      <button className="buttonMain">
-        <MdFormatLineSpacing
-          style={{
-            scale: "1.1",
-            marginRight: "0.25rem",
-            pointerEvents: "none",
-          }}
-        />
+      {isMobile ? (
         <input
           className="inputMain"
           type="number"
           step="0.01"
           style={{
-            width: "3.5rem",
-            borderLeft: "none",
-            borderRight: "none",
-            marginLeft: "-1.75rem",
-            marginRight: "-0.5rem",
-            paddingRight: "0.5rem",
-            textAlign: "right",
+            border: "none",
           }}
           value={lineHeightInputValue}
           onChange={(e) => setLineHeightInputValue(e.target.value)}
@@ -341,7 +329,36 @@ const LineHeight = ({
             e.key === "Enter" && setNewLineHeight(lineHeightInputValue)
           }
         />
-      </button>
+      ) : (
+        <button className="buttonMain">
+          <MdFormatLineSpacing
+            style={{
+              scale: "1.1",
+              marginRight: "0.25rem",
+              pointerEvents: "none",
+            }}
+          />
+          <input
+            className="inputMain"
+            type="number"
+            step="0.01"
+            style={{
+              width: "3.5rem",
+              borderLeft: "none",
+              borderRight: "none",
+              marginLeft: "-1.75rem",
+              marginRight: "-0.5rem",
+              paddingRight: "0.5rem",
+              textAlign: "right",
+            }}
+            value={lineHeightInputValue}
+            onChange={(e) => setLineHeightInputValue(e.target.value)}
+            onKeyDown={(e) =>
+              e.key === "Enter" && setNewLineHeight(lineHeightInputValue)
+            }
+          />
+        </button>
+      )}
       <button
         className="buttonMain"
         onClick={() => setNewLineHeight("increment")}

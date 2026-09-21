@@ -99,64 +99,114 @@
   }
 }
 
-  @media (max-width: 768px) {
-    .toolbarContainer {
-      height: fit-content;
-      position: relative;
-      padding-bottom: 2.5%;
-      margin-bottom: 5%;
-   }
-   .toolbarContent {
-       gap: 0.5rem;
-      padding: 0 0.5rem;
-    }
-    .homeLink {
-      top: 0;
-      left: 0;
-      position: relative;
-      font-size: 1.5rem;
-    }
+@media (max-width: 768px) {
+  .toolbarContainer {
+    height: fit-content;
+    position: relative;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    margin-bottom: 5%;
 
-    .richTextToolbarContainer {
-      height: fit-content;
-      width: 100%;
-    }
-    .richTextToolbarWrapper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.1rem;
-    }
-    .topBarContainer {
-      width: 100%;
-      gap: 0.5rem;
-    }
-    .topBarContainer .buttonMain {
-      margin: 0;
-      padding: 0;
-      font-size: 1rem;
-      width: fit-content;
-    }
- 
+  }
+  .toolbarContent {
+    gap: 0.25rem;
+    padding: 0 0.5rem;
+  }
+  .homeLink {
+    top: 0;
+    left: 0;
+    position: relative;
+    font-size: 1.5rem;
+  }
 
-    .resumeTitle {
-      /* max-width: 50%; */
-      max-width: max-content;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      text-align: left;
-    }
+  .richTextToolbarContainer {
+    height: fit-content;
+    width: 100%;
+  }
+  .richTextToolbarWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* gap: 0.5rem; */
+  }
+  .topBarContainer {
+    width: 100%;
+    gap: 0.5rem;
+  }
+  .topBarContainer .buttonMain {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    width: fit-content;
+  }
 
-    .resumeTitle span {
-      width: 100%;
-    }
+  .resumeTitle {
+    /* max-width: 50%; */
+    max-width: max-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+  }
 
-    .saveCopyPrintButtonsWrapper {
-      gap: 0;
-    }
-    /* .resumeTitle { */
-    /* margin: auto 5% auto 5%; */
-    /* } */
+  .resumeTitle span {
+    width: 100%;
+  }
+
+  .saveCopyPrintButtonsWrapper {
+    gap: 0;
+  }
+  /* .resumeTitle { */
+  /* margin: auto 5% auto 5%; */
+  /* } */
+}
+
+.mobileToolbarRow {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+
+  > div,
+  > button,
+  > input {
+    max-width: 100%;
+    flex: 1 1 0;
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    min-width: min-content;
+  }
+
+  > div:has(> :is(button, input):nth-child(2)) {
+    flex: 2 1 0.15rem;
+  }
+
+  > div:has(> :is(button, input):nth-child(3)) {
+    flex: 3 1 0.3rem;
+  }
+
+  > div > button,
+  > div > input {
+    max-width: 100%;
+    flex: 1 1 0;
+  }
+
+  > button,
+  > div > button {
+    min-width: max-content;
+    padding: 0 0.25rem;
+    white-space: nowrap;
+  }
+
+  > input,
+  > div > input {
+    min-width: 2rem;
+    width: 2rem;
+  }
 }
